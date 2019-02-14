@@ -68,7 +68,9 @@ environment using either
 An installation of the TexLive suite is required. The complete installation is
 not necessary but amsmath and related, and PGF/TikZ might be useful.
 Other tools are used:
-* openssl
+* openssl (for graphics)
+* ghostscript (for graphics)
+* imagemagick (for graphics)
 * meld
 * ... (list to be completed)
 
