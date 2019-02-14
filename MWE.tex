@@ -1,0 +1,18 @@
+\documentclass{article}
+\usepackage{moodle}
+\begin{document}
+\begin{quiz}[ % options that apply to all questions
+	points=1, % default 1
+	penalty=0, % penalty in case of wrong attempt (between 0 and 1). Default 0.1
+	fraction=0, % fraction of points for wrong or partially true answers
+	%feedback={coucou}
+	] {Complex Numbers}
+
+\begin{multi}[points=3]{A first derivative} % only one correct answer
+What is the first derivative of $x^3$?
+\item[feedback={coucou}] $\frac{1}{4} x^4+C$ \feedback test1
+\item* $3x^2$ \feedback test3% the star stands for fraction=1
+\item[] $51$ \feedback test2
+\end{multi}
+\end{quiz}
+\end{document}
