@@ -1,18 +1,68 @@
 \documentclass{article}
 \usepackage{moodle}
+
+\def\myequation{y=ax+b}
+
+\htmlregister{\myequation}
+
 \begin{document}
 \begin{quiz}[ % options that apply to all questions
-	points=1, % default 1
-	penalty=0, % penalty in case of wrong attempt (between 0 and 1). Default 0.1
-	fraction=0, % fraction of points for wrong or partially true answers
+%	points=1, % default 1
+%	penalty=0, % penalty in case of wrong attempt (between 0 and 1). Default 0.1
+%	fraction=0, % fraction of points for wrong or partially true answers
 	%feedback={coucou}
-	] {Complex Numbers}
+	] {Test}
 
-\begin{multi}[points=3]{A first derivative} % only one correct answer
+\begin{multi}[points=3]{Multi With Single Correct Answer} % only one correct 
+%answer
 What is the first derivative of $x^3$?
-\item[feedback={coucou}] $\frac{1}{4} x^4+C$ \feedback test1
-\item* $3x^2$ \feedback test3% the star stands for fraction=1
-\item[] $51$ \feedback test2
+\item[feedback={coucou}] $\frac{1}{4} x^4+C$ \feedback this is a very 
+long feedback; it may even be displayed in several lines. Here is a new 
+sentence! Does that work? Yes. Now, let's put an equation:
+\[\myequation.\]
+\item* $3x^2$ \feedback $\myequation$% the star stands for fraction=1
+\item[] $51$ \feedback $\sin(x)/x$
 \end{multi}
+
+\begin{multi}[multiple]{Multi With Several Correct Answers} % when several 
+%answers are correct
+	Which numbers are prime?
+	\item* 5 \feedback it is only divided by 1 and itself!
+	\item 6 \feedback divided by 2 and 3!
+	\item* 7 \feedback it is only divided by 1 and itself!
+	\item 8 \feedback divided by 2 and 4! Normally this feedback would be short 
+	but I want to make it longer for testing purposes.
+\end{multi}
+
+
+\begin{numerical}[ % options that apply to all answers
+%	points=1, % default 1
+%	penalty=0, % penalty in case of wrong attempt (between 0 and 1). Default 0.1
+%%	fraction=0, % fraction of points for wrong or partially true answers
+%	feedback={coucou} % feedback is given regardless of the answer
+	] {Numerical}
+What is $8+3$?
+\item[fraction=100] 11 \feedback Oh yeah! $\myequation$
+\item[fraction=0] 5 \feedback Pfff\dots
+\end{numerical}
+
+\begin{shortanswer}[case sensitive=true]{Short Answer}
+What was Newton's first name?
+\item Isaac \feedback Initials: I. N. $\myequation$
+\item[fraction=0] Fig \feedback Why?
+\item{fraction=0} Sir \feedback That's a title!
+\end{shortanswer}
+
+\begin{matching}[dd]{Matching}
+Matching questions do not support answer specific feedback\dots
+	\item[feedback={this feedback is garbage: it is placed in the XML but won't 
+	make it through the moodle import}] 
+	Question 1 \answer Answer 1
+	\item[feedback={Actually, moodle's matching question type does not seem to 
+	support feedback}] Question 2 \answer Answer 2
+	\item[feedback={sadly...}] Question 3 \answer Answer 3
+	\item[] \answer Answer 4
+\end{matching}
+
 \end{quiz}
 \end{document}

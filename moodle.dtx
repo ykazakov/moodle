@@ -1540,10 +1540,13 @@
 %   \egroup
 % }%
 
+\let\feedback=\relax
+
 \moodle@makefrontend{shortanswer}%
 
 % LATEX PROCESSING
 \def\moodle@shortanswer@latexprocessing{%
+  \let\feedback=\relax
   \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
     \loopthroughitemswithcommand{\moodle@print@shortanswer@answer}%
   \end{itemize}%
@@ -1556,11 +1559,19 @@
      \setkeys{moodle}{#1}%
      \moodle@print@shortanswer@answer@int@int%
    }%
-   \def\moodle@print@shortanswer@answer@int@int#1\@rdelim{%
+   \def\moodle@print@shortanswer@answer@int@int#1\feedback#2\@rdelim{%
      \ifx\moodle@fraction\@hundred
-       \item #1\quad$\checkmark$%
+       \if\relax\detokenize{#2}\relax
+           \item #1\quad$\checkmark$%
+       \else
+           \item #1\quad$\checkmark$\hfill \emph{$\rightarrow$ #2}%
+       \fi
      \else
-       \item #1\quad (\moodle@fraction\%)%
+       \if\relax\detokenize{#2}\relax
+           \item #1\quad (\moodle@fraction\%)%
+       \else
+           \item #1\quad (\moodle@fraction\%)\hfill \emph{$\rightarrow$ #2}%
+       \fi
      \fi
    }%
 
@@ -1575,12 +1586,16 @@
      \setkeys{moodle}{fraction=100,#1}%                  %%%%%% DEFAULT VALUE IS 100%
      \saveshortansweranswer@int@int%
    }%
-   \def\saveshortansweranswer@int@int#1\moodle@answer@rdelim{%
+   \def\saveshortansweranswer@int@int#1\feedback#2\moodle@answer@rdelim{%
      \def\moodle@answertext{#1}%
      \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
      \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext</text>}%
-     \ifx\moodle@feedback\@empty\relax\else
-       \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback</p>]]></text></feedback>}%
+     \ifx#2\@empty\relax\else
+       \def\moodle@answerfeedback{#2}
+       \trim@spaces@in\moodle@answerfeedback
+       \xa\converttohtmlmacro\xa\moodle@answerfeedback@html\xa{\moodle@answerfeedback}%
+       \addto@xml[4]{\moodle@answers@xml}{  <feedback 
+       format="html"><text><![CDATA[<p>\moodle@answerfeedback@html</p>]]></text></feedback>}%
      \fi
      \addto@xml[2]{\moodle@answers@xml}{</answer>}%
    }%
@@ -1598,10 +1613,14 @@
 % \subsubsection{Numerical Question Front-End}
 % 
 %    \begin{macrocode}
+
+\let\feedback=\relax
+
 \moodle@makefrontend{numerical}%
 
 % LATEX PROCESSING
 \def\moodle@numerical@latexprocessing{%
+      \let\feedback=\relax
       \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
         \loopthroughitemswithcommand{\moodle@print@numerical@answer}%
       \end{itemize}%
@@ -1614,16 +1633,26 @@
      \setkeys{moodle}{#1}%
      \moodle@print@numerical@answer@int@int%
    }%
-   \def\moodle@print@numerical@answer@int@int#1\@rdelim{%
+   \def\moodle@print@numerical@answer@int@int#1\feedback#2\@rdelim{%
      \ifdim0pt=\moodle@tolerance pt\relax
        \def\moodle@numericalprint@tolerance{}%
      \else
        \edef\moodle@numericalprint@tolerance{\noexpand\pm\moodle@tolerance}%
      \fi
      \ifx\moodle@fraction\@hundred
-       \item $#1\moodle@numericalprint@tolerance\quad\checkmark$%
+       \if\relax\detokenize{#2}\relax
+           \item $#1\moodle@numericalprint@tolerance\quad\checkmark$%
+       \else
+           \item $#1\moodle@numericalprint@tolerance\quad\checkmark$ \hfill 
+           \emph{$\rightarrow$ #2}%
+       \fi
      \else
-       \item $#1\moodle@numericalprint@tolerance$\quad (\moodle@fraction\%)%
+       \if\relax\detokenize{#2}\relax
+           \item $#1\moodle@numericalprint@tolerance$\quad (\moodle@fraction\%)%
+       \else
+           \item $#1\moodle@numericalprint@tolerance$\quad (\moodle@fraction\%) 
+           \hfill \emph{$\rightarrow$ #2}%
+       \fi
      \fi
    }%
 
@@ -1638,13 +1667,17 @@
      \setkeys{moodle}{fraction=100,#1}%                  %%%%%% DEFAULT VALUE IS 100%
      \savenumericalanswer@int@int%
    }%
-   \def\savenumericalanswer@int@int#1\moodle@answer@rdelim{%
+   \def\savenumericalanswer@int@int#1\feedback#2\moodle@answer@rdelim{%
      \def\moodle@answertext{#1}%
      \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
      \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext</text>}%
      \addto@xml[4]{\moodle@answers@xml}{  <tolerance>\moodle@tolerance</tolerance>}%
-     \ifx\moodle@feedback\@empty\relax\else
-       \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback</p>]]></text></feedback>}%
+     \ifx#2\@empty\relax\else
+       \def\moodle@answerfeedback{#2}
+       \trim@spaces@in\moodle@answerfeedback
+       \xa\converttohtmlmacro\xa\moodle@answerfeedback@html\xa{\moodle@answerfeedback}%
+       \addto@xml[4]{\moodle@answers@xml}{  <feedback 
+       format="html"><text><![CDATA[<p>\moodle@answerfeedback@html</p>]]></text></feedback>}%
      \fi
      \addto@xml[2]{\moodle@answers@xml}{</answer>}%
    }%
@@ -1670,10 +1703,13 @@
 %   \item 11
 % \end{multi}%
 
+\let\feedback=\relax
+
 \moodle@makefrontend{multi}
 
 % LATEX PROCESSING
 \def\moodle@multi@latexprocessing{%
+      \let\feedback=\relax
       \moodle@countcorrectanswers
       \begin{enumerate}\moodle@obeynumberingstyle
                        %\renewcommand{\theenumi}{\alph{enumi}}%
@@ -1688,22 +1724,39 @@
     \setkeys{moodle}{fraction=0,#1}%
     \moodle@print@multichoice@answer@int@int@int
   }%
+
   \def\moodle@print@multichoice@answer@int@int@int#1#2\feedback#3\@rdelim{%
     \def\test@i{#1}%
     \ifmoodle@single
       \ifx\test@i\@star
-        \item #2$~\checkmark$%
+        \if\relax\detokenize{#3}\relax
+            \item #2$~\checkmark$%
+        \else
+            \item #2$~\checkmark$ \hfill \emph{$\rightarrow$ #3}%
+        \fi
+        
       \else
-        \item #1#2 \emph{$\rightarrow$ #3}%
+        \if\relax\detokenize{#3}\relax
+            \item #1#2%
+        \else
+            \item #1#2 \hfill \emph{$\rightarrow$ #3}%
+        \fi
       \fi
     \else
       \ifx\test@i\@star
-        \item #2%
         \setkeys{moodle}{fraction=\moodle@autopoints}%
+        \if\relax\detokenize{#3}\relax
+            \item #2$~(\moodle@fraction\%)$%
+        \else
+            \item #2$~(\moodle@fraction\%)$ \hfill \emph{$\rightarrow$ #3}%
+        \fi
       \else
-        \item #1#2 \emph{$\rightarrow$ #3}%
+        \if\relax\detokenize{#3}\relax
+            \item #1#2$~(\moodle@fraction\%)$%
+        \else
+            \item #1#2$~(\moodle@fraction\%)$ \hfill \emph{$\rightarrow$ #3}%
+        \fi
       \fi
-      $~(\moodle@fraction\%)$
     \fi
   }%
 
@@ -1757,9 +1810,9 @@
 }%
   \newcommand\savemultianswer@int[1][]{%
     \setkeys{moodle}{fraction=0,#1}%
-    \savemultianswer@int@int%
+    \savemultianswer@int@int@int%
   }%
-  \def\savemultianswer@int@int#1#2\moodle@answer@rdelim{%
+  \def\savemultianswer@int@int@int#1#2\feedback#3\moodle@answer@rdelim{%
     \def\test@i{#1}%
     \ifx\test@i\@star
       \ifmoodle@single
@@ -1775,8 +1828,12 @@
     \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="html">}%
     \xa\converttohtmlmacro\xa\moodle@answertext@html\xa{\moodle@answertext}%
     \addto@xml[4]{\moodle@answers@xml}{  <text><![CDATA[<p>\moodle@answertext@html</p>]]></text>}%
-    \ifx\moodle@feedback\@empty\relax\else
-      \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback</p>]]></text></feedback>}%
+    \ifx#3\@empty\relax\else
+      \def\moodle@answerfeedback{#3}
+      \trim@spaces@in\moodle@answerfeedback
+      \xa\converttohtmlmacro\xa\moodle@answerfeedback@html\xa{\moodle@answerfeedback}%
+      \addto@xml[4]{\moodle@answers@xml}{  <feedback 
+      format="html"><text><![CDATA[<p>\moodle@answerfeedback@html</p>]]></text></feedback>}%
     \fi
     \addto@xml[2]{\moodle@answers@xml}{</answer>}%
   }%
@@ -1797,6 +1854,7 @@
 % 
 %    \begin{macrocode}
 \let\answer=\hfill
+\let\feedback=\relax
 
 \moodle@makefrontend{matching}
 
@@ -1804,6 +1862,7 @@
 \def\moodle@matching@latexprocessing{%
   \bgroup
     \let\answer=\hfill
+    \let\feedback=\relax
     \begin{enumerate}\renewcommand{\theenumi}{\alph{enumi}}\setlength\itemsep{0pt}\setlength\parskip{0pt}%
       \loopthroughitemswithcommand{\moodle@print@matching@answer}%
     \end{enumerate}%
@@ -1855,7 +1914,10 @@
        \addto@xml[4]{\moodle@answers@xml}{  <answer><text>\moodle@subanswertext</text></answer>}%
      \fi
      \ifx\moodle@feedback\@empty\relax\else
-       \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback</p>]]></text></feedback>}%
+       \trim@spaces@in\moodle@feedback
+       \xa\converttohtmlmacro\xa\moodle@subanswerfeedback@html\xa{\moodle@feedback}%
+       \addto@xml[4]{\moodle@answers@xml}{  <feedback 
+       format="html"><text><![CDATA[<p>\moodle@subanswerfeedback@html</p>]]></text></feedback>}%
      \fi
      \addto@xml[2]{\moodle@answers@xml}{</subquestion>}%
    }%
