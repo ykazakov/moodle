@@ -15,4 +15,6 @@
 *.idx
 *.ilg
 *.ind
+*.glo
+*.gls
 *~

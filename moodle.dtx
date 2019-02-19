@@ -27,7 +27,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\ProvidesPackage{moodle}
 %<*package>
-    [2016/01/11 v0.5 Moodle quiz XML generation]
+    [2019/02/18 v0.6 Moodle quiz XML generation]
 %</package>
 %
 %<*driver>
@@ -41,13 +41,11 @@
 \RecordChanges
 \begin{document}
   \DocInput{moodle.dtx}
-  \PrintChanges
-  %\PrintIndex
 \end{document}
 %</driver>
 % \fi
 %
-% \CheckSum{3827}
+% \CheckSum{3985}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -67,6 +65,7 @@
 %
 %
 % \changes{v0.5}{2016/01/05}{Initial version}
+% \changes{v0.6}{2019/02/18}{Bux-fixing release}
 %
 % \GetFileInfo{moodle.sty}
 %
@@ -78,11 +77,13 @@
 %        \thanks{This document
 %                corresponds to \textsf{moodle.sty}~\fileversion, dated \filedate.}}
 % \author{Anders Hendrickson\\ St.~Norbert College, De~Pere, WI, USA \\ \url{anders.hendrickson@snc.edu}}
-% \date{January 11, 2016}
+% \date{February 18, 2019}
 % 
 % \maketitle
 %
 % \providecommand\TikZ{Ti\emph{k}Z}
+% 
+% \PrintChanges
 %
 % \section{Motivation}
 %
@@ -180,7 +181,10 @@
 % \begin{verbatim}
 %   \documentclass[12pt]{article}
 %   \usepackage{moodle}
-%   
+%
+%   \def\surprisedbytheanswer{What!?}
+%   \htmlregister{\mymacro}
+%
 %   \begin{document}
 %   
 %   \begin{quiz}{My first quiz}
@@ -198,9 +202,9 @@
 %     
 %     \begin{multi}[points=3]{A first derivative}
 %       What is the first derivative of $x^3$?
-%       \item  $\frac{1}{4} x^4+C$
+%       \item[feedback={\surprisedbytheanswer}]  $\frac{1}{4} x^4+C$
 %       \item* $3x^2$
-%       \item  $51$
+%       \item[feedback={\surprisedbytheanswer}]  $51$
 %     \end{multi}
 %   \end{quiz}
 %   
@@ -215,12 +219,17 @@
 % |\item|'s, but the question itself is the text that occurs before
 % the first |\item|.
 % 
+% \DescribeMacro{\htmlregister}
+% Using |\htmlregister|\marg{macroname}, tells \LaTeX\ about the macros you 
+% use. This way, the macros will be properly expanded in the XML file.
+% 
+% \newpage
 % \DescribeMacro{draft}
-% If the package option |draft| is invoked, by calling |\usepackage[draft]{moodle}|,
+% If the package option |draft| is invoked, by calling 
+%|\usepackage[draft]{moodle}|,
 % then no XML file will be generated.  This is especially useful while editing a quiz
 % containing graphics, so as to avoid the time spent converting image files.
 %
-% \newpage
 % \subsection{Quiz and Question Environments}
 % 
 % \DescribeMacro{quiz}
