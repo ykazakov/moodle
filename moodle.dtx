@@ -82,8 +82,6 @@
 % \maketitle
 %
 % \providecommand\TikZ{Ti\emph{k}Z}
-% 
-% \PrintChanges
 %
 % \section{Motivation}
 %
@@ -181,10 +179,8 @@
 % \begin{verbatim}
 %   \documentclass[12pt]{article}
 %   \usepackage{moodle}
-%
-%   \def\surprisedbytheanswer{What!?}
-%   \htmlregister{\mymacro}
-%
+%   \def\myreactiontoasillyanswer{What!?}
+%   \htmlregister{\myreactiontoasillyanswer}
 %   \begin{document}
 %   
 %   \begin{quiz}{My first quiz}
@@ -202,9 +198,9 @@
 %     
 %     \begin{multi}[points=3]{A first derivative}
 %       What is the first derivative of $x^3$?
-%       \item[feedback={\surprisedbytheanswer}]  $\frac{1}{4} x^4+C$
+%       \item[feedback={\myreactiontoasillyanswer}]  $\frac{1}{4} x^4+C$
 %       \item* $3x^2$
-%       \item[feedback={\surprisedbytheanswer}]  $51$
+%       \item[feedback={\myreactiontoasillyanswer}]  $51$
 %     \end{multi}
 %   \end{quiz}
 %   
@@ -222,13 +218,17 @@
 % \DescribeMacro{\htmlregister}
 % Using |\htmlregister|\marg{macroname}, tells \LaTeX\ about the macros you 
 % use. This way, the macros will be properly expanded in the XML file.
-% 
+%
 % \newpage
+% 
 % \DescribeMacro{draft}
-% If the package option |draft| is invoked, by calling 
-%|\usepackage[draft]{moodle}|,
-% then no XML file will be generated.  This is especially useful while editing a quiz
-% containing graphics, so as to avoid the time spent converting image files.
+% \DescribeMacro{final}
+% If the package option |draft| is invoked, by calling
+% |\usepackage[draft]{moodle}| or |\documentclass[draft]{...}|, then no
+% XML file will be generated. This is especially useful while editing a
+% quiz containing graphics, so as to avoid the time spent converting
+% image files. The package option |final| might be useful if one wants
+% to avoid the option |draft| to be inherited from the |documentclass|.
 %
 % \subsection{Quiz and Question Environments}
 % 
@@ -328,7 +328,8 @@
 % which mirror the usual \LaTeX\ syntax:
 % |alph|, |Alph|, |arabic|, |roman|, |Roman|, and |none|.
 % Calling |numbering=none| produces an unnumbered list of answers.
-% The Moodle syntax of |abc|, |ABC|, |123|, |iii|, and |IIII| is also acceptable,
+% The Moodle syntax of |abc|, |ABCD|, |123|, |iii|, and |IIII| is also 
+%acceptable,
 % but note that it requires \emph{four} |I|'s to obtain upper-case Roman numerals this way.
 % 
 % \DescribeMacro{fraction}
@@ -482,9 +483,9 @@
 % You may also require the student to upload a certain number of attachments
 % by setting |attachments required| to |0|, |1|, |2|, or |3|.
 % 
-% \DescribeMacro{response template}
+% \DescribeMacro{template}
 % Finally, you may preload the essay question with a template that the student
-% will edit and/or type over, with the key |response template=|\marg{template}.
+% will edit and/or type over, with the key |template=|\marg{template}.
 % The \meta{template} should be enclosed in braces.
 % 
 % \subsection{Matching Questions}
@@ -561,6 +562,10 @@
 % the same is true for the |shortanswer| and |numerical|
 % environments.
 % 
+% \DescribeMacro{single=true}
+% Within a cloze question, a multiple choice question is necessarily of type
+% |single|, i.e. with a single good answer.
+%
 % \DescribeMacro{vertical}\DescribeMacro{horizontal}
 % Within a cloze question, by default a multiple choice question is implemented
 % as an inline dropdown box.  This is visually compact, but it also prevents the 
@@ -725,6 +730,8 @@
 % but turn ``MathJax'' \emph{on}.  This forces \TeX\ code to be rendered by MathJax
 % instead of Moodle, producing much higher-quality results.
 % 
+% \PrintChanges
+%
 % \StopEventually{}
 %
 % \section{Implementation}
@@ -735,6 +742,7 @@
 
 %%DECLARATION OF OPTIONS
 \DeclareOption{draft}{\moodle@draftmodetrue}
+\DeclareOption{final}{\moodle@draftmodefalse}
 
 \moodle@draftmodefalse
 \moodle@tikzloadedfalse
@@ -1071,7 +1079,7 @@
 %% NUMBERING -- for numbering of multichoice questions
       \define@choicekey{moodle}{numbering}%
                        {alpha,alph,Alpha,Alph,arabic,roman,Roman,%
-                        abc,ABC,123,iii,IIII,none}[abc]{%
+                        abc,ABCD,123,iii,IIII,none}[abc]{%
                         \def\moodle@numbering{#1}%
                         \def\test@@i{#1}%
                         \ifx\test@@i\@moodle@alpha
@@ -1079,9 +1087,9 @@
                         \ifx\test@@i\@moodle@alph
                           \def\moodle@numbering{abc}\fi
                         \ifx\test@@i\@moodle@Alpha
-                          \def\moodle@numbering{ABC}\fi
+                          \def\moodle@numbering{ABCD}\fi
                         \ifx\test@@i\@moodle@Alph
-                          \def\moodle@numbering{ABC}\fi
+                          \def\moodle@numbering{ABCD}\fi
                         \ifx\test@@i\@moodle@arabic
                           \def\moodle@numbering{123}\fi
                         \ifx\test@@i\@moodle@roman
@@ -1103,7 +1111,7 @@
       \def\@moodle@roman{roman}%
       \def\@moodle@Roman{Roman}%      
       \def\@moodle@abc{abc}%
-      \def\@moodle@ABC{ABC}%
+      \def\@moodle@ABCD{ABCD}%
       \def\@moodle@arabicnumbers{123}%
       \def\@moodle@iii{iii}%
       \def\@moodle@IIII{IIII}%
@@ -1112,7 +1120,7 @@
         \ifx\moodle@numbering\@moodle@abc
           \renewcommand\theenumii{\alph{enumii}}%
         \fi
-        \ifx\moodle@numbering\@moodle@ABC
+        \ifx\moodle@numbering\@moodle@ABCD
           \renewcommand\theenumii{\Alph{enumii}}%
         \fi
         \ifx\moodle@numbering\@moodle@arabicnumbers
@@ -1400,7 +1408,7 @@
   % Moodle cannot automatically grade an essay, 
   % but if the user puts \item's in, we can list them in an itemize as notes.
   \ifnum\c@numgathereditems>0\relax
-    \par\noindent Notes: (not included in XML)
+    \par\noindent \emph{Notes for grader:}
     \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
       \loopthroughitemswithcommand{\moodle@print@essay@answer}%
     \end{itemize}%
@@ -1549,38 +1557,31 @@
 %   \egroup
 % }%
 
-\let\feedback=\relax
-
 \moodle@makefrontend{shortanswer}%
 
 % LATEX PROCESSING
 \def\moodle@shortanswer@latexprocessing{%
-  \let\feedback=\relax
   \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
     \loopthroughitemswithcommand{\moodle@print@shortanswer@answer}%
   \end{itemize}%
 }
 
    \def\moodle@print@shortanswer@answer#1{%
+       \let\moodle@feedback=\@empty
        \moodle@print@shortanswer@answer@int#1\@rdelim
    }%
    \newcommand\moodle@print@shortanswer@answer@int[1][]{%
      \setkeys{moodle}{#1}%
      \moodle@print@shortanswer@answer@int@int%
    }%
-   \def\moodle@print@shortanswer@answer@int@int#1\feedback#2\@rdelim{%
+   \def\moodle@print@shortanswer@answer@int@int#1\@rdelim{%
      \ifx\moodle@fraction\@hundred
-       \if\relax\detokenize{#2}\relax
-           \item #1\quad$\checkmark$%
-       \else
-           \item #1\quad$\checkmark$\hfill \emph{$\rightarrow$ #2}%
-       \fi
+       \item #1\quad$\checkmark$%
      \else
-       \if\relax\detokenize{#2}\relax
-           \item #1\quad (\moodle@fraction\%)%
-       \else
-           \item #1\quad (\moodle@fraction\%)\hfill \emph{$\rightarrow$ #2}%
-       \fi
+       \item #1\quad (\moodle@fraction\%)%
+     \fi
+     \ifx\moodle@feedback\@empty\relax\else
+       \hfill \emph{$\rightarrow$ \moodle@feedback}
      \fi
    }%
 
@@ -1595,16 +1596,15 @@
      \setkeys{moodle}{fraction=100,#1}%                  %%%%%% DEFAULT VALUE IS 100%
      \saveshortansweranswer@int@int%
    }%
-   \def\saveshortansweranswer@int@int#1\feedback#2\moodle@answer@rdelim{%
+   \def\saveshortansweranswer@int@int#1\moodle@answer@rdelim{%
      \def\moodle@answertext{#1}%
+     \trim@spaces@in\moodle@answertext
      \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
      \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext</text>}%
-     \ifx#2\@empty\relax\else
-       \def\moodle@answerfeedback{#2}
-       \trim@spaces@in\moodle@answerfeedback
-       \xa\converttohtmlmacro\xa\moodle@answerfeedback@html\xa{\moodle@answerfeedback}%
-       \addto@xml[4]{\moodle@answers@xml}{  <feedback 
-       format="html"><text><![CDATA[<p>\moodle@answerfeedback@html</p>]]></text></feedback>}%
+     \ifx\moodle@feedback\@empty\relax\else
+       \trim@spaces@in\moodle@feedback
+       \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
+       \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text></feedback>}%
      \fi
      \addto@xml[2]{\moodle@answers@xml}{</answer>}%
    }%
@@ -1622,46 +1622,36 @@
 % \subsubsection{Numerical Question Front-End}
 % 
 %    \begin{macrocode}
-
-\let\feedback=\relax
-
 \moodle@makefrontend{numerical}%
 
 % LATEX PROCESSING
 \def\moodle@numerical@latexprocessing{%
-      \let\feedback=\relax
       \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
         \loopthroughitemswithcommand{\moodle@print@numerical@answer}%
       \end{itemize}%
 }
 
    \def\moodle@print@numerical@answer#1{%
+       \let\moodle@feedback=\@empty
        \moodle@print@numerical@answer@int#1\@rdelim
    }%
    \newcommand\moodle@print@numerical@answer@int[1][]{%
      \setkeys{moodle}{#1}%
      \moodle@print@numerical@answer@int@int%
    }%
-   \def\moodle@print@numerical@answer@int@int#1\feedback#2\@rdelim{%
+   \def\moodle@print@numerical@answer@int@int#1\@rdelim{%
      \ifdim0pt=\moodle@tolerance pt\relax
        \def\moodle@numericalprint@tolerance{}%
      \else
        \edef\moodle@numericalprint@tolerance{\noexpand\pm\moodle@tolerance}%
      \fi
      \ifx\moodle@fraction\@hundred
-       \if\relax\detokenize{#2}\relax
-           \item $#1\moodle@numericalprint@tolerance\quad\checkmark$%
-       \else
-           \item $#1\moodle@numericalprint@tolerance\quad\checkmark$ \hfill 
-           \emph{$\rightarrow$ #2}%
-       \fi
+       \item $#1\moodle@numericalprint@tolerance\quad\checkmark$%
      \else
-       \if\relax\detokenize{#2}\relax
-           \item $#1\moodle@numericalprint@tolerance$\quad (\moodle@fraction\%)%
-       \else
-           \item $#1\moodle@numericalprint@tolerance$\quad (\moodle@fraction\%) 
-           \hfill \emph{$\rightarrow$ #2}%
-       \fi
+       \item $#1\moodle@numericalprint@tolerance$\quad (\moodle@fraction\%)%
+     \fi
+     \ifx\moodle@feedback\@empty\relax\else
+       \hfill \emph{$\rightarrow$ \moodle@feedback}%
      \fi
    }%
 
@@ -1676,17 +1666,16 @@
      \setkeys{moodle}{fraction=100,#1}%                  %%%%%% DEFAULT VALUE IS 100%
      \savenumericalanswer@int@int%
    }%
-   \def\savenumericalanswer@int@int#1\feedback#2\moodle@answer@rdelim{%
+   \def\savenumericalanswer@int@int#1\moodle@answer@rdelim{%
      \def\moodle@answertext{#1}%
+     \trim@spaces@in\moodle@answertext
      \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
      \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext</text>}%
      \addto@xml[4]{\moodle@answers@xml}{  <tolerance>\moodle@tolerance</tolerance>}%
-     \ifx#2\@empty\relax\else
-       \def\moodle@answerfeedback{#2}
-       \trim@spaces@in\moodle@answerfeedback
-       \xa\converttohtmlmacro\xa\moodle@answerfeedback@html\xa{\moodle@answerfeedback}%
-       \addto@xml[4]{\moodle@answers@xml}{  <feedback 
-       format="html"><text><![CDATA[<p>\moodle@answerfeedback@html</p>]]></text></feedback>}%
+     \ifx\moodle@feedback\@empty\relax\else
+       \trim@spaces@in\moodle@feedback
+       \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
+       \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text></feedback>}%
      \fi
      \addto@xml[2]{\moodle@answers@xml}{</answer>}%
    }%
@@ -1712,13 +1701,10 @@
 %   \item 11
 % \end{multi}%
 
-\let\feedback=\relax
-
 \moodle@makefrontend{multi}
 
 % LATEX PROCESSING
 \def\moodle@multi@latexprocessing{%
-      \let\feedback=\relax
       \moodle@countcorrectanswers
       \begin{enumerate}\moodle@obeynumberingstyle
                        %\renewcommand{\theenumi}{\alph{enumi}}%
@@ -1727,45 +1713,32 @@
       \end{enumerate}%
 }
   \def\moodle@print@multichoice@answer#1{%
+    \let\moodle@feedback=\@empty
     \moodle@print@multichoice@answer@int#1\@rdelim
   }%
   \newcommand\moodle@print@multichoice@answer@int[1][]{%
     \setkeys{moodle}{fraction=0,#1}%
-    \moodle@print@multichoice@answer@int@int@int
+    \moodle@print@multichoice@answer@int@int
   }%
-
-  \def\moodle@print@multichoice@answer@int@int@int#1#2\feedback#3\@rdelim{%
+  \def\moodle@print@multichoice@answer@int@int#1#2\@rdelim{%
     \def\test@i{#1}%
     \ifmoodle@single
       \ifx\test@i\@star
-        \if\relax\detokenize{#3}\relax
-            \item #2$~\checkmark$%
-        \else
-            \item #2$~\checkmark$ \hfill \emph{$\rightarrow$ #3}%
-        \fi
-        
+        \item #2$~\checkmark$%
       \else
-        \if\relax\detokenize{#3}\relax
-            \item #1#2%
-        \else
-            \item #1#2 \hfill \emph{$\rightarrow$ #3}%
-        \fi
+        \item #1#2%
       \fi
     \else
       \ifx\test@i\@star
+        \item #2%
         \setkeys{moodle}{fraction=\moodle@autopoints}%
-        \if\relax\detokenize{#3}\relax
-            \item #2$~(\moodle@fraction\%)$%
-        \else
-            \item #2$~(\moodle@fraction\%)$ \hfill \emph{$\rightarrow$ #3}%
-        \fi
       \else
-        \if\relax\detokenize{#3}\relax
-            \item #1#2$~(\moodle@fraction\%)$%
-        \else
-            \item #1#2$~(\moodle@fraction\%)$ \hfill \emph{$\rightarrow$ #3}%
-        \fi
+        \item #1#2%
       \fi
+      $~(\moodle@fraction\%)$
+    \fi
+    \ifx\moodle@feedback\@empty\relax\else
+      \hfill \emph{$\rightarrow$ \moodle@feedback}%
     \fi
   }%
 
@@ -1819,9 +1792,9 @@
 }%
   \newcommand\savemultianswer@int[1][]{%
     \setkeys{moodle}{fraction=0,#1}%
-    \savemultianswer@int@int@int%
+    \savemultianswer@int@int%
   }%
-  \def\savemultianswer@int@int@int#1#2\feedback#3\moodle@answer@rdelim{%
+  \def\savemultianswer@int@int#1#2\moodle@answer@rdelim{%
     \def\test@i{#1}%
     \ifx\test@i\@star
       \ifmoodle@single
@@ -1837,12 +1810,10 @@
     \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="html">}%
     \xa\converttohtmlmacro\xa\moodle@answertext@html\xa{\moodle@answertext}%
     \addto@xml[4]{\moodle@answers@xml}{  <text><![CDATA[<p>\moodle@answertext@html</p>]]></text>}%
-    \ifx#3\@empty\relax\else
-      \def\moodle@answerfeedback{#3}
-      \trim@spaces@in\moodle@answerfeedback
-      \xa\converttohtmlmacro\xa\moodle@answerfeedback@html\xa{\moodle@answerfeedback}%
-      \addto@xml[4]{\moodle@answers@xml}{  <feedback 
-      format="html"><text><![CDATA[<p>\moodle@answerfeedback@html</p>]]></text></feedback>}%
+    \ifx\moodle@feedback\@empty\relax\else
+      \trim@spaces@in\moodle@feedback
+      \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
+      \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text></feedback>}%
     \fi
     \addto@xml[2]{\moodle@answers@xml}{</answer>}%
   }%
@@ -1863,7 +1834,6 @@
 % 
 %    \begin{macrocode}
 \let\answer=\hfill
-\let\feedback=\relax
 
 \moodle@makefrontend{matching}
 
@@ -1871,7 +1841,6 @@
 \def\moodle@matching@latexprocessing{%
   \bgroup
     \let\answer=\hfill
-    \let\feedback=\relax
     \begin{enumerate}\renewcommand{\theenumi}{\alph{enumi}}\setlength\itemsep{0pt}\setlength\parskip{0pt}%
       \loopthroughitemswithcommand{\moodle@print@matching@answer}%
     \end{enumerate}%
@@ -1924,9 +1893,8 @@
      \fi
      \ifx\moodle@feedback\@empty\relax\else
        \trim@spaces@in\moodle@feedback
-       \xa\converttohtmlmacro\xa\moodle@subanswerfeedback@html\xa{\moodle@feedback}%
-       \addto@xml[4]{\moodle@answers@xml}{  <feedback 
-       format="html"><text><![CDATA[<p>\moodle@subanswerfeedback@html</p>]]></text></feedback>}%
+       \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
+       \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text></feedback>}%
      \fi
      \addto@xml[2]{\moodle@answers@xml}{</subquestion>}%
    }%
@@ -2041,10 +2009,13 @@
       %LaTeX version
       \moodle@questionheader% %Any introductory text just continues to be typeset.
       \def\cloze@multichoice@table@text{}%
+      \let\moodle@feedback=\@empty
       \loopthroughitemswithcommand{\moodle@print@clozemultichoice@answer}%
       \ifcase\moodle@multi@mode\relax
         %Case 0: dropdown box style
-        \begin{tabular}[t]{|l|}\firsthline% (\firsthline is from the array package.)
+        \begin{tabular}[t]{|p{.45\linewidth}|p{.45\linewidth}|}
+          \firsthline% (\firsthline is from the array package.)
+%          answer & feedback \\\hline\hline
           \cloze@multichoice@table@text%
         \end{tabular}%
       \or
@@ -2065,9 +2036,11 @@
 
 
 \def\moodle@print@clozemultichoice@answer#1{%
+  \let\moodle@feedback=\@empty
   \moodle@print@clozemultichoice@answer@int#1\@rdelim%
 }%
 \newcommand\moodle@print@clozemultichoice@answer@int[1][]{%
+  \setkeys{moodle}{fraction=0,#1}%
   \moodle@print@clozemultichoice@answer@int@int%
 }%
 \def\moodle@print@clozemultichoice@answer@int@int#1#2\@rdelim{%
@@ -2083,15 +2056,31 @@
   \fi
   \def\test@i{#1}%
   \ifx\test@i\@star
-     \g@addto@macro\cloze@multichoice@table@text{#2$~\checkmark$}%
+    \setkeys{moodle}{fraction=100}%
+    \g@addto@macro\cloze@multichoice@table@text{#2}%
   \else
-     \g@addto@macro\cloze@multichoice@table@text{#1#2}%
+    \g@addto@macro\cloze@multichoice@table@text{#1#2}%
+  \fi
+  \ifx\moodle@fraction\@hundred
+    \g@addto@macro\cloze@multichoice@table@text{$~\checkmark$}%
+  \fi
+  \ifnum0<\moodle@fraction\relax
+    \ifnum\moodle@fraction<100\relax
+      \xdef\cloze@multichoice@table@text{\expandonce\cloze@multichoice@table@text$~(\moodle@fraction\%)$}%
+    \fi
   \fi
   \ifcase\moodle@multi@mode\relax
-    \g@addto@macro{\cloze@multichoice@table@text}{\\ \hline}% Case 0
-  \or
-    \relax% Case 1
-  \else
+    % Case 0
+      \xdef\cloze@multichoice@table@text{\expandonce\cloze@multichoice@table@text &\expandonce\emph{\expandonce\moodle@feedback}}%
+      \g@addto@macro{\cloze@multichoice@table@text}{\\\hline}
+  \or % Case 1
+    \ifx\moodle@feedback\@empty\relax\else
+      \xdef\cloze@multichoice@table@text{\expandonce\cloze@multichoice@table@text \hfill \expandonce\emph{$\rightarrow$ \expandonce\moodle@feedback}}%
+    \fi
+  \else % otherwise
+    \ifx\moodle@feedback\@empty\relax\else
+      \xdef\cloze@multichoice@table@text{\expandonce\cloze@multichoice@table@text\,\expandonce\emph{$\rightarrow$ \expandonce\moodle@feedback}}%
+    \fi
     \g@addto@macro{\cloze@multichoice@table@text}{\hfill}% Case 2
   \fi
 }%
@@ -2127,7 +2116,9 @@
   \fi
   \xdef\clozemulti@coding{\expandonce\clozemulti@coding\expandonce\moodle@answertext}%
   \ifx\moodle@feedback\@empty\else
-    \xdef\clozemulti@coding{\expandonce\clozemulti@coding\otherbackslash\otherhash\moodle@feedback}%
+    \trim@spaces@in\moodle@feedback
+%    \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
+    \xdef\clozemulti@coding{\expandonce\clozemulti@coding\otherbackslash\otherhash\expandonce\moodle@feedback}%
   \fi
 }%
 %    \end{macrocode}
@@ -3287,7 +3278,7 @@
     \tikzset{external/force remake}%
 
     \ifpdf
-      \def\pdftopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r200 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf}%
+      \def\pdftopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=png16m -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r600 -dDownScaleFactor=3 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf}%
                     \expandafter\immediate\expandafter\write18\expandafter{\gscmdline}}%
     \else
       \def\pstopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r200 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.ps}%
@@ -3372,7 +3363,7 @@
       \ifwindows
         \immediate\write18{del \tikzexternalrealjob-tikztemp-*.*}%
       \else
-        \immediate\write18{rm \tikzexternalrealjob-tikztemp-*.*}%
+        \immediate\write18{rm -f \tikzexternalrealjob-tikztemp-*.*}%
       \fi
     }{}%
   \fi

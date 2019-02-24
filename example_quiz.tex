@@ -1,0 +1,143 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = en_US
+\documentclass[twocolumn]{article}
+\usepackage[cm]{fullpage}
+\usepackage[final]{moodle}
+\usepackage{tikz}
+\def\myequation{y=a\sqrt{x}+b}
+\htmlregister{\myequation}
+
+\begin{document}
+\begin{quiz}[ % options that apply to all questions
+%	points=1, % default 1
+%	penalty=0, % penalty in case of wrong attempt (between 0 and 1). Default 0.1
+%	fraction=0, % fraction of points for wrong or partially true answers
+	%feedback={coucou}
+	] {Example Quiz}
+
+\begin{multi}[points=3,numbering=Alph]{Multiple Choice (single correct answer)}
+	% only one correct answer
+	What is the first derivative of $x^3$ w.r.t. $x$?
+	\item[feedback={this is a very long feedback; it may even be displayed in 
+		several lines. Here is a new sentence! Does that work? Yes. Now, let's 
+		put an 
+		equation: \[\myequation.\]}] $\frac{1}{4} x^4+C$
+	\item[]* $3x^2$ % the star stands for fraction=1
+	\item[feedback={$\myequation$,  $\sin(x)/x$}] $51$
+\end{multi}
+
+\begin{multi}[multiple,numbering=roman]{Multiple Choice (several correct 
+		answers)} % 
+	%when several answers are correct
+	Select the following numbers that are prime.
+	\item[feedback={it is only divided by 1 and itself!}]* 5
+	\item[feedback={divided by 2 and 3!}] 6
+	\item[]* 7 %feedback={it is only divided by 1 and itself!}
+	\item[feedback={divided by 2 and 4! Normally this feedback would be short 	
+		but I want to make it longer for testing purposes.}] 8
+\end{multi}
+
+\begin{numerical}[ % options that apply to all answers
+%	points=1, % default 1
+%	penalty=0, % penalty in case of wrong attempt (between 0 and 1). Default 0.1
+%%	fraction=0, % fraction of points for wrong or partially true answers
+%	feedback={coucou} % feedback is given regardless of the answer
+	] {Numerical}
+What is $8+3$?
+\item[fraction=100,feedback={this is a very long feedback; it may even be 
+displayed in several lines. Here is a new sentence! Does that work? Yes. Now, 
+let's put an equation: \[\myequation.\]}] 11
+\item[fraction=0] 12
+\item[fraction=0,feedback={Pfff\dots}] 5
+\end{numerical}
+
+\begin{shortanswer}[case sensitive=true]{Short Answer (case sensitive)}
+What was Newton's first name?
+\item[feedback={this is a very long feedback; it may even be displayed in 
+several lines. Here is a new sentence! Does that work? Yes. Now, let's put an 
+equation: \[\myequation.\]}] Isaac
+\item[fraction=50,feedback={forgot how to capitalize properly?}] isaac
+\item[fraction=0] Fig Fag Fog
+\item[fraction=0,feedback={how noble!}] Sir
+\end{shortanswer}
+
+\begin{shortanswer}{Short Answer (case insensitive)}
+Newton's rival was Gottfried Wilhelm \blank.
+\item[feedback={Correct! But why the hell did you put a dot?}] Leibniz.
+\item Leibniz
+\item[fraction=0,feedback={write it backwards!}] Zinbiel
+\end{shortanswer}
+
+\begin{matching}[dd]{Matching}
+Answer-specific feedback is too complicated for matching questions (lots of 
+possible combinations). Moodle does not support that\dots
+	\item[feedback={this feedback is garbage: it is placed in the XML but won't 
+	make it through the moodle import}] 
+	Orange \answer Orange
+	\item[feedback={Actually, moodle's matching question type does not seem to 
+	support feedback}] Lemon \answer Yellow
+	\item[feedback={sadly...}] Banana \answer Yellow
+	\item[] Strawberry \answer Red
+	\item[]  \answer Black
+\end{matching}
+
+\begin{essay}[response required,response format=text,template={put 
+your answer here}]{Essay}
+Is learning worth it?
+\item if the answer is "yes" $\rightarrow$ full grade
+\item if the answer is silly  $\rightarrow$ minimum grade
+\end{essay}
+
+\begin{cloze}{Cloze}
+\begin{tikzpicture}
+\draw[->] (-1.5,0)--(1.5,0);
+\draw[->] (0,-1.5)--(0,1.5);
+\draw[fill=red,fill opacity=.2,draw=green] (0,0)circle[radius=1];
+\node[text width=3.5cm,anchor=west] at (2.5,0) {This is a picture test. 
+$\myequation$};
+\end{tikzpicture}
+Within the cloze environment, when using multichoice, moodle allows to make 
+only one choice. Therefore, multiple choice questions shall be made such that 
+all points can be acquired with a single good answer only. In moodlen, there is 
+a strong limitation to math display in answers or feedbacks: any curly braces 
+($\{,\}$) make the moodle's internal parser fail.
+
+\begin{multi}
+First, an inline dropdown box. It is very compact on moodle. The drawback is 
+that there is no LaTeX or HTML rendering in answers. The feedback renders HMTL 
+and LaTeX. It is a bit hidden as it pops up only when hovering the 
+answer with the mouse.
+\item[feedback={yes $ax+b$}]* chip
+\item[fraction=10] chop
+\item[feedback={this is a quite long feedback with equation: $y=ax+b$.}] 
+chap
+\end{multi}
+
+\begin{multi}[horizontal]
+Second, an horizontal multichoice. May be quite compact as well but inadequate 
+when possible answers are lengthy or numerous. Both answers and feedback can 
+be rendered using LaTeX and HTML.
+\item[feedback={$ax+b$}]* True
+\item[] False
+\item[feedback={silly!}] $Dunno$
+\end{multi}
+
+\begin{multi}[vertical]
+Last, a vertical multichoice. Behaves like the standard single multichoice.
+\item[feedback={yes! $ax+b$}]* yop
+\item[fraction=20] yap
+\item[feedback={no!}] yip
+\item[feedback={nope...}] $yup$
+\end{multi}
+\end{cloze}
+
+\end{quiz}
+
+%\begin{quiz}{Second Quiz}	
+%\begin{numerical}{Numerical}
+%What is $1+1$?
+%\item 2
+%\end{numerical}	
+%\end{quiz}
+
+\end{document}

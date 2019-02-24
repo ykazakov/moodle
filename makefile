@@ -12,7 +12,7 @@ endif
 
 .PHONY: all diff clean distclean
 
-all: MWE.pdf moodle.pdf
+all: example_quiz.pdf moodle.pdf
 
 clean:
 	rm -rf $(FILE_CLEAN)
@@ -25,7 +25,7 @@ diff: moodle.sty moodle_v5.sty
 
 moodle.sty: moodle.dtx
 
-MWE.pdf: moodle.sty
+example_quiz.pdf: moodle.sty
 
 moodle.pdf: moodle.dtx moodle.gls
 	$(PDFLATEX) $< $(DEBUG)
