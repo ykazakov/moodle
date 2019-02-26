@@ -660,6 +660,10 @@
 %         The command line for ImageMagick is the nondescript word |convert|,
 %         \DescribeMacro{\imagemagickcommand}
 %         but may be changed by invoking |\imagemagickcommand|\marg{executable filename}.
+%   \item OptiPNG (\url{http://optipng.sourceforge.net/}) is used to optimize the PNG images.
+%         The command line is presumed to be |optipng|, but can be changed with
+%         \DescribeMacro{\optipngcommand}
+%         |\optipngcommand|\marg{executable filename}.
 %   \item Finally, the OpenSSL toolkit (\url{www.openssl.org}) is used to base64-encode 
 %         the PNG file so that it can be included directly in the text of the XML file.
 %         The command line is presumed to be |openssl|, but can be changed with
@@ -673,7 +677,7 @@
 %         with |pdflatex|.  Including PS graphics or using \TikZ\ with the DVI$\to$PS workflow is not
 %         yet supported.
 %   \item Filenames should not contains spaces or special characters like |_| or |\|.
-%   \item You must have Ghostscript, ImageMagick, and OpenSSL installed on your system
+%   \item You must have Ghostscript, ImageMagick, OptiPNG, and OpenSSL installed on your system
 %         to fully use the graphics-handling capabilities of \textsf{moodle.sty}.
 %   \item \LaTeX\ must be able to call system commands; that is, |\write18| must be enabled.
 %         For Mik\TeX, this means adding |--enable-write18| to the command line of |pdflatex|;
@@ -3133,6 +3137,7 @@
 \def\ghostscriptcommand{\htmlize@setexecutable\gs}
 \def\opensslcommand{\htmlize@setexecutable\openssl}
 \def\imagemagickcommand{\htmlize@setexecutable\htmlize@imagemagick@convert}
+\def\optipngcommand{\htmlize@setexecutable\optipng}
 
 \ifwindows%
   \ghostscriptcommand{gswin64c.exe}%
@@ -3142,6 +3147,7 @@
 
 \opensslcommand{openssl}%
 \imagemagickcommand{convert}%
+\optipngcommand{optipng}
 %    \end{macrocode}
 % 
 % \subsubsection{Graphics key-handling}
@@ -3278,12 +3284,14 @@
     \tikzset{external/force remake}%
 
     \ifpdf
-      \def\pdftopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=png16m -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r600 -dDownScaleFactor=3 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf}%
+      \def\pdftopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf}%
                     \expandafter\immediate\expandafter\write18\expandafter{\gscmdline}}%
     \else
-      \def\pstopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r200 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.ps}%
+      \def\pstopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.ps}%
                     \expandafter\immediate\expandafter\write18\expandafter{\gscmdline}}%
     \fi
+    \def\pngoptim{\edef\cmdline{\optipng\otherspace -clobber -quiet \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png}%
+      \expandafter\immediate\expandafter\write18\expandafter{\cmdline}}%
     \def\pngtobaselxiv{\edef\opensslcmdline{\openssl\otherspace enc -base64 -in \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -out \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
                        \expandafter\immediate\expandafter\write18\expandafter{\opensslcmdline}}%
 
@@ -3312,6 +3320,8 @@
         \else
           \pstopng
         \fi
+        \message{moodle.sty:   Optimizing '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png'...^^J}%
+        \pngoptim
         \message{moodle.sty:   Converting '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png' to base64...^^J}%
         \pngtobaselxiv
         \message{moodle.sty:   Reading base64 file '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc'...^^J}%

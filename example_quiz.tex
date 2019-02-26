@@ -4,8 +4,18 @@
 \usepackage[cm]{fullpage}
 \usepackage[final]{moodle}
 \usepackage{tikz}
+\usepackage{varwidth}
+
 \def\myequation{y=a\sqrt{x}+b}
+
+\tikzstyle{pict} = [minimum height=1em,inner sep=0pt,execute at begin 
+node={\begin{varwidth}{\linewidth}},
+execute at end node={\end{varwidth}}]
+
+\newcommand\pictembedding[1]{\begin{tikzpicture}\node[pict]{#1};\end{tikzpicture}}
+
 \htmlregister{\myequation}
+\htmlregister{\pictembedding}
 
 \begin{document}
 \begin{quiz}[ % options that apply to all questions
@@ -98,7 +108,7 @@ $\myequation$};
 \end{tikzpicture}
 Within the cloze environment, when using multichoice, moodle allows to make 
 only one choice. Therefore, multiple choice questions shall be made such that 
-all points can be acquired with a single good answer only. In moodlen, there is 
+all points can be acquired with a single good answer only. In moodle, there is 
 a strong limitation to math display in answers or feedbacks: any curly braces 
 ($\{,\}$) make the moodle's internal parser fail.
 
@@ -106,11 +116,11 @@ a strong limitation to math display in answers or feedbacks: any curly braces
 First, an inline dropdown box. It is very compact on moodle. The drawback is 
 that there is no LaTeX or HTML rendering in answers. The feedback renders HMTL 
 and LaTeX. It is a bit hidden as it pops up only when hovering the 
-answer with the mouse.
+checkmark or X mark with the mouse.
 \item[feedback={yes $ax+b$}]* chip
 \item[fraction=10] chop
-\item[feedback={this is a quite long feedback with equation: $y=ax+b$.}] 
-chap
+\item[feedback={this is a quite long feedback with picture embedding: 
+\pictembedding{$\myequation$}.}] chap
 \end{multi}
 
 \begin{multi}[horizontal]
@@ -126,7 +136,7 @@ be rendered using LaTeX and HTML.
 Last, a vertical multichoice. Behaves like the standard single multichoice.
 \item[feedback={yes! $ax+b$}]* yop
 \item[fraction=20] yap
-\item[feedback={no!}] yip
+\item[feedback={no!}] yip \pictembedding{$\myequation$}
 \item[feedback={nope...}] $yup$
 \end{multi}
 \end{cloze}

@@ -71,6 +71,7 @@ Other tools are used:
 * openssl (for graphics)
 * ghostscript (for graphics)
 * imagemagick (for graphics)
+* optipng (for graphics)
 * meld
 * ... (list to be completed)
 
