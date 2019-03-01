@@ -2,10 +2,11 @@
 % !TeX spellcheck = en_US
 \documentclass[twocolumn]{article}
 \usepackage[cm]{fullpage}
-\usepackage[final]{moodle}
+\usepackage{moodlev5}
 \usepackage{tikz}
 \usepackage{varwidth}
-\usepackage{hyperref}
+\usepackage{multirow,hyperref}
+\usepackage{colortbl,threeparttable}
 
 \def\myequation{y=a\sqrt{x}+b}
 
@@ -23,8 +24,94 @@ execute at end node={\end{varwidth}}]
 \section*{Introduction}
 
 This document presents examples of questions that one can make with the 
-\texttt{moodle} \LaTeX{} package as of version \texttt{0.6}, currently in 
-development.
+\texttt{moodle} \LaTeX{} package as of version \texttt{0.5}, currently 
+available on \href{https://ctan.org/pkg/moodle}{CTAN}.
+
+\begin{table*}[tbp]
+\centering
+\begin{threeparttable}[b]
+\caption{Question types and content enrichment capabilities after XML import in 
+moodle \texttt{v3.1}.}
+\label{tab:2}
+\begin{tabular}{rl|ccc|ccc}
+\multicolumn{2}{c|}{}& \multicolumn{3}{c|}{\LaTeX{} rendering} & 
+\multicolumn{3}{c}{Picture embedding}\\
+\multicolumn{2}{c|}{Question type}& Question & Answer & Feedback & Question & 
+Answer & Feedback\\\hline\hline
+
+&\href{https://docs.moodle.org/31/en/Multiple_Choice_question_type}{Multichoice}\tnote{1}
+ & \cellcolor{green}  & \cellcolor{green} & \cellcolor{red}no \LaTeX\tnote{2}
+ & \cellcolor{green} & \cellcolor{green} & \cellcolor{red}no 
+ \LaTeX\tnote{2}\\\hline
+
+& \href{https://docs.moodle.org/31/en/Numerical_question_type}{Numerical} & 
+\cellcolor{green} & \cellcolor{black!25}Text only\tnote{5} & \cellcolor{red}no 
+\LaTeX\tnote{2} & \cellcolor{green} & \cellcolor{black!25}Text only\tnote{5} & 
+\cellcolor{red}no \LaTeX\tnote{2}\\\hline
+
+& \href{https://docs.moodle.org/31/en/Short-Answer_question_type}{Short Answer} 
+& \cellcolor{green} & \cellcolor{black!25}Text only\tnote{5} & 
+\cellcolor{red}no \LaTeX\tnote{2} & \cellcolor{green} & 
+\cellcolor{black!25}Text only\tnote{5} & \cellcolor{red}no 
+\LaTeX\tnote{2}\\\hline
+
+&Matching 
+(\href{https://docs.moodle.org/31/en/Matching_question_type}{standard}) & 
+\cellcolor{green} & \cellcolor{black!25}Text only\tnote{3} & 
+\cellcolor{black!25}Irrelevant\tnote{4} & \cellcolor{green} & 
+\cellcolor{black!25}Text only\tnote{3} & 
+\cellcolor{black!25}Irrelevant\tnote{4} \\\hline
+
+&Matching 
+(\href{https://docs.moodle.org/31/en/Drag_and_drop_matching_question_type}{drag-and-drop})
+ & \cellcolor{green} & \cellcolor{green} &\cellcolor{black!25} 
+ Irrelevant\tnote{4} & \cellcolor{green} & \cellcolor{green} &  
+ \cellcolor{black!25} Irrelevant\tnote{4} \\\hline
+
+&\href{https://docs.moodle.org/31/en/Essay_question_type}{Essay}\tnote{8} & 
+\cellcolor{green} & \cellcolor{orange}note\tnote{6}, bug\tnote{9} & 
+\cellcolor{black!25}Irrelevant\tnote{7} & \cellcolor{green} & 
+\cellcolor{orange}note\tnote{6}, bug\tnote{9} & 
+\cellcolor{black!25}Irrelevant\tnote{7}\\\hline
+
+\multirow{5}{*}{\href{https://docs.moodle.org/31/en/Embedded_Answers_(Cloze)_question_type}{Cloze}}
+ &Numerical&\checkmark & \cellcolor{black!25}Text only\tnote{5} & No & 
+ \checkmark & 
+\cellcolor{black!25}Text only\tnote{5} & 
+\checkmark\\\cline{2-8}
+&Short Answer&\checkmark & \cellcolor{black!25}Text only\tnote{5} & No & 
+\checkmark & \cellcolor{black!25}Text only\tnote{5} & 
+\checkmark\\\cline{2-8}
+&Multi (dropdown) &\checkmark & \cellcolor{black!25}Text only\tnote{3} & No & 
+\checkmark & \cellcolor{black!25}Text only\tnote{3} & \checkmark\\\cline{2-8}
+&Multi (horizontal)& \checkmark & \checkmark & No & \checkmark & \checkmark & 
+\checkmark\\\cline{2-8}
+&Multi (vertical)& \checkmark & \checkmark & No & \checkmark & \checkmark & 
+\checkmark\\\hline
+\end{tabular}
+\begin{tablenotes}
+\item[1] Numbering with option ``ABC" is not recognized by moodle after XML 
+import.
+\item[2] \LaTeX{} code here tends to break the compilation of the document. 
+Probably because of the symbol $\backslash$ or $\{$.
+\item[3] Moodle uses a dropdown list to let the user choose among the 
+possible answers. This forbids either pictures and \LaTeX{} rendering.
+\item[4] Not supported by moodle (in this context, answer-specific feedback 
+represents lots of possible combinations).
+\item[5] Moodle uses a HMTL input tag to let the user enter his answer. This 
+forbids pictures and \LaTeX{} rendering.
+\item[6] In the context of this package, answers represent ``notes for the 
+grader" while ``template" represents suggested contents as a starting point.
+\item[7] For obvious reasons, essays cannot be graded automatically.
+\item[8] The keyval ``response template", as documented, is broken. Works if 
+replaced with ``template".
+\item[9] Picture and LaTeX rendering could be done, but only after submission 
+and only if the keyval "response format" was set to ``html". Unfortunately, the 
+\texttt{<p>...</p>} tags introduced, whatever the response format is, prevent 
+rendering.
+\end{tablenotes}
+\end{threeparttable}
+\end{table*}
 
 \begin{quiz}[ % options that apply to all questions
 %	points=1, % default 1
@@ -34,25 +121,23 @@ development.
 	] {Example Quiz}
 
 \begin{multi}[points=3,numbering=Alph]{Multiple Choice (single correct answer)}
-	% only one correct answer
 % Numbering possibilities:
 % - numbering=alph, alpha, or abc,
-% - numbering=Alph, Alpha, or ABCD,
+% - numbering=Alph, Alpha, or ABC, (broken at XML import)
 % - numbering=arabic or 123,
 % - numbering=roman or iii,
 % - numbering=Roman or IIII,
 % - numbering=none.
 	What is the first derivative of $x^3$ w.r.t. $x$?
 	\item[feedback={this is a very long feedback; it may even be displayed in 
-		several lines. Here is a new sentence! Does that work? Yes. Now, let's 
-		put an equation: \[\myequation.\]}] $\frac{1}{4} x^4+C$
+		several lines. Here is a new sentence! Does that work? Yes.}] 
+		$\frac{1}{4} x^4+C$
 	\item[]* $3x^2$ % the star stands for fraction=1
-	\item[feedback={$\myequation$,  $\sin(x)/x$}] $51$
+	\item[feedback={text}] $51$
 \end{multi}
 
 \begin{multi}[multiple,numbering=roman]{Multiple Choice (several correct 
 		answers)} % 
-	%when several answers are correct
 	Select the following numbers that are prime.
 	\item[feedback={it is only divided by 1 and itself!}]* 5
 	\item[feedback={divided by 2 and 3!}] 6
@@ -69,17 +154,15 @@ development.
 	] {Numerical}
 What is $8+3$?
 \item[fraction=100,feedback={this is a very long feedback; it may even be 
-displayed in several lines. Here is a new sentence! Does that work? Yes. Now, 
-let's put an equation: \[\myequation.\]}] $11$
+displayed in several lines. Here is a new sentence! Does that work? Yes.}] $11$
 \item[fraction=0] 12
-\item[fraction=0,feedback={Pfff\dots}] 5
+\item[fraction=0,feedback={Pfff}] 5
 \end{numerical}
 
 \begin{shortanswer}[case sensitive=true]{Short Answer (case sensitive)}
 What was Newton's first name?
 \item[feedback={this is a very long feedback; it may even be displayed in 
-several lines. Here is a new sentence! Does that work? Yes. Now, let's put an 
-equation: \[\myequation.\]}] Isaac
+several lines. Here is a new sentence! Does that work? Yes.}] Isaac
 \item[fraction=50,feedback={forgot how to capitalize properly?}] isaac
 \item[fraction=0] Fig Fag Fog
 \item[fraction=0,feedback={how noble!}] Sir
@@ -111,7 +194,8 @@ are rendered.
 
 \begin{matching}[dd]{Matching (drag and drop)}
 This question type comes with a specific moodle plugin. In the offered answers, 
-it allows to place pictures and get HTML or LaTeX rendered.
+it allows to place pictures and get HTML or LaTeX 
+rendered.\pictembedding{$\myequation$}
 	\item[feedback={this feedback is garbage: it is placed in the XML but won't 
 	make it through the moodle import}] 
 	Orange \answer $Orange$
@@ -123,8 +207,8 @@ it allows to place pictures and get HTML or LaTeX rendered.
 	\item[]  \answer Black $\myequation$
 \end{matching}
 
-\begin{essay}[response required,response format=text,template={put 
-your answer here}]{Essay}
+\begin{essay}[response required,response 
+format=text,template={test $\myequation$}]{Essay}
 Is learning worth it?
 \item if the answer is "yes" $\rightarrow$ full grade
 \item if the answer is silly  $\rightarrow$ minimum grade
@@ -140,11 +224,8 @@ $\myequation$};
 \end{tikzpicture}
 Within the cloze environment, when using multichoice, moodle allows to make 
 only one choice. Therefore, multiple choice questions shall be made such that 
-all points can be acquired with a single good answer only. Starting from 
-version \texttt{3.5} moodle introduced a new type for multichoices with several 
-answers~: \texttt{MULTIRESPONSE}. It is not yet supported by this package.
-
-A limitation of moodle's parser, discussed 
+all points can be acquired with a single good answer only. A limitation of 
+moodle's parser, discussed 
 \href{https://moodle.org/mod/forum/discuss.php?d=275299}{here}, has to be 
 overcome for math display in answers or feedbacks that contain closing curly 
 braces ($\}$). It should be escaped with a $\backslash$.
@@ -154,26 +235,25 @@ First, an inline dropdown list. It is very compact on moodle. The drawback is
 that there is no LaTeX or HTML rendering in answers. The feedback renders HMTL 
 and LaTeX. It is a bit hidden as it pops up only when hovering the 
 checkmark or X mark with the mouse.
-\item[feedback={yes $ax+b$}]* chip
+\item[feedback={yes}]* chip
 \item[fraction=10] chop
-\item[feedback={this is a quite long feedback with picture embedding: 
-\pictembedding{$\myequation$}.}] chap
+\item[feedback={this is a quite long feedback.}] chap
 \end{multi}
 
 \begin{multi}[horizontal]
 Second, an horizontal multichoice. May be quite compact as well but inadequate 
 when possible answers are lengthy or numerous. Both answers and feedback can 
 be rendered using LaTeX and HTML.
-\item[feedback={$ax+b$}]* True
+\item[feedback={text}]* True
 \item[] False
 \item[feedback={silly!}] $Dunno$
 \end{multi}
 
 \begin{multi}[vertical]
 Last, a vertical multichoice. Behaves like the standard single multichoice.
-\item[feedback={yes! $ax+b$}]* yop
+\item[feedback={yes!}]* yop
 \item[fraction=20] yap
-\item[feedback={no!}] yip \pictembedding{$\myequation$}
+\item[feedback={no!}] yip
 \item[feedback={nope...}] $yup$
 \end{multi}
 \end{cloze}
