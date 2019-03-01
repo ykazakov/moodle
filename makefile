@@ -12,7 +12,7 @@ endif
 
 .PHONY: all diff clean distclean
 
-all: example_quiz.pdf moodle.pdf
+all: example_quiz.pdf example_quiz_v5.pdf moodle.pdf
 
 clean:
 	rm -rf $(FILE_CLEAN)
@@ -20,14 +20,21 @@ clean:
 distclean: clean
 	rm -rf *.pdf *.xml
 
-diff: moodle.sty moodle_v5.sty
-	$(DIFFTOOL) moodle.sty moodle_v5.sty
+diff: moodle.sty moodlev5.sty
+	$(DIFFTOOL) moodle.sty moodlev5.sty
 
 moodle.sty: moodle.dtx
 
+moodlev5.sty: moodlev5.dtx
+
 example_quiz.pdf: moodle.sty
 
+example_quiz_v5.pdf: moodlev5.sty
+
 moodle.pdf: moodle.dtx moodle.gls
+	$(PDFLATEX) $< $(DEBUG)
+
+moodlev5.pdf: moodlev5.dtx
 	$(PDFLATEX) $< $(DEBUG)
 
 %.glo: %.dtx
