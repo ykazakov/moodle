@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+ 
+<question type="category">
+  <category>
+    <text>$module$/Test</text>
+  </category>
+</question>
+
+<question type="cloze">
+  <name>
+    <text>Special characters</text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Due to the close syntax, symbols }, #, ~, =, and * have a special meaning.<p>
+		<p>Test for other suspicious characters:
+		{:SHORTANSWER:=%/\!<>$+&.:,;@^[](){=+-%²#works~alternative#%/\!<>$+&.:,;@^[](){=+-%²}</p>]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.1000000</penalty>
+  <hidden>0</hidden>
+</question>
+
+<question type="cloze">
+  <name>
+    <text>Escaping } and #</text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<b>Characters that must be escaped with a preceding backslash: } and #</b>
+<table><thead><tr>
+<th scope="col"><b>Desired answers</b></th>
+<th scope="col">test #bla}</th>
+<th scope="col">#</th>
+<th scope="col">}</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>Desired feedbacks</b></td>
+<td>toast }bla#</td>
+<td>}</td>
+<td>#</td>
+</tr>
+</tbody>
+</table>
+<p>{:SHORTANSWER:%10%test \#bla\}#toast \}bla\#~=\##\}~\}#\#}</p>
+<p>{:MULTICHOICE:%10%test \#bla\}#toast \}bla\#~=\##\}~\}#\#}<br></p>
+<p>{:MULTICHOICE_V:%10%test \#bla\}#toast \}bla\#~=\##\}~\}#\#}<br></p>
+<p>{:MULTICHOICE_H:%10%test \#bla\}#toast \}bla\#~=\##\}~\}#\#}<br>]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.1000000</penalty>
+  <hidden>0</hidden>
+</question>
+
+<question type="cloze">
+  <name>
+    <text>Not escaping ", / and \</text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<b>Characters that must not be escaped with backslash, contrarily to what
+		<a href="https://docs.moodle.org/31/en/Embedded_Answers_%28Cloze%29_question_type#Format">the documentation says</a>: ", / and \</b><p></p>
+<table><thead><tr>
+<th scope="col"><b><b>Desired answers</b></b></th>
+<th scope="col">test "bla\blo</th>
+<th scope="col">/test /bla"blo</th>
+</tr></thead><tbody><tr>
+<td><b><b>Desired feedbacks</b></b></td>
+<td>\toast"</td>
+<td>"toast/</td>
+</tr></tbody></table>
+<p>{:SHORTANSWER:%10%test "bla\blo#\toast"~=/test /bla"blo#"toast/}</p>
+<p>{:MULTICHOICE:%10%test "bla\blo#\toast"~=/test /bla"blo#"toast/}</p>
+<p>{:MULTICHOICE_V:%10%test "bla\blo#\toast"~=/test /bla"blo#"toast/}</p>
+<p>{:MULTICHOICE_H:%10%test "bla\blo#\toast"~=/test /bla"blo#"toast/}</p>]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.1000000</penalty>
+  <hidden>0</hidden>
+</question>
+
+<question type="cloze">
+  <name>
+    <text>Terminal backslash</text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<b>Fields finishing with a backslash symbol must be protected with a closing whitespace (prevents dramatic occurrences of \#, \~ or \})</b>
+<p></p>
+<table><thead><tr><th scope="col"><b>Desired answers</b></th>
+<th scope="col">no feedback/</th>
+<th scope="col">feedback/</th>
+</tr></thead><tbody><tr>
+<td><b>Desired feedbacks</b></td>
+<td></td>
+<td>with/</td>
+</tr></tbody></table>
+<p>{:SHORTANSWER:%10%no feedback/ ~=feedback/ #with/ }</p>
+<p>{:MULTICHOICE:%10%no feedback/ ~=feedback/ #with/ }</p>
+<p>{:MULTICHOICE_V:%10%no feedback/ ~=feedback/ #with/ }</p>
+<p>{:MULTICHOICE_H:%10%no feedback/ ~=feedback/ #with/ }</p>]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.1000000</penalty>
+  <hidden>0</hidden>
+</question>
+
+<question type="cloze">
+  <name>
+    <text>Asterisk in Short answers</text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>In the answer fields of short answers, the asterisk (*) is interpreted as a wildcard character. If the asterisk character is expected, it must be escaped with a backslash in the specification of the correct answer.</p>
+<p>{:SHORTANSWER:=test\*#the correct answer is "test*" but is rendered by moodle as "test\*"~%10%*test*#anything containing "test" gets this feedback. * is not a problem in feedbacks~%20%*test#anything finishing with "test" gets this feedback.}</p>]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.1000000</penalty>
+  <hidden>0</hidden>
+</question>
+
+<question type="cloze">
+  <name>
+    <text>Unsolved problems</text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<b>Unsolved problem</b>
+<ol><li>One wants a ~ symbol in an answer or feedback field (apart the case where the field starts with that symbol), the tilde must be escaped to avoid the interpretation of the beginning of a new answer. Problem: "\~" results in "\~" not in "~" as one would expect</li></ol>]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.1000000</penalty>
+  <hidden>0</hidden>
+</question>
+
+</quiz>
