@@ -87,7 +87,9 @@
     <text>Terminal backslash</text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<b>Fields finishing with a backslash symbol must be protected with a closing whitespace (prevents dramatic occurrences of \#, \~ or \})</b>
+    <text><![CDATA[<b>Fields finishing with a backslash symbol must be 
+    protected with a trailing whitespace (prevents dramatic occurrences of \#, 
+    \~ or \})</b>
 <p></p>
 <table><thead><tr><th scope="col"><b>Desired answers</b></th>
 <th scope="col">no feedback/</th>
