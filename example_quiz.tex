@@ -2,6 +2,7 @@
 % !TeX spellcheck = en_US
 \documentclass[twocolumn]{article}
 \usepackage[cm]{fullpage}
+\usepackage{yfonts}
 \usepackage[final]{moodle}
 \usepackage{tikz}
 \usepackage{varwidth}
@@ -13,10 +14,10 @@
 node={\begin{varwidth}{\linewidth}},
 execute at end node={\end{varwidth}}]
 
-\newcommand\pictembedding[1]{\begin{tikzpicture}\node[pict]{#1};\end{tikzpicture}}
+\newcommand\embedaspict[1]{\begin{tikzpicture}\node[pict]{#1};\end{tikzpicture}}
 
 \htmlregister{\myequation}
-\htmlregister{\pictembedding}
+\htmlregister{\embedaspict}
 
 \begin{document}
 
@@ -34,7 +35,6 @@ development.
 	] {Example Quiz}
 
 \begin{multi}[points=3,numbering=Alph]{Multiple Choice (single correct answer)}
-	% only one correct answer
 % Numbering possibilities:
 % - numbering=alph, alpha, or abc,
 % - numbering=Alph, Alpha, or ABCD,
@@ -42,36 +42,36 @@ development.
 % - numbering=roman or iii,
 % - numbering=Roman or IIII,
 % - numbering=none.
-	What is the first derivative of $x^3$ w.r.t. $x$?
-	\item[feedback={this is a very long feedback; it may even be displayed in 
-		several lines. Here is a new sentence! Does that work? Yes. Now, let's 
-		put an equation: \[\myequation.\]}] $\frac{1}{4} x^4+C$
-	\item[]* $3x^2$ % the star stands for fraction=1
-	\item[feedback={$\myequation$,  $\sin(x)/x$}] $51$
+What is the first derivative of $x^3$ w.r.t. $x$?
+\item[feedback={this is a very long feedback; it may even be displayed in 
+several lines. Here is a new sentence! Does that work? Yes. Now, let's 
+put an equation: \[\myequation.\]}] $\frac{1}{4} x^4+C$
+\item[]* $3x^2$ % the star stands for fraction=1
+\item[feedback={$\myequation$, \embedaspict{$\sin(x)/x$}}] $51$
 \end{multi}
 
 \begin{multi}[multiple,numbering=roman]{Multiple Choice (several correct 
-		answers)} % 
-	%when several answers are correct
-	Select the following numbers that are prime.
-	\item[feedback={it is only divided by 1 and itself!}]* 5
-	\item[feedback={divided by 2 and 3!}] 6
-	\item[]* 7 %feedback={it is only divided by 1 and itself!}
-	\item[feedback={divided by 2 and 4! Normally this feedback would be short 	
-		but I want to make it longer for testing purposes.}] 8
+answers)}
+Select the following numbers that are prime.
+\item[feedback={it is only divided by 1 and itself!}]* $\sqrt{25}$
+\item[feedback={divided by 2 and 3!}] 6
+\item[]* 7 %feedback={it is only divided by 1 and itself!}
+\item[feedback={divided by 2 and 4! Normally this feedback would be short but I 
+want to make it longer for testing purposes \[\myequation.\]}] \embedaspict{8}
 \end{multi}
 
 \begin{numerical}[ % options that apply to all answers
 %	points=1, % default 1
 %	penalty=0, % penalty in case of wrong attempt (between 0 and 1). Default 0.1
 %%	fraction=0, % fraction of points for wrong or partially true answers
+tolerance=0.01
 %	feedback={coucou} % feedback is given regardless of the answer
-	] {Numerical}
+] {Numerical}
 What is $8+3$?
 \item[fraction=100,feedback={this is a very long feedback; it may even be 
 displayed in several lines. Here is a new sentence! Does that work? Yes. Now, 
-let's put an equation: \[\myequation.\]}] $11$
-\item[fraction=0] 12
+let's put an equation: \(\myequation\).}] 11
+\item[fraction=0,feedback={\embedaspict{nope}}] 12
 \item[fraction=0,feedback={Pfff\dots}] 5
 \end{numerical}
 
@@ -81,53 +81,56 @@ What was Newton's first name?
 several lines. Here is a new sentence! Does that work? Yes. Now, let's put an 
 equation: \[\myequation.\]}] Isaac
 \item[fraction=50,feedback={forgot how to capitalize properly?}] isaac
-\item[fraction=0] Fig Fag Fog
-\item[fraction=0,feedback={how noble!}] Sir
+\item[fraction=0,feedback={\embedaspict{how noble!}}] Sir* % any answer 
+%starting with "Sir"
+\item[fraction=0,feedback={no...}] * % the asterisk represents any other answer
 \end{shortanswer}
 
 \begin{shortanswer}{Short Answer (case insensitive)}
-Newton's rival was Gottfried Wilhelm \blank.
+Newton's rival was \embedaspict{\frakfamily Gottfried Wilhelm} \blank.
 \item[feedback={Correct! But why the hell did you put a dot?}] Leibniz.
 \item Leibniz
 \item[fraction=0,feedback={write it backwards!}] Zinbiel
+\item[fraction=0,feedback={ask wikipedia}] * % the asterisk represents any 
+%other answer
 \end{shortanswer}
 
 \begin{matching}{Matching (standard)}
 Answer-specific feedback is too complicated for matching questions (lots of 
 possible combinations). Moodle does not support that\dots
 
-In moodle, the matching is made by selecting answers in a dropdown list. The 
+In Moodle, the matching is made by selecting answers in a dropdown list. The 
 latter only allows text: pictures cannot be placed and neither HTML nor LaTeX 
 are rendered. 
 	\item[feedback={this feedback is garbage: it is placed in the XML but won't 
-	make it through the moodle import}] Orange \answer Orange
-	\item[feedback={Actually, moodle's matching question type does not seem to 
-	support feedback}] $Lemon\quad\myequation$ \answer Yellow
+	make it through the Moodle import}] Orange \answer Orange
+	\item[feedback={Actually, Moodle's matching question type does not seem to 
+	support feedback}] Lemon $\myequation$ \answer Yellow
 	\item[feedback={sadly...}] Banana \answer Yellow
 % "Yellow" is repeated twice but will appear only once in the offered answers
-	\item[] Strawberry \answer Red
+	\item[] \embedaspict{Strawberry} \answer Red
 	\item[]  \answer Black
 \end{matching}
 
 \begin{matching}[dd]{Matching (drag and drop)}
-This question type comes with a specific moodle plugin. In the offered answers, 
-it allows to place pictures and get HTML or LaTeX rendered.
-	\item[feedback={this feedback is garbage: it is placed in the XML but won't 
-	make it through the moodle import}] 
-	Orange \answer $Orange$
-	\item[feedback={Actually, moodle's matching question type does not seem to 
-	support feedback}] $Lemon\quad\myequation$ \answer Yellow
-	\item[feedback={sadly...}] Banana \answer Yellow
+This question type comes with a specific Moodle plugin. In the offered
+answers, it allows to get LaTeX equations rendered. There is a bug that prevents 
+pictures to be used in answers.
+\item[feedback={this feedback is garbage: it is placed in the XML but won't 
+make it through the Moodle import}] \embedaspict{Orange} \answer Orange
+\item[feedback={Actually, Moodle's matching question type does not support
+feedback}] Lemon $\myequation$ \answer Yellow
+\item[feedback={sadly...}] Banana \answer Yellow
 % "Yellow" is repeated twice but will appear only once in the offered answers
-	\item[] Strawberry \answer Red
-	\item[]  \answer Black $\myequation$
+\item[] Strawberry \answer Red
+\item[]  \answer Black $\myequation$
 \end{matching}
 
 \begin{essay}[response required,response format=text,template={put 
 your answer here}]{Essay}
-Is learning worth it?
+\embedaspict{Is learning worth it?}
 \item if the answer is "yes" $\rightarrow$ full grade
-\item if the answer is silly  $\rightarrow$ minimum grade
+\item if the answer is silly \embedaspict{$\rightarrow$} minimum grade
 \end{essay}
 
 \begin{cloze}{Cloze}
@@ -141,7 +144,8 @@ $\myequation$};
 Within the cloze environment, when using multichoice, moodle allows to make 
 only one choice. Therefore, multiple choice questions shall be made such that 
 all points can be acquired with a single good answer only. Starting from 
-version \texttt{3.5} moodle introduced a new type for multichoices with several 
+version \texttt{3.5} moodle introduced a new type for multichoices with 
+several 
 answers~: \texttt{MULTIRESPONSE}. It is not yet supported by this package.
 
 A limitation of moodle's parser, discussed 
@@ -157,7 +161,7 @@ checkmark or X mark with the mouse.
 \item[feedback={yes $ax+b$}]* chip
 \item[fraction=10] chop
 \item[feedback={this is a quite long feedback with picture embedding: 
-\pictembedding{$\myequation$}.}] chap
+\embedaspict{$\myequation$}.}] chap
 \end{multi}
 
 \begin{multi}[horizontal]
@@ -173,9 +177,43 @@ be rendered using LaTeX and HTML.
 Last, a vertical multichoice. Behaves like the standard single multichoice.
 \item[feedback={yes! $ax+b$}]* yop
 \item[fraction=20] yap
-\item[feedback={no!}] yip \pictembedding{$\myequation$}
+\item[feedback={no!}] yip \embedaspict{$\myequation$}
 \item[feedback={nope...}] $yup$
 \end{multi}
+
+\begin{shortanswer}[case sensitive=true]
+	What was Newton's first name?
+	\item[feedback={this is a very long feedback; it may even be displayed in 
+		several lines. Here is a new sentence! Does that work? Yes. Now, let's 
+		put an 
+		equation: \[\myequation.\]}] Isaac
+	\item[fraction=50,feedback={forgot how to capitalize properly?}] isaac
+	\item[fraction=0,feedback={\embedaspict{how noble!}}] Sir* % any answer 
+	%starting with "Sir"
+	\item[fraction=0,feedback={no...}] * % the asterisk represents any other 
+	%answer
+\end{shortanswer}
+
+\begin{shortanswer}
+Newton's rival was \embedaspict{\frakfamily Gottfried Wilhelm} \blank.
+
+\item[feedback={Correct! But why the hell did you put a dot?}] Leibniz.
+\item Leibniz
+\item[fraction=0,feedback={write it backwards!}] Zinbiel
+\item[fraction=0,feedback={ask wikipedia}] * % the asterisk represents any 
+%other answer
+\end{shortanswer}
+
+\begin{numerical}[tolerance=0.01]
+What is $8+3$?
+
+\item[fraction=100,feedback={this is a very long feedback; it may even be 
+displayed in several lines. Here is a new sentence! Does that work? Yes. Now, 
+let's put an equation: \(\myequation\).}] 11
+\item[fraction=0,feedback={\embedaspict{nope}}] 12
+\item[fraction=0,feedback={Pfff\dots}] 5
+\end{numerical}
+
 \end{cloze}
 
 \end{quiz}

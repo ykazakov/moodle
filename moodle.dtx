@@ -35,6 +35,7 @@
 \usepackage{moodle}
 \usepackage{amssymb}
 \usepackage{fancyvrb}
+\usepackage{multirow,hhline,colortbl,threeparttable,xcolor,graphicx,hyperref}
 \EnableCrossrefs         
 \CodelineIndex
 \OnlyDescription
@@ -292,7 +293,6 @@
 % Answer-specific feedback (perhaps explaining a common mistake)
 % may also be given by setting the |feedback| key \emph{at the individual answer}.
 % 
-% \newpage
 % \subsection{Question Types}
 % 
 % We next discuss the various question types supported by \textsf{moodle.sty}
@@ -397,9 +397,22 @@
 % \begin{quote}\footnotesize
 %   |\item[fraction=0,feedback={You forgot to antidifferentiate!}]| \meta{incorrect answer}
 % \end{quote}
-% Units and multipliers are currently unsupported.
+%
+% \DescribeMacro{tolerance} 
+% The |tolerance| key can be used to specify the validity of answers within some margin.
+% For example, with the question
+% \begin{verbatim}
+%   \begin{numerical}[tolerance=0.01]{my question}
+%     Approximate value of $\sqrt{2}$?
+%     \item 1.4142
+%     \item[fraction=0,feedback={twice this!}] 0.70711
+%   \end{numerical}
+% \end{verbatim}
+% In this case, the input \textsf{1.41} will be validated and the input \textsf{0.71} will
+% get the specific feedback.
 % 
-% \newpage
+% Units, unit-handling and multipliers are currently unsupported.
+%
 % \subsubsection{Short Answer}
 % A short answer question resembles a numerical question: the student is to fill
 % in a text box with a missing word or phrase.
@@ -454,7 +467,6 @@
 % If the |response required| key is set, Moodle will insist that the student
 % enter something in the blank before accepting the quiz as completed.
 % 
-% \newpage
 % \DescribeMacro{response format}
 % Moodle offers five different ways for students to enter and/or upload their
 % answers to an essay question.  You may choose one of these five options:
@@ -567,10 +579,10 @@
 % Within a cloze question, a multiple choice question is necessarily of type
 % |single|, i.e. with a single good answer.
 %
-% \DescribeMacro{vertical}\DescribeMacro{horizontal}
+% \DescribeMacro{vertical}\DescribeMacro{horizontal}\DescribeMacro{inline}
 % Within a cloze question, by default a multiple choice question is implemented
-% as an inline dropdown box.  This is visually compact, but it also prevents the 
-% use of mathematical or HTML formatting.
+% as an |inline| dropdown box. This is visually compact, but it also prevents
+% the use of mathematical or HTML formatting.
 % Adding the option |vertical| displays the subquestion as a vertical column
 % of radio buttons instead; likewise the option |horizontal| creates a horizontal 
 % row of radio buttons.
@@ -685,8 +697,114 @@
 %         for \TeX Live, this means adding |--shell-escape=true|.
 % \end{itemize}
 % 
-% \newpage
 % \section{Known Limitations and Call for Bug Reports}
+% Table~\ref{tab:2} lists some different features supported, limitations, and
+% bugs.
+%
+%\begin{table*}[tbp]
+%\centering
+%\small
+%\def\OKcell{\cellcolor{green}}
+%\def\KOcell{\cellcolor{red}}
+%\def\DNAcell{\cellcolor{black!20}}
+%\def\Warncell{\cellcolor{orange}}
+%\def\MyLine{\hhline{~-|>{\arrayrulecolor{green}}->{\arrayrulecolor{black}}--|>{\arrayrulecolor{green}}->{\arrayrulecolor{black}}--|}
+%}
+%\begin{threeparttable}[b]
+%\caption{Content enrichment support after XML import in Moodle 
+%\texttt{v3.1}, depending on the question type. Color convention: green for 
+%\colorbox{green}{full support}, orange for \colorbox{orange}{problems 
+%limiting the support}, red for \colorbox{red}{show-stopping problems}, and 
+%gray for \colorbox{black!20}{support limitations intrinsic to the question 
+%type} defined by Moodle.}
+%\label{tab:2}
+%\begin{tabular}{rl|ccc|ccc}
+%\multicolumn{2}{c|}{}& \multicolumn{3}{c|}{\LaTeX{} equation rendering} & 
+%\multicolumn{3}{c}{Picture inclusion}\\
+%\multicolumn{2}{c|}{Question type}& \rotatebox{55}{Question} & 
+%\rotatebox{55}{Answer} & \rotatebox{55}{Feedback} & \rotatebox{55}{Question} 
+%& \rotatebox{55}{Answer} & \rotatebox{55}{Feedback}\\\hhline{*{8}{:=}:}
+%
+%&\href{https://docs.moodle.org/31/en/Multiple_Choice_question_type} 
+%{Multichoice} & \OKcell & \OKcell & \OKcell & \Warncell bug\tnote{9} & 
+%\Warncell bug\tnote{9} & \Warncell bug\tnote{9}\\\hhline{*{8}{-}}
+%
+%& \href{https://docs.moodle.org/31/en/Numerical_question_type}{Numerical}
+%& \OKcell & \DNAcell Text only\tnote{3} & \OKcell & \Warncell bug\tnote{9} & 
+%\DNAcell Text only\tnote{3} & \Warncell bug\tnote{9}\\\hhline{*{8}{-}}
+%
+%& \href{https://docs.moodle.org/31/en/Short-Answer_question_type}{Short
+%Answer} & \OKcell & \DNAcell Text only\tnote{3} & \OKcell & \Warncell 
+%bug\tnote{9} & \DNAcell Text only\tnote{3} & \Warncell 
+%bug\tnote{9}\\\hhline{*{8}{-}}
+%
+%&Matching 
+%(\href{https://docs.moodle.org/31/en/Matching_question_type}{std})
+%& \OKcell & \DNAcell Text only\tnote{4} & \DNAcell Undef.\tnote{5} & 
+%\OKcell & \DNAcell Text only\tnote{4} & \DNAcell Undef.\tnote{5} 
+%\\\hhline{*{8}{-}}
+%
+%&Matching 
+%(\href{https://docs.moodle.org/31/en/Drag_and_drop_matching_question_type}
+%{dd}) & \OKcell & \DNAcell bug\tnote{2} & \DNAcell 
+%Undef.\tnote{5} & \Warncell bug\tnote{9} & \DNAcell bug\tnote{9}, 
+%bug\tnote{2} & \DNAcell Undef.\tnote{5} \\\hhline{*{8}{-}}
+%
+%&\href{https://docs.moodle.org/31/en/Essay_question_type}{Essay}  & \OKcell & 
+%\Warncell note\tnote{6}, bug\tnote{7} & \OKcell note\tnote{6} & 
+%\Warncell bug\tnote{9} & \Warncell note\tnote{6}, bug\tnote{7} & \Warncell 
+%bug\tnote{9}\\\hhline{*{8}{-}}
+%
+%\parbox[t]{2mm}{\multirow{5}{*}{\rotatebox[origin=c]{90}{\href{https://docs.moodle.org/31/en/Embedded_Answers_(Cloze)_question_type}
+%{Cloze}}}}
+%&Numerical & \OKcell & \DNAcell Text only\tnote{3} & \KOcell bug\tnote{8} & 
+%\OKcell & \DNAcell Text only\tnote{3} & \OKcell \\\MyLine
+%
+%&Short Answer & \OKcell & \DNAcell Text only\tnote{3} & \KOcell note\tnote{1}, 
+%bug\tnote{8} & \OKcell & \DNAcell Text only\tnote{3} & \OKcell 
+%note\tnote{1}\\\MyLine
+%
+%&Multi (dropdown) & \OKcell & \DNAcell Text only\tnote{4} &\KOcell 
+%note\tnote{1}, bug\tnote{8} & \OKcell & \DNAcell Text only\tnote{4} & \OKcell 
+%note\tnote{1} \\\MyLine
+%
+%&Multi (horizontal)& \OKcell & \Warncell bug\tnote{8} & \KOcell 
+%bug\tnote{8} & \OKcell & \OKcell & \OKcell\\\MyLine
+%
+%&Multi (vertical)& \OKcell & \Warncell bug\tnote{8} & \KOcell bug\tnote{8} & 
+%\OKcell & \OKcell & \OKcell \\\hline
+%\end{tabular}
+%\begin{tablenotes}
+%\item[1] Moodle only reveals the feedback when hovering the checkmark or X 
+%mark with the mouse.
+%\item[2] The drag-and-drop-matching plugin seems broken. Moodle's XML import 
+%fails with a \textsf{dmlwriteexception} when the field content exceeds few 
+%hundreds characters. This prevents the inclusion of most base64 images and 
+%maybe some complicated equations.
+%\item[3] Moodle prompts the student for an answer and then compares it to the 
+%solutions provided. This is text-only.
+%\item[4] Moodle uses a dropdown list to let one choose among the possible 
+%answers. This forbids either picture inclusion and \LaTeX{} rendering.
+%\item[5] Not supported by Moodle (in this context, answer-specific feedback 
+%represents lots of possible combinations).
+%\item[6] For this question type and in the context of XML generation, the 
+%Answer column represents the ``template" while the Feedback column represents 
+%the ``notes for the grader". Obviously, the grading process is not automatic and
+%there is no answer-specific feedback.
+%\item[7] Picture and \LaTeX{} rendering could be done, but only after 
+%submission and only if the keyval "response format" was set to ``html". 
+%Unfortunately, the \texttt{<p>...</p>} tags introduced, whatever the response 
+%format is, prevent rendering.
+%\item[8] In the generated XML, the symbol $\}$ is not escaped with a 
+%backslash as required by the Moodle cloze parser. The XML import will fail 
+%when the field contains \LaTeX{} code like \verb|\sqrt{...}| and 
+%\verb|\frac{...}{...}|.
+%\item[9] In the XML, the pictures included in the question field and answer or 
+%feedback fields are mixed.
+%\end{tablenotes}
+%\end{threeparttable}
+%\end{table*}
+%
 % Some features of Moodle quizzes have not yet been implemented in \textsf{moodle.sty}.
 % Here is a non-exhaustive list.
 % \begin{itemize}
@@ -708,7 +826,7 @@
 % This package has been written for and tested with the implementation of 
 % Moodle 2.9 run by Moodlerooms for St.~Norbert College in January 2016.
 % Future versions of this package will probably include some support for
-% specifying your version of Moodle in the |.tex| file to help ensure compatability.
+% specifying your version of Moodle in the |.tex| file to help ensure compatibility.
 % 
 % As the ultimate purpose of this package is the generation of XML files,
 % future versions of \textsf{moodle.sty} will attempt to maintain backwards 
@@ -2156,8 +2274,10 @@
       \moodle@questionheader% %Any introductory text just continues to be typeset.
       \def\cloze@numerical@table@text{}%
       \loopthroughitemswithcommand{\moodle@print@clozenumerical@answer}%
-      \begin{tabular}[t]{|ll|}\firsthline
-        \cloze@numerical@table@text\hline%
+      \begin{tabular}[t]{|p{.45\linewidth}|p{.45\linewidth}|}
+        \firsthline% (\firsthline is from the array package.)
+%       answer & feedback \\\hline\hline
+        \cloze@numerical@table@text%
       \end{tabular}%
       \def\endclozenumerical@code{\relax}%
     \fi
@@ -2186,8 +2306,8 @@
   \else
     \edef\moodle@clozenumericalprint@tolerance{\noexpand\pm\moodle@tolerance}%
   \fi
-  \xdef\moodle@clozenumericalprint@line{$#1\moodle@clozenumericalprint@tolerance$ & \moodle@clozenumericalprint@fraction}%
-  \xa\g@addto@macro\xa\cloze@numerical@table@text\xa{\moodle@clozenumericalprint@line \\}%
+  \xdef\moodle@clozenumericalprint@line{$#1\moodle@clozenumericalprint@tolerance$~\moodle@clozenumericalprint@fraction & \expandonce\emph{\expandonce\moodle@feedback}}%
+  \xa\g@addto@macro\xa\cloze@numerical@table@text\xa{\moodle@clozenumericalprint@line \\\hline}%
 }%
 
 
@@ -2217,7 +2337,9 @@
   \fi
   \xdef\clozenumerical@coding{\expandonce\clozenumerical@coding\moodle@answertext:\moodle@tolerance}%
   \ifx\moodle@feedback\@empty\else
-    \xdef\clozenumerical@coding{\expandonce\clozenumerical@coding\otherbackslash\otherhash\moodle@feedback}%
+    \trim@spaces@in\moodle@feedback
+    %\xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
+    \xdef\clozenumerical@coding{\expandonce\clozenumerical@coding\otherbackslash\otherhash\expandonce\moodle@feedback}%
   \fi
 }%
 %    \end{macrocode}
@@ -2264,8 +2386,10 @@
       \ifnum\count0=1\relax
         \marginpar{\tiny\mbox{(Case-Sensitive)}}%
       \fi
-      \begin{tabular}[t]{|ll|}\firsthline
-        \cloze@shortanswer@table@text\hline%
+      \begin{tabular}[t]{|p{.45\linewidth}|p{.45\linewidth}|}
+        \firsthline% (\firsthline is from the array package.)
+%       answer & feedback \\\hline\hline
+        \cloze@shortanswer@table@text%
       \end{tabular}%
       \def\endclozeshortanswer@code{\relax}%
     \fi
@@ -2275,6 +2399,7 @@
 }[\endclozeshortanswer@code]%
 
 \def\moodle@print@clozeshortanswer@answer#1{%
+  \let\moodle@feedback=\@empty
   \bgroup
     \moodle@print@clozeshortanswer@answer@int#1\@rdelim
   \egroup
@@ -2289,8 +2414,8 @@
   \else
     \edef\moodle@clozeshortanswerprint@fraction{(\moodle@fraction\%)}%
   \fi
-  \xdef\moodle@clozeshortanswerprint@line{#1 & \moodle@clozeshortanswerprint@fraction}%
-  \xa\g@addto@macro\xa\cloze@shortanswer@table@text\xa{\moodle@clozeshortanswerprint@line \\}%
+  \xdef\moodle@clozeshortanswerprint@line{#1~\moodle@clozeshortanswerprint@fraction & \expandonce\emph{\expandonce\moodle@feedback}}%
+  \xa\g@addto@macro\xa\cloze@shortanswer@table@text\xa{\moodle@clozeshortanswerprint@line \\\hline}%
 }%
 
 
@@ -2320,7 +2445,9 @@
   \fi
   \xdef\clozeshortanswer@coding{\expandonce\clozeshortanswer@coding\moodle@answertext}%
   \ifx\moodle@feedback\@empty\else
-    \xdef\clozeshortanswer@coding{\expandonce\clozeshortanswer@coding\otherbackslash\otherhash\moodle@feedback}%
+    %\trim@spaces@in\moodle@feedback
+    %\xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
+    \xdef\clozeshortanswer@coding{\expandonce\clozeshortanswer@coding\otherbackslash\otherhash\expandonce\moodle@feedback}%
   \fi
 }%
 %    \end{macrocode}
@@ -3110,8 +3237,8 @@
 \html@def\L{\&Lstrok;}%
 
 % AH CUSTOM MACROS TO EXPAND --- remove these before publishing!
-\htmlize@record@expand{\inv}%
-\htmlize@record@expand{\rec}%
+%\htmlize@record@expand{\inv}%
+%\htmlize@record@expand{\rec}%
 
 \htmlize@record@action\inlinemathrightdelim
 \htmlize@record@action\displaymathrightdelim
