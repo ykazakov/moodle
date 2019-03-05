@@ -28,13 +28,13 @@ This document presents examples of questions that one can make with the
 development.
 
 \begin{quiz}[ % options that apply to all questions
-%	points=1, % default 1
+	points=8, % default 1
 %	penalty=0, % penalty in case of wrong attempt (between 0 and 1). Default 0.1
 %	fraction=0, % fraction of points for wrong or partially true answers
 	%feedback={coucou}
 	] {Example Quiz}
 
-\begin{multi}[points=3,numbering=Alph]{Multiple Choice (single correct answer)}
+\begin{multi}[points=3,numbering=Alph]{Multiple Choice}
 % Numbering possibilities:
 % - numbering=alph, alpha, or abc,
 % - numbering=Alph, Alpha, or ABCD,
@@ -50,8 +50,7 @@ put an equation: \[\myequation.\]}] $\frac{1}{4} x^4+C$
 \item[feedback={$\myequation$, \embedaspict{$\sin(x)/x$}}] $51$
 \end{multi}
 
-\begin{multi}[multiple,numbering=roman]{Multiple Choice (several correct 
-answers)}
+\begin{multi}[multiple,numbering=roman,shuffle=false]{Multiple Choice}
 Select the following numbers that are prime.
 \item[feedback={it is only divided by 1 and itself!}]* $\sqrt{25}$
 \item[feedback={divided by 2 and 3!}] 6
@@ -75,7 +74,7 @@ let's put an equation: \(\myequation\).}] 11
 \item[fraction=0,feedback={Pfff\dots}] 5
 \end{numerical}
 
-\begin{shortanswer}[case sensitive=true]{Short Answer (case sensitive)}
+\begin{shortanswer}[case sensitive=true]{Short Answer}
 What was Newton's first name?
 \item[feedback={this is a very long feedback; it may even be displayed in 
 several lines. Here is a new sentence! Does that work? Yes. Now, let's put an 
@@ -86,7 +85,7 @@ equation: \[\myequation.\]}] Isaac
 \item[fraction=0,feedback={no...}] * % the asterisk represents any other answer
 \end{shortanswer}
 
-\begin{shortanswer}{Short Answer (case insensitive)}
+\begin{shortanswer}{Short Answer}
 Newton's rival was \embedaspict{\frakfamily Gottfried Wilhelm} \blank.
 \item[feedback={Correct! But why the hell did you put a dot?}] Leibniz.
 \item Leibniz
@@ -95,7 +94,7 @@ Newton's rival was \embedaspict{\frakfamily Gottfried Wilhelm} \blank.
 %other answer
 \end{shortanswer}
 
-\begin{matching}{Matching (standard)}
+\begin{matching}[shuffle=false]{Matching}
 Answer-specific feedback is too complicated for matching questions (lots of 
 possible combinations). Moodle does not support that\dots
 
@@ -112,7 +111,7 @@ are rendered.
 	\item[]  \answer Black
 \end{matching}
 
-\begin{matching}[dd]{Matching (drag and drop)}
+\begin{matching}[dd]{Matching}
 This question type comes with a specific Moodle plugin. In the offered
 answers, it allows to get LaTeX equations rendered. There is a bug that prevents 
 pictures to be used in answers.
@@ -126,14 +125,14 @@ feedback}] Lemon $\myequation$ \answer Yellow
 \item[]  \answer Black $\myequation$
 \end{matching}
 
-\begin{essay}[response required,response format=text,template={put 
-your answer here}]{Essay}
+\begin{essay}[response required,response format=text,template={put your answer 
+here}]{Essay}
 \embedaspict{Is learning worth it?}
 \item if the answer is "yes" $\rightarrow$ full grade
 \item if the answer is silly \embedaspict{$\rightarrow$} minimum grade
 \end{essay}
 
-\begin{cloze}{Cloze}
+\begin{cloze}[points=2]{Cloze}
 \begin{tikzpicture}
 \draw[->] (-1.5,0)--(1.5,0);
 \draw[->] (0,-1.5)--(0,1.5);
@@ -145,15 +144,15 @@ Within the cloze environment, when using multichoice, moodle allows to make
 only one choice. Therefore, multiple choice questions shall be made such that 
 all points can be acquired with a single good answer only. Starting from 
 version \texttt{3.5} moodle introduced a new type for multichoices with 
-several 
-answers~: \texttt{MULTIRESPONSE}. It is not yet supported by this package.
+several answers~: \texttt{MULTIRESPONSE}. It is not yet supported by this 
+package.
 
-A limitation of moodle's parser, discussed 
-\href{https://moodle.org/mod/forum/discuss.php?d=275299}{here}, has to be 
-overcome for math display in answers or feedbacks that contain closing curly 
-braces ($\}$). It should be escaped with a $\backslash$.
+%A limitation of moodle's parser, discussed 
+%\href{https://moodle.org/mod/forum/discuss.php?d=275299}{here}, has to be 
+%overcome for math display in answers or feedbacks that contain closing curly 
+%braces ($\}$). It should be escaped with a $\backslash$.
 
-\begin{multi}
+\begin{multi}[shuffle=false]
 First, an inline dropdown list. It is very compact on moodle. The drawback is 
 that there is no LaTeX or HTML rendering in answers. The feedback renders HMTL 
 and LaTeX. It is a bit hidden as it pops up only when hovering the 
@@ -182,16 +181,14 @@ Last, a vertical multichoice. Behaves like the standard single multichoice.
 \end{multi}
 
 \begin{shortanswer}[case sensitive=true]
-	What was Newton's first name?
-	\item[feedback={this is a very long feedback; it may even be displayed in 
-		several lines. Here is a new sentence! Does that work? Yes. Now, let's 
-		put an 
-		equation: \[\myequation.\]}] Isaac
-	\item[fraction=50,feedback={forgot how to capitalize properly?}] isaac
-	\item[fraction=0,feedback={\embedaspict{how noble!}}] Sir* % any answer 
-	%starting with "Sir"
-	\item[fraction=0,feedback={no...}] * % the asterisk represents any other 
-	%answer
+What was Newton's first name?
+\item[feedback={this is a very long feedback; it may even be displayed in 
+several lines. Here is a new sentence! Does that work? Yes. Now, let's put an 
+equation: \[\myequation.\]}] Isaac
+\item[fraction=50,feedback={forgot how to capitalize properly?}] isaac
+\item[fraction=0,feedback={\embedaspict{how noble!}}] Sir* % any answer 
+%starting with "Sir"
+\item[fraction=0,feedback={no...}] * % the asterisk represents any other answer
 \end{shortanswer}
 
 \begin{shortanswer}
@@ -204,7 +201,7 @@ Newton's rival was \embedaspict{\frakfamily Gottfried Wilhelm} \blank.
 %other answer
 \end{shortanswer}
 
-\begin{numerical}[tolerance=0.01]
+\begin{numerical}[tolerance=0.01,points=5]
 What is $8+3$?
 
 \item[fraction=100,feedback={this is a very long feedback; it may even be 

@@ -751,8 +751,8 @@
 %bug\tnote{2} & \DNAcell Undef.\tnote{5} \\\hhline{*{8}{-}}
 %
 %&\href{https://docs.moodle.org/31/en/Essay_question_type}{Essay}  & \OKcell & 
-%\Warncell note\tnote{6}, bug\tnote{7} & \OKcell note\tnote{6} & 
-%\Warncell bug\tnote{9} & \Warncell note\tnote{6}, bug\tnote{7} & \Warncell 
+%\OKcell note\tnote{6}, note\tnote{7} & \OKcell note\tnote{6} & 
+%\Warncell bug\tnote{9} & \OKcell note\tnote{6}, note\tnote{7} & \Warncell 
 %bug\tnote{9}\\\hhline{*{8}{-}}
 %
 %\parbox[t]{2mm}{\multirow{5}{*}{\rotatebox[origin=c]{90}{\href{https://docs.moodle.org/31/en/Embedded_Answers_(Cloze)_question_type}
@@ -789,12 +789,10 @@
 %represents lots of possible combinations).
 %\item[6] For this question type and in the context of XML generation, the 
 %Answer column represents the ``template" while the Feedback column represents 
-%the ``notes for the grader". Obviously, the grading process is not automatic and
-%there is no answer-specific feedback.
+%the ``notes for the grader". Obviously, the grading process is not automatic 
+%and there is no answer-specific feedback.
 %\item[7] Picture and \LaTeX{} rendering could be done, but only after 
-%submission and only if the keyval "response format" was set to ``html". 
-%Unfortunately, the \texttt{<p>...</p>} tags introduced, whatever the response 
-%format is, prevent rendering.
+%submission and only if the keyval ``response format" is set to ``html".
 %\item[8] In the generated XML, the symbol $\}$ is not escaped with a 
 %backslash as required by the Moodle cloze parser. The XML import will fail 
 %when the field contains \LaTeX{} code like \verb|\sqrt{...}| and 
@@ -1091,6 +1089,23 @@
   }%
 }%
 
+\def\generate@moodle@write@html@noptag#1<#2>#3{%
+	% No <P>..</P> introduced
+	% #1 = NAME for \moodle@writeNAME
+	% #2 = HTML tag
+	% #3 = what, exactly, to write
+	\xa\gdef\csname moodle@write#1\endcsname{%
+		\xa\def\xa\test@iii\xa{#3}%
+		\ifx\test@iii\@moodle@empty
+		\writetomoodle[2]{  <#2 format="html"><text/></#2>}%
+		\else
+		\xa\converttohtmlmacro\xa\moodle@htmltowrite\xa{#3}%
+		\writetomoodle[2]{  <#2 format="html">}%
+		\writetomoodle[4]{    <text><![CDATA[\moodle@htmltowrite]]></text>}%
+		\writetomoodle[2]{  </#2>}%
+		\fi
+	}%
+}%
 
 \def\generate@moodle@write@data*#1<#2>#3{%
   % #1 = NAME for \moodle@writeNAME
@@ -1126,7 +1141,7 @@
       \generate@moodle@write@code{questiontext}<questiontext>{\moodle@questiontext}%{%
 
 %% PENALTY FOR WRONG ATTEMPT
-      \define@cmdkey{moodle}[moodle@]{penalty}[0.1000000]{}%
+      \define@cmdkey{moodle}[moodle@]{penalty}[0.10]{}%
       \generate@moodle@write@code*{penalty}<penalty>{\moodle@penalty}%
       \moodleset{penalty}%
 
@@ -1385,7 +1400,7 @@
 
 %% RESPONSE TEMPLATE
       \define@key{moodle}{template}{\long\def\moodle@responsetemplate{#1}}%
-      \generate@moodle@write@code{responsetemplate}<responsetemplate>{\moodle@responsetemplate}
+      \generate@moodle@write@html@noptag{responsetemplate}<responsetemplate>{\moodle@responsetemplate}
       \moodleset{template={}}%
 %    \end{macrocode}
 % \subsubsection{Hint tags}
@@ -1494,7 +1509,24 @@
 % \end{Verbatim}
 % 
 %    \begin{macrocode}
-\def\moodle@makefrontend#1{%
+
+\def\moodle@makelatextagbox#1{%
+  \framebox{\tiny #1}
+}%
+
+\def\moodle@makelatextag@qtype#1{%
+  \moodle@makelatextagbox{\textsc{#1}}
+}%
+
+\def\moodle@makelatextag@value#1#2{%
+  \moodle@makelatextagbox{\csname moodle@#1\endcsname~#2}
+}%
+
+\def\moodle@makelatextag@key#1{%
+  \moodle@makelatextagbox{\csname moodle@#1\endcsname}
+}%
+
+\def\moodle@makefrontend#1#2{%
   \NewEnviron{#1}[2][]{%
     \bgroup
       \setkeys{moodle}{##1,questionname={##2}}%
@@ -1502,6 +1534,11 @@
       \let\moodle@questionheader=\gatheredheader
       %First, the LaTeX processing
       \item \textbf{\moodle@questionname}\par
+      \noindent
+      \moodle@makelatextag@qtype{#1}
+      \moodle@makelatextag@value{default grade}{points}
+      \moodle@makelatextag@value{penalty}{penalty}
+      #2\par
       \noindent
       \moodle@questionheader
       \csname moodle@#1@latexprocessing\endcsname
@@ -1545,6 +1582,11 @@
     \let\moodle@questionheader=\gatheredheader
     %First, the LaTeX processing.
       \item \textbf{\moodle@questionname}\par
+      \noindent
+      \moodle@makelatextag@qtype{essay}
+      \moodle@makelatextag@value{default grade}{points}
+      \moodle@makelatextag@value{penalty}{penalty}
+      \moodle@makelatextag@key{responseformat}\par
       \noindent
       \moodle@questionheader
       \csname moodle@essay@latexprocessing\endcsname
@@ -1655,14 +1697,18 @@
 % TO DO: Make an optional argument for width?  This wouldn't affect Moodle,
 %        only the appearance in the PDF.  It doesn't seem worth it.
 
-% \NewEnviron{shortanswer}[2][]{%
+%\NewEnviron{shortanswer}[2][]{%
 %   \bgroup
 %     \setkeys{moodle}{#1,questionname={#2}}%
 %     \expandafter\gatheritems\xa{\BODY}%
 %     \let\moodle@questionheader=\gatheredheader
 %     %First, the LaTeX processing.
-%       \bigskip\par\noindent
-%       \fbox{\textbf{\moodle@questionname}}\par
+%       \item \textbf{\moodle@questionname}
+%       \csname ifmoodle@case sensitive\endcsname
+%         \framebox{\tiny Case-Sensitive}\relax
+%       \fi
+%       \framebox{\tiny\csname moodle@default grade\endcsname~points}
+%       \framebox{\tiny\csname moodle@penalty\endcsname~penalty}\par
 %       \noindent
 %       \moodle@questionheader
 %       \csname moodle@shortanswer@latexprocessing\endcsname
@@ -1672,7 +1718,8 @@
 %       \bgroup
 %         \gdef\moodle@answers@xml{}%
 %         \setkeys{moodle}{feedback={}}%
-%         \xa\loopthroughitemswithcommand\xa{\csname saveshortansweranswer\endcsname}%
+%         \xa\loopthroughitemswithcommand\xa{\csname 
+%         saveshortansweranswer\endcsname}%
 %         \passvalueaftergroup{\moodle@answers@xml}%
 %       \egroup
 %       \csname writeshortanswerquestion\endcsname
@@ -1680,9 +1727,18 @@
 %   \egroup
 % }%
 
-\moodle@makefrontend{shortanswer}%
+\moodle@makefrontend{shortanswer}{\moodle@makelatextag@shortanswer}%
 
 % LATEX PROCESSING
+
+\def\moodle@makelatextag@shortanswer{%
+  \csname ifmoodle@case sensitive\endcsname
+    \moodle@makelatextagbox{Case-Sensitive}\relax
+  \else
+    \moodle@makelatextagbox{Case-Insensitive}\relax
+  \fi
+}
+
 \def\moodle@shortanswer@latexprocessing{%
   \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
     \loopthroughitemswithcommand{\moodle@print@shortanswer@answer}%
@@ -1745,9 +1801,12 @@
 % \subsubsection{Numerical Question Front-End}
 % 
 %    \begin{macrocode}
-\moodle@makefrontend{numerical}%
+\moodle@makefrontend{numerical}{\moodle@makelatextag@numerical}%
 
 % LATEX PROCESSING
+
+\def\moodle@makelatextag@numerical{}
+
 \def\moodle@numerical@latexprocessing{%
       \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
         \loopthroughitemswithcommand{\moodle@print@numerical@answer}%
@@ -1824,9 +1883,21 @@
 %   \item 11
 % \end{multi}%
 
-\moodle@makefrontend{multi}
+\moodle@makefrontend{multi}{\moodle@makelatextag@multi}%
 
 % LATEX PROCESSING
+
+\def\moodle@makelatextag@multi{%
+  \csname ifmoodle@multiple\endcsname
+    \moodle@makelatextagbox{Multiple}\relax
+  \else
+    \moodle@makelatextagbox{Single}\relax
+  \fi
+  \csname ifmoodle@shuffle\endcsname
+    \moodle@makelatextagbox{Shuffle}\relax
+  \fi
+}
+
 \def\moodle@multi@latexprocessing{%
       \moodle@countcorrectanswers
       \begin{enumerate}\moodle@obeynumberingstyle
@@ -1958,9 +2029,19 @@
 %    \begin{macrocode}
 \let\answer=\hfill
 
-\moodle@makefrontend{matching}
+\moodle@makefrontend{matching}{\moodle@makelatextag@mmatching}
 
 % LATEX PROCESSING
+
+\def\moodle@makelatextag@mmatching{%
+  \csname ifmoodle@draganddrop\endcsname
+    \moodle@makelatextagbox{Drag and drop}\relax
+  \fi
+  \csname ifmoodle@shuffle\endcsname
+    \moodle@makelatextagbox{Shuffle}\relax
+  \fi
+}
+
 \def\moodle@matching@latexprocessing{%
   \bgroup
     \let\answer=\hfill
@@ -2067,6 +2148,10 @@
     %First, the LaTeX processing.
       \item \textbf{\moodle@questionname}\par
       \noindent
+      \moodle@makelatextag@qtype{essay}
+      \moodle@makelatextag@value{default grade}{points}
+      \moodle@makelatextag@value{penalty}{penalty}\par
+      \noindent
       \BODY
     %Now, writing information to memory.
     \@moodle@ifgeneratexml{%
@@ -2112,13 +2197,18 @@
       \edef\clozemulti@coding{\otherlbrace\csname moodle@default grade\endcsname:}%
       \ifcase\moodle@multi@mode\relax
         % Case 0: dropdown box style
-        \g@addto@macro{\clozemulti@coding}{MULTICHOICE:}%
+        \g@addto@macro{\clozemulti@coding}{MULTICHOICE}%
       \or
         % Case 1: vertical style
-        \g@addto@macro{\clozemulti@coding}{MULTICHOICE_V:}%
+        \g@addto@macro{\clozemulti@coding}{MULTICHOICE_V}%
       \else
         % Case 2: horizontal radio buttons
-        \g@addto@macro{\clozemulti@coding}{MULTICHOICE_H:}%
+        \g@addto@macro{\clozemulti@coding}{MULTICHOICE_H}%
+      \fi
+      \ifmoodle@shuffle
+        \g@addto@macro{\clozemulti@coding}{S:}%
+      \else
+        \g@addto@macro{\clozemulti@coding}{:}%
       \fi
       \bgroup
         \setkeys{moodle}{feedback={}}%
@@ -2131,6 +2221,14 @@
     \else
       %LaTeX version
       \moodle@questionheader% %Any introductory text just continues to be typeset.
+      \par
+      \noindent
+      \moodle@makelatextag@qtype{multi}
+      \moodle@makelatextag@value{default grade}{points}
+      \moodle@makelatextag@value{penalty}{penalty}
+      \moodle@makelatextag@multi
+      \par
+      \noindent
       \def\cloze@multichoice@table@text{}%
       \let\moodle@feedback=\@empty
       \loopthroughitemswithcommand{\moodle@print@clozemultichoice@answer}%
@@ -2272,6 +2370,14 @@
     \else
       %LaTeX version
       \moodle@questionheader% %Any introductory text just continues to be typeset.
+      \par
+      \noindent
+      \moodle@makelatextag@qtype{numerical}
+      \moodle@makelatextag@value{default grade}{points}
+      \moodle@makelatextag@value{penalty}{penalty}
+      \moodle@makelatextag@numerical
+      \par
+      \noindent
       \def\cloze@numerical@table@text{}%
       \loopthroughitemswithcommand{\moodle@print@clozenumerical@answer}%
       \begin{tabular}[t]{|p{.45\linewidth}|p{.45\linewidth}|}
@@ -2381,11 +2487,16 @@
     \else
       %LaTeX version
       \moodle@questionheader% %Any introductory text just continues to be typeset.
+      \par
+      \noindent
+      \moodle@makelatextag@qtype{shortanswer}
+      \moodle@makelatextag@value{default grade}{points}
+      \moodle@makelatextag@value{penalty}{penalty}
+      \moodle@makelatextag@shortanswer
+      \par
+      \noindent
       \def\cloze@shortanswer@table@text{}%
       \loopthroughitemswithcommand{\moodle@print@clozeshortanswer@answer}%
-      \ifnum\count0=1\relax
-        \marginpar{\tiny\mbox{(Case-Sensitive)}}%
-      \fi
       \begin{tabular}[t]{|p{.45\linewidth}|p{.45\linewidth}|}
         \firsthline% (\firsthline is from the array package.)
 %       answer & feedback \\\hline\hline
@@ -3307,7 +3418,10 @@
 % 
 % \subsubsection{Graphics conversion to HTML}
 %    \begin{macrocode}
+\ifmoodle@draftmode
+\else
 \html@action@def\includegraphics{\moodle@includegraphics@int}%
+\fi
   % Note that \htmlize@do@actioncs will 'patch' this by putting 
   % '\xa\htmlize@proceedwiththerest\htmlize@afteraction@hook'
   % at the end.  We want those 3 tokens to occur instead after
@@ -3350,6 +3464,10 @@
     \edef\cmdline{\htmlize@imagemagick@convert\otherspace #2 -resize \moodle@graphics@geometry\otherspace #2.png}%
     \message{moodle.sty:   Converting '#2' to PNG...^^J}%
     \expandafter\immediate\expandafter\write18\expandafter{\cmdline}%
+    %Next, optimize
+    \edef\cmdline{\optipng\otherspace -clobber -quiet \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png}
+    \message{moodle.sty:   Optimizing '#2.png'...^^J}%
+    \expandafter\immediate\expandafter\write18\expandafter{\cmdline}%
     %Next, convert the PNG to base64 encoding
     \def\cmdline{\openssl\otherspace enc -base64 -in #2.png -out #2.enc}%
     \message{moodle.sty:   Converting '#2.png' to base64...^^J}%
@@ -3360,6 +3478,11 @@
     \openin\baseLXIVdatafile=#2.enc\relax
       \savebaselxivdata@recursive
     \closein\baseLXIVdatafile
+    \ifwindows
+      \immediate\write18{del #2.enc #2.png}%
+    \else
+      \immediate\write18{rm -f #2.enc #2.png}%
+    \fi
     \xa\global\xa\let\csname picbaselxiv@graphics@#2\endcsname=\moodle@newpic@baselxiv%
     \edef\htmlize@imagetag{<IMG \moodle@graphics@htmlgeometry\otherspace SRC="data:image/png;base64,\csname picbaselxiv@graphics@#2\endcsname">}%
     \xa\g@addto@macro\xa\htmlize@output\xa{\htmlize@imagetag}%
@@ -3406,6 +3529,9 @@
   \else
     \moodle@tikzloadedtrue
   \fi
+  \ifmoodle@draftmode
+    \long\def\tikzifexternalizing#1#2{#2}%
+  \else
   \ifmoodle@tikzloaded
     \usetikzlibrary{external}
     \tikzexternalize%
@@ -3474,6 +3600,7 @@
   \else
     %TikZ not loaded.  Provide dummy definitions for commands.
     \long\def\tikzifexternalizing#1#2{#2}%
+  \fi
   \fi
 }
 
