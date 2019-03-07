@@ -719,7 +719,7 @@
 %type} defined by Moodle.}
 %\label{tab:2}
 %\begin{tabular}{rl|ccc|ccc}
-%\multicolumn{2}{c|}{}& \multicolumn{3}{c|}{\LaTeX{} equation rendering} & 
+%\multicolumn{2}{c|}{}& \multicolumn{3}{c|}{\LaTeX\ equation rendering} & 
 %\multicolumn{3}{c}{Picture inclusion}\\
 %\multicolumn{2}{c|}{Question type}& \rotatebox{55}{Question} & 
 %\rotatebox{55}{Answer} & \rotatebox{55}{Feedback} & \rotatebox{55}{Question} 
@@ -785,18 +785,18 @@
 %\item[3] Moodle prompts the student for an answer and then compares it to the 
 %solutions provided. This is text-only.
 %\item[4] Moodle uses a dropdown list to let one choose among the possible 
-%answers. This forbids either picture inclusion and \LaTeX{} rendering.
+%answers. This forbids either picture inclusion and \LaTeX\ rendering.
 %\item[5] Not supported by Moodle (in this context, answer-specific feedback 
 %represents lots of possible combinations).
 %\item[6] For this question type and in the context of XML generation, the 
 %Answer column represents the ``template" while the Feedback column represents 
 %the ``notes for the grader". Obviously, the grading process is not automatic 
 %and there is no answer-specific feedback.
-%\item[7] Picture and \LaTeX{} rendering could be done, but only after 
+%\item[7] Picture and \LaTeX\ rendering could be done, but only after 
 %submission and only if the keyval ``response format" is set to ``html".
 %\item[8] In the generated XML, the symbol $\}$ is not escaped with a 
 %backslash as required by the Moodle cloze parser. The XML import will fail 
-%when the field contains \LaTeX{} code like \verb|\sqrt{...}| and 
+%when the field contains \LaTeX\ code like \verb|\sqrt{...}| and 
 %\verb|\frac{...}{...}|.
 %\item[9] In the XML, the pictures included in the question field and answer or 
 %feedback fields are mixed.
@@ -2148,7 +2148,7 @@
     %First, the LaTeX processing.
       \item \textbf{\moodle@questionname}\par
       \noindent
-      \moodle@makelatextag@qtype{essay}
+      \moodle@makelatextag@qtype{cloze}
       \moodle@makelatextag@value{default grade}{points}
       \moodle@makelatextag@value{penalty}{penalty}\par
       \noindent
