@@ -1511,7 +1511,11 @@
 %    \begin{macrocode}
 
 \def\moodle@makelatextagbox#1{%
-  \framebox{\tiny #1}
+  \ifmoodle@tikzloaded
+    \tikz[baseline]{\node[draw,minimum height=1.2em,rounded corners,fill=black!20] {\tiny #1};}
+  \else
+    \framebox{\tiny #1}
+  \fi
 }%
 
 \def\moodle@makelatextag@qtype#1{%
