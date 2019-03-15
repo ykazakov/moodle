@@ -3475,7 +3475,13 @@
     \message{moodle.sty:   Optimizing '#2.png'...^^J}%
     \expandafter\immediate\expandafter\write18\expandafter{\cmdline}%
     %Next, convert the PNG to base64 encoding
-    \def\cmdline{\openssl\otherspace enc -base64 -in #2.png -out #2.enc}%
+    \ifwindows
+      \def\cmdline{\openssl\otherspace enc -base64 -in #2.png -out #2.enc}%
+      % TODO and test: remove the openssl dependency with "certutil -encode raw.txt encoded.txt" %
+    \else
+      \def\cmdline{base64 #2.png > #2.enc}
+      % base64 is part of coreutils, add "-w 64" to get exactly the previous behavior  %
+    \fi
     \message{moodle.sty:   Converting '#2.png' to base64...^^J}%
     \expandafter\immediate\expandafter\write18\expandafter{\cmdline}%
     %Now, save that base64 encoding in a TeX macro
@@ -3552,9 +3558,16 @@
     \fi
     \def\pngoptim{\edef\cmdline{\optipng\otherspace -clobber -quiet \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png}%
       \expandafter\immediate\expandafter\write18\expandafter{\cmdline}}%
-    \def\pngtobaselxiv{\edef\opensslcmdline{\openssl\otherspace enc -base64 -in \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -out \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
-                       \expandafter\immediate\expandafter\write18\expandafter{\opensslcmdline}}%
-
+    \ifwindows
+      \def\pngtobaselxiv{\edef\opensslcmdline{\openssl\otherspace enc -base64 -in \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -out \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
+                       \expandafter\immediate\expandafter\write18\expandafter{\opensslcmdline}}
+      % TODO and test: remove the openssl dependency with "certutil -encode raw.txt encoded.txt" %
+    \else
+      \def\pngtobaselxiv{\edef\opensslcmdline{base64 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png > \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
+                       \expandafter\immediate\expandafter\write18\expandafter{\opensslcmdline}}
+      % base64 is part of coreutils, add "-w 64" to get exactly the previous behavior %
+    \fi
+    
     \let\moodle@oldtikzpicture=\tikzpicture
 
     %The following code lets us run things *before* the normal \begin{tikzpicture}.
