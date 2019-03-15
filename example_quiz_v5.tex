@@ -14,7 +14,8 @@
 node={\begin{varwidth}{\linewidth}},
 execute at end node={\end{varwidth}}]
 
-\newcommand\embedaspict[1]{\begin{tikzpicture}\node[pict]{#1};\end{tikzpicture}}
+\newcommand\embedaspict[1]{\begin{tikzpicture}[baseline=-\the\dimexpr\fontdimen22\textfont2\relax
+ ]\node[pict]{\mbox{#1}};\end{tikzpicture}}
 
 \htmlregister{\myequation}
 \htmlregister{\embedaspict}
