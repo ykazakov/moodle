@@ -1511,11 +1511,13 @@
 %    \begin{macrocode}
 
 \def\moodle@makelatextagbox#1{%
-  \ifmoodle@tikzloaded
-    \tikz[baseline]{\node[draw,minimum height=1.2em,rounded corners,fill=black!20] {\tiny #1};}
-  \else
+%  \ifmoodle@tikzloaded
+%    \tikzset{external/export next=false}
+%    \tikz[baseline]{\node[draw,minimum height=1.2em,rounded corners,fill=black!20] {\tiny #1};}
+%  % Fancy but interferes with the tikzexternalize counter
+%  \else
     \framebox{\tiny #1}
-  \fi
+%  \fi
 }%
 
 \def\moodle@makelatextag@qtype#1{%
