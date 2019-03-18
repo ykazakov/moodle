@@ -1,0 +1,286 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = en_US
+\documentclass[twocolumn,a4paper,9pt]{article}
+
+\usepackage[utf8x]{inputenc}
+%\usepackage[french]{babel}
+
+\frenchspacing{}
+\usepackage[cm]{fullpage}
+\usepackage[output-decimal-marker={,}]{siunitx}
+\usepackage{enumerate}
+\usepackage{hyperref}
+
+\usepackage{multirow,hhline,colortbl,threeparttable,graphicx,xcolor}
+
+\usepackage[adobe-utopia]{mathdesign} %, uppercase=upright
+\usepackage[protrusion=true,expansion]{microtype}
+
+\title{A \LaTeX{} Tool to Develop Content-Rich Moodle Quizzes}
+\author{C. \textsc{Barès}, F. \textsc{Goutailler}, and M. 
+\textsc{Guerquin-Kern}\footnote{porteur du 
+projet. Contact: \href{mailto:guerquin@ensea.fr}{guerquin@ensea.fr}}}
+\date{2019}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Context}
+
+\subsection{Moodle Quizzes at ENSEA}
+
+% support through "missions"
+
+\subsection{Pedagogical Interests}
+
+\subsection{Existing Tools}
+
+\begin{enumerate}
+	\item \href{http://www.vletools.com}{VLE Tools} (text-based online service, 
+	registration mandatory)
+	\item \href{https://docs.moodle.org/34/en/Word_table_format}{Moodle2Word}
+	\item \href{https://www.ctan.org/pkg/moodle}{\texttt{moodle} \LaTeX\ 
+	package}
+\end{enumerate}
+
+%\section{Points d'appui du projet}
+
+\section{Working Directions}
+
+\subsection{Debugging}
+
+Table~\ref{tab:2} lists the bugs and limitations currently impairing content 
+enrichment with the current package (version \texttt{0.5}).
+
+\begin{table*}[tbp]
+	\centering
+	\def\OKcell{\cellcolor{green}}
+	\def\KOcell{\cellcolor{red}}
+	\def\DNAcell{\cellcolor{black!20}} % "Does not apply"
+	\def\Warncell{\cellcolor{orange}} % Warning
+	\def\MyLine{\hhline{~-|>{\arrayrulecolor{green}}->{\arrayrulecolor{black}}--|>{\arrayrulecolor{green}}->{\arrayrulecolor{black}}--|}
+	}
+	\begin{threeparttable}[b]
+		\caption{Content enrichment support after XML import in Moodle 
+		\texttt{v3.1}, 
+			depending on the question type. Color convention: green for 
+			\colorbox{green}{full support}, orange for 
+			\colorbox{orange}{problems limiting 
+				the support}, red for \colorbox{red}{show-stopping problems}, 
+				and gray for 
+			\colorbox{black!20}{support limitations intrinsic to the question 
+			type} defined 
+			by Moodle.}
+		\label{tab:2}
+		\begin{tabular}{rl|ccc|ccc}
+			\multicolumn{2}{c|}{}& \multicolumn{3}{c|}{\LaTeX{} equation 
+			rendering} & 
+			\multicolumn{3}{c}{Picture inclusion}\\
+			\multicolumn{2}{c|}{Question type}& Question & Answer & Feedback & 
+			Question & 
+			Answer & Feedback\\\hhline{*{8}{:=}:}
+			
+			&\href{https://docs.moodle.org/31/en/Multiple_Choice_question_type} 
+			{Multichoice} \emph{bug\tnote{1}} & \OKcell & \OKcell & \KOcell 
+			bug\tnote{2} & 
+			\Warncell bug\tnote{12} & \Warncell bug\tnote{12} & \KOcell 
+			bug\tnote{2}, bug\tnote{12}\\\hhline{*{8}{-}}
+			
+			& 
+			\href{https://docs.moodle.org/31/en/Numerical_question_type}{Numerical}
+			 & 
+			\OKcell & \DNAcell Text only\tnote{3} & \KOcell bug\tnote{2} & 
+			\OKcell bug\tnote{12} & \DNAcell Text only\tnote{3} & \KOcell 
+			bug\tnote{2}, bug\tnote{12}\\\hhline{*{8}{-}}
+			
+			& 
+			\href{https://docs.moodle.org/31/en/Short-Answer_question_type}{Short
+			 Answer} 
+			& \OKcell & \DNAcell Text only\tnote{3} & \KOcell bug\tnote{2}& 
+			\OKcell 
+			bug\tnote{12} & \DNAcell Text only\tnote{3} & \KOcell 
+			bug\tnote{2}, bug\tnote{12}\\\hhline{*{8}{-}}
+			
+			&Matching 
+			(\href{https://docs.moodle.org/31/en/Matching_question_type}{standard})
+			 & 
+			\OKcell & \DNAcell Text only\tnote{4} & \DNAcell 
+			Irrelevant\tnote{5} & 
+			\OKcell & \DNAcell Text only\tnote{4} & \DNAcell 
+			Irrelevant\tnote{5} 
+			\\\hhline{*{8}{-}}
+			
+			&Matching 
+			(\href{https://docs.moodle.org/31/en/Drag_and_drop_matching_question_type}{drag-and-drop})
+			& \OKcell & \DNAcell bug\tnote{13} & \DNAcell Irrelevant\tnote{5} & 
+			\OKcell 
+			bug\tnote{12}& \DNAcell bug\tnote{12}, bug\tnote{13}& \DNAcell 
+			Irrelevant\tnote{5} \\\hhline{*{8}{-}}
+			
+			&\href{https://docs.moodle.org/31/en/Essay_question_type}{Essay} 
+			\emph{bug\tnote{6}, note\tnote{11}} & \OKcell & \Warncell 
+			note\tnote{7}, 
+			bug\tnote{8} & \OKcell note\tnote{7} & \Warncell bug\tnote{12} & 
+			\Warncell 
+			note\tnote{7}, bug\tnote{8} & \Warncell note\tnote{7}, 
+			bug\tnote{12}\\\hhline{*{8}{-}}
+			
+			\multirow{5}{*}{ 
+				\href{https://docs.moodle.org/31/en/Embedded_Answers_(Cloze)_question_type}
+				{Cloze}}
+			
+			&Numerical & \OKcell & \DNAcell Text only\tnote{3} & \KOcell 
+			bug\tnote{2}, 
+			bug\tnote{9} & \OKcell & \DNAcell Text only\tnote{3} & \KOcell 
+			bug\tnote{2}\\\MyLine
+			
+			&Short Answer & \OKcell & \DNAcell Text only\tnote{3} & \KOcell 
+			bug\tnote{2}, 
+			bug\tnote{9}, note\tnote{10} & \OKcell & \DNAcell Text 
+			only\tnote{3} & \KOcell 
+			bug\tnote{2}, note\tnote{10}\\\MyLine
+			
+			&Multi (dropdown) & \OKcell & \DNAcell Text only\tnote{4} & \KOcell 
+			bug\tnote{2}, bug\tnote{9}, note\tnote{10} & \OKcell & \DNAcell 
+			Text 
+			only\tnote{4} & \KOcell bug\tnote{2}, note\tnote{10} \\\MyLine
+			
+			&Multi (horizontal)& \OKcell & \Warncell bug\tnote{9} & \KOcell 
+			bug\tnote{2}, 
+			bug\tnote{9} & \OKcell & \OKcell & \KOcell bug\tnote{2}\\\MyLine
+			
+			&Multi (vertical)& \OKcell & \Warncell bug\tnote{9} & \KOcell 
+			bug\tnote{2}, bug\tnote{9} & \OKcell & \OKcell & \KOcell 
+			bug\tnote{2}\\\hline
+		\end{tabular}
+		\begin{tablenotes}
+			\item[1] Numbering with option ``ABC" is not recognized by Moodle 
+			after XML 
+			import.
+			\item[2] Any $\backslash$ symbol here breaks \LaTeX{} compilation. 
+			For 
+			instance, this prevents the use of \verb|\includegraphics|, 
+			\verb|\begin| and 
+			\verb|\sqrt|.
+			\item[3] Moodle prompts the student for an answer and then compares 
+			it to the 
+			solutions provided. This is text-only.
+			\item[4] Moodle uses a dropdown list to let one choose among the 
+			possible 
+			answers. This forbids either picture inclusion and \LaTeX{} 
+			rendering.
+			\item[5] Not supported by Moodle (in this context, answer-specific 
+			feedback 
+			represents lots of possible combinations).
+			\item[6] The keyval ``response template", as documented, is broken. 
+			Works if 
+			replaced with ``template".
+			\item[7] For this question type and in the context of XML 
+			generation, the 
+			Answer column represents the ``template" while the Feedback column 
+			represents 
+			the ``notes for the grader". Obviously, the grading process is not 
+			automatic and
+			there is no answer-specific feedback.
+			\item[8] Picture and \LaTeX{} rendering could be done, but only 
+			after 
+			submission and only if the keyval "response format" was set to 
+			``html". 
+			Unfortunately, the \texttt{<p>...</p>} tags introduced, whatever 
+			the response 
+			format is, prevent rendering.
+			\item[9] In the generated XML, the symbol $\}$ is not escaped with 
+			a backslash 
+			as required by the Moodle cloze parser. The XML import will fail 
+			when the field 
+			contains \LaTeX{} code like \verb|\sqrt{...}| and 
+			\verb|\frac{...}{...}|.
+			\item[10] Moodle only reveals the feedback when hovering the 
+			checkmark or X 
+			mark with the mouse.
+			\item[11] When generating an Essay, a note is added to the PDF 
+			saying ``Notes: 
+			(not included in XML)". Instead, the notes are included in the XML 
+			and 
+			available to the grader after import on Moodle.
+			\item[12] In the XML, the pictures included in the question field 
+			and answer or 
+			feedback fields are mixed.
+			\item[13] Moodle's XML import fails with a 
+			\textsf{dmlwriteexception} when the 
+			field content exceeds few hundreds characters. This excludes the 
+			inclusion of 
+			most base64 images and maybe some complicated equations.
+		\end{tablenotes}
+	\end{threeparttable}
+\end{table*}
+
+\subsection{New Features}
+
+Rendering more information in PDF :
+\begin{itemize}
+	\item answer-specific feedbacks (with \LaTeX and images when possible)
+	\item render general feedback (with \LaTeX and images)
+	\item Render question meta-data: type, points, penalty, and other options
+\end{itemize}
+
+New question types :
+\begin{itemize}
+	\item Description
+	\item True/False
+	\item Shuffle options for Multichoice in Cloze
+	\item Multiresponse in Cloze type (for moodle $\geq 3.5$)
+\end{itemize}
+
+Graphics:
+\begin{itemize}
+	\item Optimize PNG to reduce XML file size
+	\item Add option to embed SVG graphics instead of rasterized PNG
+\end{itemize}
+
+Dependencies:
+\begin{itemize}
+	\item Getting rid of the OpenSSL dependency for base64 conversion
+\end{itemize}
+
+Support:
+\begin{itemize}
+	\item Basic support for MacOS
+	\item Option for Moodle's version number (features vary with it)
+\end{itemize}
+
+\subsection{Documenting}
+
+The current documentation (as of version 0.5) does not describe some useful 
+features like \texttt{htmlregister} of \texttt{response template}.
+
+The offered features and limitations should be put more clearly.
+
+\section{Budget}
+
+ENSEA should host the project on a gitlab server and open it to third-party 
+contributions (open source).
+
+ENSEA's contribution to this project should be advertized.
+
+Since the package is currently unmaintained, an ENSEA employee might become 
+official maintainer and developper for the package, even after this project has 
+come to an end.
+
+Moodle's \href{https://github.com/jmvedrine/moodle-qtype_ddmatch}{drag-and-drop 
+matching plugin} is also currently unmaintained and 
+affected by bugs. Since this plugin offers very interesting possibilities of 
+content enrichment for matching questions (impossible with the regular question 
+type), ENSEA could also decide to maintain and develop this plugin.
+
+\section{Expected Outcomes}
+
+\subsection{Outcomes for the Students}
+
+\subsection{Outcomes for the Teachers}
+
+\subsection{Outcomes for ENSEA}
+
+\end{document}
