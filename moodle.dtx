@@ -880,6 +880,7 @@
 \RequirePackage{array}   %For formatting tables in the LaTeX mode of Clozes
 \RequirePackage{ifplatform} % To choose Ghostscript commands
 \RequirePackage{ifpdf} % Needed to know whether we can convert output from PDF to PNG
+\RequirePackage{fancybox} % Needed for fancy LaTeX tags
 
 \RequirePackage{getitems} %To gather the header and items
 
@@ -1516,12 +1517,14 @@
 %    \tikz[baseline]{\node[draw,minimum height=1.2em,rounded corners,fill=black!20] {\tiny #1};}
 %  % Fancy but interferes with the tikzexternalize counter
 %  \else
-    \framebox{\tiny #1}
+    \Ovalbox{\tiny #1}
+    %\ovalbox{\tiny #1}
+    %\shadowbox{\tiny #1}
 %  \fi
 }%
 
 \def\moodle@makelatextag@qtype#1{%
-  \moodle@makelatextagbox{\textsc{#1}}
+  \doublebox{\tiny \textsc{#1}}
 }%
 
 \def\moodle@makelatextag@value#1#2{%
