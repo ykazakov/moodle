@@ -13,7 +13,8 @@
 
 \usepackage{multirow,hhline,colortbl,threeparttable,graphicx,xcolor}
 
-\usepackage[adobe-utopia]{mathdesign} %, uppercase=upright
+\usepackage{lmodern}
+\usepackage{erewhon} %, uppercase=upright
 \usepackage[protrusion=true,expansion]{microtype}
 
 \title{A \LaTeX{} Tool to Develop Content-Rich Moodle Quizzes}
@@ -29,8 +30,8 @@
 
 \section{Context}
 
-This document is a proposal for the project call \emph{création de cours en 
-ligne à contenu enrichi} for the academic year 2018-2019.
+This document is a proposal for the project call ``\emph{création de cours en 
+ligne à contenu enrichi}'' for the academic year 2018-2019.
 
 \subsection{Moodle Quizzes at ENSEA}
 
@@ -85,10 +86,10 @@ targeting common mistakes, errors, and misconceptions. In this case, we believe
 that answer-specific feedback is a very valuable tool.
 
 Third, if the other teaching activities are integrated in Moodle, Moodle 
-quizzes taken as AfL can be made mandatory, possibly with a minimum grade. The 
-achievement of the assessment can be made to trigger unveiling following course 
-contents or activities. The teacher can monitor students advancement and 
-results.
+quizzes taken in the scope of AfL can be made mandatory, possibly with a 
+minimum grade. The achievement of the assessment can be made to trigger 
+unveiling following course contents or activities. The teacher can monitor 
+students advancement and results.
 
 Finally, Moodle's automatic assessment of quizzes offers interesting 
 perspectives for giving regular, detailed and tailored feedback to large 
@@ -138,22 +139,37 @@ Because they are not in use at ENSEA, we do not discuss here the different
 Virtual Learning Environments that have their own format that can be imported 
 by moodle: Blackboard, Examview, Hot Potatoes, Learnwise, WebCT.
 
-First, \href{http://www.vletools.com}{VLE Tools} is a free online service, 
-available after registration. The description of the questions is text-based. 
+First, VLE Tools~\cite{vletools} is a free online service, available after 
+registration. The description of the questions is text-based. 
 Images cannot be imported. There is also a paid service for the conversion of 
 questions from raw material.% \LaTeX{} code?
 
-Second, the tool 
-\href{https://docs.moodle.org/34/en/Word_table_format}{Moodle2Word} is made for 
+Second, the tool Moodle2Word~\cite{moodle2word} is made for 
 the users of Word of the Microsoft Office suite. It allows to export existing 
 Moodle question banks to the Word format for archive and editing purposes, and 
 importing back to Moodle. Images and \LaTeX{} code are supported. It requires 
-the installation of a Moodle plugin.
+the installation of a Moodle plugin. Figure~\ref{fig:moodle2word} shows a 
+question edited with this tool.
 
-Finally, the \href{https://www.ctan.org/pkg/moodle}{\texttt{moodle} \LaTeX\ 
-package} is the Moodle2Word counterpart for \LaTeX{} users. It is capable of 
-dealing with images and, of course, \LaTeX{} code. The conversion works only 
-from \LaTeX{} to XML.
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=.5\textwidth]{moodle2word}
+\caption{Example of a question edited with moodle2word, taken from ``The 
+Marriage of Moodle (and Word)'' by Eoin Campbell}
+\label{fig:moodle2word}
+\end{figure}
+
+Finally, the \texttt{moodle} \LaTeX\ package~\cite{latex2moodle} is the 
+Moodle2Word counterpart for \LaTeX{} users. It is capable of dealing with 
+images and, of course, \LaTeX{} code. The conversion works only from \LaTeX{} 
+to XML. Figure~\ref{fig:latex2moodle} shows questions edited with this tool.
+
+\begin{figure*}[tbp]
+\centering
+\includegraphics[width=\textwidth]{latex2moodle}
+\caption{Example of questions edited with the \LaTeX\ package \texttt{moodle}}
+\label{fig:latex2moodle}
+\end{figure*}
 
 \section{Proposed Working Directions}
 
@@ -292,14 +308,14 @@ inclusion of most base64 images and maybe some complicated equations.
 
 \subsection{Feature Extension}
 
-Rendering more information in PDF :
+\paragraph{Rendering more information in PDF}
 \begin{itemize}
 	\item answer-specific feedbacks (with \LaTeX\ and images when possible)
 	\item render general feedback (with \LaTeX\ and images)
 	\item Render question meta-data: type, points, penalty, and other options
 \end{itemize}
 
-New question types :
+\paragraph{New question types}
 \begin{itemize}
 	\item Description
 	\item True/False
@@ -307,18 +323,18 @@ New question types :
 	\item Multiresponse in Cloze type (for moodle $\geq 3.5$)
 \end{itemize}
 
-Graphics:
+\paragraph{Graphics}
 \begin{itemize}
-	\item Optimize PNG to reduce XML file size
+	\item Optimize PNG graphics to reduce XML file size
 	\item Add option to embed SVG graphics instead of rasterized PNG
 \end{itemize}
 
-Dependencies:
+\paragraph{Dependencies}
 \begin{itemize}
 	\item Getting rid of the OpenSSL dependency for base64 conversion
 \end{itemize}
 
-Support:
+\paragraph{Support}
 \begin{itemize}
 	\item Official support for MacOS
 	\item Option for Moodle's version number (features vary with it)
@@ -335,16 +351,19 @@ The offered features and limitations should be put more clearly.
 
 We request the allocation of 134 working hours (32 HETD) on this project. 
 We do not guarantee that all the goals listed in the previous section will be 
-achieved within a single academic year. There ar two reasons for this:
+achieved within a single academic year. There are three reasons for this:
 \begin{enumerate}
 	\item the amount of work required to reach some of the goals seems very 
 	difficult to evaluate;
-	\item if some new goals with high priority emerge, we will focus on these.
+	\item if some goals finally appear to be of low interest or impossible to 
+	reach, we might abandon them;
+	\item if some new goals emerge, we might focus on these depending on their 
+	priority.
 \end{enumerate}
 If necessary, we will resubmit an updated project next year.
 
-In addition, we foresee efforts that ENSEA could decide to make towards this 
-project:
+In addition, we foresee other efforts that ENSEA could decide to make towards 
+this project:
 \begin{itemize}
 \item Host the project on a gitlab server and open it to third-party 
 contributions (open source).
@@ -352,15 +371,14 @@ contributions (open source).
 \item Since the package is currently unmaintained, an ENSEA employee might 
 become official maintainer and developer for the package, even after this 
 project has come to an end.
-\item Moodle's 
-\href{https://github.com/jmvedrine/moodle-qtype_ddmatch}{drag-and-drop 
-matching plugin} is also currently unmaintained and 
-affected by bugs. Since this plugin offers very interesting possibilities 
-of content enrichment for matching questions (impossible with the regular 
-question type), ENSEA could also decide to maintain and develop this plugin.
+\item Moodle's drag-and-drop matching plugin~\cite{ddmatch} is also currently 
+unmaintained and affected by bugs. Since this plugin offers very interesting 
+possibilities of content enrichment for matching questions (impossible with the 
+regular question type), ENSEA could also decide to maintain and develop this 
+plugin.
 \end{itemize}
 
-\section{Expected Outcomes}
+\section{Expected Outcomes of this Project}
 
 \subsection{Outcomes for the Students}
 
@@ -368,6 +386,12 @@ question type), ENSEA could also decide to maintain and develop this plugin.
 
 \subsection{Outcomes for ENSEA}
 
-\section*{References}
+\begin{thebibliography}{9}
+
+\bibitem{vletools} \url{http://www.vletools.com}
+\bibitem{moodle2word} \url{https://docs.moodle.org/34/en/Word_table_format}
+\bibitem{latex2moodle} \url{https://www.ctan.org/pkg/moodle}
+\bibitem{ddmatch} \url{https://github.com/jmvedrine/moodle-qtype_ddmatch}
+\end{thebibliography}
 
 \end{document}
