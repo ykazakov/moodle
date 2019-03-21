@@ -35,31 +35,44 @@ ligne à contenu enrichi}'' for the academic year 2018-2019.
 
 \subsection{Moodle Quizzes at ENSEA}
 
-ENSEA currently supports the creation of Moodle quizzes. For each teaching 
-module, 67 working hours (16 HETD) are allocated to the mission \emph{création 
-d’outil numérique en lien avec un module d’enseignement}.
+ENSEA currently encourages the creation of Moodle quizzes. For each teaching 
+module, 67 working hours\footnote{i.e.~16 ``\emph{heures équivalant TD}'' 
+(HETD)} are allocated to the operation 
+``\emph{création d’outil numérique en lien avec un module d’enseignement}''.
 
-\subsection{Pedagogical Interests}
+\subsection{Educational Interests}
 
 Assessment for Learning (AfL) is a way to encourage students to be more active 
 in their learning. Its five big principles were identified by the UK Assessment 
 Reform Group in 1999:
-\begin{enumerate}
-	\item provision of effective feedback to students,
-	\item active involvement of students in their own learning,
-	\item adjusting teaching to take account of the results of assessment,
-	\item recognition of the profound influence assessment has on the 
+\begin{enumerate}[P1]
+	\item\label{principle1} provision of effective feedback to students,
+	\item\label{principle2} active involvement of students in their own 
+	learning,
+	\item\label{principle3} adjusting teaching to take account of the results 
+	of assessment,
+	\item\label{principle4} recognition of the profound influence assessment 
+	has on the 
 	motivation and self-esteem of pupils, both of which are critical influences 
 	on learning, and
-	\item need for students to be able to assess themselves and understand how 
+	\item\label{principle5} need for students to be able to assess themselves 
+	and understand how 
 	to improve.
 \end{enumerate}
 
 Moodle quizzes may very well serve in the scope of AfL.
 
-First, Moodle quizzes are quite versatile, with a wide variety of questions. 
-Third-party plugins offer special question types, but by default, the main 
-question types that Moodle supports are:
+First, Moodle can be used as a \emph{Virtual Learning Environment} (VLE). 
+Teaching material, discussion spaces, and activities, among which quizzes, are 
+integrated and can be organized to serve P\ref{principle2}. For instance, a 
+minimum grade to a quizz can be made required to trigger new contents. The 
+teacher can monitor students advancement and results, as required by 
+P\ref{principle3}.
+
+Second, Moodle quizzes are quite versatile. The wide variety of questions 
+offered may serve P\ref{principle1}, P\ref{principle2}, and P\ref{principle5}. 
+Third-party plugins introduce special question types, but by default, the main 
+question types are:
 \begin{itemize}
 \item \emph{Multiple choice} Options are: single or multiple expected 
 answers, shuffled or unshuffled.
@@ -72,37 +85,32 @@ import\dots
 choice, short answer, or numerical questions.
 \end{itemize}
 
-Second, Moodle's quizz questions can offer different levels of feedbacks 
+Third, Moodle's quizz questions can offer different levels of feedbacks 
 to the student:
 \begin{itemize}
 	\item General feedback, displayed whatever the student's answer is;
 	\item Overall feedbacks, that can be tuned for correct, partially correct, 
 	and incorrect responses;
 	\item Answer-specific feedbacks, that depend on the specific answer the 
-	student gives.
+	student gives.\footnote{not available for the matching and essay question 
+	types.}
 \end{itemize}
-Moodle quizzes can be used in teaching to support learning activities by 
-targeting common mistakes, errors, and misconceptions. In this case, we believe 
-that answer-specific feedback is a very valuable tool.
+In particular, the questions can be made to target common mistakes, errors, 
+and misconceptions. In this case, we believe that answer-specific feedback is a 
+very valuable tool in regard to P\ref{principle1} and P\ref{principle2}.
 
-Third, if the other teaching activities are integrated in Moodle, Moodle 
-quizzes taken in the scope of AfL can be made mandatory, possibly with a 
-minimum grade. The achievement of the assessment can be made to trigger 
-unveiling following course contents or activities. The teacher can monitor 
-students advancement and results.
-
-Finally, Moodle's automatic assessment of quizzes offers interesting 
-perspectives for giving regular, detailed and tailored feedback to large 
-cohorts of students.
+Finally, Moodle's automatic assessment of quizzes\footnote{not available for 
+essay questions.} 
+offers interesting perspectives for giving regular, detailed and tailored 
+feedback to large cohorts of students.
 
 \subsection{Frustration of Editing Quizzes on Moodle}
 
-Probably most of the teachers that have tried to create quizzes on Moodle have 
-experienced frustration. This frustration might prevent or limit teachers in 
-the processes of creating or editing such quizzes with the quality and quantity 
-that would be required by AfL. In the \LaTeX{} \texttt{moodle} package 
-documentation, Anders Hendrickson found the words to describe the different 
-shortcomings that teachers encounter:
+Trying to create quizzes on Moodle is an experience of frustration for most 
+instructors. In the process of creating or editing quizzes, this feeling 
+might limit the quality and quantity of AfL. In the \LaTeX{} \texttt{moodle} 
+package documentation, Anders Hendrickson found the words to describe the 
+different shortcomings that teachers encounter:
 \begin{itemize}
 \item \emph{the agonizing slowness of switching between mouse and keyboard to 
 navigate a web form with its myriad dropdown boxes, radio buttons, compounded 
@@ -125,7 +133,8 @@ kept synchronized.}
 To this list, we add our frustration of not being able to:
 \begin{itemize}
 	\item easily make small variations of existing questions
-	\item reuse our own teaching material: images, \LaTeX{} code and macros.
+	\item make easily use of our own teaching material: images, \LaTeX{} code 
+	and macros.
 \end{itemize}
 
 \subsection{Tools Made to Alleviate This Frustration}
@@ -145,7 +154,7 @@ Images cannot be imported. There is also a paid service for the conversion of
 questions from raw material.% \LaTeX{} code?
 
 Second, the tool Moodle2Word~\cite{moodle2word} is made for 
-the users of Word of the Microsoft Office suite. It allows to export existing 
+the users of Microsoft Office suite. It allows to export existing 
 Moodle question banks to the Word format for archive and editing purposes, and 
 importing back to Moodle. Images and \LaTeX{} code are supported. It requires 
 the installation of a Moodle plugin. Figure~\ref{fig:moodle2word} shows a 
@@ -159,10 +168,12 @@ Marriage of Moodle (and Word)'' by Eoin Campbell}
 \label{fig:moodle2word}
 \end{figure}
 
-Finally, the \texttt{moodle} \LaTeX\ package~\cite{latex2moodle} is the 
-Moodle2Word counterpart for \LaTeX{} users. It is capable of dealing with 
-images and, of course, \LaTeX{} code. The conversion works only from \LaTeX{} 
-to XML. Figure~\ref{fig:latex2moodle} shows questions edited with this tool.
+Finally, the \texttt{moodle} \LaTeX\ package~\cite{latex2moodle} can be seen as 
+a Moodle2Word counterpart for \LaTeX{} users. It is capable of dealing with 
+images and, of course, \LaTeX{} code. Contrarily to Moodle2Word, the tool is 
+only made for question banks import on Moodle. Together with the XML file, a 
+PDF for proofreading is generated. Figure~\ref{fig:latex2moodle} shows 
+questions edited with this tool.
 
 \begin{figure*}[tbp]
 \centering
@@ -174,17 +185,18 @@ to XML. Figure~\ref{fig:latex2moodle} shows questions edited with this tool.
 \section{Proposed Working Directions}
 
 With this project, we propose to improve the existing \LaTeX{} package named 
-\texttt{moodle}, currently distributed with version number \texttt{0.5}.
-We tried to reach the author and maintainer of this package with no success. 
-This appear now to be an unmaintained piece of work, mainly developed and 
-tested during one academic semester in 2016.
+\texttt{moodle}, currently distributed with version number \texttt{0.5}. This 
+package was mainly developed and tested during one academic semester, in 2016.
 
-We identified several fields that would require improvement.
+We identified several fields that would require improvement and tried to reach 
+the author and maintainer of this package with no success. This package is 
+\emph{de facto} unmaintained.
 
 \subsection{Bug Fixing}
 
 Table~\ref{tab:2} lists the bugs and limitations that we found are impairing 
-content enrichment with the current package (version \texttt{0.5}).
+content enrichment (images, \LaTeX\ code) with the current package (version 
+\texttt{0.5}).
 
 \begin{table*}[tbp]
 \centering
@@ -308,7 +320,7 @@ inclusion of most base64 images and maybe some complicated equations.
 
 \subsection{Feature Extension}
 
-\paragraph{Rendering more information in PDF}
+\paragraph{Rendering more information in the document for proofreading}
 \begin{itemize}
 	\item answer-specific feedbacks (with \LaTeX\ and images when possible)
 	\item render general feedback (with \LaTeX\ and images)
@@ -349,9 +361,11 @@ The offered features and limitations should be put more clearly.
 
 \section{Budget}
 
-We request the allocation of 134 working hours (32 HETD) on this project. 
-We do not guarantee that all the goals listed in the previous section will be 
-achieved within a single academic year. There are three reasons for this:
+We request the allocation of 134 working hours\footnote{i.e.~32 ``\emph{heures 
+équivalant TD}'' (HETD)} on this project for the academic year 2018-2019. 
+We cannot guarantee that all the goals listed in the previous section will be 
+achieved within this time frame. There are three 
+reasons for this:
 \begin{enumerate}
 	\item the amount of work required to reach some of the goals seems very 
 	difficult to evaluate;
