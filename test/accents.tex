@@ -1,0 +1,47 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = fr_FR
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+%\usepackage{../moodlev5}
+%\usepackage{../moodle}
+\usepackage{moodle}
+
+% à   â   é   è   ë   ê   î      ï   ô   ö   ù   ü   û   ç     œ     æ     å
+% À   Â   É   È   Ë   Ê   Î      Ï   Ô   Ö   Ù   Ü   Û   Ç     Œ     Æ     Å
+% \`a \^a \'e \`e \"e \^e \^{\i} \"i \"o \^o \`u \"u \^u \c{c} \oe{} \ae{} \aa{}
+% \`A \^A \'E \`E \"E \^E \^I    \"I \"O \^O \`U \"U \^U \c{C} \OE{} \AE{} \AA{}
+
+\begin{document}
+
+\section*{Introduction}
+
+Ce document teste le support des accents et ligatures de la langue française 
+dans divers types de questions de quiz.
+
+Les codages UTF8 et \LaTeX{} sont testés.
+
+à   â   é   è   ë   ê   î      ï   ô   ö   ù   ü   û   ç     œ   æ   å\\
+À   Â   É   È   Ë   Ê   Î      Ï   Ô   Ö   Ù   Ü   Û   Ç     Œ   Æ   Å\\
+\`a \^a \'e \`e \"e \^e \^{\i} \"i \"o \^o \`u \"u \^u \c{c} \oe{} \ae{} \aa{}\\
+\`A \^A \'E \`E \"E \^E \^I    \"I \"O \^O \`U \"U \^U \c{C} \OE{} \AE{} \AA{}\\
+\begin{quiz}{Test des accents}
+
+\begin{multi}{Choix Multiple}
+à   â   é   è   ë   ê   î      ï   ô   ö   ù   ü   û   ç     œ   æ   å\\
+À   Â   É   È   Ë   Ê   Î      Ï   Ô   Ö   Ù   Ü   Û   Ç     Œ   Æ   Å\\
+%\`a \^a \'e \`e \"e \^e \^{\i} \"i \"o \^o \`u \"u \^u \c{c} \oe{} \ae{} 
+%\aa{}\\
+%\`A \^A \'E \`E \"E \^E \^I    \"I \"O \^O \`U \"U \^U \c{C} \OE{} \AE{} 
+%\AA{}\\
+\item[] à   â   é   è   ë   ê   î      ï   ô   ö   ù   ü   û   ç     œ   æ   å
+\item* À   Â   É   È   Ë   Ê   Î      Ï   Ô   Ö   Ù   Ü   Û   Ç     Œ   Æ   Å
+%\item \`a \^a \'e \`e \"e \^e \^{\i} \"i \"o \^o \`u \"u \^u \c{c} \oe{} \ae{} 
+%\aa{}
+%\item \`A \^A \'E \`E \"E \^E \^I    \"I \"O \^O \`U \"U \^U \c{C} \OE{} \AE{} 
+%\AA{}
+\end{multi}
+
+\end{quiz}
+
+\end{document}
