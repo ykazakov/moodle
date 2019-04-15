@@ -12,7 +12,7 @@
     <text>Picture test</text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>Moodle's drag and drop match plugin seems flawed by a bug: the contents of an anwser field is limited to a few hundreds characters. Exceeding the limit results in a dmlwriteexception when importing the xml. This prevents the use of most images embedded as base64 and maybe some particularly complicated LaTeX equations.</p>]]></text>
+    <text><![CDATA[<p>Moodle's drag and drop match plugin seems flawed by a bug before version 20190409 (1.6) : the contents of an answer field is limited to a few hundreds characters. Exceeding the limit results in a dmlwriteexception when importing the xml. This prevents the use of most images embedded as base64 and maybe some particularly complicated LaTeX equations.</p>]]></text>
   </questiontext>
   <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>

@@ -58,9 +58,8 @@ bug\tnote{2}, bug\tnote{12}\\\hhline{*{8}{-}}
 &Matching 
 (\href{https://docs.moodle.org/31/en/Drag_and_drop_matching_question_type} 
 {drag-and-drop})
- & \OKcell & \DNAcell bug\tnote{13} & \DNAcell Irrelevant\tnote{5} & \OKcell 
- bug\tnote{12}& \DNAcell bug\tnote{12}, bug\tnote{13}& \DNAcell 
- Irrelevant\tnote{5} \\\hhline{*{8}{-}}
+& \OKcell & \OKcell & \DNAcell Irrelevant\tnote{5} & \OKcell bug\tnote{12}& 
+\KOcell bug\tnote{12} & \DNAcell Irrelevant\tnote{5} \\\hhline{*{8}{-}}
 
 &\href{https://docs.moodle.org/31/en/Essay_question_type}{Essay} 
 \emph{bug\tnote{6}, note\tnote{11}} & \OKcell & \Warncell note\tnote{7}, 
@@ -122,9 +121,11 @@ mark with the mouse.
 available to the grader after import on Moodle.
 \item[12] In the XML, the pictures included in the question field and answer or 
 feedback fields are mixed.
-\item[13] Moodle's XML import fails with a \textsf{dmlwriteexception} when the 
-field content exceeds few hundreds characters. This excludes the inclusion of 
-most base64 images and maybe some complicated equations.
+%\item[13] Moodle's XML import fails with a \textsf{dmlwriteexception} when the 
+%field content exceeds few hundreds characters. This prevents the inclusion of 
+%most base64 images and maybe some complicated equations. -> fixed in version 
+%1.6/7 of the plugin (20190409) :
+%https://github.com/jmvedrine/moodle-qtype_ddmatch/commit/b25e914e2c840b08bc0758c10fcc6645123e21bb
 \end{tablenotes}
 \end{threeparttable}
 \end{table*}
