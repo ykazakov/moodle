@@ -611,8 +611,10 @@
 %     |\begin{tikzpicture}| \\
 %   \end{tabular}
 % \end{center}
-% Single and double quotation marks and the diacritical commands  |\^|, |\'|, |\`|, |\"|, |\~|, and |\H| are also handled,
-% as are the characters |\aa|, |\ae|, |\o|, |\ss|, |\l|, and their capitalizations.
+% Single and double quotation marks, french quotation marks and the diacritical 
+% commands  |\^|, |\'|, |\`|, |\"|, |\~|, |\c|, and |\H| are also handled,
+% as are the characters |\aa|, |\ae|, |\oe|, |\o|, |\ss|, |\l|, and their 
+% capitalizations.
 %   
 % In addition, |<| and |>| will be converted to |&lt;| and |&gt;| \emph{within math mode only}.
 % If they should be typed outside of math mode, they will be passed as typed to
@@ -746,8 +748,8 @@
 %
 %&Matching 
 %(\href{https://docs.moodle.org/31/en/Drag_and_drop_matching_question_type}
-%{dd}) & \OKcell & \DNAcell bug\tnote{2} & \DNAcell 
-%Undef.\tnote{5} & \Warncell bug\tnote{9} & \DNAcell bug\tnote{9}, 
+%{dd}) & \OKcell & \OKcell bug\tnote{2} & \DNAcell 
+%Undef.\tnote{5} & \Warncell bug\tnote{9} & \KOcell bug\tnote{9}, 
 %bug\tnote{2} & \DNAcell Undef.\tnote{5} \\\hhline{*{8}{-}}
 %
 %&\href{https://docs.moodle.org/31/en/Essay_question_type}{Essay}  & \OKcell & 
@@ -777,11 +779,10 @@
 %\begin{tablenotes}
 %\item[1] Moodle only reveals the feedback when hovering the checkmark or X 
 %mark with the mouse.
-%\item[2] The drag-and-drop-matching plugin seems broken. Moodle's XML import 
-%fails with a \textsf{dmlwriteexception} when the field content exceeds few 
-%hundreds characters. This prevents the inclusion of most base64 images and 
-%maybe some complicated equations. See this reported
-%\href{https://github.com/jmvedrine/moodle-qtype_ddmatch/issues/6}{issue}.
+%\item[2] The drag-and-drop-matching plugin seems broken before version 1.6 
+%20190409. Moodle's XML import fails with a \textsf{dmlwriteexception} when 
+%the field content exceeds few hundreds characters. This prevents the inclusion 
+%of most base64 images and maybe some complicated equations.
 %\item[3] Moodle prompts the student for an answer and then compares it to the 
 %solutions provided. This is text-only.
 %\item[4] Moodle uses a dropdown list to let one choose among the possible 
@@ -1122,11 +1123,13 @@
 %    \begin{macrocode}
 %% QUESTIONNAME
       \define@cmdkey{moodle}[moodle@]{questionname}{}%
-      \gdef\moodle@writequestionname{%
-        \writetomoodle[2]{<name>}%
-        \writetomoodle[4]{  <text>\moodle@questionname</text>}%
-        \writetomoodle[2]{</name>}%
-      }%
+%      \gdef\moodle@writequestionname{%
+%        \writetomoodle[2]{<name>}%
+%        \writetomoodle[4]{  <text>\moodle@questionname</text>}%
+%        \writetomoodle[2]{</name>}%
+%      }%
+%\generate@moodle@write@code{questionname}<name>{\moodle@questionname}%
+\generate@moodle@write@html@noptag{questionname}<name>{\moodle@questionname}%
 
 %% QUESTIONTEXT
       %I tried to use questiontext as a key, but it doesn't seem to work.
@@ -3324,6 +3327,23 @@
   \egroup
 }%
 
+%Cedille
+\def\@c{c}\def\@C{C}%
+\html@action@def\c#1{%
+	\bgroup
+	  \def\test@i{#1}%
+	  \ifx\test@i\@c
+	    \def\toadd{\otherampersand ccedil;}%
+	  \else
+	    \ifx\test@i\@C
+	      \def\toadd{\otherampersand Ccedil;}%
+	    \else
+	      \def\toadd{\otherbackslash\otherlbrace#1\otherrbrace}%
+	    \fi
+	  \fi
+	  \xa\g@addto@macro\xa\htmlize@output\xa{\toadd}%
+	\egroup
+}%
 
 %Tilde over a, n, o
 {\catcode`|=3\relax
@@ -3333,6 +3353,7 @@
       {\g@addto@macro\htmlize@output{\otherampersand#1tilde;}}%
       {\xa\g@addto@macro\htmlize@output\xa{\string\~#1}}%
   }%
+
 %    \end{macrocode}
 % 
 % \subsubsection{Command sequences for Expansion}
@@ -3347,6 +3368,8 @@
 \html@def\AA{\&Aring;}%
 \html@def\ae{\&aelig;}%
 \html@def\AE{\&AElig;}%
+\html@def\oe{\&oelig;}%
+\html@def\OE{\&OElig;}%
 \html@def\S{\&sect;}%
 \html@def\euro{\&euro;}%
 \html@def\texteuro{\&euro;}%
@@ -3355,6 +3378,8 @@
 \html@def\ss{\&szlig;}%
 \html@def\l{\&lstrok;}%
 \html@def\L{\&Lstrok;}%
+\html@def\og{\&laquo;}%
+\html@def\fg{\&raquo;}%
 
 % AH CUSTOM MACROS TO EXPAND --- remove these before publishing!
 %\htmlize@record@expand{\inv}%
@@ -3474,7 +3499,7 @@
     \message{moodle.sty:   Converting '#2' to PNG...^^J}%
     \expandafter\immediate\expandafter\write18\expandafter{\cmdline}%
     %Next, optimize
-    \edef\cmdline{\optipng\otherspace -clobber -quiet \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png}
+    \edef\cmdline{\optipng\otherspace -clobber -quiet #2.png}
     \message{moodle.sty:   Optimizing '#2.png'...^^J}%
     \expandafter\immediate\expandafter\write18\expandafter{\cmdline}%
     %Next, convert the PNG to base64 encoding
