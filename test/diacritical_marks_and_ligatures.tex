@@ -1,0 +1,72 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = en_EN
+\documentclass{article}
+%% FOR PDFLATEX
+\usepackage[T1]{fontenc} % necessary
+\usepackage[utf8]{inputenc} % necessary
+%% FOR XELATEX
+%\usepackage{fontspec}
+%%
+\usepackage[french]{babel} % for french quotes
+%\usepackage{moodle}
+%\usepackage{../moodlev5}
+\usepackage{../moodle}
+
+
+\def\UTFdiacriticLC
+{à   â   é   è   ë   ê   î   ï   ô   ö   ù   ü   û   ç  å }
+\def\UTFdiacriticUC
+{À   Â   É   È   Ë   Ê   Î   Ï   Ô   Ö   Ù   Ü   Û   Ç  Å }
+\def\LaTeXdiacriticLC
+{\`a \^a \'e \`e \"e \^e \^i \"i \"o \^o \`u \"u \^u \c{c} \c{s} \c{t} \H{o} 
+\H{u} \aa }
+\def\LaTeXdiacriticUC
+{\`A \^A \'E \`E \"E \^E \^I \"I \"O \^O \`U \"U \^U \c{C} \c{S} \c{T} \H{O} 
+\H{U} \AA }
+
+\def\UTFligaturesLC{œ   æ } % XML is only correct when compiled with xelatex
+\def\UTFligaturesUC{Œ   Æ } % XML is only correct when compiled with xelatex
+\def\LaTeXligaturesLC{\oe\ \ae\ } % XML is only correct when compiled with 
+%xelatex
+\def\LaTeXligaturesUC{\OE\ \AE\ } % XML is only correct when compiled with 
+%xelatex
+
+\htmlregister{\UTFdiacriticLC}
+\htmlregister{\UTFdiacriticUC}
+\htmlregister{\LaTeXdiacriticLC}
+\htmlregister{\LaTeXdiacriticUC}
+\htmlregister{\UTFligaturesLC}
+\htmlregister{\UTFligaturesUC}
+\htmlregister{\LaTeXligaturesLC}
+\htmlregister{\LaTeXligaturesUC}
+
+\begin{document}
+
+\section*{Introduction}
+
+This document is intended to check the support of diacritical marks (accents) 
+and ligatures found in french typesetting.
+
+For most of then, two ways of encoding are tested: UTF8 et \LaTeX{} syntax.
+
+\begin{quiz}{Diacritical marks and ligatures}
+
+\begin{multi}{\UTFdiacriticUC}
+%\UTFligaturesLC \UTFligaturesUC\\ % UTF8-coded ligatures only work with xelatex
+\og\UTFdiacriticLC\\
+\UTFdiacriticUC\fg
+\item[feedback={\UTFdiacriticUC}] \UTFdiacriticLC
+\item[feedback={\UTFdiacriticLC}]* \UTFdiacriticUC
+\end{multi}
+
+\begin{multi}{\LaTeXdiacriticUC}
+\LaTeXligaturesLC \LaTeXligaturesUC\\
+\og\LaTeXdiacriticLC\\
+\LaTeXdiacriticUC\fg
+\item[feedback={\LaTeXdiacriticUC}] \LaTeXdiacriticLC 
+\item[feedback={\LaTeXdiacriticLC}]* \LaTeXdiacriticUC
+\end{multi}
+
+\end{quiz}
+
+\end{document}

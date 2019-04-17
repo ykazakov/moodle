@@ -471,17 +471,19 @@
 % Moodle offers five different ways for students to enter and/or upload their
 % answers to an essay question.  You may choose one of these five options:
 % \begin{description}
-%   \item[{\tt html}] An editor with the ability to format HTML responses
+%   \item[{\ttfamily html}] An editor with the ability to format HTML responses
 %         including markup for italics, boldface, etc.  This is the default.
-%   \item[{\tt file}] A file picker allowing the student to upload a file, such as
-%         a PDF or DOC file, containing the essay.
-%   \item[{\tt html+file}] The same HTML editor as above, but with the ability
-%         to upload files as well.  This permits some students to type answers
-%         directly into the web form, and others to compose their essays in
-%         another program first.
-%   \item[{\tt text}] This editor allows only for entering plain text without any markup.
-%   \item[{\tt monospaced}] This yields a plain text editor, without any markup,
-%         and with a fixed-width font.  This could be useful for entering code snippets, for example.
+%   \item[{\ttfamily file}] A file picker allowing the student to upload a 
+%         file, such as a PDF or DOC file, containing the essay.
+%   \item[{\ttfamily html+file}] The same HTML editor as above, but with the 
+%         ability to upload files as well.  This permits some students to type 
+%         answers directly into the web form, and others to compose their 
+%         essays in another program first.
+%   \item[{\ttfamily text}] This editor allows only for entering plain text 
+%         without any markup.
+%   \item[{\ttfamily monospaced}] This yields a plain text editor, without any 
+%         markup, and with a fixed-width font.  This could be useful for 
+%         entering code snippets, for example.
 % \end{description}
 % 
 % \DescribeMacro{response field lines}
@@ -601,7 +603,7 @@
 %   \begin{tabular}{lll}
 %     |~| & |\#| & |\$| \\
 %     |\&| & |\\| & |\S| \\
-%     |\{| & |\}| & {\tt\catcode`\ =12\relax\catcode`\\=12\relax\ }\\
+%     |\{| & |\}| & {\ttfamily\catcode`\ =12\relax\catcode`\\=12\relax\ }\\
 %     |\emph| & |\textbf| & |\par| \\
 %     |\ldots| & |\dots| & |\relax| \\
 %     |\euro| & |\texteuro| \\
@@ -2589,7 +2591,7 @@
  \catcode`\$=12\gdef\otherdollar{$}%
  \catcode`\%=12\gdef\otherpercent{%}}%
 {\catcode`\ =12\gdef\otherspace{ }}%
-{\tt\catcode`\|=0\catcode`\\=12\relax|gdef|otherbackslash{\}}%
+{\ttfamily\catcode`\|=0\catcode`\\=12\relax|gdef|otherbackslash{\}}%
 {\catcode`\[=1\catcode`\]=2\catcode`\{=12\catcode`\}=12%
  \gdef\otherlbrace[{]\gdef\otherrbrace[}]]
 
@@ -3281,7 +3283,7 @@
     \xa\g@addto@macro\xa\htmlize@output\xa{\othertilde}%
   }%
 
-
+{\catcode`;=12\relax\gdef\othersemicol{;}}
 
 %Diacritical marks over vowels
 {\catcode`|=3\relax
@@ -3291,7 +3293,7 @@
   \g@addto@macro\htmlize@activate@css{%
     \def#1##1{%
       \ifinlist{##1}{\htmlize@vowels}%
-        {\g@addto@macro\htmlize@output{\otherampersand##1#2;}}%
+        {\g@addto@macro\htmlize@output{\otherampersand##1#2\othersemicol}}%
         {\xa\g@addto@macro\htmlize@output\xa{\string#1##1}}%
     }%
   }%
@@ -3307,16 +3309,16 @@
   \bgroup
     \def\test@i{#1}%
     \ifx\test@i\@O
-      \def\toadd{\otherampersand\otherhash337;}%
+      \def\toadd{\otherampersand\otherhash336\othersemicol}%
     \else
       \ifx\test@i\@o
-        \def\toadd{\otherampersand\otherhash337;}%
+        \def\toadd{\otherampersand\otherhash337\othersemicol}%
       \else
-        \ifx\test@i\U
-          \def\toadd{\otherampersand\otherhash368;}%
+        \ifx\test@i\@U
+          \def\toadd{\otherampersand\otherhash368\othersemicol}%
         \else
-          \ifx\test@i\u
-            \def\toadd{\otherampersand\otherhash369;}%
+          \ifx\test@i\@u
+            \def\toadd{\otherampersand\otherhash369\othersemicol}%
           \else
             \def\toadd{\otherbackslash\otherlbrace#1\otherrbrace}%
           \fi
@@ -3327,18 +3329,34 @@
   \egroup
 }%
 
-%Cedille
-\def\@c{c}\def\@C{C}%
+%Cedilla
+\def\@c{c}\def\@C{C}\def\@s{s}\def\@S{S}\def\@t{t}\def\@T{T}%
 \html@action@def\c#1{%
 	\bgroup
 	  \def\test@i{#1}%
 	  \ifx\test@i\@c
-	    \def\toadd{\otherampersand ccedil;}%
+	    \def\toadd{\otherampersand ccedil\othersemicol}%
 	  \else
 	    \ifx\test@i\@C
-	      \def\toadd{\otherampersand Ccedil;}%
+	      \def\toadd{\otherampersand Ccedil\othersemicol}%
 	    \else
-	      \def\toadd{\otherbackslash\otherlbrace#1\otherrbrace}%
+	      \ifx\test@i\@s
+	        \def\toadd{\otherampersand\otherhash351\othersemicol}%
+	      \else
+	        \ifx\test@i\@S
+	          \def\toadd{\otherampersand\otherhash350\othersemicol}%
+	        \else
+	          \ifx\test@i\@t
+	            \def\toadd{\otherampersand\otherhash355\othersemicol}%
+	          \else
+	            \ifx\test@i\@T
+	              \def\toadd{\otherampersand\otherhash354\othersemicol}%
+	            \else
+	              \def\toadd{\otherbackslash\otherlbrace#1\otherrbrace}%
+	            \fi
+	          \fi
+	        \fi
+	      \fi
 	    \fi
 	  \fi
 	  \xa\g@addto@macro\xa\htmlize@output\xa{\toadd}%
@@ -3350,7 +3368,7 @@
  \gdef\htmlize@tilde{A|N|O|a|n|o|}}
 \html@action@def\~#1{%
     \ifinlist{#1}{\htmlize@tilde}%
-      {\g@addto@macro\htmlize@output{\otherampersand#1tilde;}}%
+      {\g@addto@macro\htmlize@output{\otherampersand#1tilde\othersemicol}}%
       {\xa\g@addto@macro\htmlize@output\xa{\string\~#1}}%
   }%
 
@@ -3361,7 +3379,9 @@
 %    \begin{macrocode}
 \html@def\underline#1{<SPAN STYLE="text-decoration: underline;">#1</SPAN>}
 \html@def\emph#1{<EM>#1</EM>}%
+\html@def\textit#1{<I>#1</I>}%
 \html@def\textbf#1{<B>#1</B>}%
+\html@def\texttt#1{<CODE>#1</CODE>}%
 \html@def\blank{____________}%
 \html@def\par{</P><P>}%
 \html@def\aa{\&aring;}%
@@ -3391,7 +3411,7 @@
 
 %    \end{macrocode}
 % 
-% \subsection{Graphics via {\tt\string\includegraphics}}
+% \subsection{Graphics via {\ttfamily\string\includegraphics}}
 % 
 % \subsubsection{External program command lines}
 % We first set up commands for the external programs.
