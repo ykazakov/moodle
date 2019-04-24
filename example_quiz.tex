@@ -29,13 +29,14 @@ This document presents examples of questions that one can make with the
 development.
 
 \begin{quiz}[ % options that apply to all questions
-	points=8, % default 1
+	points=1, % default 1
 %	penalty=0, % penalty in case of wrong attempt (between 0 and 1). Default 0.1
 %	fraction=0, % fraction of points for wrong or partially true answers
-	%feedback={coucou}
+	feedback={this is a generic feedback} % defines a default for generic 
+	%feedbacks
 	] {Example Quiz}
 
-\begin{multi}[points=3,numbering=Alph]{Multiple Choice}
+\begin{multi}[points=3,numbering=Alph,feedback={}]{Multiple Choice}
 % Numbering possibilities:
 % - numbering=alph, alpha, or abc,
 % - numbering=Alph, Alpha, or ABCD,
@@ -51,7 +52,8 @@ put an equation: \[\myequation.\]}] $\frac{1}{4} x^4+C$
 \item[feedback={$\myequation$, \embedaspict{$\sin(x)/x$}}] $51$
 \end{multi}
 
-\begin{multi}[multiple,numbering=roman,shuffle=false,penalty=2]{Multiple Choice}
+\begin{multi}[multiple,numbering=roman,shuffle=false,penalty=2,feedback={that 
+is a general feedback for this question only}]{Multiple Choice}
 Select the following numbers that are prime.
 \item[feedback={it is only divided by 1 and itself!}]* $\sqrt{25}$
 \item[feedback={divided by 2 and 3!}] 6
@@ -182,7 +184,7 @@ Last, a vertical multichoice. Behaves like the standard single multichoice.
 \end{multi}
 
 Here, in the middle, an unexpected equation:
-\[\myequation.\]
+\[\sqrt{\sqrt{x}}.\]
 
 \begin{shortanswer}[case sensitive=true]
 What was Newton's first name?
@@ -214,7 +216,7 @@ let's put an equation: \(\myequation\).}] 11
 \item[fraction=0,feedback={\embedaspict{nope}}] 12
 \item[fraction=0,feedback={Pfff\dots}] 5
 \end{numerical}
-
+ 
 \end{cloze}
 
 \end{quiz}

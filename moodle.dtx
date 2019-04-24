@@ -1546,12 +1546,19 @@
       \item \textbf{\moodle@questionname}\par
       \noindent
       \moodle@makelatextag@qtype{#1}
-      \moodle@makelatextag@value{default grade}{points}
+      \ifnum\csname moodle@default grade\endcsname>1
+        \moodle@makelatextag@value{default grade}{points}
+      \else
+        \moodle@makelatextag@value{default grade}{point}
+      \fi
       \moodle@makelatextag@value{penalty}{penalty}
       #2\par
       \noindent
       \moodle@questionheader
       \csname moodle@#1@latexprocessing\endcsname
+      \ifx\moodle@feedback\@empty\relax\else
+        \emph{$\rightarrow$ \moodle@feedback}
+      \fi
       %Now, writing information to XML
       \@moodle@ifgeneratexml{%
         \xa\questiontext\xa{\moodle@questionheader}% Save the question text.
@@ -1594,12 +1601,19 @@
       \item \textbf{\moodle@questionname}\par
       \noindent
       \moodle@makelatextag@qtype{essay}
-      \moodle@makelatextag@value{default grade}{points}
+      \ifnum\csname moodle@default grade\endcsname>1
+        \moodle@makelatextag@value{default grade}{points}
+      \else
+        \moodle@makelatextag@value{default grade}{point}
+      \fi
       \moodle@makelatextag@value{penalty}{penalty}
       \moodle@makelatextag@key{responseformat}\par
       \noindent
       \moodle@questionheader
       \csname moodle@essay@latexprocessing\endcsname
+      \ifx\moodle@feedback\@empty\relax\else
+        \emph{$\rightarrow$ \moodle@feedback}
+      \fi
     %Now, writing information to memory.
     \@moodle@ifgeneratexml{%
       \xa\questiontext\xa{\moodle@questionheader}% Save the question text.
@@ -2161,10 +2175,17 @@
       \item \textbf{\moodle@questionname}\par
       \noindent
       \moodle@makelatextag@qtype{cloze}
-      \moodle@makelatextag@value{default grade}{points}
+      \ifnum\csname moodle@default grade\endcsname>1
+        \moodle@makelatextag@value{default grade}{points}
+      \else
+        \moodle@makelatextag@value{default grade}{point}
+      \fi
       \moodle@makelatextag@value{penalty}{penalty}\par
       \noindent
       \BODY
+      \ifx\moodle@feedback\@empty\relax\else
+        \emph{$\rightarrow$ \moodle@feedback}%
+      \fi
     %Now, writing information to memory.
     \@moodle@ifgeneratexml{%
       \xa\questiontext\xa{\BODY}% Save the question text as HTML.
