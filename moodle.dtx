@@ -2053,11 +2053,11 @@
 %    \begin{macrocode}
 \let\answer=\hfill
 
-\moodle@makefrontend{matching}{\moodle@makelatextag@mmatching}
+\moodle@makefrontend{matching}{\moodle@makelatextag@matching}
 
 % LATEX PROCESSING
 
-\def\moodle@makelatextag@mmatching{%
+\def\moodle@makelatextag@matching{%
   \csname ifmoodle@draganddrop\endcsname
     \moodle@makelatextagbox{Drag and drop}\relax
   \fi
@@ -2163,8 +2163,6 @@
 % LATEX PROCESSING
 % SAVING ANSWERS TO MEMORY
 
-\define@boolkey{moodle}[moodle@]{parsingcloze}[false]{}%
-
 \NewEnviron{cloze}[2][]{%
   \bgroup
     \setkeys{moodle}{default grade=1}%
@@ -2183,6 +2181,7 @@
       \moodle@makelatextag@value{penalty}{penalty}\par
       \noindent
       \BODY
+      %\csname moodle@cloze@latexprocessing\endcsname
       \ifx\moodle@feedback\@empty\relax\else
         \emph{$\rightarrow$ \moodle@feedback}%
       \fi
@@ -2206,9 +2205,7 @@
 % WRITING QUESTION TO XML FILE
 \gdef\writeclozequestion{%
   \writetomoodle{<question type="cloze">}%
-    \moodleset{parsingcloze=true}%
     \moodle@writecommondata%
-    \moodleset{parsingcloze=false}%
   \writetomoodle{</question>}%
 }%
 %    \end{macrocode}
@@ -2229,7 +2226,7 @@
       \def\moodle@clozemulti@output{}%
       \xa\g@addto@macro\xa\moodle@clozemulti@output\xa{\moodle@questionheader}%
       \def\clozemulti@coding{}%
-      \edef\clozemulti@coding{\otherlbrace\csname moodle@default grade\endcsname:}%
+      \edef\clozemulti@coding{\clozelbrace\csname moodle@default grade\endcsname:}%
       \ifcase\moodle@multi@mode\relax
         % Case 0: dropdown box style
         \g@addto@macro{\clozemulti@coding}{MULTICHOICE}%
@@ -2249,8 +2246,9 @@
         \setkeys{moodle}{feedback={}}%
         \loopthroughitemswithcommand{\saveclozemultichoiceanswer}%
       \egroup
-      \xa\g@addto@macro\xa\clozemulti@coding\xa{\otherrbrace}%
+      \xa\g@addto@macro\xa\clozemulti@coding\xa{\clozerbrace}%
       \xa\g@addto@macro\xa\moodle@clozemulti@output\xa{\clozemulti@coding}%
+      \show\moodle@clozemulti@output
       \xa\gdef\xa\htmlize@afteraction@hook\xa{\moodle@clozemulti@output}%
       \def\endclozemulti@code{\htmlize@patchendenvironment}%
     \else
@@ -2341,6 +2339,15 @@
   \fi
 }%
 
+%%% FROM https://tex.stackexchange.com/a/185752 %%%
+\def\addto#1#2{\expandafter\def\expandafter#1\expandafter{#1#2}}
+\def\replacestrings#1#2{%
+   \def\tmp##1#1##2\end{\ifx\end##2\end\addto\tmpb{##1}\else\addto\tmpb{##1#2}\tmp##2\end\fi}%
+   \expandafter\def\expandafter\tmpb\expandafter{\expandafter}\expandafter\tmp\tmpb#1\end 
+}
+\def\moodle@treatclosingbrace#1{\def\tmpb{#1}\replacestrings{\otherlbrace}{\otherbackslash\otherlbrace}\tmpb}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \def\saveclozemultichoiceanswer#1{%
   \bgroup
     \saveclozemultichoiceanswer@int#1\moodle@answer@rdelim
@@ -2372,8 +2379,6 @@
   \fi
   \xdef\clozemulti@coding{\expandonce\clozemulti@coding\expandonce\moodle@answertext}%
   \ifx\moodle@feedback\@empty\else
-    \trim@spaces@in\moodle@feedback
-%    \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
     \xdef\clozemulti@coding{\expandonce\clozemulti@coding\otherbackslash\otherhash\expandonce\moodle@feedback}%
   \fi
 }%
@@ -2478,8 +2483,7 @@
   \fi
   \xdef\clozenumerical@coding{\expandonce\clozenumerical@coding\moodle@answertext:\moodle@tolerance}%
   \ifx\moodle@feedback\@empty\else
-    \trim@spaces@in\moodle@feedback
-    %\xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
+    %\trim@spaces@in\moodle@feedback
     \xdef\clozenumerical@coding{\expandonce\clozenumerical@coding\otherbackslash\otherhash\expandonce\moodle@feedback}%
   \fi
 }%
@@ -2591,8 +2595,6 @@
   \fi
   \xdef\clozeshortanswer@coding{\expandonce\clozeshortanswer@coding\moodle@answertext}%
   \ifx\moodle@feedback\@empty\else
-    %\trim@spaces@in\moodle@feedback
-    %\xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
     \xdef\clozeshortanswer@coding{\expandonce\clozeshortanswer@coding\otherbackslash\otherhash\expandonce\moodle@feedback}%
   \fi
 }%
@@ -2614,11 +2616,12 @@
 {\catcode`\ =12\gdef\otherspace{ }}%
 {\ttfamily\catcode`\|=0\catcode`\\=12\relax|gdef|otherbackslash{\}}%
 {\catcode`\[=1\catcode`\]=2\catcode`\{=12\catcode`\}=12%
- \gdef\otherlbrace[{]\gdef\otherrbrace[}]]
-
+ \gdef\otherlbrace[{]\gdef\otherrbrace[}]\gdef\clozelbrace[{]\gdef\clozerbrace[}]]
 
 \edef\@otherlbrace{\otherlbrace}%
 \edef\@otherrbrace{\otherrbrace}%
+\edef\@clozelbrace{\clozelbrace}%
+\edef\@clozerbrace{\clozerbrace}%
 \edef\@otherdollar{\otherdollar}%
 \edef\@otherbackslash{\otherbackslash}%
 \edef\@othertilde{\othertilde}%
@@ -2734,8 +2737,6 @@
     #2%
   \fi
 }
-\newcount\moodle@blockdepth
-\moodle@blockdepth=0\relax
 
 \newcount\grouplevel
 
@@ -2815,6 +2816,43 @@
   \ifx\test@i\@@htmlize@stop
     \let\htmlize@next@i=\relax
   \else
+    \ifx\test@i\@clozelbrace%
+      \xa\g@addto@macro\xa\htmlize@output\xa{\otherlbrace}%
+\bgroup
+        \normalcatcodes
+        %We need to rescan the input as TeX code,
+        % so TeX can automatically pull off the first group in braces.
+        % First, let's get rid of the terminal \@htmlize@stop codes.
+        {\def\@htmlize@stop{}\xdef\htmlize@scrap{#1#2#3}}%
+        \let\htmlize@text@to@rescan=\htmlize@scrap%
+        % Next, we retokenize the code.
+        \xa\retokenizenormal@to@macro\xa\htmlize@rescanned\xa{\htmlize@text@to@rescan}%
+        % Now break it up into two pieces.
+        \xa\htmlize@grabblock\htmlize@rescanned\@htmlize@stop\htmlize@rdelim@ii%
+        % The first piece, \htmlize@blockinbraces, will be passed as a unit to \converttohtml@int.
+        % The second part, \htmlize@remainder, will continue at this depth of grouping.
+        % Therefore we'll detokenize \htmlize@remainder here.
+        \xa\ultradetokenize@to@macro\xa\htmlize@remainder@detokenized\xa{\htmlize@remainder}%
+        \edef\htmlize@remainder@detokenized{\xa\htmlize@remove@stopcode\htmlize@remainder@detokenized}%
+        % 
+        % Now build \htmlize@next@i.
+        % When done, should look like
+        %   \converttohtml@int{\htmlize@blockinbraces}%
+        %   \g@addto@macro\htmlize@output{\otherrbrace}%
+        %   \htmlize@recursive@i\htmlize@remainder@detokenized\@htmlize@stop\@htmlize@stop\@htmlize@stop\htmlize@rdelim@i%
+        % but with all three arguments expanded.
+        % Note that we are running
+        \gdef\htmlize@scrap{\converttohtml@int}%
+        \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\htmlize@blockinbraces}}%
+        \g@addto@macro\htmlize@scrap{\g@addto@macro\htmlize@output}%
+        \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\otherrbrace}}%
+        \g@addto@macro\htmlize@scrap{\htmlize@recursive@i}%
+        \xa\g@addto@macro\xa\htmlize@scrap\xa{\htmlize@remainder@detokenized\@htmlize@stop\@htmlize@stop\@htmlize@stop\htmlize@rdelim@i}%
+        % Okay, that's done.  It's stored in a global macro.
+        % Now we get it out of this group.
+      \egroup
+      \let\htmlize@next@i=\htmlize@scrap
+    \else
     \ifx\test@i\@otherlbrace%
       \xa\g@addto@macro\xa\htmlize@output\xa{\otherlbrace}%
       \bgroup
@@ -2841,21 +2879,10 @@
         %   \htmlize@recursive@i\htmlize@remainder@detokenized\@htmlize@stop\@htmlize@stop\@htmlize@stop\htmlize@rdelim@i%
         % but with all three arguments expanded.
         % Note that we are running
-        \gdef\htmlize@scrap{\global\advance\moodle@blockdepth by 1\relax\converttohtml@int}%
-        \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\htmlize@blockinbraces}\global\advance\moodle@blockdepth by -1\relax}%
+        \gdef\htmlize@scrap{\converttohtml@int}%
+        \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\htmlize@blockinbraces}}%
         \g@addto@macro\htmlize@scrap{\g@addto@macro\htmlize@output}%
-        \ifmoodle@parsingcloze
-          
-          %\edef\ds{Block depth '\xa\string\the\moodle@blockdepth'}\show\ds
-          \ifnum\moodle@blockdepth>0\relax
-            \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\otherbackslash\otherrbrace}}%
-          \else
-            \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\otherrbrace}}%
-          \fi
-          %\global\advance\moodle@blockdepth by -1\relax
-        \else
-          \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\otherrbrace}}%
-        \fi
+        \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\otherrbrace}}%
         \g@addto@macro\htmlize@scrap{\htmlize@recursive@i}%
         \xa\g@addto@macro\xa\htmlize@scrap\xa{\htmlize@remainder@detokenized\@htmlize@stop\@htmlize@stop\@htmlize@stop\htmlize@rdelim@i}%
         % Okay, that's done.  It's stored in a global macro.
@@ -3055,6 +3082,7 @@
         \fi
       \fi
     \fi
+\fi
   \fi
   \htmlize@next@i
 }%
@@ -3316,6 +3344,7 @@
 \html@action@def\clozetilde{%
     \xa\g@addto@macro\xa\htmlize@output\xa{\othertilde}%
   }%
+
 
 {\catcode`;=12\relax\gdef\othersemicol{;}}
 
