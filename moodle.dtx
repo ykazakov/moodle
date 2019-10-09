@@ -878,7 +878,8 @@
 \RequirePackage{xpatch}  %To patch commands easily in HTML mode
 \RequirePackage{array}   %For formatting tables in the LaTeX mode of Clozes
 \RequirePackage{ifplatform} % To choose Ghostscript commands
-\RequirePackage{ifpdf} % Needed to know whether we can convert output from PDF to PNG
+\RequirePackage{ifpdf} % Needed to know whether we can convert output from PDF to PNG, also needed to know when output pdf is latin1-encoded
+\RequirePackage{ifxetex} % Needed to know when output xml is utf8-encoded
 \RequirePackage{fancybox} % Needed for fancy LaTeX tags
 
 \RequirePackage{getitems} %To gather the header and items
@@ -925,7 +926,16 @@
 \newwrite\moodle@outfile
 \def\openmoodleout{%
   \immediate\openout\moodle@outfile=\outputfilename\relax
-  \writetomoodle{<?xml version="1.0" encoding="UTF-8"?>}%
+  \ifpdf % pdflatex or luatex in pdf mode ?
+  	\writetomoodle{<?xml version="1.0" encoding="iso-8859-1"?>}%
+  \else
+  	\ifxetex % xelatex
+  		\writetomoodle{<?xml version="1.0" encoding="UTF-8"?>}%
+  	\else % what shall we do?
+  		\writetomoodle{<?xml version="1.0" encoding="UTF-8"?>}%
+  		%\stop
+  	\fi
+  \fi
   \writetomoodle{<quiz>}%
   \writetomoodle{ }%
 }%

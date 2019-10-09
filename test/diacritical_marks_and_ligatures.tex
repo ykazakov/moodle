@@ -26,10 +26,8 @@
 
 \def\UTFligaturesLC{œ   æ } % XML is only correct when compiled with xelatex
 \def\UTFligaturesUC{Œ   Æ } % XML is only correct when compiled with xelatex
-\def\LaTeXligaturesLC{\oe\ \ae\ } % XML is only correct when compiled with 
-%xelatex
-\def\LaTeXligaturesUC{\OE\ \AE\ } % XML is only correct when compiled with 
-%xelatex
+\def\LaTeXligaturesLC{\oe\ \ae\ }
+\def\LaTeXligaturesUC{\OE\ \AE\ }
 
 \htmlregister{\UTFdiacriticLC}
 \htmlregister{\UTFdiacriticUC}
@@ -52,9 +50,10 @@ For most of them, two ways of encoding are tested: UTF8 et \LaTeX{} syntax.
 \begin{quiz}{Diacritical marks and ligatures}
 
 \begin{multi}{\UTFdiacriticUC}
-%\UTFligaturesLC \UTFligaturesUC\\ % UTF8-coded ligatures only work with xelatex
-\og\UTFdiacriticLC\\
-\UTFdiacriticUC\fg
+%«\UTFligaturesLC \UTFligaturesUC»\\ % UTF8-coded ligatures and french quotes 
+%%only work with xelatex
+\UTFdiacriticLC\\
+\UTFdiacriticUC
 \item[feedback={\UTFdiacriticUC}] \UTFdiacriticLC
 \item[feedback={\UTFdiacriticLC}]* \UTFdiacriticUC
 \end{multi}
