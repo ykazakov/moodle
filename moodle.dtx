@@ -31,7 +31,9 @@
 %</package>
 %
 %<*driver>
-\documentclass{ltxdoc}
+\documentclass[a4paper]{ltxdoc}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage{moodle}
 \usepackage{amssymb}
 \usepackage{fancyvrb}
@@ -803,6 +805,46 @@
 %\end{threeparttable}
 %\end{table*}
 %
+% Table~\ref{tab:3} describes the current support for some special characters 
+% accents and other diacritical marks.
+%
+%\begin{table*}[tbp]
+%\centering
+%\small
+%\begin{tabular}{|cc|cc||cc|cc|}
+% \multicolumn{2}{|c|}{Input type} & \multicolumn{2}{c||}{Engine support}&
+% \multicolumn{2}{c|}{Input type} & \multicolumn{2}{c|}{Engine support}\\
+% Unicode & \LaTeX\ & xe\LaTeX\ & pdf\LaTeX & Unicode & \LaTeX\ & xe\LaTeX\ & 
+% pdf\LaTeX\\\hline
+% \`a & \verb|\`a| & both & both & \`A & \verb|\`A| & both & both\\
+% \^a & \verb|\^a| & both & both & \^A & \verb|\^A| & both & both\\
+% \'e & \verb|\'e| & both & both & \'E & \verb|\'E| & both & both\\
+% \`e & \verb|\`e| & both & both & \`E & \verb|\`E| & both & both\\
+% \"e & \verb|\"e| & both & both & \"E & \verb|\"E| & both & both\\
+% \^e & \verb|\^e| & both & both & \^E & \verb|\^E| & both & both\\
+% \^i & \verb|\^i| & both & both & \^I & \verb|\^I| & both & both\\
+% \"i & \verb|\"i| & both & both & \"I & \verb|\"I| & both & both\\
+% \"o & \verb|\"o| & both & both & \"O & \verb|\"O| & both & both\\
+% \^o & \verb|\^o| & both & both & \^O & \verb|\^O| & both & both\\
+% \`u & \verb|\`u| & both & both & \`U & \verb|\`U| & both & both\\
+% \"u & \verb|\"u| & both & both & \"U & \verb|\"U| & both & both\\
+% \^u & \verb|\^u| & both & both & \^U & \verb|\^U| & both & both\\
+% \c{c} & \verb|\c{c}| & both & both & \c{C} & \verb|\c{C}| & both & both\\
+% \c{s} & \verb|\c{s}| & both & \LaTeX & \c{S} & \verb|\c{S}| & both & \LaTeX\\
+% \c{t} & \verb|\c{t}| & both & \LaTeX & \c{T} & \verb|\c{T}| & both & \LaTeX\\
+% \H{o} & \verb|\H{o}| & both & \LaTeX & \H{O} & \verb|\H{O}| & both & \LaTeX\\
+% \H{u} & \verb|\H{u}| & both & \LaTeX & \H{U} & \verb|\H{U}| & both & \LaTeX\\
+% \aa & \verb|\aa| & both & both & \AA & \verb|\AA| & both & both\\
+% \ae & \verb|\ae| & both & \LaTeX & \AE & \verb|\AE| & both & \LaTeX\\
+% \oe & \verb|\oe| & both & \LaTeX & \OE & \verb|\OE| & both & \LaTeX\\
+% « & \verb|\og| & both & \LaTeX & » & \verb|\fg| & both & \LaTeX\\
+%\end{tabular}
+% \caption{Support for special characters, accents and other diacritical marks 
+% with an UTF8-coded \TeX~document compiled with pdf\TeX\ (packages 
+% \texttt{inputenc} with option \texttt{utf8} and \texttt{fontenc} with option
+% \texttt{T1}) or xe\TeX\ (package \texttt{fontspec} ) }
+% \label{tab:3}
+% \end{table*}
 % Some features of Moodle quizzes have not yet been implemented in \textsf{moodle.sty}.
 % Here is a non-exhaustive list.
 % \begin{itemize}

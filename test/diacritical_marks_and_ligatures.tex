@@ -1,22 +1,22 @@
 % !TeX encoding = UTF-8
 % !TeX spellcheck = en_US
 \documentclass{article}
-%% FOR PDFLATEX
-\usepackage[T1]{fontenc} % necessary
-\usepackage[utf8]{inputenc} % necessary
-%% FOR XELATEX
-%\usepackage{fontspec}
-%%
-\usepackage[french]{babel} % for french quotes
-%\usepackage{moodle}
-%\usepackage{../moodlev5}
+
 \usepackage{../moodle}
 
+\ifxetex % FOR XELATEX
+	\usepackage{fontspec}
+\else %% FOR PDFLATEX
+	\usepackage[utf8]{inputenc} % necessary
+	\usepackage[T1]{fontenc} % necessary
+\fi
+
+\usepackage[french]{babel} % for french quotes
 
 \def\UTFdiacriticLC
-{à   â   é   è   ë   ê   î   ï   ô   ö   ù   ü   û   ç  å }
+{à   â   é   è   ë   ê   î   ï   ô   ö   ù   ü   û   ç ş ţ ő ű å }
 \def\UTFdiacriticUC
-{À   Â   É   È   Ë   Ê   Î   Ï   Ô   Ö   Ù   Ü   Û   Ç  Å }
+{À   Â   É   È   Ë   Ê   Î   Ï   Ô   Ö   Ù   Ü   Û   Ç Ş Ţ Ő Ű Å }
 \def\LaTeXdiacriticLC
 {\`a \^a \'e \`e \"e \^e \^i \"i \"o \^o \`u \"u \^u \c{c} \c{s} \c{t} \H{o} 
 \H{u} \aa }
@@ -47,20 +47,20 @@ and ligatures found in french typesetting.
 
 For most of them, two ways of encoding are tested: UTF8 et \LaTeX{} syntax.
 
-\begin{quiz}{Diacritical marks and ligatures}
+\begin{quiz}[points=1]{Diacritical marks and ligatures}
 
 \begin{multi}{\UTFdiacriticUC}
-%«\UTFligaturesLC \UTFligaturesUC»\\ % UTF8-coded ligatures and french quotes 
-%%only work with xelatex
+«~\UTFligaturesLC \UTFligaturesUC»\\ % only xelatex produces an adequate XML
+%when using UTF8-coded ligatures and french quotes
 \UTFdiacriticLC\\
 \UTFdiacriticUC
 \item[feedback={\UTFdiacriticUC}] \UTFdiacriticLC
 \item[feedback={\UTFdiacriticLC}]* \UTFdiacriticUC
 \end{multi}
 
-\begin{multi}{\LaTeXdiacriticUC}
-\LaTeXligaturesLC \LaTeXligaturesUC\\
-\og\LaTeXdiacriticLC\\
+\begin{multi}{\LaTeXdiacriticUC} % Here both pdflatex and xelatex should work
+\og\LaTeXligaturesLC \LaTeXligaturesUC\fg\\
+\LaTeXdiacriticLC\\
 \LaTeXdiacriticUC\fg
 \item[feedback={\LaTeXdiacriticUC}] \LaTeXdiacriticLC 
 \item[feedback={\LaTeXdiacriticLC}]* \LaTeXdiacriticUC
