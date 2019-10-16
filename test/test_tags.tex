@@ -18,15 +18,16 @@
 This document is intended to check the support of tags (i.e. keywords). The 
 definition of multiple tags per question is currently unsupported.
 
-\begin{quiz}[points=1]{Moodle tags}
+\begin{quiz}[points=1,tags={quizz-level}]{Moodle tags}
 
-\begin{multi}[tags={multi}]{multi 1}
+\begin{multi}[tags={question-level}]{multi 1}
 A
 \item B
 \item* C
 \end{multi}
 
-\begin{multi}[tags={}]{multi 2}
+\begin{multi}[tags={} % no tag 
+						]{multi 2}
 D
 \item E
 \item* F
