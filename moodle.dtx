@@ -294,6 +294,17 @@
 % question, then that feedback will appear to each student regardless of the student's answer.
 % Answer-specific feedback (perhaps explaining a common mistake)
 % may also be given by setting the |feedback| key \emph{at the individual answer}.
+%
+% \DescribeMacro{tags}
+% The |tags| key sets a keyword for the question that will be taken into account by moodle for
+% filtering purposes or classification of questions inside the question bank. It is possible
+% for instance to build a quizz with questions cherry-picked among the set of questions holding
+% a particular tag.
+% For example, one might set 
+% \begin{center}
+%   |tags={easy}|
+% \end{center}
+% The desired tag should be included in braces.
 % 
 % \subsection{Question Types}
 % 
@@ -853,7 +864,7 @@
 %   \item Calculated questions; that is, automatically generated numerical questions 
 %         using randomly chosen numbers.
 %   \item Hints
-%   \item Keywords
+%   \item Multiple keywords (tags) for questions
 %   \item So-called ``description'' questions.
 % \end{itemize}
 % I have used Version 0.5 for one semester's teaching,
