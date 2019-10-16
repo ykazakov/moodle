@@ -1168,6 +1168,21 @@
   }%
 }%
 
+\def\generate@moodle@write@tags#1{%
+  % #1 = NAME for \moodle@writeNAME
+  % #3 = what, exactly, to write
+  \xa\gdef\csname moodle@writetags\endcsname{%
+    %\xa\xa\xdef\xa\xa\ds\xa\xa{Encountered '\string #1'}\show\ds
+    \xa\xdef\xa\test@iii\xa{\moodle@tags}%
+		\ifx\test@iii\@moodle@empty\relax\else
+		\xa\converttohtmlmacro\xa\moodle@htmltowrite\xa{\moodle@tags}%
+		\writetomoodle[2]{  <tags>}%
+		\writetomoodle[4]{    <tag><text><![CDATA[\moodle@htmltowrite]]></text></tag>}%
+		\writetomoodle[2]{  </tags>}%
+		\fi
+  }%
+}%
+
 %    \end{macrocode}
 % \subsubsection{Keys for all question types}
 %    \begin{macrocode}
@@ -1237,7 +1252,14 @@
   \moodle@writehidden%
 }%
 
-% TO DO: 'tags' (i.e., keywords)
+%% TAGS
+      %The next line creates \moodle@tags,
+      %which defines a "tag" (i.e., keyword) for the question.
+      %Key calls like [tags={random}] set \moodle@tags.
+      \define@cmdkey{moodle}[moodle@]{tags}[]{}%
+      \generate@moodle@write@tags{\csname moodle@tags\endcsname}%
+      \moodleset{tags}%
+% TO DO: handle multiple 'tags' for one question
 
 %    \end{macrocode}
 % \subsubsection{Keys for all answers}
@@ -1737,6 +1759,7 @@
     \moodle@writeattachmentsrequired%
     \moodle@writeanswers% The 'answers' XML really contains the grader info.
     \moodle@writeresponsetemplate%
+    \moodle@writetags
   \writetomoodle{</question>}%
 }%
 
@@ -1870,6 +1893,7 @@
     \moodle@writecommondata%
     \moodle@writeusecase%
     \moodle@writeanswers%
+    \moodle@writetags
   \writetomoodle{</question>}%
 }%
 %    \end{macrocode}
@@ -1944,6 +1968,7 @@
   \writetomoodle{<question type="numerical">}%
     \moodle@writecommondata%
     \moodle@writeanswers%
+    \moodle@writetags
   \writetomoodle{</question>}%
 }%
 %    \end{macrocode}
@@ -2096,6 +2121,7 @@
     \moodle@writeshuffle%
     \moodle@writeanswernumbering%
     \moodle@writeanswers%
+    \moodle@writetags
   \writetomoodle{</question>}%
 }%
 %    \end{macrocode}
@@ -2191,6 +2217,7 @@
     \moodle@writeshuffle%
     \moodle@writeanswernumbering%
     \moodle@writeanswers%
+    \moodle@writetags
   \writetomoodle{</question>}%
 %  \gdef\moodle@answ
 }%
@@ -2258,6 +2285,7 @@
 \gdef\writeclozequestion{%
   \writetomoodle{<question type="cloze">}%
     \moodle@writecommondata%
+    \moodle@writetags
   \writetomoodle{</question>}%
 }%
 %    \end{macrocode}

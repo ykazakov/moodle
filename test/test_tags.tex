@@ -1,0 +1,43 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = en_US
+\documentclass{article}
+
+\usepackage{../moodle}
+
+\ifxetex % FOR XELATEX
+	\usepackage{fontspec}
+\else %% FOR PDFLATEX
+	\usepackage[utf8]{inputenc} % necessary
+	\usepackage[T1]{fontenc} % necessary
+\fi
+
+\begin{document}
+
+\section*{Introduction}
+
+This document is intended to check the support of tags (i.e. keywords). The 
+definition of multiple tags per question is currently unsupported.
+
+\begin{quiz}[points=1]{Moodle tags}
+
+\begin{multi}[tags={multi}]{multi 1}
+A
+\item B
+\item* C
+\end{multi}
+
+\begin{multi}[tags={}]{multi 2}
+D
+\item E
+\item* F
+\end{multi}
+
+\begin{multi}[tags={éçö}]{multi 3}
+G
+\item H
+\item* I
+\end{multi}
+
+\end{quiz}
+
+\end{document}
