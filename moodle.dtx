@@ -713,11 +713,6 @@
 %         The command line is presumed to be |optipng|, but can be changed with
 %         \DescribeMacro{\optipngcommand}
 %         |\optipngcommand|\marg{executable filename}.
-%   \item Finally, the OpenSSL toolkit (\url{www.openssl.org}) is used to base64-encode 
-%         the PNG file so that it can be included directly in the text of the XML file.
-%         The command line is presumed to be |openssl|, but can be changed with
-%         \DescribeMacro{\opensslcommand}
-%         |\opensslcommand|\marg{executable filename}.
 % \end{enumerate}
 % 
 % Please note the following vital points to make the graphics handling work:
@@ -726,7 +721,7 @@
 %         with |pdflatex|.  Including PS graphics or using \TikZ\ with the DVI$\to$PS workflow is not
 %         yet supported.
 %   \item Filenames should not contains spaces or special characters like |_| or |\|.
-%   \item You must have Ghostscript, ImageMagick, OptiPNG, and OpenSSL installed on your system
+%   \item You must have Ghostscript, ImageMagick, and OptiPNG installed on your system
 %         to fully use the graphics-handling capabilities of \textsf{moodle.sty}.
 %   \item \LaTeX\ must be able to call system commands; that is, |\write18| must be enabled.
 %         For Mik\TeX, this means adding |--enable-write18| to the command line of |pdflatex|;
@@ -3642,7 +3637,6 @@
 }
 
 \def\ghostscriptcommand{\htmlize@setexecutable\gs}
-\def\opensslcommand{\htmlize@setexecutable\openssl}
 \def\imagemagickcommand{\htmlize@setexecutable\htmlize@imagemagick@convert}
 \def\optipngcommand{\htmlize@setexecutable\optipng}
 
@@ -3652,7 +3646,6 @@
   \ghostscriptcommand{gs}%
 \fi%
 
-\opensslcommand{openssl}%
 \imagemagickcommand{convert}%
 \optipngcommand{optipng}
 %    \end{macrocode}
@@ -3738,10 +3731,14 @@
     \expandafter\immediate\expandafter\write18\expandafter{\cmdline}%
     %Next, convert the PNG to base64 encoding
     \ifwindows
-      \def\cmdline{\openssl\otherspace enc -base64 -in #2.png -out #2.enc}%
-      % TODO and test: remove the openssl dependency with "certutil -encode raw.txt encoded.txt" %
+      \def\cmdline{certutil -encode #2.png tmp.b64 && findstr /vbc:"---" tmp.b64 > #2.enc && del tmp.b64"}%
+      % Starting from Windows 7, CertUtils is included by default. There should be no windows XP still running
     \else
-      \def\cmdline{base64 #2.png > #2.enc}
+      \ifmacosx
+        \def\cmdline{base64 -i #2.png -o #2.enc}
+      \else % Linux, Cygwin
+        \def\cmdline{base64 #2.png > #2.enc}
+      \fi
       % base64 is part of coreutils, add "-w 64" to get exactly the previous behavior  %
     \fi
     \message{moodle.sty:   Converting '#2.png' to base64...^^J}%
@@ -3821,13 +3818,18 @@
     \def\pngoptim{\edef\cmdline{\optipng\otherspace -clobber -quiet \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png}%
       \expandafter\immediate\expandafter\write18\expandafter{\cmdline}}%
     \ifwindows
-      \def\pngtobaselxiv{\edef\opensslcmdline{\openssl\otherspace enc -base64 -in \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -out \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
-                       \expandafter\immediate\expandafter\write18\expandafter{\opensslcmdline}}
-      % TODO and test: remove the openssl dependency with "certutil -encode raw.txt encoded.txt" %
+      \def\pngtobaselxiv{\edef\encodecmdline{certutil -encode \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png tmp.b64 && findstr /vbc:"---" tmp.b64 > \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc && del tmp.b64}%
+                       \expandafter\immediate\expandafter\write18\expandafter{\encodecmdline}}
+      % Starting from Windows 7, CertUtils is included by default. There should be no windows XP still running
     \else
-      \def\pngtobaselxiv{\edef\opensslcmdline{base64 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png > \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
-                       \expandafter\immediate\expandafter\write18\expandafter{\opensslcmdline}}
+      \ifmacosx
+        \def\pngtobaselxiv{\edef\encodecmdline{base64 -i \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -o \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
+                       \expandafter\immediate\expandafter\write18\expandafter{\encodecmdline}}
+      \else
+        \def\pngtobaselxiv{\edef\encodemdline{base64 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png > \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
+                       \expandafter\immediate\expandafter\write18\expandafter{\encodecmdline}}
       % base64 is part of coreutils, add "-w 64" to get exactly the previous behavior %
+      \fi
     \fi
     
     \let\moodle@oldtikzpicture=\tikzpicture
