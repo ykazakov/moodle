@@ -2348,17 +2348,30 @@
       \xa\g@addto@macro\xa\moodle@clozemulti@output\xa{\moodle@questionheader}%
       \def\clozemulti@coding{}%
       \edef\clozemulti@coding{\clozelbrace\csname moodle@default grade\endcsname:}%
-      \ifcase\moodle@multi@mode\relax
-        % Case 0: dropdown box style
+      \ifmoodle@multiple
+        \PackageWarning{moodle}{Cloze Multiresponse only supported by Moodle 3.7+}
+        \g@addto@macro{\clozemulti@coding}{MULTIRESPONSE}%
+      \else
         \g@addto@macro{\clozemulti@coding}{MULTICHOICE}%
+      \fi
+      \ifcase\moodle@multi@mode\relax
+         % Case 0: dropdown box style
+         \ifmoodle@shuffle
+           \g@addto@macro{\clozemulti@coding}{_}%
+         \fi
       \or
         % Case 1: vertical style
-        \g@addto@macro{\clozemulti@coding}{MULTICHOICE_V}%
+        \ifmoodle@multiple
+          \PackageError{moodle}{Cloze Multiresponse not supporting the vertical mode as of Moodle 3.7}
+        \else
+          \g@addto@macro{\clozemulti@coding}{_V}%
+        \fi
       \else
         % Case 2: horizontal radio buttons
-        \g@addto@macro{\clozemulti@coding}{MULTICHOICE_H}%
+        \g@addto@macro{\clozemulti@coding}{_H}%
       \fi
       \ifmoodle@shuffle
+        \PackageWarning{moodle}{Cloze Multi Suffling only supported by Moodle 3.0+}
         \g@addto@macro{\clozemulti@coding}{S:}%
       \else
         \g@addto@macro{\clozemulti@coding}{:}%
