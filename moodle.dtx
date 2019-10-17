@@ -1243,7 +1243,7 @@
       \define@cmdkey{moodle}[moodle@]{feedback}[]{}%
       \generate@moodle@write@code{generalfeedback}<generalfeedback>{\moodle@feedback}%
       \generate@moodle@write@code{feedback}<feedback>{\moodle@feedback}%
-      \moodleset{feedback}%
+      \moodleset{feedback={}}%
 
 %% DEFAULT GRADE
       %The next line creates \moodle@defaultgrade,
@@ -1646,10 +1646,8 @@
       #2\par
       \noindent
       \moodle@questionheader
+      \edef\moodle@generalfeedback{\moodle@feedback}
       \csname moodle@#1@latexprocessing\endcsname
-      \ifx\moodle@feedback\@empty\relax\else
-        \emph{$\rightarrow$ \moodle@feedback}
-      \fi
       %Now, writing information to XML
       \@moodle@ifgeneratexml{%
         \xa\questiontext\xa{\moodle@questionheader}% Save the question text.
@@ -1681,6 +1679,11 @@
       \loopthroughitemswithcommand{\moodle@print@essay@answer}%
     \end{itemize}%
   \fi
+  \ifx\moodle@generalfeedback\@empty\relax\else%
+    \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%  
+      \item[$\rightarrow$] General feedback: \emph{\moodle@generalfeedback}
+    \end{itemize}%
+  \fi
 }
 
 \NewEnviron{essay}[2][]{%
@@ -1701,10 +1704,8 @@
       \moodle@makelatextag@key{responseformat}\par
       \noindent
       \moodle@questionheader
+      \edef\moodle@generalfeedback{\moodle@feedback}
       \csname moodle@essay@latexprocessing\endcsname
-      \ifx\moodle@feedback\@empty\relax\else
-        \emph{$\rightarrow$ \moodle@feedback}
-      \fi
     %Now, writing information to memory.
     \@moodle@ifgeneratexml{%
       \xa\questiontext\xa{\moodle@questionheader}% Save the question text.
@@ -1776,7 +1777,7 @@
     \moodle@writeattachmentsrequired%
     \moodle@writeanswers% The 'answers' XML really contains the grader info.
     \moodle@writeresponsetemplate%
-    \moodle@writetags
+    \moodle@writetags%
   \writetomoodle{</question>}%
 }%
 
@@ -1786,6 +1787,7 @@
 
 
 \def\moodle@savegraderinfo#1{%
+  %\def\ds{#1}\show\ds
   \bgroup
     \moodle@savegraderinfo@int#1\moodle@answer@rdelim
     \passvalueaftergroup{\moodle@answers@xml}%
@@ -1796,7 +1798,8 @@
   \moodle@savegraderinfo@int@int%
 }%
 \def\moodle@savegraderinfo@int@int#1\moodle@answer@rdelim{%
-  \xa\converttohtmlmacro\xa\moodle@answertext@html\xa{#1}%
+  \def\moodle@answertext{#1}
+  \xa\converttohtmlmacro\xa\moodle@answertext@html\xa{\moodle@answertext}%
   %\trim@spaces@in\moodle@answertext
   \ifnum\c@numgathereditems>1\relax
     \addto@xml[6]{\moodle@answers@xml}{<li>\moodle@answertext@html</li>}%
@@ -1858,6 +1861,9 @@
 \def\moodle@shortanswer@latexprocessing{%
   \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
     \loopthroughitemswithcommand{\moodle@print@shortanswer@answer}%
+    \ifx\moodle@generalfeedback\@empty\relax\else%
+      \item[$\rightarrow$] General feedback: \emph{\moodle@generalfeedback}
+    \fi
   \end{itemize}%
 }
 
@@ -1910,7 +1916,7 @@
     \moodle@writecommondata%
     \moodle@writeusecase%
     \moodle@writeanswers%
-    \moodle@writetags
+    \moodle@writetags%
   \writetomoodle{</question>}%
 }%
 %    \end{macrocode}
@@ -1927,6 +1933,9 @@
 \def\moodle@numerical@latexprocessing{%
       \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
         \loopthroughitemswithcommand{\moodle@print@numerical@answer}%
+        \ifx\moodle@generalfeedback\@empty\relax\else%
+          \item[$\rightarrow$] General feedback: \emph{\moodle@generalfeedback}
+        \fi
       \end{itemize}%
 }
 
@@ -1985,7 +1994,7 @@
   \writetomoodle{<question type="numerical">}%
     \moodle@writecommondata%
     \moodle@writeanswers%
-    \moodle@writetags
+    \moodle@writetags%
   \writetomoodle{</question>}%
 }%
 %    \end{macrocode}
@@ -2022,6 +2031,9 @@
                        %\renewcommand{\theenumi}{\alph{enumi}}%
                        \setlength\itemsep{0pt}\setlength\parskip{0pt}%
         \loopthroughitemswithcommand{\moodle@print@multichoice@answer}%
+        \ifx\moodle@generalfeedback\@empty\relax\else%
+          \item[$\rightarrow$] General feedback: \emph{\moodle@generalfeedback}
+        \fi
       \end{enumerate}%
 }
   \def\moodle@print@multichoice@answer#1{%
@@ -2138,7 +2150,7 @@
     \moodle@writeshuffle%
     \moodle@writeanswernumbering%
     \moodle@writeanswers%
-    \moodle@writetags
+    \moodle@writetags%
   \writetomoodle{</question>}%
 }%
 %    \end{macrocode}
@@ -2166,18 +2178,22 @@
     \let\answer=\hfill
     \begin{enumerate}\renewcommand{\theenumi}{\alph{enumi}}\setlength\itemsep{0pt}\setlength\parskip{0pt}%
       \loopthroughitemswithcommand{\moodle@print@matching@answer}%
+      \ifx\moodle@generalfeedback\@empty\relax\else%
+        \item[$\rightarrow$] General feedback: \emph{\moodle@generalfeedback}%
+      \fi
     \end{enumerate}%
   \egroup
 }
-   \long\def\moodle@print@matching@answer#1{%
-     \moodle@print@matching@answer@int#1\@rdelim
-   }%
-   \newcommand\moodle@print@matching@answer@int[1][]{%
-     \moodle@print@matching@answer@int@int\relax
-   }%
-   \long\def\moodle@print@matching@answer@int@int#1\answer#2\@rdelim{%
-       \item #1\hfill #2%
-   }%
+
+\long\def\moodle@print@matching@answer#1{%
+  \moodle@print@matching@answer@int#1\@rdelim
+}%
+\newcommand\moodle@print@matching@answer@int[1][]{%
+  \moodle@print@matching@answer@int@int\relax
+}%
+\long\def\moodle@print@matching@answer@int@int#1\answer#2\@rdelim{%
+  \item #1\hfill #2%
+}%
 
 
 % SAVING ANSWERS TO MEMORY
@@ -2234,7 +2250,7 @@
     \moodle@writeshuffle%
     \moodle@writeanswernumbering%
     \moodle@writeanswers%
-    \moodle@writetags
+    \moodle@writetags%
   \writetomoodle{</question>}%
 %  \gdef\moodle@answ
 }%
@@ -2277,9 +2293,12 @@
       \moodle@makelatextag@value{penalty}{penalty}\par
       \noindent
       \BODY
+      \edef\moodle@generalfeedback{\moodle@feedback}
       %\csname moodle@cloze@latexprocessing\endcsname
-      \ifx\moodle@feedback\@empty\relax\else
-        \emph{$\rightarrow$ \moodle@feedback}%
+      \ifx\moodle@generalfeedback\@empty\relax\else%
+        \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%  
+          \item[$\rightarrow$] General feedback: \emph{\moodle@generalfeedback}
+        \end{itemize}%
       \fi
     %Now, writing information to memory.
     \@moodle@ifgeneratexml{%
@@ -2302,7 +2321,7 @@
 \gdef\writeclozequestion{%
   \writetomoodle{<question type="cloze">}%
     \moodle@writecommondata%
-    \moodle@writetags
+    \moodle@writetags%
   \writetomoodle{</question>}%
 }%
 %    \end{macrocode}
@@ -2345,7 +2364,7 @@
       \egroup
       \xa\g@addto@macro\xa\clozemulti@coding\xa{\clozerbrace}%
       \xa\g@addto@macro\xa\moodle@clozemulti@output\xa{\clozemulti@coding}%
-      \show\moodle@clozemulti@output
+      %\show\moodle@clozemulti@output
       \xa\gdef\xa\htmlize@afteraction@hook\xa{\moodle@clozemulti@output}%
       \def\endclozemulti@code{\htmlize@patchendenvironment}%
     \else
@@ -2354,26 +2373,32 @@
       \par
       \noindent
       \moodle@makelatextag@qtype{multi}
-      \moodle@makelatextag@value{default grade}{points}
+      \ifnum\csname moodle@default grade\endcsname>1
+        \moodle@makelatextag@value{default grade}{points}
+      \else
+        \moodle@makelatextag@value{default grade}{point}
+      \fi
       \moodle@makelatextag@value{penalty}{penalty}
       \moodle@makelatextag@multi
-      \par
-      \noindent
       \def\cloze@multichoice@table@text{}%
-      \let\moodle@feedback=\@empty
+      %\let\moodle@feedback=\@empty
       \loopthroughitemswithcommand{\moodle@print@clozemultichoice@answer}%
       \ifcase\moodle@multi@mode\relax
         %Case 0: dropdown box style
+        \par\noindent
         \begin{tabular}[t]{|p{.45\linewidth}|p{.45\linewidth}|}
           \firsthline% (\firsthline is from the array package.)
 %          answer & feedback \\\hline\hline
           \cloze@multichoice@table@text%
         \end{tabular}%
+        \par%
       \or
         %Case 1: vertical style
+        \par\noindent
         \begin{itemize}\setlength\itemsep{0pt}\setlength\parskip{0pt}%
           \cloze@multichoice@table@text%
         \end{itemize}%
+        \par%
       \else
         %Case 2: horizontal radio buttons
         \par{\cloze@multichoice@table@text}\par%
@@ -2510,7 +2535,11 @@
       \par
       \noindent
       \moodle@makelatextag@qtype{numerical}
-      \moodle@makelatextag@value{default grade}{points}
+      \ifnum\csname moodle@default grade\endcsname>1
+        \moodle@makelatextag@value{default grade}{points}
+      \else
+        \moodle@makelatextag@value{default grade}{point}
+      \fi
       \moodle@makelatextag@value{penalty}{penalty}
       \moodle@makelatextag@numerical
       \par
@@ -2522,6 +2551,7 @@
 %       answer & feedback \\\hline\hline
         \cloze@numerical@table@text%
       \end{tabular}%
+      \par%
       \def\endclozenumerical@code{\relax}%
     \fi
     \passvalueaftergroup\endclozenumerical@code%
@@ -2530,6 +2560,7 @@
 }[\endclozenumerical@code]%
 
 \def\moodle@print@clozenumerical@answer#1{%
+  \let\moodle@feedback=\@empty
   \bgroup
     \moodle@print@clozenumerical@answer@int#1\@rdelim
   \egroup
@@ -2626,7 +2657,11 @@
       \par
       \noindent
       \moodle@makelatextag@qtype{shortanswer}
-      \moodle@makelatextag@value{default grade}{points}
+      \ifnum\csname moodle@default grade\endcsname>1
+        \moodle@makelatextag@value{default grade}{points}
+      \else
+        \moodle@makelatextag@value{default grade}{point}
+      \fi
       \moodle@makelatextag@value{penalty}{penalty}
       \moodle@makelatextag@shortanswer
       \par
@@ -2638,6 +2673,7 @@
 %       answer & feedback \\\hline\hline
         \cloze@shortanswer@table@text%
       \end{tabular}%
+      \par%
       \def\endclozeshortanswer@code{\relax}%
     \fi
     \passvalueaftergroup\endclozeshortanswer@code%
