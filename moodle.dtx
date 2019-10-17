@@ -48,7 +48,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{3985}
+% \CheckSum{0}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -163,8 +163,8 @@
 % The process of creating a quiz in Moodle using this package is as follows:
 % \begin{enumerate}
 %   \item Write a \LaTeX\ document using |\usepackage{moodle}| as described below.
-%   \item Compile the document to PDF using pdf\LaTeX.  This will also produce the file
-%         \meta{jobname}|-moodle.xml|.
+%   \item Compile the document to PDF using pdf\LaTeX\ or xe\LaTeX. This will also
+%         produce the file \meta{jobname}|-moodle.xml|.
 %   \item Open Moodle, navigate to the desired course,
 %         and under ``Question bank'' select ``Import.''
 %   \item Select ``Moodle XML format,'' choose the XML file to upload, and press ``Import.''
@@ -298,7 +298,7 @@
 % \DescribeMacro{tags}
 % The |tags| key sets a keyword for the question that will be taken into account by moodle for
 % filtering purposes or classification of questions inside the question bank. It is possible
-% for instance to build a quizz with questions cherry-picked among the set of questions holding
+% for instance to build a quiz with questions cherry-picked among the set of questions holding
 % a particular tag.
 % For example, one might set 
 % \begin{center}
@@ -306,11 +306,11 @@
 % \end{center}
 % The desired tag should be included in braces.
 %
-% Tags can be assigned at two levels.  If the |tags| key is set at the quizz level,
-% then that tags will be assigned by default to each question of the quizz.
+% Tags can be assigned at two levels.  If the |tags| key is set at the quiz level,
+% then that tags will be assigned by default to each question of the quiz.
 % Question-specific tags can be assigned by setting the |tags| key \emph{at the question level}.
 % Since only single tag is supported, the tag a the question-level overrides eventual tags
-% specified at the quizz-level.
+% specified at the quiz-level.
 % 
 % \subsection{Question Types}
 % 
@@ -552,17 +552,16 @@
 % permute the questions and answers; by default |shuffle=true|.
 % 
 % \DescribeMacro{drag and drop}\DescribeMacro{dd}
-% Moodle has two formats for matching questions.
-% The older matching question offered a dropdown box
-% for choosing the answer to each question;
-% the newer ``drag and drop matching'' format
+% The standard matching question offered by moodle corresponds to
+% a dropdown box for choosing the answer to each question.
+% There also exists a ``drag and drop matching'' plugin for Moodle that
 % shows all questions in one column,
 % all answers in a second column, and allows students to drag the correct
 % answer to the question using a mouse.
-% To enable drag-and-drop matching, use the key `|drag and drop|' or `|dd|' for 
-% short.  The default is |dd=false|.  If you choose the older format,
-% then due to the limitations of dropdown boxes, no \LaTeX\ or HTML code can be used
-% in the answers.
+% In this package, to enable drag-and-drop matching, use the key
+% `|drag and drop|' or `|dd|' for short.  The default is |dd=false|.
+% If you choose the standard format, then due to the limitations of
+% dropdown boxes, no \LaTeX\ or HTML code can be used in the answers.
 % 
 % \subsection{Cloze Questions}
 % 
@@ -575,7 +574,7 @@
 % \begin{verbatim}
 %   \begin{cloze}{my cloze question} \\
 %     Thanks to calculus, invented by Isaac
-%     \begin{shortanswer}
+%     \begin{shortanswer}[usecase]
 %       \item Newton
 %     \end{shortanswer},
 %     we know that the derivative of $x^2$ is
@@ -596,9 +595,11 @@
 % the same is true for the |shortanswer| and |numerical|
 % environments.
 % 
-% \DescribeMacro{single=true}
-% Within a cloze question, a multiple choice question is necessarily of type
-% |single|, i.e. with a single good answer.
+% \DescribeMacro{single=true}\DescribeMacro{single=false}\DescribeMacro{multiple}
+% Before Moodle version 3.5, within a cloze question, a multiple choice question
+% was necessarily of type |single|, i.e. with a single good answer. If you intend
+% to export your quiz to Moodle 3.5+, the option |multiple| can be used, when
+% multiple good answers expected to be selected by the student.
 %
 % \DescribeMacro{vertical}\DescribeMacro{horizontal}\DescribeMacro{inline}
 % Within a cloze question, by default a multiple choice question is implemented
@@ -607,6 +608,18 @@
 % Adding the option |vertical| displays the subquestion as a vertical column
 % of radio buttons instead; likewise the option |horizontal| creates a horizontal 
 % row of radio buttons.
+% The option |vertical| is incompatible with |multiple| or |single=false|
+% (dropdown boxes don't let you pick up several answers!).
+%
+% \DescribeMacro{shuffle}
+% Starting from Moodle version 3.0, within a cloze question, the items of a
+% multiple choice question can be shuffled. Setting |shuffle=false| will
+% guarantee that the answer appear in the order they were typed; the
+% default is |shuffle=true|.
+%
+% \DescribeMacro{case sensitive}\DescribeMacro{usecase}
+% Within a cloze question, the short answer question can be made case sensitive.
+% This option, disabled by default, is selected with |case sensitive| or |usecase|.
 % 
 % \section{Conversion to HTML}
 % 
@@ -2334,7 +2347,6 @@
 % \subsubsection{Cloze Multiple Choice Questions}
 % 
 %    \begin{macrocode}
-% TODO: Guard against [single=false] option
 
 \NewEnviron{clozemulti}[1][]{%
   \bgroup
@@ -2362,7 +2374,7 @@
       \or
         % Case 1: vertical style
         \ifmoodle@multiple
-          \PackageError{moodle}{Cloze Multiresponse not supporting the vertical mode as of Moodle 3.7}
+          \PackageError{moodle}{Vertical mode (dropdown box) incompatible with multiresponse.}
         \else
           \g@addto@macro{\clozemulti@coding}{_V}%
         \fi
@@ -2371,7 +2383,7 @@
         \g@addto@macro{\clozemulti@coding}{_H}%
       \fi
       \ifmoodle@shuffle
-        \PackageWarning{moodle}{Cloze Multi Suffling only supported by Moodle 3.0+}
+        \PackageWarning{moodle}{Cloze Multi Shuffling only supported by Moodle 3.0+}
         \g@addto@macro{\clozemulti@coding}{S:}%
       \else
         \g@addto@macro{\clozemulti@coding}{:}%
