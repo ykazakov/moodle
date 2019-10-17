@@ -1191,12 +1191,12 @@
   \xa\gdef\csname moodle@writetags\endcsname{%
     %\xa\xa\xdef\xa\xa\ds\xa\xa{Encountered '\string #1'}\show\ds
     \xa\xdef\xa\test@iii\xa{\moodle@tags}%
-		\ifx\test@iii\@moodle@empty\relax\else
-		\xa\converttohtmlmacro\xa\moodle@htmltowrite\xa{\moodle@tags}%
-		\writetomoodle[2]{  <tags>}%
-		\writetomoodle[4]{    <tag><text><![CDATA[\moodle@htmltowrite]]></text></tag>}%
-		\writetomoodle[2]{  </tags>}%
-		\fi
+    \ifx\test@iii\@moodle@empty\relax\else
+      \xa\converttohtmlmacro\xa\moodle@htmltowrite\xa{\moodle@tags}%
+      \writetomoodle[2]{  <tags>}%
+      \writetomoodle[4]{    <tag><text><![CDATA[\moodle@htmltowrite]]></text></tag>}%
+      \writetomoodle[2]{  </tags>}%
+    \fi
   }%
 }%
 
@@ -1636,7 +1636,12 @@
       \expandafter\gatheritems\xa{\BODY}%
       \let\moodle@questionheader=\gatheredheader
       %First, the LaTeX processing
-      \item \textbf{\moodle@questionname}\par
+      \item \textbf{\moodle@questionname}
+      \xa\xdef\xa\test@iii\xa{\moodle@tags}%
+      \ifx\test@iii\@moodle@empty\relax\else
+        \hfill tags: \texttt{\moodle@tags}
+      \fi
+      \par
       \noindent
       \moodle@makelatextag@qtype{#1}
       \moodle@makelatextag@value{default grade}{\marks{\csname moodle@default grade\endcsname}}
@@ -1690,7 +1695,12 @@
     \expandafter\gatheritems\expandafter{\BODY}%
     \let\moodle@questionheader=\gatheredheader
     %First, the LaTeX processing.
-      \item \textbf{\moodle@questionname}\par
+      \item \textbf{\moodle@questionname}
+      \xa\xdef\xa\test@iii\xa{\moodle@tags}%
+      \ifx\test@iii\@moodle@empty\relax\else
+        \hfill tags: \texttt{\moodle@tags}
+      \fi
+      \par
       \noindent
       \moodle@makelatextag@qtype{essay}
       \moodle@makelatextag@value{default grade}{\marks{\csname moodle@default grade\endcsname}}
@@ -2276,7 +2286,12 @@
     % A cloze question won't have any \item's in it, so we just use \BODY.
     \moodle@enableclozeenvironments
     %First, the LaTeX processing.
-      \item \textbf{\moodle@questionname}\par
+      \item \textbf{\moodle@questionname}
+      \xa\xdef\xa\test@iii\xa{\moodle@tags}%
+      \ifx\test@iii\@moodle@empty\relax\else
+        \hfill tags: \texttt{\moodle@tags}
+      \fi
+      \par
       \noindent
       \moodle@makelatextag@qtype{cloze}
       \moodle@makelatextag@value{default grade}{\marks{\csname moodle@default grade\endcsname}}
