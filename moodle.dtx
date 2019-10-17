@@ -1627,6 +1627,8 @@
   \moodle@makelatextagbox{\csname moodle@#1\endcsname}
 }%
 
+\def\marks#1{point\ifdim#1pt=1pt \else s\fi}
+
 \def\moodle@makefrontend#1#2{%
   \NewEnviron{#1}[2][]{%
     \bgroup
@@ -1637,11 +1639,7 @@
       \item \textbf{\moodle@questionname}\par
       \noindent
       \moodle@makelatextag@qtype{#1}
-      \ifnum\csname moodle@default grade\endcsname>1
-        \moodle@makelatextag@value{default grade}{points}
-      \else
-        \moodle@makelatextag@value{default grade}{point}
-      \fi
+      \moodle@makelatextag@value{default grade}{\marks{\csname moodle@default grade\endcsname}}
       \moodle@makelatextag@value{penalty}{penalty}
       #2\par
       \noindent
@@ -1695,11 +1693,7 @@
       \item \textbf{\moodle@questionname}\par
       \noindent
       \moodle@makelatextag@qtype{essay}
-      \ifnum\csname moodle@default grade\endcsname>1
-        \moodle@makelatextag@value{default grade}{points}
-      \else
-        \moodle@makelatextag@value{default grade}{point}
-      \fi
+      \moodle@makelatextag@value{default grade}{\marks{\csname moodle@default grade\endcsname}}
       \moodle@makelatextag@value{penalty}{penalty}
       \moodle@makelatextag@key{responseformat}\par
       \noindent
@@ -2285,11 +2279,7 @@
       \item \textbf{\moodle@questionname}\par
       \noindent
       \moodle@makelatextag@qtype{cloze}
-      \ifnum\csname moodle@default grade\endcsname>1
-        \moodle@makelatextag@value{default grade}{points}
-      \else
-        \moodle@makelatextag@value{default grade}{point}
-      \fi
+      \moodle@makelatextag@value{default grade}{\marks{\csname moodle@default grade\endcsname}}
       \moodle@makelatextag@value{penalty}{penalty}\par
       \noindent
       \BODY
@@ -2373,11 +2363,7 @@
       \par
       \noindent
       \moodle@makelatextag@qtype{multi}
-      \ifnum\csname moodle@default grade\endcsname>1
-        \moodle@makelatextag@value{default grade}{points}
-      \else
-        \moodle@makelatextag@value{default grade}{point}
-      \fi
+      \moodle@makelatextag@value{default grade}{\marks{\csname moodle@default grade\endcsname}}
       \moodle@makelatextag@value{penalty}{penalty}
       \moodle@makelatextag@multi
       \def\cloze@multichoice@table@text{}%
@@ -2535,11 +2521,7 @@
       \par
       \noindent
       \moodle@makelatextag@qtype{numerical}
-      \ifnum\csname moodle@default grade\endcsname>1
-        \moodle@makelatextag@value{default grade}{points}
-      \else
-        \moodle@makelatextag@value{default grade}{point}
-      \fi
+      \moodle@makelatextag@value{default grade}{\marks{\csname moodle@default grade\endcsname}}
       \moodle@makelatextag@value{penalty}{penalty}
       \moodle@makelatextag@numerical
       \par
@@ -2657,11 +2639,7 @@
       \par
       \noindent
       \moodle@makelatextag@qtype{shortanswer}
-      \ifnum\csname moodle@default grade\endcsname>1
-        \moodle@makelatextag@value{default grade}{points}
-      \else
-        \moodle@makelatextag@value{default grade}{point}
-      \fi
+      \moodle@makelatextag@value{default grade}{\marks{\csname moodle@default grade\endcsname}}
       \moodle@makelatextag@value{penalty}{penalty}
       \moodle@makelatextag@shortanswer
       \par
