@@ -994,17 +994,16 @@
 \def\openmoodleout{%
   \immediate\openout\moodle@outfile=\outputfilename\relax
   \ifpdf % pdflatex or luatex in pdf mode ?
-  	\writetomoodle{<?xml version="1.0" encoding="iso-8859-1"?>}%
+    \writetomoodle{<?xml version="1.0" encoding="iso-8859-1"?>}%
   \else
-  	\ifxetex % xelatex
-  		\writetomoodle{<?xml version="1.0" encoding="UTF-8"?>}%
-  	\else % what shall we do?
-  		\writetomoodle{<?xml version="1.0" encoding="UTF-8"?>}%
-  		%\stop
-  	\fi
+    \ifxetex % xelatex
+      \writetomoodle{<?xml version="1.0" encoding="UTF-8"?>}%
+      \else % what shall we do?
+        \writetomoodle{<?xml version="1.0" encoding="UTF-8"?>}%
+        %\stop
+    \fi
   \fi
   \writetomoodle{<quiz>}%
-  \writetomoodle{ }%
 }%
 \def\closemoodleout{%
   \writetomoodle{ }%
@@ -1012,6 +1011,7 @@
   \immediate\closeout\moodle@outfile
 }%
 %    \end{macrocode}
+% 
 % To both make this |.sty| file and the XML output more readable,
 % we create a mechanism for writing to the output file with indents.
 % The macro |\calculateindent|\marg{$n$} globally defines 
@@ -1052,19 +1052,22 @@
 % the questions we write.  It outputs to XML as a |<question type="category">| tag.
 %    \begin{macrocode}
 \newenvironment{quiz}[2][]%
-  {\setkeys{moodle}{#1}%
-   \@moodle@ifgeneratexml{%
-     \openmoodleout%
-     \setcategory{#2}%
-    }{}%
-    \subsection*{#2}%
-    \begin{enumerate}%
-   }
-  {\end{enumerate}%
-   \@moodle@ifgeneratexml{\closemoodleout}{}}
+{
+  \setkeys{moodle}{#1}%
+  \@moodle@ifgeneratexml{%
+    %\openmoodleout%
+    \setcategory{#2}%
+  }{}%
+   \subsection*{#2}%
+   \begin{enumerate}%
+}{
+  \end{enumerate}%
+  %\@moodle@ifgeneratexml{\closemoodleout}{}
+}
 
 {\catcode`\$=12\catcode`\ =12%
 \gdef\setcategory#1{%
+\writetomoodle{ }%
 \writetomoodle{<question type="category">}%
 \writetomoodle{  <category>}%
 \writetomoodle{    <text>$module$/#1</text>}%
@@ -1101,6 +1104,19 @@
       #1%
     \fi
   }%
+}
+%    \end{macrocode}
+% Now the macros |openmoodleout| and |closemoodleout| are triggered at Begin and End Document, respectively
+%    \begin{macrocode}
+\AfterEndPreamble{
+  \@moodle@ifgeneratexml{%
+    \openmoodleout%
+  }{}%
+}
+\AtEndDocument{
+  \@moodle@ifgeneratexml{%
+    \closemoodleout%
+  }{}%
 }
 %    \end{macrocode}
 %
