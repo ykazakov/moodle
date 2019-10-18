@@ -18,15 +18,7 @@
 
 \section*{Introduction}
 
-This document demonstrates a weird compilation bug when using characters like 
-\verb|\oe, \ae, \og, \fg, \aa| (and capitalized version) and defining general 
-feedback (quizz-level or question-level). Using pdf\LaTeX\ the compilation 
-hangs at the recursion level of conversion to HTML 
-(\verb|\long\def\htmlize@recursive@i|), while it compiles fine with xe\LaTeX.
-
-This is a regression bug introduced in version \texttt{0.6}. Using package as 
-of version \texttt{0.5} results in fine compilation (although some characters 
-may not be well transcribed in the XML).
+This document is intended to check the support of general feedback.
 
 \begin{quiz}[points=1]{General Feedback Test}
 
