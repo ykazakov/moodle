@@ -526,7 +526,7 @@
 % 
 % A matching question offers a series of subquestions
 % and a set of possible answers from which to choose.
-% If there are $m$ questions and $n$ possible answers,
+% If there are $m$ questions and $n\geq m$ possible answers,
 % a matching question will look like this:
 % 
 % \begin{quote}
@@ -2258,11 +2258,12 @@
 %       \show\moodle@subanswertext
        \addto@xml[4]{\moodle@answers@xml}{  <answer><text>\moodle@subanswertext</text></answer>}%
      \fi
-     \ifx\moodle@feedback\@empty\relax\else
-       \trim@spaces@in\moodle@feedback
-       \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
-       \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text></feedback>}%
-     \fi
+%     \ifx\moodle@feedback\@empty\relax\else
+%       \trim@spaces@in\moodle@feedback
+%       \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
+%       \addto@xml[4]{\moodle@answers@xml}{  <feedback 
+%format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text></feedback>}%
+%     \fi
      \addto@xml[2]{\moodle@answers@xml}{</subquestion>}%
    }%
 
@@ -2274,9 +2275,9 @@
     \writetomoodle{<question type="matching">}%
   \fi
     \moodle@writecommondata%
-    \moodle@writesingle%
+%    \moodle@writesingle% %unappropriate for the matching type
     \moodle@writeshuffle%
-    \moodle@writeanswernumbering%
+%    \moodle@writeanswernumbering% %unappropriate for the matching type
     \moodle@writeanswers%
     \moodle@writetags%
   \writetomoodle{</question>}%
@@ -3653,13 +3654,16 @@
 }
 
 \def\ghostscriptcommand{\htmlize@setexecutable\gs}
+\def\baselxivcommand{\htmlize@setexecutable\baselxiv}
 \def\imagemagickcommand{\htmlize@setexecutable\htmlize@imagemagick@convert}
 \def\optipngcommand{\htmlize@setexecutable\optipng}
 
 \ifwindows%
   \ghostscriptcommand{gswin64c.exe}%
+  \baselxivcommand{certutil}%
 \else%
   \ghostscriptcommand{gs}%
+  \baselxivcommand{base64}%
 \fi%
 
 \imagemagickcommand{convert}%
@@ -3747,13 +3751,13 @@
     \expandafter\immediate\expandafter\write18\expandafter{\cmdline}%
     %Next, convert the PNG to base64 encoding
     \ifwindows
-      \def\cmdline{certutil -encode #2.png tmp.b64 && findstr /vbc:"---" tmp.b64 > #2.enc && del tmp.b64"}%
-      % Starting from Windows 7, CertUtils is included by default. There should be no windows XP still running
+      \def\cmdline{\baselxiv\otherspace -encode #2.png tmp.b64 && findstr /vbc:"---" tmp.b64 > #2.enc && del tmp.b64"}%
+      % Starting from Windows 7, CertUtil is included by default. There should be no windows XP still running
     \else
       \ifmacosx
-        \def\cmdline{base64 -i #2.png -o #2.enc}
+        \def\cmdline{\baselxiv\otherspace -i #2.png -o #2.enc}
       \else % Linux, Cygwin
-        \def\cmdline{base64 #2.png > #2.enc}
+        \def\cmdline{\baselxiv\otherspace #2.png > #2.enc}
       \fi
       % base64 is part of coreutils, add "-w 64" to get exactly the previous behavior  %
     \fi
@@ -3834,16 +3838,16 @@
     \def\pngoptim{\edef\cmdline{\optipng\otherspace -clobber -quiet \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png}%
       \expandafter\immediate\expandafter\write18\expandafter{\cmdline}}%
     \ifwindows
-      \def\pngtobaselxiv{\edef\encodecmdline{certutil -encode \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png tmp.b64 && findstr /vbc:"---" tmp.b64 > \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc && del tmp.b64}%
-                       \expandafter\immediate\expandafter\write18\expandafter{\encodecmdline}}
+      \def\pngtobaselxiv{\edef\baselxivcmdline{\baselxiv\otherspace -encode \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png tmp.b64 && findstr /vbc:"---" tmp.b64 > \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc && del tmp.b64}%
+                       \expandafter\immediate\expandafter\write18\expandafter{\baselxivcmdline}}
       % Starting from Windows 7, CertUtils is included by default. There should be no windows XP still running
     \else
       \ifmacosx
-        \def\pngtobaselxiv{\edef\encodecmdline{base64 -i \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -o \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
-                       \expandafter\immediate\expandafter\write18\expandafter{\encodecmdline}}
+        \def\pngtobaselxiv{\edef\baselxivcmdline{\baselxiv\otherspace -i \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -o \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
+                       \expandafter\immediate\expandafter\write18\expandafter{\baselxivcmdline}}
       \else
-        \def\pngtobaselxiv{\edef\encodemdline{base64 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png > \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
-                       \expandafter\immediate\expandafter\write18\expandafter{\encodecmdline}}
+        \def\pngtobaselxiv{\edef\baselxivcmdline{\baselxiv\otherspace \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png > \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
+                       \expandafter\immediate\expandafter\write18\expandafter{\baselxivcmdline}}
       % base64 is part of coreutils, add "-w 64" to get exactly the previous behavior %
       \fi
     \fi
