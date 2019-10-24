@@ -32,13 +32,12 @@ example_quiz.pdf: moodle.sty
 example_quiz_v5.pdf: moodlev5.sty
 
 moodle.pdf: moodle.dtx moodle.gls
-	$(PDFLATEX) $< $(DEBUG)
 
 moodlev5.pdf: moodlev5.dtx
-	$(PDFLATEX) $< $(DEBUG)
+	$(PDFLATEX) $(LATEXFLAGS) $< $(DEBUG)
 
 %.glo: %.dtx
-	$(PDFLATEX) $< $(DEBUG)
+	$(PDFLATEX) $(LATEXFLAGS) $< $(DEBUG)
 
 %.gls: %.glo
 	$(MAKEINDEX) -s gglo.ist -o $@ $< $(DEBUG)

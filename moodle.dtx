@@ -34,10 +34,10 @@
 \documentclass[a4paper]{ltxdoc}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{moodle}
 \usepackage{amssymb}
 \usepackage{fancyvrb}
-\usepackage{multirow,hhline,colortbl,threeparttable,xcolor,graphicx,hyperref}
+\usepackage{multirow,hhline,colortbl,threeparttable,xcolor,graphicx,hyperref,tikz}
+\usetikzlibrary{arrows,positioning}
 \EnableCrossrefs         
 \CodelineIndex
 \OnlyDescription
@@ -160,7 +160,8 @@
 % that can be archived, browsed, and edited offline.
 % 
 % \section{Workflow}
-% The process of creating a quiz in Moodle using this package is as follows:
+% The process of creating a quiz in Moodle using this package is depicted in
+% Figure~\ref{fig:workflow}. It follows a few steps:
 % \begin{enumerate}
 %   \item Write a \LaTeX\ document using |\usepackage{moodle}| as described below.
 %   \item Compile the document to PDF using pdf\LaTeX\ or xe\LaTeX. This will also
@@ -171,7 +172,43 @@
 %   \item After Moodle verifies that the questions have been imported correctly,
 %         you may add them to your quizzes.
 % \end{enumerate}
-% 
+% \begin{figure}[tbp]
+% \centering
+% \begin{tikzpicture}[node distance=1,auto,bend 
+% angle=45,box/.style={rectangle,draw=blue!50,rounded corners=3,top 
+% 	color=white,bottom color=black!20,thick,align=center,text 
+% 	width=2.5cm},elmt/.style={font=\itshape,align=left},
+% cmnt/.style={font=\footnotesize,align=center},
+% bigcmnt/.style={font=\normalsize,align=center},pre/.style={<-,>=stealth',thick},
+% post/.style={->,>=stealth',thick}, prepost/.style={<->,>=stealth',thick}]
+% \node[box] (tex) {\texttt{.tex} source file};
+% \node[rectangle,draw,align=center,text 
+% width=2.5cm,below=of tex] (comp) {\LaTeX{}\\ compilation};
+% \node[rectangle,draw,align=center,text width=2.5cm,below=of comp] (extern) 
+% {Image\\externalization};
+% \node[box,right=of tex,xshift=2cm] (pdf) {\texttt{.pdf} file for proofreading};
+% \node[box,below=of pdf] (xml) {\texttt{.xml} file with embedded images};
+% \node[rectangle,draw,align=center,text width=2.5cm,below=of xml] (moodle) 
+% {Moodle\\Server};
+% \draw (tex) edge [post,green,bend right=10] (comp); % 
+% %node[cmnt,pos=.42,above left,sloped] {} ()
+% \draw (comp) edge [post,green,bend right=10] node[cmnt,pos=.5,above,sloped] 
+% {\texttt{draft}, \texttt{final}} (pdf);
+% \draw (comp) edge [post,green,bend right=10] node[cmnt,pos=.5,above,sloped] 
+% {\texttt{final}} (xml);
+% \draw (comp) edge [post,green,bend right=30] 
+% node[cmnt,black!40,pos=.5,below,left] {\texttt{.png}} (extern);
+% \draw (extern) edge [post,green,bend right=30] 
+% node[cmnt,black!40,pos=.5,below,right] {\texttt{base64}} (comp);
+% \draw (pdf) edge [post,red,bend right=10] node[cmnt,pos=.5,below] 
+% {improvements} (tex);
+% \draw (xml) edge [post,red,bend right=-20] node[cmnt,pos=.5,right] 
+% {import} (moodle);
+% \end{tikzpicture}
+% \caption{Block diagram describing a typical workflow using the |moodle| package.}
+% \label{fig:workflow}
+% \end{figure}
+%
 % \section{Usage}\label{sect:usage}
 % \subsection{Example Document}
 %
@@ -221,8 +258,6 @@
 % \DescribeMacro{\htmlregister}
 % Using |\htmlregister|\marg{macroname}, tells \LaTeX\ about the macros you 
 % use. This way, the macros will be properly expanded in the XML file.
-%
-% \newpage
 % 
 % \DescribeMacro{draft}
 % \DescribeMacro{final}
