@@ -2137,7 +2137,9 @@
      \global\setlength{\moodle@pointspercorrect}{100pt}%
      \loopthroughitemswithcommand{\moodle@countcorrectanswers@a}%
      \ifnum0=\c@moodle@numcorrectanswers\relax
-       \PackageError{moodle}{No correct answers given for multiple choice question.}{Please mark at least one answer correct.}%
+       \PackageWarning{moodle}{No answer is explicitlty marked as correct (*). Be sure some answers lead to points.}%
+       % Changing the above line in a warning because with the 'multiple' keyword, one could choose to split unenvenly the point
+       % among the right answers. In this case, therefore, you would use the 'fraction' keyword and not the star.
        \gdef\moodle@autopoints{0}%
      \else
        \global\divide\moodle@pointspercorrect by \c@moodle@numcorrectanswers\relax
