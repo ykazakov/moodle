@@ -1709,7 +1709,7 @@
       #2\par
       \noindent
       \moodle@questionheader
-      \edef\moodle@generalfeedback{\moodle@feedback}
+      \edef\moodle@generalfeedback{\expandonce\moodle@feedback}
       \csname moodle@#1@latexprocessing\endcsname
       %Now, writing information to XML
       \@moodle@ifgeneratexml{%
@@ -1768,7 +1768,7 @@
       \moodle@makelatextag@key{responseformat}\par
       \noindent
       \moodle@questionheader
-      \edef\moodle@generalfeedback{\moodle@feedback}
+      \edef\moodle@generalfeedback{\expandonce\moodle@feedback}
       \csname moodle@essay@latexprocessing\endcsname
     %Now, writing information to memory.
     \@moodle@ifgeneratexml{%
@@ -2361,7 +2361,7 @@
       \moodle@makelatextag@value{penalty}{penalty}\par
       \noindent
       \BODY
-      \edef\moodle@generalfeedback{\moodle@feedback}
+      \edef\moodle@generalfeedback{\expandonce\moodle@feedback}
       %\csname moodle@cloze@latexprocessing\endcsname
       \ifx\moodle@generalfeedback\@empty\relax\else%
         \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%  

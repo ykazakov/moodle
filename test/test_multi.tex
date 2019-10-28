@@ -2,11 +2,11 @@
 \usepackage{../moodle}
 \begin{document}
 \begin{quiz}{Example Quiz}
-\begin{multi}[multiple]{Multiple Choice}
+\begin{multi}[multiple,feedback={abc\\def $\sqrt{2}$}]{Multiple Choice}
 Select the following numbers that are prime.
 \item[fraction=100]* $\sqrt{25}$
 \item 6
-\item[fraction=30]* 7
+\item[fraction=30,feedback={$\sqrt{25}$}]* 7
 \item[fraction=10] 8
 \end{multi}
 
