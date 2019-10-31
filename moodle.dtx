@@ -34,7 +34,7 @@
 \documentclass[a4paper]{ltxdoc}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{amssymb}
+\usepackage{amssymb,metalogo}
 \usepackage{fancyvrb}
 \usepackage{multirow,hhline,colortbl,threeparttable,xcolor,graphicx,hyperref,tikz}
 \usetikzlibrary{arrows,positioning}
@@ -163,9 +163,10 @@
 % The process of creating a quiz in Moodle using this package is depicted in
 % Figure~\ref{fig:workflow}. It follows a few steps:
 % \begin{enumerate}
-%   \item Write a \LaTeX\ document using |\usepackage{moodle}| as described below.
-%   \item Compile the document to PDF using pdf\LaTeX\ or xe\LaTeX. This will also
-%         produce the file \meta{jobname}|-moodle.xml|.
+%   \item Write a \LaTeX\ document using |\usepackage{moodle}| as described 
+% below.
+%   \item Compile the document to PDF using pdf\LaTeX\ or \XeLaTeX. This will 
+% also produce the file \meta{jobname}|-moodle.xml|.
 %   \item Open Moodle, navigate to the desired course,
 %         and under ``Question bank'' select ``Import.''
 %   \item Select ``Moodle XML format,'' choose the XML file to upload, and press ``Import.''
@@ -351,7 +352,34 @@
 % 
 % We next discuss the various question types supported by \textsf{moodle.sty}
 % and the options that may be set.
+%
+%\subsubsection{True/False}
 % 
+% \DescribeMacro{truefalse}
+% The syntax for a True/False question is as follows:
+% \begin{quote}
+%   |\begin{truefalse}|\oarg{question options}\marg{question name} \\
+%   \rule{2em}{0pt}\meta{question text} \\
+%   \rule{2em}{0pt}|\item*| \meta{feedback when "true" is chosen} \\
+%   \rule{2em}{0pt}|\item| \meta{feedback when "false" is chosen} \\
+%   |\end{truefalse}|
+% \end{quote}
+% The correct answer is designated by the asterisk |*| after the |\item|;
+% it need not appear first in the list.
+%
+% Answer-specific feedback can also be defined as an item option, similarly to
+% other types.
+% \begin{quote}
+%   |\begin{truefalse}|\oarg{question options}\marg{question name} \\
+%   \rule{2em}{0pt}\meta{question text} \\
+%   \rule{2em}{0pt}|\item[feedback={|\meta{When "true" is chosen}|}]*| \\
+%   |\end{truefalse}|
+% \end{quote}
+% Note that, in this example, no feedback is defined for the incorrect answer
+% "False": the corresponding item can be omitted.
+% 
+% With the True/False question type, the |penalty| key has no effect.
+%
 % \subsubsection{Multiple Choice}
 % 
 % \DescribeMacro{multi}
@@ -635,10 +663,10 @@
 % Before Moodle version 3.5, within a cloze question, a multiple choice question
 % was necessarily of type |single|, i.e. with a single good answer. If you intend
 % to export your quiz to Moodle 3.5+, the option |multiple| can be used, when
-% multiple good answers expected to be selected by the student.
+% multiple good answers are to be found.
 %
 % \DescribeMacro{vertical}\DescribeMacro{horizontal}\DescribeMacro{inline}
-% Within a cloze question, by default a multiple choice question is implemented
+% Within a cloze question, by default, a multiple choice question is implemented
 % as an |inline| dropdown box. This is visually compact, but it also prevents
 % the use of mathematical or HTML formatting.
 % Adding the option |vertical| displays the subquestion as a vertical column
@@ -694,7 +722,8 @@
 % Be aware that \emph{\textsf{moodle.sty} does not know how to convert any 
 % other \TeX\ or \LaTeX\ commands to HTML.}
 % If other sequences are used, they may be passed verbatim to the XML file
-% or may cause unpredicted results.
+% or may cause unpredicted results. The \htmlregister\ command lets you specify
+% the macros that must be expanded in the XML file.
 % 
 % If you think of another \LaTeX\ command that should be changed to an HTML equivalent, 
 % please contact the author at \url{anders.hendrickson@snc.edu}
@@ -875,7 +904,7 @@
 %\begin{tabular}{|cc|cc||cc|cc|}
 % \multicolumn{2}{|c|}{Input type} & \multicolumn{2}{c||}{Engine support}&
 % \multicolumn{2}{c|}{Input type} & \multicolumn{2}{c|}{Engine support}\\
-% Unicode & \LaTeX\ & xe\LaTeX\ & pdf\LaTeX & Unicode & \LaTeX\ & xe\LaTeX\ & 
+% Unicode & \LaTeX\ & \XeLaTeX\ & pdf\LaTeX & Unicode & \LaTeX\ & \XeLaTeX\ & 
 % pdf\LaTeX\\\hline
 % \`a & \verb|\`a| & both & both & \`A & \verb|\`A| & both & both\\
 % \^a & \verb|\^a| & both & both & \^A & \verb|\^A| & both & both\\
@@ -903,7 +932,7 @@
 % \caption{Support for special characters, accents and other diacritical marks 
 % with an UTF8-coded \TeX~document compiled with pdf\TeX\ (packages 
 % \texttt{inputenc} with option \texttt{utf8} and \texttt{fontenc} with option
-% \texttt{T1}) or xe\TeX\ (package \texttt{fontspec} ) }
+% \texttt{T1}) or \XeTeX\ (package \texttt{fontspec} ) }
 % \label{tab:3}
 % \end{table*}
 % Some features of Moodle quizzes have not yet been implemented in \textsf{moodle.sty}.
@@ -990,6 +1019,7 @@
 \let\xa=\expandafter
 \def\@star{*}%
 \def\@hundred{100}%
+\def\@fifty{50}%
 \def\@moodle@empty{}%
 \def\@relax{\relax}%
 %    \end{macrocode}
@@ -1289,7 +1319,7 @@
 %% PENALTY FOR WRONG ATTEMPT
       \define@cmdkey{moodle}[moodle@]{penalty}[0.10]{}%
       \generate@moodle@write@code*{penalty}<penalty>{\moodle@penalty}%
-      \moodleset{penalty}%
+      \moodleset{penalty=0.10}%
 
 %% FEEDBACK
       % Moodle allows for feedback tailored to each question,
@@ -1336,7 +1366,7 @@
       \define@cmdkey{moodle}[moodle@]{tags}[]{}%
       \generate@moodle@write@tags{\csname moodle@tags\endcsname}%
       \moodleset{tags}%
-% TO DO: handle multiple 'tags' for one question
+% TODO: handle multiple 'tags' for one question
 
 %    \end{macrocode}
 % \subsubsection{Keys for all answers}
@@ -1353,7 +1383,7 @@
 %% SINGLE and MULTIPLE -- for multichoice, is there 1 right answer or more than 1?
       \define@boolkey{moodle}[moodle@]{single}[true]{}%
       \generate@moodle@write@code*{single}<single>{\ifmoodle@single true\else false\fi}%
-      \moodleset{single}%
+      \moodleset{single=true}%
       %The key 'multiple' is an antonym to 'single'.
       \define@boolkey{moodle}[moodle@]{multiple}[true]{\ifmoodle@multiple\moodle@singlefalse\else\moodle@singletrue\fi}%
 
@@ -1362,10 +1392,10 @@
       \generate@moodle@write@code*{shuffle}<shuffleanswers>{\ifmoodle@shuffle 1\else 0\fi}%
       \moodleset{shuffle=true}%
 
-%% TO DO: CORRECTFEEDBACK
-%% TO DO: PARTIALLYCORRECTFEEDBACK
-%% TO DO: INCORRECTFEEDBACK
-%% TO DO: NUMCORRECT key
+%% TODO: CORRECTFEEDBACK
+%% TODO: PARTIALLYCORRECTFEEDBACK
+%% TODO: INCORRECTFEEDBACK
+%% TODO: NUMCORRECT key
 
 %% NUMBERING -- for numbering of multichoice questions
       \define@choicekey{moodle}{numbering}%
@@ -2138,13 +2168,13 @@
      \global\setlength{\moodle@pointspercorrect}{100pt}%
      \loopthroughitemswithcommand{\moodle@countcorrectanswers@a}%
      \ifnum0=\c@moodle@numcorrectanswers\relax
-       \PackageWarning{moodle}{No answer is explicitlty marked as correct (*). Be sure some answers lead to points.}%
+       \PackageWarning{moodle}{No answer is explicitly marked as correct (*). Be sure some answers lead to points.}%
        % Changing the above line in a warning because with the 'multiple' keyword, one could choose to split unenvenly the point
        % among the right answers. In this case, therefore, you would use the 'fraction' keyword and not the star.
        \gdef\moodle@autopoints{0}%
      \else
        \global\divide\moodle@pointspercorrect by \c@moodle@numcorrectanswers\relax
-       \edef\moodle@autopoints{\strip@pt\moodle@pointspercorrect}%
+       \gdef\moodle@autopoints{\strip@pt\moodle@pointspercorrect}%
      \fi
    }
    \def\moodle@countcorrectanswers@a#1{%
@@ -2154,8 +2184,10 @@
      \egroup
    }%
    \newcommand\moodle@countcorrectanswers@b[1][]{%
-     \setkeys{moodle}{fraction=0,#1}%
-     \moodle@countcorrectanswers@c%
+     %\ifx&#1&%
+       \setkeys{moodle}{fraction=0,#1}%
+       \moodle@countcorrectanswers@c%
+     %\fi
    }%
    \def\moodle@countcorrectanswers@c#1#2\moodle@answer@rdelim{%
      \def\test@i{#1}%
@@ -2215,6 +2247,219 @@
     \moodle@writesingle%
     \moodle@writeshuffle%
     \moodle@writeanswernumbering%
+    \moodle@writeanswers%
+    \moodle@writetags%
+  \writetomoodle{</question>}%
+}%
+%    \end{macrocode}
+%
+% ####### TRUE FALSE
+% \subsubsection{True/False Question Front-End}
+% 
+%    \begin{macrocode}
+% True/False has structure
+% \begin{truefalse}[options]{name}%
+%   This is a matching question.
+%   \item[feedback={feedback for student answering incorrectly "true"}] % first item is for true
+%   \item* this is an other way of specifying answer-specific feedback
+% \end{truefalse}%
+
+%\moodle@makefrontend{truefalse}{}% We dont use the generic frontend because truefalse has no tunable penalty
+
+\NewEnviron{truefalse}[2][]{%
+    \bgroup
+      \setkeys{moodle}{#1,questionname={#2}}%
+      \expandafter\gatheritems\xa{\BODY}%
+      \let\moodle@questionheader=\gatheredheader
+      %First, the LaTeX processing
+      \item \textbf{\moodle@questionname}
+      \xa\xdef\xa\test@iii\xa{\moodle@tags}%
+      \ifx\test@iii\@moodle@empty\relax\else
+        \hfill tags: \texttt{\moodle@tags}
+      \fi
+      \par
+      \noindent
+      \moodle@makelatextag@qtype{truefalse}
+      \moodle@makelatextag@value{default grade}{\marks{\csname moodle@default grade\endcsname}}
+      \par
+      \noindent
+      \moodle@questionheader
+      \edef\moodle@generalfeedback{\expandonce\moodle@feedback}
+      \moodle@truefalse@latexprocessing
+      %Now, writing information to XML
+      \@moodle@ifgeneratexml{%
+        \setkeys{moodle}{penalty=1}%
+        \xa\questiontext\xa{\moodle@questionheader}% Save the question text.
+        \bgroup
+          \gdef\moodle@answers@xml{}%
+          \setkeys{moodle}{feedback={}}%
+          \xa\loopthroughitemswithcommand\xa{\xa\savetruefalseanswer}%
+          \ifnum\c@numgathereditems=1\relax%
+            \setcounter{currentitemnumber}{2}%
+            \savetruefalseanswer{}
+          \fi
+          \passvalueaftergroup{\moodle@answers@xml}%
+        \egroup
+        \csname writetruefalsequestion\endcsname
+      }{}%
+    \egroup
+  }%
+
+% LATEX PROCESSING
+
+\def\moodle@truefalse@latexprocessing{%
+%  \ifnum\c@numgathereditems>2\relax%
+%    \PackageError{moodle}{Expecting at max two answers with truefalse type}
+%  \fi
+  \setcounter{moodle@numcorrectanswers}{0}%
+  \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
+    \loopthroughitemswithcommand{\moodle@print@truefalse@answer}%
+    \ifx\moodle@generalfeedback\@empty\relax\else%
+      \item[$\rightarrow$] General feedback: \emph{\moodle@generalfeedback}
+    \fi
+  \end{itemize}
+  \ifnum\c@moodle@numcorrectanswers=0\relax%
+    \PackageError{moodle}{No answer is explicitly marked as correct (*). Be sure one answer leads to points.}%
+  \fi
+  \ifnum\c@moodle@numcorrectanswers>1\relax%
+    \PackageError{moodle}{Two answers are explicitly marked as correct (*). Be sure only one answer leads to points.}%
+  \fi
+}
+
+   \def\moodle@print@truefalse@answer#1{% here # is all what comes after "\item", that is "[options]* text"
+       \let\moodle@feedback=\@empty
+       \moodle@print@truefalse@answer@int#1\@rdelim % add an end delimiter:
+   }%
+   \newcommand\moodle@print@truefalse@answer@int[1][]{% with the optional argument, catch options and set them as keys
+     \setkeys{moodle}{#1}%
+     \moodle@print@truefalse@answer@int@int% applies to the rest: "* text\@rdelim"
+   }%
+   \def\moodle@print@truefalse@answer@int@int#1\@rdelim{% this is just for excludind the case where nothing follows
+     \def\test@i{#1}
+     \ifx\test@i\@empty\relax
+       \moodle@print@truefalse@answer@int@int@empty
+     \else
+       \moodle@print@truefalse@answer@int@int@int#1\@rdelim
+     \fi
+   }%
+   \def\moodle@print@truefalse@answer@int@int@empty{%
+     \ifnum\c@currentitemnumber=1%
+	\def\moodle@answertext{True}%
+     \fi
+     \ifnum\c@currentitemnumber=2%
+	\def\moodle@answertext{False}%
+     \fi
+     \ifx\moodle@feedback\@empty\relax\else
+       \item[\bf \moodle@answertext] ~\hfill \emph{$\rightarrow$ \moodle@feedback}%
+     \fi
+   }%
+   \def\moodle@print@truefalse@answer@int@int@int#1#2\@rdelim{%
+     \ifnum\c@currentitemnumber=1%
+	\def\moodle@answertext{True}%
+     \fi
+     \ifnum\c@currentitemnumber=2%
+	\def\moodle@answertext{False}%
+     \fi
+     \ifnum\c@currentitemnumber<3%
+       \def\test@i{#1}%
+       \ifx\test@i\@star
+         \item[\bf \moodle@answertext] $\checkmark$%
+         \stepcounter{moodle@numcorrectanswers}
+       \else
+         \item[\bf \moodle@answertext] ~%
+       \fi
+       \ifx\moodle@feedback\@empty\relax
+         \def\test@ii{#2}
+         \ifx\test@ii\@empty\relax\else
+           \ifx\test@i\@star%
+             \hfill \emph{$\rightarrow$ #2}%
+           \else%
+             \hfill \emph{$\rightarrow$ #1#2}%
+           \fi
+         \fi
+       \else
+         \hfill \emph{$\rightarrow$ \moodle@feedback}%
+       \fi
+     \fi
+   }%
+
+% SAVING ANSWERS TO MEMORY
+\def\savetruefalseanswer#1{%
+  \bgroup
+    \savetruefalseanswer@int#1\moodle@answer@rdelim
+    \passvalueaftergroup{\moodle@answers@xml}%
+  \egroup
+}%
+   \newcommand\savetruefalseanswer@int[1][]{%
+     \setkeys{moodle}{#1}%
+     \savetruefalseanswer@int@int%
+   }%
+   \def\savetruefalseanswer@int@int#1\moodle@answer@rdelim{%
+     \def\test@i{#1}
+     \ifx\test@i\@empty\relax
+       \savetruefalseanswer@int@int@empty
+     \else
+       \savetruefalseanswer@int@int@int#1\moodle@answer@rdelim
+     \fi
+   }%
+   \def\savetruefalseanswer@int@int@empty{%
+     \setkeys{moodle}{fraction=0}%
+     \ifnum\c@currentitemnumber=1%
+	\def\moodle@answertext{true}%
+     \fi
+     \ifnum\c@currentitemnumber=2%
+	\def\moodle@answertext{false}%
+     \fi
+     \ifnum\c@currentitemnumber<3%
+       \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
+       \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext</text>}%
+       \ifx\moodle@feedback\@empty\relax\else
+         \trim@spaces@in\moodle@feedback
+         \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
+         \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text></feedback>}%
+       \fi
+       \addto@xml[2]{\moodle@answers@xml}{</answer>}%
+     \fi
+   }%
+   \def\savetruefalseanswer@int@int@int#1#2\moodle@answer@rdelim{%
+     \def\test@i{#1}%
+     \ifx\test@i\@star
+       \setkeys{moodle}{fraction=100}%
+     \else
+       \setkeys{moodle}{fraction=0}%
+     \fi
+     \ifnum\c@currentitemnumber=1%
+	\def\moodle@answertext{true}%
+     \fi
+     \ifnum\c@currentitemnumber=2%
+	\def\moodle@answertext{false}%
+     \fi
+     \ifnum\c@currentitemnumber<3%
+       \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
+       \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext</text>}%
+       \ifx\moodle@feedback\@empty\relax
+         \def\test@ii{#2}
+         \ifx\test@ii\@empty\relax\else
+           \ifx\test@i\@star
+             \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{#2}%
+           \else%
+             \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{#1#2}%
+           \fi%
+           \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text></feedback>}%
+         \fi
+       \else
+         \trim@spaces@in\moodle@feedback
+         \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
+         \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text></feedback>}%
+       \fi
+       \addto@xml[2]{\moodle@answers@xml}{</answer>}%
+     \fi
+   }%
+
+% WRITING QUESTION TO XML FILE
+\gdef\writetruefalsequestion{%
+  \writetomoodle{<question type="truefalse">}%
+    \moodle@writecommondata%
     \moodle@writeanswers%
     \moodle@writetags%
   \writetomoodle{</question>}%
