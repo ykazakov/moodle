@@ -1124,7 +1124,7 @@
     %\openmoodleout%
     \setcategory{#2}%
   }{}%
-   \subsection*{#2}%
+   \subsection{#2}%
    \begin{enumerate}%
 }{
   \end{enumerate}%
@@ -1136,7 +1136,7 @@
 \writetomoodle{ }%
 \writetomoodle{<question type="category">}%
 \writetomoodle{  <category>}%
-\writetomoodle{    <text>$module$/#1</text>}%
+\writetomoodle{    <text>$course$/top/#1</text>}%
 \writetomoodle{  </category>}%
 \writetomoodle{</question>}%
 \writetomoodle{ }%
@@ -2327,8 +2327,9 @@
      \setkeys{moodle}{#1}%
      \moodle@print@truefalse@answer@int@int% applies to the rest: "* text\@rdelim"
    }%
-   \def\moodle@print@truefalse@answer@int@int#1\@rdelim{% this is just for excludind the case where nothing follows
+   \def\moodle@print@truefalse@answer@int@int#1\@rdelim{% this is just to treat appart the case where nothing follows
      \def\test@i{#1}
+     \trim@spaces@in\test@i
      \ifx\test@i\@empty\relax
        \moodle@print@truefalse@answer@int@int@empty
      \else
@@ -2355,6 +2356,7 @@
      \fi
      \ifnum\c@currentitemnumber<3%
        \def\test@i{#1}%
+       %\trim@spaces@in\test@i
        \ifx\test@i\@star
          \item[\bf \moodle@answertext] $\checkmark$%
          \stepcounter{moodle@numcorrectanswers}
@@ -2363,6 +2365,7 @@
        \fi
        \ifx\moodle@feedback\@empty\relax
          \def\test@ii{#2}
+         \trim@spaces@in\test@ii
          \ifx\test@ii\@empty\relax\else
            \ifx\test@i\@star%
              \hfill \emph{$\rightarrow$ #2}%
@@ -2389,6 +2392,7 @@
    }%
    \def\savetruefalseanswer@int@int#1\moodle@answer@rdelim{%
      \def\test@i{#1}
+     \trim@spaces@in\test@i
      \ifx\test@i\@empty\relax
        \savetruefalseanswer@int@int@empty
      \else
