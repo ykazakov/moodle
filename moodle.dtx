@@ -1124,7 +1124,19 @@
     %\openmoodleout%
     \setcategory{#2}%
   }{}%
-   \subsection{#2}%
+   \ifmoodle@section
+     \ifmoodle@numbered
+       \section{#2}%
+     \else
+       \section*{#2}%
+     \fi
+   \else
+     \ifmoodle@numbered
+       \subsection{#2}%
+     \else
+       \subsection*{#2}%
+     \fi
+   \fi
    \begin{enumerate}%
 }{
   \end{enumerate}%
@@ -1290,6 +1302,17 @@
   }%
 }%
 
+%    \end{macrocode}
+% \subsubsection{Keys for the quiz}
+%    \begin{macrocode}
+      \define@boolkey{moodle}[moodle@]{section}[true]{}%
+      \moodleset{section=false}%
+      %The key 'subsection' is an antonym to 'section'.
+      \define@boolkey{moodle}[moodle@]{subsection}[true]{\ifmoodle@subsection\moodle@sectionfalse\else\moodle@sectiontrue\fi}%
+      \define@boolkey{moodle}[moodle@]{numbered}[true]{}%
+      \moodleset{numbered=false}%
+      %The key 'unnumbered' is an antonym to 'numbered'.
+      \define@boolkey{moodle}[moodle@]{unnumbered}[true]{\ifmoodle@numbered\moodle@numberedfalse\else\moodle@numberedtrue\fi}%
 %    \end{macrocode}
 % \subsubsection{Keys for all question types}
 %    \begin{macrocode}
@@ -4108,12 +4131,17 @@
     \tikzexternalize%
     \tikzset{external/force remake}%
 
-    \ifpdf
+    \ifpdf % pdflatex
       \def\pdftopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf}%
                     \expandafter\immediate\expandafter\write18\expandafter{\gscmdline}}%
     \else
-      \def\pstopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.ps}%
+      \ifxetex % xetex
+        \def\pdftopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf}%
                     \expandafter\immediate\expandafter\write18\expandafter{\gscmdline}}%
+      \else % latex?
+        \def\pstopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.ps}%
+                    \expandafter\immediate\expandafter\write18\expandafter{\gscmdline}}%
+      \fi
     \fi
     \def\pngoptim{\edef\cmdline{\optipng\otherspace -clobber -quiet \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png}%
       \expandafter\immediate\expandafter\write18\expandafter{\cmdline}}%
@@ -4151,11 +4179,16 @@
     }
     \def\moodle@endtikzpicture@hook{%
       \@moodle@ifgeneratexml{%
-        \ifpdf
+        \ifpdf % pdflatex
           \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf' to PNG...^^J}%
           \pdftopng
         \else
-          \pstopng
+          \ifxetex % xetex
+            \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf' to PNG...^^J}%
+            \pdftopng
+          \else % latex?
+            \pstopng
+          \fi
         \fi
         \message{moodle.sty:   Optimizing '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png'...^^J}%
         \pngoptim
