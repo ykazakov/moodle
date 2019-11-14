@@ -1798,9 +1798,7 @@
     \end{itemize}%
   \fi
   \ifx\moodle@generalfeedback\@empty\relax\else%
-    \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%  
-      \item[$\rightarrow$] General feedback: \emph{\moodle@generalfeedback}
-    \end{itemize}%
+    \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
   \fi
 }
 
@@ -1980,10 +1978,10 @@
 \def\moodle@shortanswer@latexprocessing{%
   \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
     \loopthroughitemswithcommand{\moodle@print@shortanswer@answer}%
-    \ifx\moodle@generalfeedback\@empty\relax\else%
-      \item[$\rightarrow$] General feedback: \emph{\moodle@generalfeedback}
-    \fi
   \end{itemize}%
+  \ifx\moodle@generalfeedback\@empty\relax\else%
+    \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+  \fi
 }
 
    \def\moodle@print@shortanswer@answer#1{%
@@ -2052,10 +2050,10 @@
 \def\moodle@numerical@latexprocessing{%
       \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
         \loopthroughitemswithcommand{\moodle@print@numerical@answer}%
-        \ifx\moodle@generalfeedback\@empty\relax\else%
-          \item[$\rightarrow$] General feedback: \emph{\moodle@generalfeedback}
-        \fi
       \end{itemize}%
+      \ifx\moodle@generalfeedback\@empty\relax\else%
+        \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+      \fi
 }
 
    \def\moodle@print@numerical@answer#1{%
@@ -2150,10 +2148,10 @@
                        %\renewcommand{\theenumi}{\alph{enumi}}%
                        \setlength\itemsep{0pt}\setlength\parskip{0pt}%
         \loopthroughitemswithcommand{\moodle@print@multichoice@answer}%
-        \ifx\moodle@generalfeedback\@empty\relax\else%
-          \item[$\rightarrow$] General feedback: \emph{\moodle@generalfeedback}
-        \fi
       \end{enumerate}%
+      \ifx\moodle@generalfeedback\@empty\relax\else%
+        \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+      \fi
 }
   \def\moodle@print@multichoice@answer#1{%
     \let\moodle@feedback=\@empty
@@ -2339,10 +2337,10 @@
   \setcounter{moodle@numcorrectanswers}{0}%
   \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
     \loopthroughitemswithcommand{\moodle@print@truefalse@answer}%
-    \ifx\moodle@generalfeedback\@empty\relax\else%
-      \item[$\rightarrow$] General feedback: \emph{\moodle@generalfeedback}
-    \fi
   \end{itemize}
+  \ifx\moodle@generalfeedback\@empty\relax\else%
+    \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+  \fi
   \ifnum\c@moodle@numcorrectanswers=0\relax%
     \PackageError{moodle}{No answer is explicitly marked as correct (*). Be sure one answer leads to points.}%
   \fi
@@ -2518,10 +2516,10 @@
     \let\answer=\hfill
     \begin{enumerate}\renewcommand{\theenumi}{\alph{enumi}}\setlength\itemsep{0pt}\setlength\parskip{0pt}%
       \loopthroughitemswithcommand{\moodle@print@matching@answer}%
-      \ifx\moodle@generalfeedback\@empty\relax\else%
-        \item[$\rightarrow$] General feedback: \emph{\moodle@generalfeedback}%
-      \fi
     \end{enumerate}%
+    \ifx\moodle@generalfeedback\@empty\relax\else%
+      \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+    \fi
   \egroup
 }
 
@@ -2638,9 +2636,7 @@
       \edef\moodle@generalfeedback{\expandonce\moodle@feedback}
       %\csname moodle@cloze@latexprocessing\endcsname
       \ifx\moodle@generalfeedback\@empty\relax\else%
-        \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%  
-          \item[$\rightarrow$] General feedback: \emph{\moodle@generalfeedback}
-        \end{itemize}%
+        \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
       \fi
     %Now, writing information to memory.
     \@moodle@ifgeneratexml{%
