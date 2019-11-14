@@ -206,7 +206,7 @@
 % \draw (xml) edge [post,red,bend right=-20] node[cmnt,pos=.5,right] 
 % {import} (moodle);
 % \end{tikzpicture}
-% \caption{Block diagram describing a typical workflow using the |moodle| package.}
+% \caption{Block diagram describing a typical workflow using the \texttt{moodle} package.}
 % \label{fig:workflow}
 % \end{figure}
 %
@@ -219,7 +219,7 @@
 % Here is a simple example document:
 % \begin{verbatim}
 %   \documentclass[12pt]{article}
-%   \usepackage{moodle}
+%   \usepackage[section]{moodle}
 %   \def\myreactiontoasillyanswer{What!?}
 %   \htmlregister{\myreactiontoasillyanswer}
 %   \begin{document}
@@ -268,6 +268,17 @@
 % quiz containing graphics, so as to avoid the time spent converting
 % image files. The package option |final| might be useful if one wants
 % to avoid the option |draft| to be inherited from the |documentclass|.
+%
+% \DescribeMacro{section}
+% \DescribeMacro{section*}
+% \DescribeMacro{subsection}
+% \DescribeMacro{subsection*}
+% If the package option |section| is invoked, by calling
+% |\usepackage[section]{moodle}|, then each quiz is represented by a
+% different \LaTeX\ section. Stared versions correspond to unnumbered
+% sections or subsections. To preserve compatibility with Version 0.5,
+% the default is |subsection*|. Consequently, |\usepackage{moodle}| is
+% equivalent to |\usepackage[subsection*]{moodle}|.
 %
 % \subsection{Quiz and Question Environments}
 % 
@@ -991,13 +1002,22 @@
 %    \begin{macrocode}
 \newif\ifmoodle@draftmode
 \newif\ifmoodle@tikzloaded
+\newif\ifmoodle@section
+\newif\ifmoodle@subsection
+\newif\ifmoodle@numbered
 
 %%DECLARATION OF OPTIONS
 \DeclareOption{draft}{\moodle@draftmodetrue}
 \DeclareOption{final}{\moodle@draftmodefalse}
+\DeclareOption{section}{\moodle@sectiontrue\moodle@numberedtrue}
+\DeclareOption{section*}{\moodle@sectiontrue\moodle@numberedfalse}
+\DeclareOption{subsection}{\moodle@sectionfalse\moodle@numberedtrue}
+\DeclareOption{subsection*}{\moodle@sectionfalse\moodle@numberedfalse}
 
 \moodle@draftmodefalse
 \moodle@tikzloadedfalse
+\moodle@subsectiontrue
+\moodle@numberedfalse
 
 \ProcessOptions
 
@@ -1302,17 +1322,6 @@
   }%
 }%
 
-%    \end{macrocode}
-% \subsubsection{Keys for the quiz}
-%    \begin{macrocode}
-      \define@boolkey{moodle}[moodle@]{section}[true]{}%
-      \moodleset{section=false}%
-      %The key 'subsection' is an antonym to 'section'.
-      \define@boolkey{moodle}[moodle@]{subsection}[true]{\ifmoodle@subsection\moodle@sectionfalse\else\moodle@sectiontrue\fi}%
-      \define@boolkey{moodle}[moodle@]{numbered}[true]{}%
-      \moodleset{numbered=false}%
-      %The key 'unnumbered' is an antonym to 'numbered'.
-      \define@boolkey{moodle}[moodle@]{unnumbered}[true]{\ifmoodle@numbered\moodle@numberedfalse\else\moodle@numberedtrue\fi}%
 %    \end{macrocode}
 % \subsubsection{Keys for all question types}
 %    \begin{macrocode}

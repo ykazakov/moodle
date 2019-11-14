@@ -34,7 +34,6 @@ example_quiz_v5.pdf: moodlev5.sty
 moodle.pdf: moodle.dtx moodle.gls
 
 moodlev5.pdf: moodlev5.dtx
-	$(PDFLATEX) $(LATEXFLAGS) $< $(DEBUG)
 
 %.glo: %.dtx
 	$(PDFLATEX) $(LATEXFLAGS) $< $(DEBUG)
@@ -43,6 +42,9 @@ moodlev5.pdf: moodlev5.dtx
 	$(MAKEINDEX) -s gglo.ist -o $@ $< $(DEBUG)
 
 %.pdf: %.tex
+	$(PDFLATEX) $(LATEXFLAGS) $< $(DEBUG)
+
+%.pdf: %.dtx
 	$(PDFLATEX) $(LATEXFLAGS) $< $(DEBUG)
 
 %.sty: %.ins
