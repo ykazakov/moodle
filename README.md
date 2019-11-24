@@ -17,12 +17,12 @@ The Current Maintainer of this work is Anders O.F. Hendrickson.
 
 Original contents (2016): Anders O.F. Hendrickson (anders.hendrickson@snc.edu)
 
-2019: Christophe Barès, Matthieu Guerquin-Kern
+2019: Matthieu Guerquin-Kern
 
 # Contents
 
 This work consists of the files moodle.dtx and moodle.ins and the derived
-file moodle.sty.
+file moodle.sty. Test files are located in the test/ folder.
 
 MAKEFILES are distributed to automate the building process (See Section BUILDING
 below).
@@ -66,14 +66,25 @@ environment using either
 2. a virtual machine (see virtualbox for instance).
 
 An installation of the TexLive suite is required. The complete installation is
-not necessary but amsmath and related, and PGF/TikZ might be useful.
-Other tools are used:
-* openssl (for graphics)
-* ghostscript (for graphics)
-* imagemagick (for graphics)
-* optipng (for graphics)
-* meld
-* ... (list to be completed)
+not necessary but the moodle package requires the following packages:
+- environ (texlive-latex-extra),
+- xkeyval (texlive-latex-recommended),
+- amssymb (texlive-base),
+- trimspaces (texlive-latex-extra),
+- etex (texlive-base),
+- etoolbox (texlive-latex-recommended),
+- xpatch (texlive-latex-extra),
+- array,
+- ifplatform (texlive-base),
+- ifpdf (texlive-base),
+- ifxetex (texlive-base),
+- fancybox (texlive-latex-recommended),
+- getitems (texlive-latex-extra).
+
+In order to manipulate images, the package uses:
+- GhostScript (www.ghostscript.com),
+- ImageMagick (www.imagemagick.org), and
+- optipng (http://optipng.sourceforge.net/).
 
 # Building
 
