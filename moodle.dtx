@@ -327,7 +327,11 @@
 % \DescribeMacro{fraction}
 % In most question types, it is possible to designate some answers as being
 % worth partial credit---that is, some fraction of a completely correct answer.
-% The |fraction| key may be set to any integer from |0| (entirely wrong) to |100| (entirely correct).
+% The |fraction| key may be set to any integer or decimal number from |0| (entirely wrong)
+% to |100| (entirely correct). In questions where several choices can be selected
+% (see |multi| with the option |multiple|), it is possible to set negative fractions (from
+% -100 to 0) for wrong choices, in order to avoid a student to get a good grade by
+% selecting all the choices.
 % 
 % \DescribeMacro{feedback}
 % The |feedback| key sets text that will appear to the student after completing the quiz.
@@ -457,20 +461,22 @@
 %   \begin{multi}[multiple]{my question}
 %     Which numbers are prime?
 %     \item* 5
-%     \item 6
+%     \item[fraction=-50] 6
 %     \item* 7
-%     \item 8
+%     \item[fraction=-50] 8
 %   \end{multi}
 % \end{verbatim}
 % \begin{verbatim}
 %   \begin{multi}[multiple]{my question}
 %     Which numbers are prime?
 %     \item[fraction=50] 5
-%     \item 6
+%     \item[fraction=-50] 6
 %     \item[fraction=50] 7
-%     \item 8
+%     \item[fraction=-50] 8
 %   \end{multi}
 % \end{verbatim}
+% Note that, in this example, negative fractions are set for wrong choices. This
+% prevents students selecting all options to obtain a good grade with no merit.
 % 
 % \subsubsection{Numerical}
 %
