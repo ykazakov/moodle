@@ -4069,7 +4069,7 @@
       % Starting from Windows 7, CertUtil is included by default. There should be no windows XP still running
     \else
       \ifmacosx
-        \def\cmdline{\baselxiv\otherspace -i #2.png -o #2.enc}
+        \def\cmdline{\baselxiv\otherspace -b 64 -i #2.png -o #2.enc}
       \else % Linux, Cygwin
         \def\cmdline{\baselxiv\otherspace #2.png > #2.enc}
       \fi
@@ -4162,7 +4162,7 @@
       % Starting from Windows 7, CertUtils is included by default. There should be no windows XP still running
     \else
       \ifmacosx
-        \def\pngtobaselxiv{\edef\baselxivcmdline{\baselxiv\otherspace -i \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -o \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
+        \def\pngtobaselxiv{\edef\baselxivcmdline{\baselxiv\otherspace -b 64 -i \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -o \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
                        \expandafter\immediate\expandafter\write18\expandafter{\baselxivcmdline}}
       \else
         \def\pngtobaselxiv{\edef\baselxivcmdline{\baselxiv\otherspace \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png > \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
