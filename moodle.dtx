@@ -727,7 +727,7 @@
 %   \end{tabular}
 % \end{center}
 % Single and double quotation marks, french quotation marks and the diacritical 
-% commands  |\^|, |\'|, |\`|, |\"|, |\~|, |\c|, and |\H| are also handled,
+% commands  |\^|, |\'|, |\`|, |\"|, |\~|, |\c|, |\u|, |\v| and |\H| are also handled,
 % as are the characters |\aa|, |\ae|, |\oe|, |\o|, |\ss|, |\l|, and their 
 % capitalizations.
 %   
@@ -941,15 +941,29 @@
 % \c{t} & \verb|\c{t}| & both & \LaTeX & \c{T} & \verb|\c{T}| & both & \LaTeX\\
 % \H{o} & \verb|\H{o}| & both & \LaTeX & \H{O} & \verb|\H{O}| & both & \LaTeX\\
 % \H{u} & \verb|\H{u}| & both & \LaTeX & \H{U} & \verb|\H{U}| & both & \LaTeX\\
+% \u{a} & \verb|\u{a}| & both & \LaTeX & \u{A} & \verb|\u{A}| & both & \LaTeX\\
+% \u{e} & \verb|\u{e}| & both & \LaTeX & \u{E} & \verb|\u{E}| & both & \LaTeX\\
+% \u{g} & \verb|\u{g}| & both & \LaTeX & \u{G} & \verb|\u{G}| & both & \LaTeX\\
+% \u{\i} & \verb|\u{i}| or \verb|\u{\i}| & both & \LaTeX & \u{I} & \verb|\u{I}| & both & \LaTeX\\
+% \u{o} & \verb|\u{o}| & both & \LaTeX & \u{O} & \verb|\u{O}| & both & \LaTeX\\
+% \v{c} & \verb|\v{c}| & both & \LaTeX & \v{C} & \verb|\v{C}| & both & \LaTeX\\
+% \v{d} & \verb|\v{d}| & both & \LaTeX & \v{D} & \verb|\v{D}| & both & \LaTeX\\
+% \v{e} & \verb|\v{e}| & both & \LaTeX & \v{E} & \verb|\v{E}| & both & \LaTeX\\
+% \v{l} & \verb|\v{l}| & both & \LaTeX & \v{L} & \verb|\v{L}| & both & \LaTeX\\
+% \v{n} & \verb|\v{n}| & both & \LaTeX & \v{N} & \verb|\v{N}| & both & \LaTeX\\
+% \v{r} & \verb|\v{r}| & both & \LaTeX & \v{R} & \verb|\v{R}| & both & \LaTeX\\
+% \v{s} & \verb|\v{s}| & both & \LaTeX & \v{S} & \verb|\v{S}| & both & \LaTeX\\
+% \v{t} & \verb|\v{t}| & both & \LaTeX & \v{T} & \verb|\v{T}| & both & \LaTeX\\
+% \v{z} & \verb|\v{z}| & both & \LaTeX & \v{Z} & \verb|\v{Z}| & both & \LaTeX\\
 % \aa & \verb|\aa| & both & both & \AA & \verb|\AA| & both & both\\
 % \ae & \verb|\ae| & both & \LaTeX & \AE & \verb|\AE| & both & \LaTeX\\
 % \oe & \verb|\oe| & both & \LaTeX & \OE & \verb|\OE| & both & \LaTeX\\
 % « & \verb|\og| & both & \LaTeX & » & \verb|\fg| & both & \LaTeX\\
 %\end{tabular}
 % \caption{Support for special characters, accents and other diacritical marks 
-% with an UTF8-coded \TeX~document compiled with pdf\TeX\ (packages 
+% in a UTF8-coded \TeX~document compiled with pdf\TeX\ (packages 
 % \texttt{inputenc} with option \texttt{utf8} and \texttt{fontenc} with option
-% \texttt{T1}) or \XeTeX\ (package \texttt{fontspec} ) }
+% \texttt{T1}) or \XeTeX\ (package \texttt{fontspec}) }
 % \label{tab:3}
 % \end{table*}
 % Some features of Moodle quizzes have not yet been implemented in \textsf{moodle.sty}.
@@ -1090,9 +1104,9 @@
   \else
     \ifxetex % xelatex
       \writetomoodle{<?xml version="1.0" encoding="UTF-8"?>}%
-      \else % what shall we do?
-        \writetomoodle{<?xml version="1.0" encoding="UTF-8"?>}%
-        %\stop
+    \else % what shall we do?
+      \writetomoodle{<?xml version="1.0" encoding="UTF-8"?>}%
+      %\stop
     \fi
   \fi
   \writetomoodle{<quiz>}%
@@ -1748,7 +1762,7 @@
   \moodle@makelatextagbox{\csname moodle@#1\endcsname}
 }%
 
-\def\marks#1{point\ifdim#1pt=1pt \else s\fi}
+\def\moodle@marks#1{point\ifdim#1pt=1pt \else s\fi}
 
 \def\moodle@makefrontend#1#2{%
   \NewEnviron{#1}[2][]{%
@@ -1765,7 +1779,7 @@
       \par
       \noindent
       \moodle@makelatextag@qtype{#1}
-      \moodle@makelatextag@value{default grade}{\marks{\csname moodle@default grade\endcsname}}
+      \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
       \moodle@makelatextag@value{penalty}{penalty}
       #2\par
       \noindent
@@ -1822,7 +1836,7 @@
       \par
       \noindent
       \moodle@makelatextag@qtype{essay}
-      \moodle@makelatextag@value{default grade}{\marks{\csname moodle@default grade\endcsname}}
+      \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
       \moodle@makelatextag@value{penalty}{penalty}
       \moodle@makelatextag@key{responseformat}\par
       \noindent
@@ -2309,7 +2323,7 @@
       \par
       \noindent
       \moodle@makelatextag@qtype{truefalse}
-      \moodle@makelatextag@value{default grade}{\marks{\csname moodle@default grade\endcsname}}
+      \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
       \par
       \noindent
       \moodle@questionheader
@@ -2635,7 +2649,7 @@
       \par
       \noindent
       \moodle@makelatextag@qtype{cloze}
-      \moodle@makelatextag@value{default grade}{\marks{\csname moodle@default grade\endcsname}}
+      \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
       \moodle@makelatextag@value{penalty}{penalty}\par
       \noindent
       \BODY
@@ -2729,7 +2743,7 @@
       \par
       \noindent
       \moodle@makelatextag@qtype{multi}
-      \moodle@makelatextag@value{default grade}{\marks{\csname moodle@default grade\endcsname}}
+      \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
       \moodle@makelatextag@value{penalty}{penalty}
       \moodle@makelatextag@multi
       \def\cloze@multichoice@table@text{}%
@@ -2887,7 +2901,7 @@
       \par
       \noindent
       \moodle@makelatextag@qtype{numerical}
-      \moodle@makelatextag@value{default grade}{\marks{\csname moodle@default grade\endcsname}}
+      \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
       \moodle@makelatextag@value{penalty}{penalty}
       \moodle@makelatextag@numerical
       \par
@@ -3005,7 +3019,7 @@
       \par
       \noindent
       \moodle@makelatextag@qtype{shortanswer}
-      \moodle@makelatextag@value{default grade}{\marks{\csname moodle@default grade\endcsname}}
+      \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
       \moodle@makelatextag@value{penalty}{penalty}
       \moodle@makelatextag@shortanswer
       \par
@@ -3910,8 +3924,60 @@
     \ifinlist{#1}{\htmlize@tilde}%
       {\g@addto@macro\htmlize@output{\otherampersand#1tilde\othersemicol}}%
       {\xa\g@addto@macro\htmlize@output\xa{\string\~#1}}%
-  }%
+}%
 
+% breve diacritics
+{\catcode`|=3\relax
+ \gdef\htmlize@breve{A|G|U|a|g|u|}}
+\def\@e{e}\def\@E{E}\def\@i{i}\def\@ii{\i}\def\@I{I}\def\@o{o}\def\@O{O}%
+\html@action@def\u#1{%
+  \ifinlist{#1}{\htmlize@breve}%
+     {\g@addto@macro\htmlize@output{\otherampersand#1breve\othersemicol}}%
+     {
+      \bgroup
+        \def\test@i{#1}%
+        \ifx\test@i\@E
+          \def\toadd{\otherampersand\otherhash276\othersemicol}%
+        \else
+          \ifx\test@i\@e
+            \def\toadd{\otherampersand\otherhash277\othersemicol}%
+          \else
+            \ifx\test@i\@I
+              \def\toadd{\otherampersand\otherhash300\othersemicol}%
+            \else
+              \ifx\test@i\@i
+                \def\toadd{\otherampersand\otherhash301\othersemicol}%
+              \else
+                \ifx\test@i\@i
+                  \def\toadd{\otherampersand\otherhash301\othersemicol}%
+                \else
+                  \ifx\test@i\@O
+                    \def\toadd{\otherampersand\otherhash334\othersemicol}%
+                  \else
+                    \ifx\test@i\@o
+                      \def\toadd{\otherampersand\otherhash335\othersemicol}%
+                    \else
+                      \def\toadd{\otherbackslash\otherlbrace#1\otherrbrace}%
+                    \fi
+                  \fi
+                \fi
+              \fi
+            \fi
+          \fi
+        \fi
+        \xa\g@addto@macro\xa\htmlize@output\xa{\toadd}%
+      \egroup
+    }%
+}%
+
+% caron diacritics
+{\catcode`|=3\relax
+ \gdef\htmlize@caron{C|D|E|L|N|R|S|T|Z|c|d|e|l|n|r|s|t|z|}}
+\html@action@def\v#1{%
+    \ifinlist{#1}{\htmlize@caron}%
+      {\g@addto@macro\htmlize@output{\otherampersand#1caron\othersemicol}}%
+      {\xa\g@addto@macro\htmlize@output\xa{\string\v#1}}%
+}%
 %    \end{macrocode}
 % 
 % \subsubsection{Command sequences for Expansion}
