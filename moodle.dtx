@@ -545,7 +545,7 @@
 % You can make a question case-sensitive with the key |case sensitive| 
 % or its shorter synonym |usecase|.
 % 
-% \subsubsection{Essay Questions}
+% \subsubsection{Essay Questions}\label{subsubsect:essay}
 % Instructors may ask essay questions on a Moodle quiz,
 % although Moodle's software is not up to the task of grading them!
 % Instead each essay question answer must be graded manually by the
@@ -702,6 +702,60 @@
 % Within a cloze question, the short answer question can be made case sensitive.
 % This option, disabled by default, is selected with |case sensitive| or |usecase|.
 % 
+% \subsection{Summary of Key Options}
+% 
+% Table~\ref{tab:key-options} summarizes the key options available at the question
+% and answer levels depending on the question type. For the essay questions,
+% please refer to section~\ref{subsubsect:essay}.
+% 
+% \begin{table*}[tbp]
+% \centering
+% \begin{tabular}{rl|cccccccccc|ccc}
+% \multicolumn{2}{c|}{}& \multicolumn{10}{c|}{Question level} & 
+% \multicolumn{3}{c}{Answer level}\\
+% \multicolumn{2}{c|}{Question type}& \rotatebox{90}{points} & 
+% \rotatebox{90}{penalty} & \rotatebox{90}{feedback} & \rotatebox{90}{tags} & 
+% \rotatebox{90}{shuffle} & \rotatebox{90}{numbering} & \rotatebox{90}{multiple} &
+% \rotatebox{90}{case sensitive} & \rotatebox{90}{tolerance} &\rotatebox{90}{dd} &
+% \rotatebox{90}{fraction} & \rotatebox{90}{feedback} & 
+% \rotatebox{90}{tolerance}\\\hline\hline
+% &\href{https://docs.moodle.org/35/en/Multiple_Choice_question_type} 
+% {Multichoice} & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & 
+% $\checkmark$ & $\checkmark$ & $\checkmark$ & & & & $\checkmark$ & $\checkmark$ 
+% & \\\hline
+% & \href{https://docs.moodle.org/35/en/Numerical_question_type}{Numerical}
+% & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & & & 
+% & & $\checkmark$ & & $\checkmark$ & $\checkmark$ & $\checkmark$ \\\hline
+% & \href{https://docs.moodle.org/35/en/Short-Answer_question_type}{Short
+% Answer} & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & & & 
+% & $\checkmark$ & & & $\checkmark$ & $\checkmark$ \\\hline
+% &\href{https://docs.moodle.org/35/en/Matching_question_type}{Matching}
+% & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & & 
+% & & & $\checkmark$ & $\checkmark$ & \\\hline
+% & \href{https://docs.moodle.org/35/en/Multiple_True/False_Question_Type}
+% {True/False} & $\checkmark$ & & $\checkmark$ & $\checkmark$ & & & 
+% & & & & & $\checkmark$ \\\hline
+% ^^A&\href{https://docs.moodle.org/35/en/Essay_question_type}{Essay} & \\\hline%
+% \parbox[t]{2mm}{\multirow{5}{*}{\rotatebox[origin=c]{90}{\href{https://docs.moodle.org/31/en/Embedded_Answers_(Cloze)_question_type}
+% {Cloze}}}}
+% &Cloze & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & & & 
+% & & & & & \\\cline{2-15}
+% &Numerical & $\checkmark$ & & & & & & 
+% & &$\checkmark$ & & $\checkmark$ & $\checkmark$ & $\checkmark$ \\\cline{2-15}
+% &Short Answer & $\checkmark$ & & & & & & 
+% & $\checkmark$ & & & $\checkmark$ & $\checkmark$ \\\cline{2-15}
+% &Multi (normal) & $\checkmark$ & & & & $\checkmark$ & & $\checkmark$ 
+% & & & & $\checkmark$ & $\checkmark$ \\\cline{2-15}
+% &Multi (horizontal)& $\checkmark$ & & & & $\checkmark$ & & $\checkmark$ 
+% & & & & $\checkmark$ & $\checkmark$ \\\cline{2-15}
+% &Multi (vertical)& $\checkmark$ & & & & $\checkmark$ & & 
+% & & & & $\checkmark$ & $\checkmark$ \\\hline
+% \end{tabular}
+% \caption{Options available at the question and answer
+% levels depending on the question type.}
+% \label{tab:key-options}
+% \end{table*}
+% 
 % \section{Conversion to HTML}
 % 
 % Questions should be typed as usual for \LaTeX,
@@ -811,7 +865,7 @@
 % \end{itemize}
 % 
 % \section{Known Limitations and Call for Bug Reports}
-% Table~\ref{tab:2} lists some different features supported, limitations, and
+% Table~\ref{tab:support-limitations} lists some different features supported, limitations, and
 % bugs.
 %
 %\begin{table*}[tbp]
@@ -830,7 +884,7 @@
 %limiting the support}, red for \colorbox{red}{show-stopping problems}, and 
 %gray for \colorbox{black!20}{support limitations intrinsic to the question 
 %type} defined by Moodle.}
-%\label{tab:2}
+%\label{tab:support-limitations}
 %\begin{tabular}{rl|ccc|ccc}
 %\multicolumn{2}{c|}{}& \multicolumn{3}{c|}{\LaTeX\ equation rendering} & 
 %\multicolumn{3}{c}{Picture inclusion}\\
@@ -912,7 +966,7 @@
 %\end{threeparttable}
 %\end{table*}
 %
-% Table~\ref{tab:3} describes the current support for some special characters 
+% Table~\ref{tab:accents} describes the current support for some special characters 
 % accents and other diacritical marks.
 %
 %\begin{table*}[tbp]
@@ -964,7 +1018,7 @@
 % in a UTF8-coded \TeX~document compiled with pdf\TeX\ (packages 
 % \texttt{inputenc} with option \texttt{utf8} and \texttt{fontenc} with option
 % \texttt{T1}) or \XeTeX\ (package \texttt{fontspec}) }
-% \label{tab:3}
+% \label{tab:accents}
 % \end{table*}
 % Some features of Moodle quizzes have not yet been implemented in \textsf{moodle.sty}.
 % Here is a non-exhaustive list.
