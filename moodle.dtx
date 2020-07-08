@@ -744,7 +744,7 @@
 % & &$\checkmark$ & & $\checkmark$ & $\checkmark$ & $\checkmark$ \\\cline{2-15}
 % &Short Answer & $\checkmark$ & & & & & & 
 % & $\checkmark$ & & & $\checkmark$ & $\checkmark$ \\\cline{2-15}
-% &Multi (normal) & $\checkmark$ & & & & $\checkmark$ & & $\checkmark$ 
+% &Multi (regular) & $\checkmark$ & & & & $\checkmark$ & & $\checkmark$ 
 % & & & & $\checkmark$ & $\checkmark$ \\\cline{2-15}
 % &Multi (horizontal)& $\checkmark$ & & & & $\checkmark$ & & $\checkmark$ 
 % & & & & $\checkmark$ & $\checkmark$ \\\cline{2-15}
@@ -2798,7 +2798,6 @@
       \noindent
       \moodle@makelatextag@qtype{multi}
       \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
-      \moodle@makelatextag@value{penalty}{penalty}
       \moodle@makelatextag@multi
       \def\cloze@multichoice@table@text{}%
       %\let\moodle@feedback=\@empty
@@ -2956,7 +2955,6 @@
       \noindent
       \moodle@makelatextag@qtype{numerical}
       \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
-      \moodle@makelatextag@value{penalty}{penalty}
       \moodle@makelatextag@numerical
       \par
       \noindent
@@ -3074,7 +3072,6 @@
       \noindent
       \moodle@makelatextag@qtype{shortanswer}
       \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
-      \moodle@makelatextag@value{penalty}{penalty}
       \moodle@makelatextag@shortanswer
       \par
       \noindent
