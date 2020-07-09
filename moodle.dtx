@@ -4077,8 +4077,10 @@
 \html@def\ss{\&szlig;}%
 \html@def\l{\&lstrok;}%
 \html@def\L{\&Lstrok;}%
-\html@def\og{\&laquo;}%
-\html@def\fg{\&raquo;}%
+\html@def\og{\&laquo;\&\#8239;}%
+\html@def\fg{\&\#8239;\&raquo;}%
+\html@def\,{\&\#8239;}%
+\html@def\thinspace{\&\#8239;}%
 
 % AH CUSTOM MACROS TO EXPAND --- remove these before publishing!
 %\htmlize@record@expand{\inv}%
@@ -4398,7 +4400,23 @@
     }{}%
   \fi
 }
-
+%    \end{macrocode}
+%
+% \subsection{Warning \babel\ users}
+% Users of the \babel\ package loaded with the 'french' option may experience problems
+% related to autospacing when using \pdfLaTeX\. We shall warn them.
+%    \begin{macrocode}
+\AtBeginDocument{%
+  %\makeatletter
+  \ifpdf % pdflatex
+    \@ifpackagewith{babel}{french}{
+      \PackageWarning{moodle}{Be careful when using pdflatex, moodle and the babel package with option 'french'. Autospacing produces in undesired symbols in the XML. You can either 1) compile with xelatex or 2) add '\NoAutoSpacing' after '\begin{quiz}'.}%
+    }{\relax}
+  \fi
+  %\makeatother
+}
+%    \end{macrocode}
+% 
 % TO DO:
 % * sizing options for TikZ pictures?
 % * In cloze multi, how to handle HTML or TeX in answers?  In particular, what about ~?

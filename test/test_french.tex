@@ -1,0 +1,34 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = en_US
+\documentclass{article}
+
+\usepackage{../moodle}
+
+\ifxetex % FOR XELATEX
+	\usepackage{fontspec}
+\else %% FOR PDFLATEX
+	\usepackage[utf8]{inputenc} % necessary
+	\usepackage[T1]{fontenc} % necessary
+\fi
+
+\usepackage[french]{babel} % for french quotes
+
+\begin{document}
+
+\section*{Introduction}
+
+This document is intended to check the support of the \texttt{babel} package 
+with option \texttt{french} that causes problems during \texttt{pdfLaTeX} 
+compilation, due to autospacing.
+
+\begin{quiz}[points=1]{French Issues}
+\NoAutoSpacing % this option preserves pdflatex compilation
+
+\begin{multi}[feedback={test}]{Test french}
+\og Coucou\,!\fg, dit-il. On lui r\'epondit\,: \og Qui est-ce\,?\fg
+\item* A
+\item B
+\end{multi}
+
+\end{quiz}
+\end{document}
