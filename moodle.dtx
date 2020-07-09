@@ -759,8 +759,8 @@
 % \section{Conversion to HTML}
 % 
 % Questions should be typed as usual for \LaTeX,
-% including |\$| to obtain dollar signs, |$|'s for math shifts,
-% |$$|'s for display math, et cetera.
+% including |\$| to obtain dollar signs, |$|'s or |\(|...|\)| for math shifts,
+% |$$|'s or |\[|...|\]| for display math, et cetera.
 % The package \textsf{moodle.sty} automatically converts
 % this \LaTeX\ code into HTML for web display.
 % 
@@ -771,7 +771,8 @@
 %     |~| & |\#| & |\$| \\
 %     |\&| & |\\| & |\S| \\
 %     |\{| & |\}| & {\ttfamily\catcode`\ =12\relax\catcode`\\=12\relax\ }\\
-%     |\emph| & |\textbf| & |\par| \\
+%     |\emph| & |\textbf| & |\textit| \\
+%     |\underline| & |\texttt| & |\par| \\
 %     |\ldots| & |\dots| & |\relax| \\
 %     |\euro| & |\texteuro| \\
 %     |\begin{center}| \\
@@ -783,7 +784,7 @@
 % Single and double quotation marks, french quotation marks and the diacritical 
 % commands  |\^|, |\'|, |\`|, |\"|, |\~|, |\c|, |\u|, |\v| and |\H| are also handled,
 % as are the characters |\aa|, |\ae|, |\oe|, |\o|, |\ss|, |\l|, and their 
-% capitalizations.
+% capitalizations. See Table~\ref{tab:accents} for more details.
 %   
 % In addition, |<| and |>| will be converted to |&lt;| and |&gt;| \emph{within math mode only}.
 % If they should be typed outside of math mode, they will be passed as typed to
@@ -3154,7 +3155,9 @@
  \catcode`\&=12\gdef\otherampersand{&}%
  \catcode`\^=12\gdef\othercaret{^}%
  \catcode`\$=12\gdef\otherdollar{$}%
- \catcode`\%=12\gdef\otherpercent{%}}%
+ \catcode`\%=12\gdef\otherpercent{%}
+ \catcode`\%=12\gdef\otherlbracket{[}
+ \catcode`\%=12\gdef\otherrbracket{]}}%
 {\catcode`\ =12\gdef\otherspace{ }}%
 {\ttfamily\catcode`\|=0\catcode`\\=12\relax|gdef|otherbackslash{\}}%
 {\catcode`\[=1\catcode`\]=2\catcode`\{=12\catcode`\}=12%
@@ -3162,6 +3165,8 @@
 
 \edef\@otherlbrace{\otherlbrace}%
 \edef\@otherrbrace{\otherrbrace}%
+\edef\@otherlbracket{\otherlbracket}%
+\edef\@otherrbracket{\otherrbracket}%
 \edef\@clozelbrace{\clozelbrace}%
 \edef\@clozerbrace{\clozerbrace}%
 \edef\@otherdollar{\otherdollar}%
@@ -3444,7 +3449,7 @@
           % We grab everything between $$...$$, sanitize it, and add it verbatim to
           % our output.
           \htmlize@inlinemathshift@replace#1#2#3\htmlize@rdelim@iii%
-        \fi
+        \fi% \ifx\test@ii\@otherdollar
         % Now we resume work.
         % The \htmlize@xxxxxxmathshift@replace macro stored the remaining text in \htmlize@remaining@text.
         % Note that since we never detokenized and retokenized #1#2#3, 
@@ -3569,9 +3574,9 @@
                 %\edef\ds{Must pass on \xa\string\@htmlize@cs}\show\ds
                 \g@addto@macro\htmlize@output{#1}%
                 \def\htmlize@next@i{\htmlize@recursive@i#2#3\htmlize@rdelim@i}%
-              \fi
-            \fi
-          \fi
+              \fi% \ifhtmlize@expandcs
+            \fi% \ifhtmlize@actioncs
+          \fi% \ifx\@htmlize@cs\@@begin@cs
         \else%
           \ifx\test@i\@othertilde%
             % The ~ becomes non-breaking space &nbsp;
@@ -3586,7 +3591,7 @@
               \else
                 \g@addto@macro\htmlize@output{\otherampersand lsquo;}%
                 \def\htmlize@next@i{\htmlize@recursive@i#2#3\htmlize@rdelim@i}%
-              \fi
+              \fi% \ifx\test@ii\@lsinglequote%
             \else
               \ifx\test@i\@rsinglequote%
                 \ifx\test@ii\@rsinglequote%
@@ -3596,7 +3601,7 @@
                 \else
                   \g@addto@macro\htmlize@output{\otherampersand rsquo;}%
                   \def\htmlize@next@i{\htmlize@recursive@i#2#3\htmlize@rdelim@i}%
-                \fi
+                \fi% \ifx\test@ii\@rsinglequote%
               \else
                 \ifx\test@i\@doublequote
                   \g@addto@macro\htmlize@output{\otherampersand rdquo;}%
@@ -3615,17 +3620,17 @@
                       % Default case: write first token to output, call self on remaining tokens.
                       \g@addto@macro\htmlize@output{#1}%
                       \def\htmlize@next@i{\htmlize@recursive@i#2#3\htmlize@rdelim@i}%
-                    \fi
-                  \fi
-                \fi
-              \fi
-            \fi
-          \fi
-        \fi
-      \fi
-    \fi
-\fi
-  \fi
+                    \fi% \ifx\test@i\@gt
+                  \fi% \ifx\test@i\@lt
+                \fi% \ifx\test@i\@doublequote
+              \fi% \ifx\test@i\@rsinglequote%
+            \fi% \ifx\test@i\@lsinglequote%
+          \fi% \ifx\test@i\@othertilde%
+        \fi% \ifx\test@i\@otherbackslash%
+      \fi% \ifx\test@i\@otherdollar%
+    \fi% \ifx\test@i\@otherlbrace%
+\fi% \ifx\test@i\@clozelbrace%
+  \fi% \ifx\test@i\@@htmlize@stop
   \htmlize@next@i
 }%
 
@@ -3669,6 +3674,7 @@
                                  \expandonce\aftertext}%
   }%
 }
+
 %    \end{macrocode}
 % 
 % \subsection{Engines for Control Sequences}
@@ -3867,6 +3873,22 @@
     \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherbackslash\otherrbrace}}%
                       {\g@addto@macro\htmlize@output{\otherrbrace}}%
   }%
+\html@action@def\[{%
+    \advancemathmodecounter{1}
+    \g@addto@macro\htmlize@output{<CENTER>\otherbackslash\otherlbracket}%
+  }%
+\html@action@def\]{%
+    \g@addto@macro\htmlize@output{\otherbackslash\otherrbracket</CENTER>}%
+    \advancemathmodecounter{-1}
+  }%
+\html@action@def\({%
+    \advancemathmodecounter{1}
+    \g@addto@macro\htmlize@output{\otherbackslash(}%
+  }%
+\html@action@def\){%
+    \g@addto@macro\htmlize@output{\otherbackslash)}%
+    \advancemathmodecounter{-1}
+  }%
 \html@action@def\ldots{%
     \moodle@ifmathmode{\g@addto@macro\htmlize@output{\string\ldots}}%
                       {\g@addto@macro\htmlize@output{...}}%
@@ -4064,7 +4086,6 @@
 
 \htmlize@record@action\inlinemathrightdelim
 \htmlize@record@action\displaymathrightdelim
-
 
 %    \end{macrocode}
 % 
@@ -4276,7 +4297,7 @@
     \ifwindows
       \def\pngtobaselxiv{\edef\baselxivcmdline{\baselxiv\otherspace -encode \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png tmp.b64 && findstr /vbc:"---" tmp.b64 > \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc && del tmp.b64}%
                        \expandafter\immediate\expandafter\write18\expandafter{\baselxivcmdline}}
-      % Starting from Windows 7, CertUtils is included by default. There should be no windows XP still running
+      % Starting from Windows 7, CertUtils is included by default. There should be no windows XP still running in 2020
     \else
       \ifmacosx
         \def\pngtobaselxiv{\edef\baselxivcmdline{\baselxiv\otherspace -b 64 -i \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -o \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
