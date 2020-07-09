@@ -8,7 +8,7 @@
 % of this license or (at your option) any later version.
 % The latest version of this license is in
 %   http://www.latex-project.org/lppl.txt
-% and version 1.3 or later is part of all distributions of LaTeX
+% and version 1.3 or later is part of all distributions of LaTeX%
 % version 2005/12/01 or later.
 %
 % This work has the LPPL maintenance status `maintained'.
@@ -27,13 +27,14 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\ProvidesPackage{moodle}
 %<*package>
-    [2019/02/18 v0.6 Moodle quiz XML generation]
+    [2020/07/09 v0.7 Moodle quiz XML generation]
 %</package>
 %
 %<*driver>
 \documentclass[a4paper]{ltxdoc}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+%\usepackage{moodle}[2020/07/09]
 \usepackage{amssymb,metalogo}
 \usepackage{fancyvrb}
 \usepackage{multirow,hhline,colortbl,threeparttable,xcolor,graphicx,hyperref,tikz}
@@ -44,11 +45,12 @@
 \RecordChanges
 \begin{document}
   \DocInput{moodle.dtx}
+  \PrintChanges
 \end{document}
 %</driver>
 % \fi
 %
-% \CheckSum{0}
+% \CheckSum{5458}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -69,8 +71,9 @@
 %
 % \changes{v0.5}{2016/01/05}{Initial version}
 % \changes{v0.6}{2019/02/18}{Bux-fixing release}
+% \changes{v0.7}{2020/07/09}{Feature extensions}
 %
-% \GetFileInfo{moodle.sty}
+% \GetFileInfo{moodle.dtx}
 %
 % \DoNotIndex{\newcommand,\newenvironment,\def}
 % 
@@ -79,8 +82,10 @@
 %        generating Moodle quizzes via \LaTeX%
 %        \thanks{This document
 %                corresponds to \textsf{moodle.sty}~\fileversion, dated \filedate.}}
-% \author{Anders Hendrickson\\ St.~Norbert College, De~Pere, WI, USA \\ \url{anders.hendrickson@snc.edu}}
-% \date{February 18, 2019}
+% \author{Anders Hendrickson\\ St.~Norbert College, De~Pere, WI, USA \\
+% \url{anders.hendrickson@snc.edu} \and
+% Matthieu Guerquin-Kern\\ ENSEA, Cergy, France\\\url{guerquin@ensea.fr}}
+% \date{July 9, 2020}
 % 
 % \maketitle
 %
@@ -192,7 +197,6 @@
 % \node[rectangle,draw,align=center,text width=2.5cm,below=of xml] (moodle) 
 % {Moodle\\Server};
 % \draw (tex) edge [post,green,bend right=10] (comp); % 
-% %node[cmnt,pos=.42,above left,sloped] {} ()
 % \draw (comp) edge [post,green,bend right=10] node[cmnt,pos=.5,above,sloped] 
 % {\texttt{draft}, \texttt{final}} (pdf);
 % \draw (comp) edge [post,green,bend right=10] node[cmnt,pos=.5,above,sloped] 
@@ -702,7 +706,7 @@
 % Within a cloze question, the short answer question can be made case sensitive.
 % This option, disabled by default, is selected with |case sensitive| or |usecase|.
 % 
-% \subsection{Summary of Key Options}
+% \subsection{Summary of the Key Options}
 % 
 % Table~\ref{tab:key-options} summarizes the key options available at the question
 % and answer levels depending on the question type. For the essay questions,
@@ -710,50 +714,51 @@
 % 
 % \begin{table*}[tbp]
 % \centering
-% \begin{tabular}{rl|cccccccccc|ccc}
-% \multicolumn{2}{c|}{}& \multicolumn{10}{c|}{Question level} & 
-% \multicolumn{3}{c}{Answer level}\\
-% \multicolumn{2}{c|}{Question type}& \rotatebox{90}{points} & 
-% \rotatebox{90}{penalty} & \rotatebox{90}{feedback} & \rotatebox{90}{tags} & 
-% \rotatebox{90}{shuffle} & \rotatebox{90}{numbering} & \rotatebox{90}{multiple} &
-% \rotatebox{90}{case sensitive} & \rotatebox{90}{tolerance} &\rotatebox{90}{dd} &
-% \rotatebox{90}{fraction} & \rotatebox{90}{feedback} & 
-% \rotatebox{90}{tolerance}\\\hline\hline
-% &\href{https://docs.moodle.org/35/en/Multiple_Choice_question_type} 
-% {Multichoice} & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & 
-% $\checkmark$ & $\checkmark$ & $\checkmark$ & & & & $\checkmark$ & $\checkmark$ 
-% & \\\hline
-% & \href{https://docs.moodle.org/35/en/Numerical_question_type}{Numerical}
-% & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & & & 
-% & & $\checkmark$ & & $\checkmark$ & $\checkmark$ & $\checkmark$ \\\hline
-% & \href{https://docs.moodle.org/35/en/Short-Answer_question_type}{Short
-% Answer} & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & & & 
-% & $\checkmark$ & & & $\checkmark$ & $\checkmark$ \\\hline
-% &\href{https://docs.moodle.org/35/en/Matching_question_type}{Matching}
-% & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & & 
-% & & & $\checkmark$ & $\checkmark$ & \\\hline
-% & \href{https://docs.moodle.org/35/en/Multiple_True/False_Question_Type}
-% {True/False} & $\checkmark$ & & $\checkmark$ & $\checkmark$ & & & 
-% & & & & & $\checkmark$ \\\hline
-% ^^A&\href{https://docs.moodle.org/35/en/Essay_question_type}{Essay} & \\\hline%
-% \parbox[t]{2mm}{\multirow{5}{*}{\rotatebox[origin=c]{90}{\href{https://docs.moodle.org/31/en/Embedded_Answers_(Cloze)_question_type}
-% {Cloze}}}}
-% &Cloze & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & & & 
-% & & & & & \\\cline{2-15}
-% &Numerical & $\checkmark$ & & & & & & 
-% & &$\checkmark$ & & $\checkmark$ & $\checkmark$ & $\checkmark$ \\\cline{2-15}
-% &Short Answer & $\checkmark$ & & & & & & 
-% & $\checkmark$ & & & $\checkmark$ & $\checkmark$ \\\cline{2-15}
-% &Multi (regular) & $\checkmark$ & & & & $\checkmark$ & & $\checkmark$ 
-% & & & & $\checkmark$ & $\checkmark$ \\\cline{2-15}
-% &Multi (horizontal)& $\checkmark$ & & & & $\checkmark$ & & $\checkmark$ 
-% & & & & $\checkmark$ & $\checkmark$ \\\cline{2-15}
-% &Multi (vertical)& $\checkmark$ & & & & $\checkmark$ & & 
-% & & & & $\checkmark$ & $\checkmark$ \\\hline
-% \end{tabular}
 % \caption{Options available at the question and answer
 % levels depending on the question type.}
 % \label{tab:key-options}
+% \small
+% \begin{tabular}{rl|cccccccccc|ccc}
+% \multicolumn{2}{c|}{}& \multicolumn{10}{c|}{Question} & 
+% \multicolumn{3}{c}{Answer}\\
+% \multicolumn{2}{c|}{Question type}& \rotatebox{90}{points} & 
+% \rotatebox{90}{penalty} & \rotatebox{90}{feedback} & \rotatebox{90}{tags} & 
+% \rotatebox{90}{shuffle} & \rotatebox{90}{numbering} & \rotatebox{90}{multiple} &
+% \rotatebox{90}{usecase} & \rotatebox{90}{tolerance} &\rotatebox{90}{dd} &
+% \rotatebox{90}{fraction} & \rotatebox{90}{feedback} & 
+% \rotatebox{90}{tolerance}\\\hline\hline
+% &\href{https://docs.moodle.org/35/en/Multiple_Choice_question_type} 
+% {Multichoice} & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & 
+% $\bullet$ & $\bullet$ & $\bullet$ & & & & $\bullet$ & $\bullet$ 
+% & \\\hline
+% & \href{https://docs.moodle.org/35/en/Numerical_question_type}{Numerical}
+% & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & 
+% & & $\bullet$ & & $\bullet$ & $\bullet$ & $\bullet$ \\\hline
+% & \href{https://docs.moodle.org/35/en/Short-Answer_question_type}{Short
+% Answer} & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & 
+% & $\bullet$ & & & $\bullet$ & $\bullet$ \\\hline
+% &\href{https://docs.moodle.org/35/en/Matching_question_type}{Matching}
+% & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & 
+% & & & $\bullet$ & $\bullet$ & \\\hline
+% & \href{https://docs.moodle.org/35/en/Multiple_True/False_Question_Type}
+% {True/False} & $\bullet$ & & $\bullet$ & $\bullet$ & & & 
+% & & & & & $\bullet$ \\\hline
+% ^^A&\href{https://docs.moodle.org/35/en/Essay_question_type}{Essay} & \\\hline%
+% \parbox[t]{2mm}{\multirow{6}{*}{\rotatebox[origin=c]{90}{\href{https://docs.moodle.org/31/en/Embedded_Answers_(Cloze)_question_type}
+% {Cloze}}}}
+% &Cloze & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & 
+% & & & & & \\\cline{2-15}
+% &Numerical & $\bullet$ & & & & & & 
+% & &$\bullet$ & & $\bullet$ & $\bullet$ & $\bullet$ \\\cline{2-15}
+% &Short Answer & $\bullet$ & & & & & & 
+% & $\bullet$ & & & $\bullet$ & $\bullet$ \\\cline{2-15}
+% &Multi (regular) & $\bullet$ & & & & $\bullet$ & & $\bullet$ 
+% & & & & $\bullet$ & $\bullet$ \\\cline{2-15}
+% &Multi (horizontal)& $\bullet$ & & & & $\bullet$ & & $\bullet$ 
+% & & & & $\bullet$ & $\bullet$ \\\cline{2-15}
+% &Multi (vertical)& $\bullet$ & & & & $\bullet$ & & 
+% & & & & $\bullet$ & $\bullet$ \\\hline
+% \end{tabular}
 % \end{table*}
 % 
 % \section{Conversion to HTML}
@@ -771,10 +776,11 @@
 %     |~| & |\#| & |\$| \\
 %     |\&| & |\\| & |\S| \\
 %     |\{| & |\}| & {\ttfamily\catcode`\ =12\relax\catcode`\\=12\relax\ }\\
-%     |\emph| & |\textbf| & |\textit| \\
-%     |\underline| & |\texttt| & |\par| \\
-%     |\ldots| & |\dots| & |\relax| \\
-%     |\euro| & |\texteuro| \\
+%     |\thinspace| & |\,| & |\emph| \\
+%     |\textbf| & |\textit| & |\texttt|\\
+%     |\underline| & |\par| & |\relax| \\
+%     |\ldots| & |\dots| & |\euro|\\
+%     |\texteuro| \\
 %     |\begin{center}| \\
 %     |\begin{enumerate}| \\
 %     |\begin{itemize}| \\
@@ -794,7 +800,7 @@
 % Be aware that \emph{\textsf{moodle.sty} does not know how to convert any 
 % other \TeX\ or \LaTeX\ commands to HTML.}
 % If other sequences are used, they may be passed verbatim to the XML file
-% or may cause unpredicted results. The \htmlregister\ command lets you specify
+% or may cause unpredicted results. The |\htmlregister| command lets you specify
 % the macros that must be expanded in the XML file.
 % 
 % If you think of another \LaTeX\ command that should be changed to an HTML equivalent, 
@@ -871,12 +877,11 @@
 %
 %\begin{table*}[tbp]
 %\centering
-%\small
 %\def\OKcell{\cellcolor{green}}
 %\def\KOcell{\cellcolor{red}}
 %\def\DNAcell{\cellcolor{black!20}}
 %\def\Warncell{\cellcolor{orange}}
-%\def\MyLine{\hhline{~-|>{\arrayrulecolor{green}}->{\arrayrulecolor{black}}--|>{\arrayrulecolor{green}}->{\arrayrulecolor{black}}--|}
+%{\catcode`\|=12\relax\gdef\MyLine{\hhline{~-|>{\arrayrulecolor{green}}->{\arrayrulecolor{black}}--|>{\arrayrulecolor{green}}->{\arrayrulecolor{black}}--|}}
 %}
 %\begin{threeparttable}[b]
 %\caption{Content enrichment support after XML import in Moodle 
@@ -932,7 +937,7 @@
 %& \OKcell & \DNAcell Text only\tnote{3} & \OKcell 
 %note\tnote{1}\\\MyLine
 %
-%&Multi (dropdown) & \OKcell & \DNAcell Text only\tnote{4} &\OKcell 
+%&Multi (regular) & \OKcell & \DNAcell Text only\tnote{4} &\OKcell 
 %note\tnote{1} & \OKcell & \DNAcell Text only\tnote{4} & \OKcell 
 %note\tnote{1} \\\MyLine
 %
@@ -971,13 +976,20 @@
 % accents and other diacritical marks.
 %
 %\begin{table*}[tbp]
-%\centering
-%\small
-%\begin{tabular}{|cc|cc||cc|cc|}
+% \centering
+% \caption{Support for special characters, accents and other diacritical marks 
+% in a UTF8-coded \TeX~document compiled with pdf\TeX\ (packages 
+% \texttt{inputenc} with option \texttt{utf8} and \texttt{fontenc} with option
+% \texttt{T1}) or \XeTeX\ (package \texttt{fontspec}). In this table, \emph{both}
+% stands for \emph{both input types are supported} and \LaTeX\ stands for \emph{only 
+% \LaTeX\ input type is supported}.}
+% \label{tab:accents}
+% \begin{tabular}{|cc|cc||cc|cc|}
 % \multicolumn{2}{|c|}{Input type} & \multicolumn{2}{c||}{Engine support}&
 % \multicolumn{2}{c|}{Input type} & \multicolumn{2}{c|}{Engine support}\\
-% Unicode & \LaTeX\ & \XeLaTeX\ & pdf\LaTeX & Unicode & \LaTeX\ & \XeLaTeX\ & 
-% pdf\LaTeX\\\hline
+% \rotatebox{45}{Unicode} & \rotatebox{45}{\LaTeX} & \rotatebox{45}{\XeLaTeX}
+% & \rotatebox{45}{pdf\LaTeX} & \rotatebox{45}{Unicode} & \rotatebox{45}{\LaTeX}
+% & \rotatebox{45}{\XeLaTeX} & \rotatebox{45}{pdf\LaTeX}\\\hline
 % \`a & \verb|\`a| & both & both & \`A & \verb|\`A| & both & both\\
 % \^a & \verb|\^a| & both & both & \^A & \verb|\^A| & both & both\\
 % \'e & \verb|\'e| & both & both & \'E & \verb|\'E| & both & both\\
@@ -999,7 +1011,7 @@
 % \u{a} & \verb|\u{a}| & both & \LaTeX & \u{A} & \verb|\u{A}| & both & \LaTeX\\
 % \u{e} & \verb|\u{e}| & both & \LaTeX & \u{E} & \verb|\u{E}| & both & \LaTeX\\
 % \u{g} & \verb|\u{g}| & both & \LaTeX & \u{G} & \verb|\u{G}| & both & \LaTeX\\
-% \u{\i} & \verb|\u{i}| or \verb|\u{\i}| & both & \LaTeX & \u{I} & \verb|\u{I}| & both & \LaTeX\\
+% \u{\i} & \verb|\u{\i}| & both & \LaTeX & \u{I} & \verb|\u{I}| & both & \LaTeX\\
 % \u{o} & \verb|\u{o}| & both & \LaTeX & \u{O} & \verb|\u{O}| & both & \LaTeX\\
 % \v{c} & \verb|\v{c}| & both & \LaTeX & \v{C} & \verb|\v{C}| & both & \LaTeX\\
 % \v{d} & \verb|\v{d}| & both & \LaTeX & \v{D} & \verb|\v{D}| & both & \LaTeX\\
@@ -1014,12 +1026,7 @@
 % \ae & \verb|\ae| & both & \LaTeX & \AE & \verb|\AE| & both & \LaTeX\\
 % \oe & \verb|\oe| & both & \LaTeX & \OE & \verb|\OE| & both & \LaTeX\\
 % « & \verb|\og| & both & \LaTeX & » & \verb|\fg| & both & \LaTeX\\
-%\end{tabular}
-% \caption{Support for special characters, accents and other diacritical marks 
-% in a UTF8-coded \TeX~document compiled with pdf\TeX\ (packages 
-% \texttt{inputenc} with option \texttt{utf8} and \texttt{fontenc} with option
-% \texttt{T1}) or \XeTeX\ (package \texttt{fontspec}) }
-% \label{tab:accents}
+% \end{tabular}
 % \end{table*}
 % Some features of Moodle quizzes have not yet been implemented in \textsf{moodle.sty}.
 % Here is a non-exhaustive list.
@@ -2351,7 +2358,6 @@
 }%
 %    \end{macrocode}
 %
-% ####### TRUE FALSE
 % \subsubsection{True/False Question Front-End}
 % 
 %    \begin{macrocode}
@@ -4401,26 +4407,23 @@
   \fi
 }
 %    \end{macrocode}
-%
-% \subsection{Warning \babel\ users}
-% Users of the \babel\ package loaded with the 'french' option may experience problems
-% related to autospacing when using \pdfLaTeX\. We shall warn them.
-%    \begin{macrocode}
-\AtBeginDocument{%
-  %\makeatletter
-  \ifpdf % pdflatex
-    \@ifpackagewith{babel}{french}{
-      \PackageWarning{moodle}{Be careful when using pdflatex, moodle and the babel package with option 'french'. Autospacing produces in undesired symbols in the XML. You can either 1) compile with xelatex or 2) add '\NoAutoSpacing' after '\begin{quiz}'.}%
-    }{\relax}
-  \fi
-  %\makeatother
-}
-%    \end{macrocode}
-% 
-% TO DO:
+% TODO:
 % * sizing options for TikZ pictures?
 % * In cloze multi, how to handle HTML or TeX in answers?  In particular, what about ~?
+%
+% \subsection{Warning users of \texttt{babel}}
+% Users of the |babel| package loaded with the 'french' option may experience problems
+% related to autospacing when using |pdfLaTeX|. We shall warn them.
+%    \begin{macrocode}
+\AtBeginDocument{%
+  \ifpdf % pdflatex
+    \@ifpackagewith{babel}{french}{%
+      \PackageWarning{moodle}{Be careful when using pdflatex, moodle and the babel package with option 'french'. Autospacing produces in undesired symbols in the XML. You can either 1) compile with xelatex or 2) add '\NoAutoSpacing' after '\begin{quiz}'.}%
+    }{\relax}%
+  \fi
+}%
 %    \end{macrocode}
+% 
 %
 % \Finale
 \endinput
