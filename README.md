@@ -17,12 +17,13 @@ The Current Maintainer of this work is Anders O.F. Hendrickson.
 
 Original contents (2016): Anders O.F. Hendrickson (anders.hendrickson@snc.edu)
 
-2019: Matthieu Guerquin-Kern
+2019-2020: Matthieu Guerquin-Kern
 
 # Contents
 
 This work consists of the files moodle.dtx and moodle.ins and the derived
-file moodle.sty. Test files are located in the test/ folder.
+file moodle.sty. Test files are located in the test/ folder with a rudimentary
+unit test system.
 
 MAKEFILES are distributed to automate the building process (See Section BUILDING
 below).
@@ -90,4 +91,5 @@ In order to manipulate images, the package uses:
 
 The GNU MAKE mechanism is used to automate the building process.
 Standard targets 'all', 'clean', 'distclean' are available.
-On multicore machines, you might want to parallelize the building process using the '-j' option of MAKE.
+On multicore machines, you might want to parallelize the building process using
+the '-j' option of MAKE.
