@@ -2249,7 +2249,11 @@
       \ifx\test@i\@star
         \item #2$~\checkmark$%
       \else
-        \item #1#2%
+        \ifx\moodle@fraction\@hundred
+          \item #1#2\quad$\checkmark$%
+        \else
+          \item #1#2$~(\moodle@fraction\%)$%
+        \fi
       \fi
     \else
       \ifx\test@i\@star
