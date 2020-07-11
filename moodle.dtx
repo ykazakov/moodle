@@ -2236,8 +2236,8 @@
       \fi
 }
   \def\moodle@print@multichoice@answer#1{%
-    \let\moodle@feedback=\@empty
-    \moodle@print@multichoice@answer@int#1\@rdelim
+    \let\moodle@feedback=\@empty%
+    \moodle@print@multichoice@answer@int#1 \@rdelim%
   }%
   \newcommand\moodle@print@multichoice@answer@int[1][]{%
     \setkeys{moodle}{fraction=0,#1}%
@@ -2317,7 +2317,7 @@
 % SAVING ANSWERS TO MEMORY
 \def\savemultianswer#1{%
   \bgroup
-    \savemultianswer@int#1\moodle@answer@rdelim
+    \savemultianswer@int#1 \moodle@answer@rdelim
     \passvalueaftergroup{\moodle@answers@xml}%
   \egroup
 }%
@@ -2845,7 +2845,7 @@
 
 \def\moodle@print@clozemultichoice@answer#1{%
   \let\moodle@feedback=\@empty
-  \moodle@print@clozemultichoice@answer@int#1\@rdelim%
+  \moodle@print@clozemultichoice@answer@int#1 \@rdelim%
 }%
 \newcommand\moodle@print@clozemultichoice@answer@int[1][]{%
   \setkeys{moodle}{fraction=0,#1}%
@@ -2895,7 +2895,7 @@
 
 \def\saveclozemultichoiceanswer#1{%
   \bgroup
-    \saveclozemultichoiceanswer@int#1\moodle@answer@rdelim
+    \saveclozemultichoiceanswer@int#1 \moodle@answer@rdelim
   \egroup
 }%
 \newcommand\saveclozemultichoiceanswer@int[1][]{%
