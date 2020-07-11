@@ -29,8 +29,8 @@ distclean: clean
 %$(SUFFIX).xml : %.tex ../moodle.sty
 	@$(PDFLATEX) $(LATEXFLAGS) $< $(DEBUG)
 
-$(PREFIX)%.diff : $(PREFIX)%$(SUFFIX).ref
-	@$(DIFFTOOL) $(basename $<).ref $< > $@ && echo 'OK   <- $*' || echo 'FAIL <- $*'
+$(PREFIX)%.diff : $(PREFIX)%$(SUFFIX).ref $(PREFIX)%$(SUFFIX).xml
+	@$(DIFFTOOL) $(basename $<).xml $< > $@ && echo 'OK   <- $*' || echo 'FAIL <- $*'
 
 # DISABLING THE FOLLOWING FOR SAFETY
 # BE SURE OF THE CODE PRODUCED IF YOU UNCOMMENT

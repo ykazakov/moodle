@@ -4215,7 +4215,8 @@
       \fi
     \fi
     %First, convert it to PNG
-    \edef\cmdline{\htmlize@imagemagick@convert\otherspace #2 -resize \moodle@graphics@geometry\otherspace #2.png}%
+    \def\moodle@graphicspath{\@ifundefined{Ginput@path}{}{\xa\@firstofone\Ginput@path}}
+    \edef\cmdline{\htmlize@imagemagick@convert\otherspace \moodle@graphicspath#2 -resize \moodle@graphics@geometry\otherspace #2.png}%
     \message{moodle.sty:   Converting '#2' to PNG...^^J}%
     \expandafter\immediate\expandafter\write18\expandafter{\cmdline}%
     %Next, optimize
