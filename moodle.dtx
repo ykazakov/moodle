@@ -2076,9 +2076,9 @@
    }%
    \def\moodle@print@shortanswer@answer@int@int#1\@rdelim{%
      \ifx\moodle@fraction\@hundred
-       \item #1\quad$\checkmark$%
+       \item #1$~\checkmark$%
      \else
-       \item #1\quad (\moodle@fraction\%)%
+       \item #1$~(\moodle@fraction\%)$%
      \fi
      \ifx\moodle@feedback\@empty\relax\else
        \hfill \emph{$\rightarrow$ \moodle@feedback}
@@ -2153,9 +2153,9 @@
        \edef\moodle@numericalprint@tolerance{\noexpand\pm\moodle@tolerance}%
      \fi
      \ifx\moodle@fraction\@hundred
-       \item $#1\moodle@numericalprint@tolerance\quad\checkmark$%
+       \item $#1\moodle@numericalprint@tolerance~\checkmark$%
      \else
-       \item $#1\moodle@numericalprint@tolerance$\quad (\moodle@fraction\%)%
+       \item $#1\moodle@numericalprint@tolerance~(\moodle@fraction\%)$%
      \fi
      \ifx\moodle@feedback\@empty\relax\else
        \hfill \emph{$\rightarrow$ \moodle@feedback}%
@@ -2250,19 +2250,23 @@
         \item #2$~\checkmark$%
       \else
         \ifx\moodle@fraction\@hundred
-          \item #1#2\quad$\checkmark$%
+          \item #1#2$~\checkmark$%
         \else
-          \item #1#2$~(\moodle@fraction\%)$%
+          \ifdim0pt=\moodle@fraction pt\relax
+            \item #1#2% in single mode 0 is the fraction by default
+          \else% in cas something else is specified
+            \item #1#2$~(\moodle@fraction\%)$%
+          \fi
         \fi
       \fi
-    \else
+    \else % multiple
       \ifx\test@i\@star
         \item #2%
         \setkeys{moodle}{fraction=\moodle@autopoints}%
       \else
         \item #1#2%
       \fi
-      $~(\moodle@fraction\%)$
+      $~(\moodle@fraction\%)$ % 0% makes little sense in this context
     \fi
     \ifx\moodle@feedback\@empty\relax\else
       \hfill \emph{$\rightarrow$ \moodle@feedback}%
@@ -2871,9 +2875,8 @@
   \fi
   \ifx\moodle@fraction\@hundred
     \g@addto@macro\cloze@multichoice@table@text{$~\checkmark$}%
-  \fi
-  \ifnum0<\moodle@fraction\relax
-    \ifnum\moodle@fraction<100\relax
+  \else
+    \ifdim0pt=\moodle@fraction pt\relax\else
       \xdef\cloze@multichoice@table@text{\expandonce\cloze@multichoice@table@text$~(\moodle@fraction\%)$}%
     \fi
   \fi
@@ -2916,9 +2919,8 @@
   \trim@spaces@in\moodle@answertext
   \ifx\moodle@fraction\@hundred
     \g@addto@macro\clozemulti@coding{=}%
-  \fi
-  \ifnum0<\moodle@fraction\relax
-    \ifnum\moodle@fraction<100\relax
+  \else
+    \ifdim0pt=\moodle@fraction pt\relax\else
       \xdef\clozemulti@coding{\expandonce\clozemulti@coding\otherpercent\moodle@fraction\otherpercent}%
     \fi
   \fi
@@ -2989,9 +2991,9 @@
 }%
 \def\moodle@print@clozenumerical@answer@int@int#1\@rdelim{%
   \ifx\moodle@fraction\@hundred
-    \def\moodle@clozenumericalprint@fraction{$\checkmark$}%
+    \def\moodle@clozenumericalprint@fraction{$~\checkmark$}%
   \else
-    \edef\moodle@clozenumericalprint@fraction{(\moodle@fraction\%)}%
+    \edef\moodle@clozenumericalprint@fraction{$(~\moodle@fraction\%)$}%
   \fi
   \ifdim0pt=\moodle@tolerance pt\relax
     \def\moodle@clozenumericalprint@tolerance{}%
@@ -3021,9 +3023,8 @@
   \trim@spaces@in\moodle@answertext
   \ifx\moodle@fraction\@hundred
     \g@addto@macro\clozenumerical@coding{=}%
-  \fi
-  \ifnum0<\moodle@fraction\relax
-    \ifnum\moodle@fraction<100\relax
+  \else
+    \ifdim0pt=\moodle@fraction pt\relax\else
       \xdef\clozenumerical@coding{\expandonce\clozenumerical@coding\otherpercent\moodle@fraction\otherpercent}%
     \fi
   \fi
@@ -3106,9 +3107,9 @@
 }%
 \def\moodle@print@clozeshortanswer@answer@int@int#1\@rdelim{%
   \ifx\moodle@fraction\@hundred
-    \def\moodle@clozeshortanswerprint@fraction{$\checkmark$}%
+    \def\moodle@clozeshortanswerprint@fraction{$~\checkmark$}%
   \else
-    \edef\moodle@clozeshortanswerprint@fraction{(\moodle@fraction\%)}%
+    \edef\moodle@clozeshortanswerprint@fraction{$~(\moodle@fraction\%)$}%
   \fi
   \xdef\moodle@clozeshortanswerprint@line{#1~\moodle@clozeshortanswerprint@fraction & \expandonce\emph{\expandonce\moodle@feedback}}%
   \xa\g@addto@macro\xa\cloze@shortanswer@table@text\xa{\moodle@clozeshortanswerprint@line \\\hline}%
@@ -3133,9 +3134,8 @@
   \trim@spaces@in\moodle@answertext
   \ifx\moodle@fraction\@hundred
     \g@addto@macro\clozeshortanswer@coding{=}%
-  \fi
-  \ifnum0<\moodle@fraction\relax
-    \ifnum\moodle@fraction<100\relax
+  \else
+    \ifdim0pt=\moodle@fraction pt\relax\else
       \xdef\clozeshortanswer@coding{\expandonce\clozeshortanswer@coding\otherpercent\moodle@fraction\otherpercent}%
     \fi
   \fi

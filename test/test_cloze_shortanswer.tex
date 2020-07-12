@@ -1,0 +1,40 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = en_US
+\documentclass{article}
+
+\usepackage{../moodle,ifxetex}
+
+\ifxetex % FOR XELATEX
+	\usepackage{fontspec}
+\else %% FOR PDFLATEX
+	\usepackage[utf8]{inputenc} % necessary
+	\usepackage[T1]{fontenc} % necessary
+\fi
+
+\begin{document}
+
+\section*{Introduction}
+
+This document is intended to check the support of short answers questions 
+embedded in cloze questions.
+
+\begin{quiz}{Close Short Answer}
+
+\begin{cloze}{Cloze}
+\begin{shortanswer}[usecase]
+Who?
+\item chip
+\item[feedback={yes},fraction=10] chop
+\item[feedback={no.},fraction=-30] chap
+\end{shortanswer}
+\begin{shortanswer}
+what?
+\item chip
+\item[feedback={yes},fraction=10] chop
+\item[feedback={no.},fraction=-30] chap
+\end{shortanswer}
+\end{cloze}
+
+\end{quiz}
+
+\end{document}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+ 
+<question type="category">
+  <category>
+    <text>$course$/top/Close Short Answer</text>
+  </category>
+</question>
+ 
+<question type="cloze">
+  <name format="html">
+    <text><![CDATA[Cloze]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Who? {1:SHORTANSWER_C:=chip~%10%chop#yes~%-30%chap#no.}what? {1:SHORTANSWER:=chip~%10%chop#yes~%-30%chap#no.}</p>]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+</question>
+ 
+</quiz>

@@ -23,18 +23,54 @@
   <single>false</single>
   <shuffleanswers>1</shuffleanswers>
   <answernumbering>abc</answernumbering>
-  <answer fraction="45" format="html">
-    <text><![CDATA[<p>\(\sqrt {25}\)</p>]]></text>
+  <answer fraction="70" format="html">
+    <text><![CDATA[<p>\(\sqrt {25}\) </p>]]></text>
   </answer>
-  <answer fraction="0" format="html">
-    <text><![CDATA[<p>6</p>]]></text>
+  <answer fraction="-10" format="html">
+    <text><![CDATA[<p>6 </p>]]></text>
   </answer>
-  <answer fraction="45" format="html">
-    <text><![CDATA[<p>7</p>]]></text>
+  <answer fraction="30" format="html">
+    <text><![CDATA[<p>7 </p>]]></text>
     <feedback format="html"><text><![CDATA[<p>\(\sqrt {25}\)</p>]]></text></feedback>
   </answer>
-  <answer fraction="10" format="html">
-    <text><![CDATA[<p>8</p>]]></text>
+  <answer fraction="-70" format="html">
+    <text><![CDATA[<p>8 </p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>nothing</p>]]></text>
+  </answer>
+</question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Multiple Choice]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Select the following numbers that are prime. </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html">
+    <text><![CDATA[<p>abc<BR/>def \(\sqrt {2}\)</p>]]></text>
+  </generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>\(\sqrt {25}\) </p>]]></text>
+  </answer>
+  <answer fraction="-30" format="html">
+    <text><![CDATA[<p>6 </p>]]></text>
+  </answer>
+  <answer fraction="-30" format="html">
+    <text><![CDATA[<p>9 </p>]]></text>
+    <feedback format="html"><text><![CDATA[<p>\(\sqrt {25}\)</p>]]></text></feedback>
+  </answer>
+  <answer fraction="-70" format="html">
+    <text><![CDATA[<p>8 </p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>nothing</p>]]></text>
   </answer>
 </question>
  
