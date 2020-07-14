@@ -67,7 +67,7 @@
     <feedback format="html"><text><![CDATA[<p>\(\sqrt {25}\)</p>]]></text></feedback>
   </answer>
   <answer fraction="-70" format="html">
-    <text><![CDATA[<p>\((1+\sqrt {5})/2\)</p>]]></text>
+    <text><![CDATA[<p><OL><LI>False </LI><LI>Wrong</LI></OL></p>]]></text>
   </answer>
 </question>
  

@@ -2216,65 +2216,67 @@
 % LATEX PROCESSING
 
 \def\moodle@makelatextag@multi{%
-  \csname ifmoodle@multiple\endcsname
-    \moodle@makelatextagbox{Multiple}\relax
-  \else
-    \moodle@makelatextagbox{Single}\relax
-  \fi
-  \csname ifmoodle@shuffle\endcsname
-    \moodle@makelatextagbox{Shuffle}\relax
-  \fi
+  \csname ifmoodle@multiple\endcsname%
+    \moodle@makelatextagbox{Multiple}\relax%
+  \else%
+    \moodle@makelatextagbox{Single}\relax%
+  \fi%
+  \csname ifmoodle@shuffle\endcsname%
+    \moodle@makelatextagbox{Shuffle}\relax%
+  \fi%
 }
 
 \def\moodle@multi@latexprocessing{%
-      \moodle@countcorrectanswers
-      \begin{enumerate}\moodle@obeynumberingstyle
+      \moodle@countcorrectanswers%
+      \begin{enumerate}\moodle@obeynumberingstyle%
                        %\renewcommand{\theenumi}{\alph{enumi}}%
                        \setlength\itemsep{0pt}\setlength\parskip{0pt}%
         \loopthroughitemswithcommand{\moodle@print@multichoice@answer}%
       \end{enumerate}%
       \ifx\moodle@generalfeedback\@empty\relax\else%
         \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
-      \fi
+      \fi%
 }
   \def\moodle@print@multichoice@answer#1{%
     \let\moodle@feedback=\@empty%
-    \moodle@print@multichoice@answer@int#1\@rdelim%
+    \moodle@print@multichoice@answer@int#1 \@rdelim%
   }%
   \newcommand\moodle@print@multichoice@answer@int[1][]{%
     \setkeys{moodle}{fraction=0,#1}%
-    \moodle@print@multichoice@answer@int@int
+    \moodle@print@multichoice@answer@int@int%
   }%
   \def\moodle@print@multichoice@answer@int@int#1#2\@rdelim{%
     \def\test@i{#1}%
     \def\test@ii{#2}%
-    \trim@spaces@in\test@ii
-    \ifmoodle@single
-      \ifx\test@i\@star
-        \item \test@ii$~\checkmark$%
+    \def\moodle@answertext{\item }%
+    \ifx\test@i\@star%
+      \g@addto@macro\moodle@answertext{#2}%
+      \ifmoodle@single%
+        \setkeys{moodle}{fraction=100}%
       \else
-        \ifx\moodle@fraction\@hundred
-          \item #1\test@ii$~\checkmark$%
-        \else
-          \ifdim0pt=\moodle@fraction pt\relax
-            \item #1\test@ii% in single mode 0 is the fraction by default
-          \else% in cas something else is specified
-            \item #1\test@ii$~(\moodle@fraction\%)$%
-          \fi
+        \setkeys{moodle}{fraction=\moodle@autopoints}%
+      \fi
+    \else
+      \g@addto@macro\moodle@answertext{#1#2}%
+      \trim@spaces@in\moodle@answertext%
+      \trim@spaces@in\moodle@answertext%
+    \fi
+    \ifmoodle@single%
+      \ifx\moodle@fraction\@hundred%
+        \trim@spaces@in\moodle@answertext%
+        \g@addto@macro\moodle@answertext{$~\checkmark$}%
+      \else
+        \ifdim0pt=\moodle@fraction pt\relax\else%
+          \g@addto@macro\moodle@answertext{$~(\moodle@fraction\%)$}%
         \fi
       \fi
-    \else % multiple
-      \ifx\test@i\@star
-        \item \test@ii%
-        \setkeys{moodle}{fraction=\moodle@autopoints}%
-      \else
-        \item #1\test@ii%
-      \fi
-      $~(\moodle@fraction\%)$ % 0% makes little sense in this context
+    \else
+      \g@addto@macro\moodle@answertext{$~(\moodle@fraction\%)$}%
     \fi
-    \ifx\moodle@feedback\@empty\relax\else
+    \moodle@answertext
+    \ifx\moodle@feedback\@empty\relax\else%
       \hfill \emph{$\rightarrow$ \moodle@feedback}%
-    \fi
+    \fi%
   }%
 
 % COMMON UTILITY: COUNTING CORRECT ANSWERS
