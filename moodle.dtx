@@ -1112,8 +1112,10 @@
 \RequirePackage{xpatch}  %To patch commands easily in HTML mode
 \RequirePackage{array}   %For formatting tables in the LaTeX mode of Clozes
 \RequirePackage{ifplatform} % To choose Ghostscript commands
-\RequirePackage{ifpdf} % Needed to know whether we can convert output from PDF to PNG, also needed to know when output pdf is latin1-encoded
-\RequirePackage{ifxetex} % Needed to know when output xml is utf8-encoded
+%\RequirePackage{iftex} % already required by ifplatform. Needed to know:
+%     1) whether we can convert output from PDF to PNG (ifpdf), 
+%     2) when output pdf is latin1-encoded (ifpdf)
+%     3) when output xml is utf8-encoded (if?tex)
 \RequirePackage{fancybox} % Needed for fancy LaTeX tags
 
 \RequirePackage{getitems} %To gather the header and items
@@ -1161,10 +1163,10 @@
 \newwrite\moodle@outfile
 \def\openmoodleout{%
   \immediate\openout\moodle@outfile=\outputfilename\relax
-  \ifpdf % pdflatex or luatex in pdf mode ?
+  \ifpdftex % pdflatex or latex
     \writetomoodle{<?xml version="1.0" encoding="iso-8859-1"?>}%
   \else
-    \ifxetex % xelatex
+    \ifxetex % xetex
       \writetomoodle{<?xml version="1.0" encoding="UTF-8"?>}%
     \else % what shall we do?
       \writetomoodle{<?xml version="1.0" encoding="UTF-8"?>}%
@@ -4308,15 +4310,20 @@
     \tikzexternalize%
     \tikzset{external/force remake}%
 
-    \ifpdf % pdflatex
+    \ifpdftex % pdflatex or latex
+      \ifpdf % pdflatex
       \def\pdftopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf}%
                     \expandafter\immediate\expandafter\write18\expandafter{\gscmdline}}%
+      \else % latex
+        \def\pstopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.ps}%
+                    \expandafter\immediate\expandafter\write18\expandafter{\gscmdline}}%
+      \fi
     \else
       \ifxetex % xetex
         \def\pdftopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf}%
                     \expandafter\immediate\expandafter\write18\expandafter{\gscmdline}}%
-      \else % latex?
-        \def\pstopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.ps}%
+      \else % What to do?
+        \def\pdftopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf}%
                     \expandafter\immediate\expandafter\write18\expandafter{\gscmdline}}%
       \fi
     \fi
@@ -4356,15 +4363,21 @@
     }
     \def\moodle@endtikzpicture@hook{%
       \@moodle@ifgeneratexml{%
-        \ifpdf % pdflatex
-          \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf' to PNG...^^J}%
-          \pdftopng
+        \ifpdftex % pdflatex or latex
+          \ifpdf % pdflatex
+            \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf' to PNG...^^J}%
+            \pdftopng
+          \else % latex
+            \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.ps' to PNG...^^J}%
+            \pstopng
+          \fi
         \else
           \ifxetex % xetex
             \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf' to PNG...^^J}%
             \pdftopng
-          \else % latex?
-            \pstopng
+          \else % What to do?
+            \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf' to PNG...^^J}%
+            \pdftopng
           \fi
         \fi
         \message{moodle.sty:   Optimizing '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png'...^^J}%
@@ -4436,9 +4449,9 @@
 % related to autospacing when using |pdfLaTeX|. We shall warn them.
 %    \begin{macrocode}
 \AtBeginDocument{%
-  \ifpdf % pdflatex
+  \ifpdftex % pdflatex or latex
     \@ifpackagewith{babel}{french}{%
-      \PackageWarning{moodle}{Be careful when using pdflatex, moodle and the babel package with option 'french'. Autospacing produces in undesired symbols in the XML. You can either 1) compile with xelatex or 2) add '\NoAutoSpacing' after '\begin{quiz}'.}%
+      \PackageWarning{moodle}{Be careful when using latex, moodle, and the babel package with option 'french'. Autospacing produces in undesired symbols in the XML. You can either 1) compile with xelatex or 2) add '\NoAutoSpacing' after '\begin{quiz}'.}%
     }{\relax}%
   \fi
 }%
