@@ -24,20 +24,20 @@
   <shuffleanswers>1</shuffleanswers>
   <answernumbering>abc</answernumbering>
   <answer fraction="70" format="html">
-    <text><![CDATA[<p>\(\sqrt {25}\) </p>]]></text>
+    <text><![CDATA[<p>\(\sqrt {25}\)</p>]]></text>
   </answer>
   <answer fraction="-10" format="html">
-    <text><![CDATA[<p>6 </p>]]></text>
+    <text><![CDATA[<p><B>68</B></p>]]></text>
   </answer>
   <answer fraction="30" format="html">
-    <text><![CDATA[<p>7 </p>]]></text>
+    <text><![CDATA[<p>7</p>]]></text>
     <feedback format="html"><text><![CDATA[<p>\(\sqrt {25}\)</p>]]></text></feedback>
   </answer>
   <answer fraction="-70" format="html">
-    <text><![CDATA[<p>8 </p>]]></text>
+    <text><![CDATA[<p>8</p>]]></text>
   </answer>
   <answer fraction="0" format="html">
-    <text><![CDATA[<p>nothing</p>]]></text>
+    <text><![CDATA[<p><CODE>nothing</CODE></p>]]></text>
   </answer>
 </question>
 <question type="multichoice">
@@ -57,20 +57,17 @@
   <shuffleanswers>1</shuffleanswers>
   <answernumbering>abc</answernumbering>
   <answer fraction="100" format="html">
-    <text><![CDATA[<p>\(\sqrt {25}\) </p>]]></text>
+    <text><![CDATA[<p>\(\sqrt {25}\)</p>]]></text>
   </answer>
   <answer fraction="-30" format="html">
-    <text><![CDATA[<p>6 </p>]]></text>
+    <text><![CDATA[<p>6</p>]]></text>
   </answer>
   <answer fraction="-30" format="html">
-    <text><![CDATA[<p>9 </p>]]></text>
+    <text><![CDATA[<p>9</p>]]></text>
     <feedback format="html"><text><![CDATA[<p>\(\sqrt {25}\)</p>]]></text></feedback>
   </answer>
   <answer fraction="-70" format="html">
-    <text><![CDATA[<p>8 </p>]]></text>
-  </answer>
-  <answer fraction="0" format="html">
-    <text><![CDATA[<p>nothing</p>]]></text>
+    <text><![CDATA[<p>\((1+\sqrt {5})/2\)</p>]]></text>
   </answer>
 </question>
  

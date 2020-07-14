@@ -1,14 +1,16 @@
 \documentclass{article}
 \usepackage{../moodle}
+\def\myequation{$(1+\sqrt{5})/2$}
+\htmlregister{\myequation}
 \begin{document}
 \begin{quiz}{Example Quiz}
 \begin{multi}[multiple,feedback={abc\\def $\sqrt{2}$}]{Multiple Choice}
 Select the following numbers that are prime.
 \item[fraction=70] $\sqrt{25}$
-\item[fraction=-10] 6
+\item[fraction=-10] \textbf{68}
 \item[fraction=30,feedback={$\sqrt{25}$}] 7
 \item[fraction=-70] 8
-\item nothing
+\item \texttt{nothing}
 \end{multi}
 
 \begin{multi}[feedback={abc\\def $\sqrt{2}$}]{Multiple Choice}
@@ -16,8 +18,7 @@ Select the following numbers that are prime.
 \item* $\sqrt{25}$
 \item[fraction=-30] 6
 \item[fraction=-30,feedback={$\sqrt{25}$}] 9
-\item[fraction=-70] 8
-\item nothing
+\item[fraction=-70] \myequation
 \end{multi}
 
 \end{quiz}

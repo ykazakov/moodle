@@ -2237,7 +2237,7 @@
 }
   \def\moodle@print@multichoice@answer#1{%
     \let\moodle@feedback=\@empty%
-    \moodle@print@multichoice@answer@int#1 \@rdelim%
+    \moodle@print@multichoice@answer@int#1\@rdelim%
   }%
   \newcommand\moodle@print@multichoice@answer@int[1][]{%
     \setkeys{moodle}{fraction=0,#1}%
@@ -2245,26 +2245,28 @@
   }%
   \def\moodle@print@multichoice@answer@int@int#1#2\@rdelim{%
     \def\test@i{#1}%
+    \def\test@ii{#2}%
+    \trim@spaces@in\test@ii
     \ifmoodle@single
       \ifx\test@i\@star
-        \item #2$~\checkmark$%
+        \item \test@ii$~\checkmark$%
       \else
         \ifx\moodle@fraction\@hundred
-          \item #1#2$~\checkmark$%
+          \item #1\test@ii$~\checkmark$%
         \else
           \ifdim0pt=\moodle@fraction pt\relax
-            \item #1#2% in single mode 0 is the fraction by default
+            \item #1\test@ii% in single mode 0 is the fraction by default
           \else% in cas something else is specified
-            \item #1#2$~(\moodle@fraction\%)$%
+            \item #1\test@ii$~(\moodle@fraction\%)$%
           \fi
         \fi
       \fi
     \else % multiple
       \ifx\test@i\@star
-        \item #2%
+        \item \test@ii%
         \setkeys{moodle}{fraction=\moodle@autopoints}%
       \else
-        \item #1#2%
+        \item #1\test@ii%
       \fi
       $~(\moodle@fraction\%)$ % 0% makes little sense in this context
     \fi
@@ -2341,6 +2343,7 @@
     \else
       \def\moodle@answertext{#1#2}%
     \fi
+    \trim@spaces@in\moodle@answertext
     \trim@spaces@in\moodle@answertext
     \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="html">}%
     \xa\converttohtmlmacro\xa\moodle@answertext@html\xa{\moodle@answertext}%
@@ -2873,6 +2876,8 @@
   \else
     \g@addto@macro\cloze@multichoice@table@text{#1#2}%
   \fi
+  \trim@spaces@in\cloze@multichoice@table@text
+  \trim@spaces@in\cloze@multichoice@table@text
   \ifx\moodle@fraction\@hundred
     \g@addto@macro\cloze@multichoice@table@text{$~\checkmark$}%
   \else
@@ -2916,6 +2921,7 @@
   \else
     \def\moodle@answertext{#1#2}%
   \fi
+  \trim@spaces@in\moodle@answertext
   \trim@spaces@in\moodle@answertext
   \ifx\moodle@fraction\@hundred
     \g@addto@macro\clozemulti@coding{=}%
