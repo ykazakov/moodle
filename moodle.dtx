@@ -37,7 +37,7 @@
 %\usepackage{moodle}[2020/07/09]
 \usepackage{amssymb,metalogo}
 \usepackage{fancyvrb}
-\usepackage{multirow,hhline,colortbl,threeparttable,xcolor,graphicx,hyperref,tikz}
+\usepackage{multirow,hhline,colortbl,threeparttable,booktabs,xcolor,graphicx,hyperref,tikz}
 \usetikzlibrary{arrows,positioning}
 \EnableCrossrefs         
 \CodelineIndex
@@ -50,7 +50,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{5458}
+% \CheckSum{5548}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -82,9 +82,10 @@
 %        generating Moodle quizzes via \LaTeX%
 %        \thanks{This document
 %                corresponds to \textsf{moodle.sty}~\fileversion, dated \filedate.}}
-% \author{Anders Hendrickson\\ St.~Norbert College, De~Pere, WI, USA \\
-% \url{anders.hendrickson@snc.edu} \and
-% Matthieu Guerquin-Kern\\ ENSEA, Cergy, France\\\url{guerquin@ensea.fr}}
+% \author{Anders Hendrickson\footnote{original author of the package (\texttt{v0.5})}\\
+% St.~Norbert College, De~Pere, WI, USA \\ \texttt{anders.hendrickson@snc.edu} \and
+% Matthieu Guerquin-Kern\footnote{author of the updates (\texttt{v0.6} and \texttt{v0.7})}\\
+% \href{mailto:guerquin-kern AT crans.org}{guerquin-kern AT crans.org}}
 % \date{July 9, 2020}
 % 
 % \maketitle
@@ -744,7 +745,7 @@
 % {True/False} & $\bullet$ & & $\bullet$ & $\bullet$ & & & 
 % & & & & & $\bullet$ \\\hline
 % ^^A&\href{https://docs.moodle.org/35/en/Essay_question_type}{Essay} & \\\hline%
-% \parbox[t]{2mm}{\multirow{6}{*}{\rotatebox[origin=c]{90}{\href{https://docs.moodle.org/31/en/Embedded_Answers_(Cloze)_question_type}
+% \parbox[t]{2mm}{\multirow{6}{*}{\rotatebox[origin=c]{90}{\href{https://docs.moodle.org/35/en/Embedded_Answers_(Cloze)_question_type}
 % {Cloze}}}}
 % &Cloze & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & 
 % & & & & & \\\cline{2-15}
@@ -884,68 +885,49 @@
 %\def\KOcell{\cellcolor{red}}
 %\def\DNAcell{\cellcolor{black!20}}
 %\def\Warncell{\cellcolor{orange}}
-%{\catcode`\|=12\relax\gdef\MyLine{\hhline{~-|>{\arrayrulecolor{green}}->{\arrayrulecolor{black}}--|>{\arrayrulecolor{green}}->{\arrayrulecolor{black}}--|}}
+%{\catcode`\|=12\relax\gdef\MyLine{\hhline{~-|>{\arrayrulecolor{green}}->{\arrayrulecolor{black}}--|}}
 %}
 %\begin{threeparttable}[b]
 %\caption{Content enrichment support after XML import in Moodle 
 %\texttt{v3.5.7}, depending on the question type. Color convention: green for 
-%\colorbox{green}{full support}, orange for \colorbox{orange}{problems 
-%limiting the support}, red for \colorbox{red}{show-stopping problems}, and 
-%gray for \colorbox{black!20}{support limitations intrinsic to the question 
-%type} defined by Moodle.}
+%\colorbox{green}{full support}, and gray for \colorbox{black!20}
+%{support limitations intrinsic to the question type} defined by Moodle.}
 %\label{tab:support-limitations}
-%\begin{tabular}{rl|ccc|ccc}
-%\multicolumn{2}{c|}{}& \multicolumn{3}{c|}{\LaTeX\ equation rendering} & 
-%\multicolumn{3}{c}{Picture inclusion}\\
-%\multicolumn{2}{c|}{Question type}& \rotatebox{55}{Question} & 
-%\rotatebox{55}{Answer} & \rotatebox{55}{Feedback} & \rotatebox{55}{Question} 
-%& \rotatebox{55}{Answer} & \rotatebox{55}{Feedback}\\\hhline{*{8}{:=}:}
+%\begin{tabular}{rlccc}
+%\multicolumn{2}{c}{}& \multicolumn{3}{c}{XML rendering}\\
+%\multicolumn{2}{c}{Question type}& Question & Answer & Feedback\\\hhline{*{5}{:=}:}
 %
 %&\href{https://docs.moodle.org/31/en/Multiple_Choice_question_type} 
-%{Multichoice} & \OKcell & \OKcell & \OKcell & \OKcell & 
-%\OKcell & \OKcell \\\hhline{*{8}{-}}
+%{Multichoice} & \OKcell & \OKcell & \OKcell \\\hhline{*{5}{-}}
 %
 %& \href{https://docs.moodle.org/31/en/Numerical_question_type}{Numerical}
-%& \OKcell & \DNAcell Text only\tnote{3} & \OKcell & \OKcell & 
-%\DNAcell Text only\tnote{3} & \OKcell\\\hhline{*{8}{-}}
+%& \OKcell & \DNAcell Text only\tnote{3} & \OKcell \\\hhline{*{5}{-}}
 %
 %& \href{https://docs.moodle.org/31/en/Short-Answer_question_type}{Short
-%Answer} & \OKcell & \DNAcell Text only\tnote{3} & \OKcell & \OKcell 
-%& \DNAcell Text only\tnote{3} & \OKcell\\\hhline{*{8}{-}}
+%Answer} & \OKcell & \DNAcell Text only\tnote{3} & \OKcell \\\hhline{*{5}{-}}
 %
 %&Matching 
 %(\href{https://docs.moodle.org/31/en/Matching_question_type}{std})
-%& \OKcell & \DNAcell Text only\tnote{4} & \DNAcell Undef.\tnote{5} & 
-%\OKcell & \DNAcell Text only\tnote{4} & \DNAcell Undef.\tnote{5} 
-%\\\hhline{*{8}{-}}
+%& \OKcell & \DNAcell Text only\tnote{4} & \DNAcell Undef.\tnote{5} \\\hhline{*{5}{-}}
 %
 %&Matching 
 %(\href{https://docs.moodle.org/31/en/Drag_and_drop_matching_question_type}
-%{dd}) & \OKcell & \OKcell note\tnote{2} & \DNAcell 
-%Undef.\tnote{5} & \OKcell & \OKcell note\tnote{2} & \DNAcell Undef.\tnote{5} \\\hhline{*{8}{-}}
+%{dd}) & \OKcell & \OKcell note\tnote{2} & \DNAcell Undef.\tnote{5} \\\hhline{*{5}{-}}
 %
 %&\href{https://docs.moodle.org/31/en/Essay_question_type}{Essay}  & \OKcell & 
-%\OKcell note\tnote{6}, note\tnote{7} & \OKcell note\tnote{6} & 
-%\OKcell & \OKcell note\tnote{6}, note\tnote{7} & \OKcell note\tnote{6}\\\hhline{*{8}{-}}
+%\OKcell note\tnote{6}, note\tnote{7} & \OKcell note\tnote{6} \\\hhline{*{5}{-}}
 %
 %\parbox[t]{2mm}{\multirow{5}{*}{\rotatebox[origin=c]{90}{\href{https://docs.moodle.org/31/en/Embedded_Answers_(Cloze)_question_type}
 %{Cloze}}}}
-%&Numerical & \OKcell & \DNAcell Text only\tnote{3} & \OKcell & 
-%\OKcell & \DNAcell Text only\tnote{3} & \OKcell \\\MyLine
+%&Numerical & \OKcell & \DNAcell Text only\tnote{3} & \OKcell \\\MyLine
 %
-%&Short Answer & \OKcell & \DNAcell Text only\tnote{3} & \OKcell note\tnote{1} 
-%& \OKcell & \DNAcell Text only\tnote{3} & \OKcell 
-%note\tnote{1}\\\MyLine
+%&Short Answer & \OKcell & \DNAcell Text only\tnote{3} & \OKcell note\tnote{1} \\\MyLine
 %
-%&Multi (regular) & \OKcell & \DNAcell Text only\tnote{4} &\OKcell 
-%note\tnote{1} & \OKcell & \DNAcell Text only\tnote{4} & \OKcell 
-%note\tnote{1} \\\MyLine
+%&Multi (regular) & \OKcell & \DNAcell Text only\tnote{4} &\OKcell note\tnote{1} \\\MyLine
 %
-%&Multi (horizontal)& \OKcell & \OKcell & \OKcell & \OKcell & \OKcell & 
-%\OKcell\\\MyLine
+%&Multi (horizontal)& \OKcell & \OKcell & \OKcell \\\MyLine
 %
-%&Multi (vertical)& \OKcell & \OKcell & \OKcell & 
-%\OKcell & \OKcell & \OKcell \\\hline
+%&Multi (vertical)& \OKcell & \OKcell & \OKcell \\\hline
 %\end{tabular}
 %\begin{tablenotes}
 %\item[1] Moodle only reveals the feedback when hovering the checkmark or X 
@@ -982,48 +964,47 @@
 % stands for \emph{both input types are supported} and \LaTeX\ stands for \emph{only 
 % \LaTeX\ input type is supported}.}
 % \label{tab:accents}
-% \begin{tabular}{|cc|cc||cc|cc|}
-% \multicolumn{2}{|c|}{Input type} & \multicolumn{2}{c||}{Engine support}&
-% \multicolumn{2}{c|}{Input type} & \multicolumn{2}{c|}{Engine support}\\
-% \rotatebox{45}{Unicode} & \rotatebox{45}{\LaTeX} & \rotatebox{45}{\XeLaTeX}
-% & \rotatebox{45}{pdf\LaTeX} & \rotatebox{45}{Unicode} & \rotatebox{45}{\LaTeX}
-% & \rotatebox{45}{\XeLaTeX} & \rotatebox{45}{pdf\LaTeX}\\\hline
-% \`a & \verb|\`a| & both & both & \`A & \verb|\`A| & both & both\\
-% \^a & \verb|\^a| & both & both & \^A & \verb|\^A| & both & both\\
-% \'e & \verb|\'e| & both & both & \'E & \verb|\'E| & both & both\\
-% \`e & \verb|\`e| & both & both & \`E & \verb|\`E| & both & both\\
-% \"e & \verb|\"e| & both & both & \"E & \verb|\"E| & both & both\\
-% \^e & \verb|\^e| & both & both & \^E & \verb|\^E| & both & both\\
-% \^i & \verb|\^i| & both & both & \^I & \verb|\^I| & both & both\\
-% \"i & \verb|\"i| & both & both & \"I & \verb|\"I| & both & both\\
-% \"o & \verb|\"o| & both & both & \"O & \verb|\"O| & both & both\\
-% \^o & \verb|\^o| & both & both & \^O & \verb|\^O| & both & both\\
-% \`u & \verb|\`u| & both & both & \`U & \verb|\`U| & both & both\\
-% \"u & \verb|\"u| & both & both & \"U & \verb|\"U| & both & both\\
-% \^u & \verb|\^u| & both & both & \^U & \verb|\^U| & both & both\\
-% \c{c} & \verb|\c{c}| & both & both & \c{C} & \verb|\c{C}| & both & both\\
-% \c{s} & \verb|\c{s}| & both & \LaTeX & \c{S} & \verb|\c{S}| & both & \LaTeX\\
-% \c{t} & \verb|\c{t}| & both & \LaTeX & \c{T} & \verb|\c{T}| & both & \LaTeX\\
-% \H{o} & \verb|\H{o}| & both & \LaTeX & \H{O} & \verb|\H{O}| & both & \LaTeX\\
-% \H{u} & \verb|\H{u}| & both & \LaTeX & \H{U} & \verb|\H{U}| & both & \LaTeX\\
-% \u{a} & \verb|\u{a}| & both & \LaTeX & \u{A} & \verb|\u{A}| & both & \LaTeX\\
-% \u{e} & \verb|\u{e}| & both & \LaTeX & \u{E} & \verb|\u{E}| & both & \LaTeX\\
-% \u{g} & \verb|\u{g}| & both & \LaTeX & \u{G} & \verb|\u{G}| & both & \LaTeX\\
-% \u{\i} & \verb|\u{\i}| & both & \LaTeX & \u{I} & \verb|\u{I}| & both & \LaTeX\\
-% \u{o} & \verb|\u{o}| & both & \LaTeX & \u{O} & \verb|\u{O}| & both & \LaTeX\\
-% \v{c} & \verb|\v{c}| & both & \LaTeX & \v{C} & \verb|\v{C}| & both & \LaTeX\\
-% \v{d} & \verb|\v{d}| & both & \LaTeX & \v{D} & \verb|\v{D}| & both & \LaTeX\\
-% \v{e} & \verb|\v{e}| & both & \LaTeX & \v{E} & \verb|\v{E}| & both & \LaTeX\\
-% \v{l} & \verb|\v{l}| & both & \LaTeX & \v{L} & \verb|\v{L}| & both & \LaTeX\\
-% \v{n} & \verb|\v{n}| & both & \LaTeX & \v{N} & \verb|\v{N}| & both & \LaTeX\\
-% \v{r} & \verb|\v{r}| & both & \LaTeX & \v{R} & \verb|\v{R}| & both & \LaTeX\\
-% \v{s} & \verb|\v{s}| & both & \LaTeX & \v{S} & \verb|\v{S}| & both & \LaTeX\\
-% \v{t} & \verb|\v{t}| & both & \LaTeX & \v{T} & \verb|\v{T}| & both & \LaTeX\\
-% \v{z} & \verb|\v{z}| & both & \LaTeX & \v{Z} & \verb|\v{Z}| & both & \LaTeX\\
-% \aa & \verb|\aa| & both & both & \AA & \verb|\AA| & both & both\\
-% \ae & \verb|\ae| & both & \LaTeX & \AE & \verb|\AE| & both & \LaTeX\\
-% \oe & \verb|\oe| & both & \LaTeX & \OE & \verb|\OE| & both & \LaTeX\\
-% « & \verb|\og| & both & \LaTeX & » & \verb|\fg| & both & \LaTeX\\
+% \begin{tabular}{cccc}
+% \toprule
+% \multicolumn{2}{c}{Input type} & \multicolumn{2}{c}{Engine support}\\
+% Unicode & \LaTeX & \XeLaTeX & pdf\LaTeX \\\midrule
+% \texttt{\`a} or \texttt{\`A} & \verb|\`a| or \verb|\`A| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \texttt{\^a} or \texttt{\^A}  & \verb|\^a| or \verb|\^A| & Unicode and \LaTeX & Unicode and \LaTeX\\
+% \texttt{\'e} or \texttt{\'E} & \verb|\'e| or \verb|\'E| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \texttt{\`e} or \texttt{\`E} & \verb|\`e| or \verb|\`E| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \texttt{\"e} or \texttt{\"E} & \verb|\"e| or \verb|\"E| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \texttt{\^e} or \texttt{\^E} & \verb|\^e| or \verb|\^E| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \texttt{\^i} or \texttt{\^I} & \verb|\^i| or\verb|\^I| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \texttt{\"i} or \texttt{\"I}  & \verb|\"i| or \verb|\"I| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \texttt{\"o} or \texttt{\"O} & \verb|\"o| or \verb|\"O| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \texttt{\^o} or \texttt{\^O} & \verb|\^o| or \verb|\^O| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \texttt{\`u} or \texttt{\`U} & \verb|\`u| or \verb|\`U| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \texttt{\"u} or \texttt{\"U} & \verb|\"u| or \verb|\"U| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \texttt{\^u} or \texttt{\^U} & \verb|\^u| or \verb|\^U| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \texttt{\c{c}} or \texttt{\c{C}} & \verb|\c{c}| or \verb|\c{C}| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \texttt{\c{s}} or \texttt{\c{S}} & \verb|\c{s}| or \verb|\c{S}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\c{t}} or \texttt{\c{T}} & \verb|\c{t}| or \verb|\c{T}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\H{o}} or \texttt{\H{O}} & \verb|\H{o}| or \verb|\H{O}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\H{u}} or \texttt{\H{U}} & \verb|\H{u}| or \verb|\H{U}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\u{a}} or \texttt{\u{A}} & \verb|\u{a}| or \verb|\u{A}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\u{e}} or \texttt{\u{E}} & \verb|\u{e}| or \verb|\u{E}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\u{g}} or \texttt{\u{G}} & \verb|\u{g}| or \verb|\u{G}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\u{\i}} or \texttt{\u{I}} & \verb|\u{\i}| or \verb|\u{I}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\u{o}} or \texttt{\u{O}} & \verb|\u{o}| or \verb|\u{O}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\v{c}} or \texttt{\v{C}} & \verb|\v{c}| or \verb|\v{C}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\v{d}} or \texttt{\v{D}} & \verb|\v{d}| or \verb|\v{D}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\v{e}} or \texttt{\v{E}} & \verb|\v{e}| or \verb|\v{E}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\v{l}} or \texttt{\v{L}} & \verb|\v{l}| or \verb|\v{L}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\v{n}} or \texttt{\v{N}} & \verb|\v{n}| or \verb|\v{N}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\v{r}} or \texttt{\v{R}} & \verb|\v{r}| or \verb|\v{R}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\v{s}} or \texttt{\v{S}} & \verb|\v{s}| or \verb|\v{S}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\v{t}} or \texttt{\v{T}} & \verb|\v{t}| or \verb|\v{T}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\v{z}} or \texttt{\v{Z}} & \verb|\v{z}| or \verb|\v{Z}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\aa} or \texttt{\AA} & \verb|\aa| or \verb|\AA| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \texttt{\ae} or \texttt{\AE} & \verb|\ae| or \verb|\AE| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\oe} or \texttt{\OE} & \verb|\oe| or \verb|\OE| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{«} or \texttt{»} & \verb|\og| or \verb|\fg| & Unicode and \LaTeX & \LaTeX \\
+% \bottomrule
 % \end{tabular}
 % \end{table*}
 % Some features of Moodle quizzes have not yet been implemented in \textsf{moodle.sty}.
@@ -4283,6 +4264,8 @@
 % are undefined.
 % Our solution is to wait until |\AtBeginDocument| and then test whether 
 % \TikZ\ is loaded.  If so, we make the appropriate definitions.
+% \begin{macro}{TikZ}
+% \changes{v0.7}{2020/07/14}{Support \emph{tikz}\ command}
 %    \begin{macrocode}
 \newif\ifmoodle@tikzloaded
 \moodle@tikzloadedfalse
@@ -4438,6 +4421,7 @@
 % TODO:
 % * sizing options for TikZ pictures?
 % * In cloze multi, how to handle HTML or TeX in answers?  In particular, what about ~?
+%\end{macro}
 %
 % \subsection{Warning users of \texttt{babel}}
 % Users of the |babel| package loaded with the 'french' option may experience problems
