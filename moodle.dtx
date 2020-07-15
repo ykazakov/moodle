@@ -885,7 +885,7 @@
 %}
 %\begin{threeparttable}[b]
 %\caption{Content enrichment support after XML import in Moodle 
-%\texttt{v3.1}, depending on the question type. Color convention: green for 
+%\texttt{v3.5.7}, depending on the question type. Color convention: green for 
 %\colorbox{green}{full support}, orange for \colorbox{orange}{problems 
 %limiting the support}, red for \colorbox{red}{show-stopping problems}, and 
 %gray for \colorbox{black!20}{support limitations intrinsic to the question 
@@ -899,17 +899,16 @@
 %& \rotatebox{55}{Answer} & \rotatebox{55}{Feedback}\\\hhline{*{8}{:=}:}
 %
 %&\href{https://docs.moodle.org/31/en/Multiple_Choice_question_type} 
-%{Multichoice} & \OKcell & \OKcell & \OKcell & \Warncell bug\tnote{8} & 
-%\Warncell bug\tnote{8} & \Warncell bug\tnote{8}\\\hhline{*{8}{-}}
+%{Multichoice} & \OKcell & \OKcell & \OKcell & \OKcell & 
+%\OKcell & \OKcell \\\hhline{*{8}{-}}
 %
 %& \href{https://docs.moodle.org/31/en/Numerical_question_type}{Numerical}
-%& \OKcell & \DNAcell Text only\tnote{3} & \OKcell & \Warncell bug\tnote{8} & 
-%\DNAcell Text only\tnote{3} & \Warncell bug\tnote{8}\\\hhline{*{8}{-}}
+%& \OKcell & \DNAcell Text only\tnote{3} & \OKcell & \OKcell & 
+%\DNAcell Text only\tnote{3} & \OKcell\\\hhline{*{8}{-}}
 %
 %& \href{https://docs.moodle.org/31/en/Short-Answer_question_type}{Short
-%Answer} & \OKcell & \DNAcell Text only\tnote{3} & \OKcell & \Warncell 
-%bug\tnote{8} & \DNAcell Text only\tnote{3} & \Warncell 
-%bug\tnote{8}\\\hhline{*{8}{-}}
+%Answer} & \OKcell & \DNAcell Text only\tnote{3} & \OKcell & \OKcell 
+%& \DNAcell Text only\tnote{3} & \OKcell\\\hhline{*{8}{-}}
 %
 %&Matching 
 %(\href{https://docs.moodle.org/31/en/Matching_question_type}{std})
@@ -919,14 +918,12 @@
 %
 %&Matching 
 %(\href{https://docs.moodle.org/31/en/Drag_and_drop_matching_question_type}
-%{dd}) & \OKcell & \OKcell bug\tnote{2} & \DNAcell 
-%Undef.\tnote{5} & \Warncell bug\tnote{8} & \Warncell bug\tnote{8}, 
-%bug\tnote{2} & \DNAcell Undef.\tnote{5} \\\hhline{*{8}{-}}
+%{dd}) & \OKcell & \OKcell note\tnote{2} & \DNAcell 
+%Undef.\tnote{5} & \OKcell & \OKcell note\tnote{2} & \DNAcell Undef.\tnote{5} \\\hhline{*{8}{-}}
 %
 %&\href{https://docs.moodle.org/31/en/Essay_question_type}{Essay}  & \OKcell & 
 %\OKcell note\tnote{6}, note\tnote{7} & \OKcell note\tnote{6} & 
-%\Warncell bug\tnote{8} & \OKcell note\tnote{6}, note\tnote{7} & \Warncell 
-%bug\tnote{8}\\\hhline{*{8}{-}}
+%\OKcell & \OKcell note\tnote{6}, note\tnote{7} & \OKcell note\tnote{6}\\\hhline{*{8}{-}}
 %
 %\parbox[t]{2mm}{\multirow{5}{*}{\rotatebox[origin=c]{90}{\href{https://docs.moodle.org/31/en/Embedded_Answers_(Cloze)_question_type}
 %{Cloze}}}}
@@ -966,8 +963,6 @@
 %and there is no answer-specific feedback.
 %\item[7] Picture and \LaTeX\ rendering could be done, but only after 
 %submission and only if the keyval ``response format" is set to ``html".
-%\item[8] In the XML, the pictures included in the question field and answer or 
-%feedback fields are mixed.
 %\end{tablenotes}
 %\end{threeparttable}
 %\end{table*}
@@ -1853,13 +1848,16 @@
       %Now, writing information to XML
       \@moodle@ifgeneratexml{%
         \xa\questiontext\xa{\moodle@questionheader}% Save the question text.
+        \csname write#1question\endcsname
         \bgroup
           \gdef\moodle@answers@xml{}%
           \setkeys{moodle}{feedback={}}%
           \xa\loopthroughitemswithcommand\xa{\csname save#1answer\endcsname}%
           \passvalueaftergroup{\moodle@answers@xml}%
         \egroup
-        \csname write#1question\endcsname
+        \moodle@writeanswers%
+        \moodle@writetags%
+        \writetomoodle{</question>}%
       }{}%
     \egroup
   }%
@@ -1910,6 +1908,7 @@
     %Now, writing information to memory.
     \@moodle@ifgeneratexml{%
       \xa\questiontext\xa{\moodle@questionheader}% Save the question text.
+      \writeessayquestion
       \bgroup
         \gdef\moodle@answers@xml{}%
         %
@@ -1929,7 +1928,10 @@
         %
         \passvalueaftergroup{\moodle@answers@xml}%
       \egroup
-      \writeessayquestion
+      \moodle@writeanswers% The 'answers' XML really contains the grader info.
+      \moodle@writeresponsetemplate%
+      \moodle@writetags%
+      \writetomoodle{</question>}%
     }{}%
   \egroup
 }%
@@ -1976,10 +1978,6 @@
     \moodle@writeresponsefieldlines%
     \moodle@writeattachmentsallowed%
     \moodle@writeattachmentsrequired%
-    \moodle@writeanswers% The 'answers' XML really contains the grader info.
-    \moodle@writeresponsetemplate%
-    \moodle@writetags%
-  \writetomoodle{</question>}%
 }%
 
 \def\moodle@print@essay@answer#1{%
@@ -2116,9 +2114,6 @@
   \writetomoodle{<question type="shortanswer">}%
     \moodle@writecommondata%
     \moodle@writeusecase%
-    \moodle@writeanswers%
-    \moodle@writetags%
-  \writetomoodle{</question>}%
 }%
 %    \end{macrocode}
 %
@@ -2194,9 +2189,6 @@
 \gdef\writenumericalquestion{%
   \writetomoodle{<question type="numerical">}%
     \moodle@writecommondata%
-    \moodle@writeanswers%
-    \moodle@writetags%
-  \writetomoodle{</question>}%
 }%
 %    \end{macrocode}
 %
@@ -2367,9 +2359,6 @@
     \moodle@writesingle%
     \moodle@writeshuffle%
     \moodle@writeanswernumbering%
-    \moodle@writeanswers%
-    \moodle@writetags%
-  \writetomoodle{</question>}%
 }%
 %    \end{macrocode}
 %
@@ -2409,6 +2398,7 @@
       \@moodle@ifgeneratexml{%
         \setkeys{moodle}{penalty=1}%
         \xa\questiontext\xa{\moodle@questionheader}% Save the question text.
+        \csname writetruefalsequestion\endcsname
         \bgroup
           \gdef\moodle@answers@xml{}%
           \setkeys{moodle}{feedback={}}%
@@ -2419,7 +2409,9 @@
           \fi
           \passvalueaftergroup{\moodle@answers@xml}%
         \egroup
-        \csname writetruefalsequestion\endcsname
+        \moodle@writeanswers%
+        \moodle@writetags%
+        \writetomoodle{</question>}%
       }{}%
     \egroup
   }%
@@ -2583,9 +2575,6 @@
 \gdef\writetruefalsequestion{%
   \writetomoodle{<question type="truefalse">}%
     \moodle@writecommondata%
-    \moodle@writeanswers%
-    \moodle@writetags%
-  \writetomoodle{</question>}%
 }%
 %    \end{macrocode}
 %
@@ -2684,10 +2673,6 @@
 %    \moodle@writesingle% %unappropriate for the matching type
     \moodle@writeshuffle%
 %    \moodle@writeanswernumbering% %unappropriate for the matching type
-    \moodle@writeanswers%
-    \moodle@writetags%
-  \writetomoodle{</question>}%
-%  \gdef\moodle@answ
 }%
 %    \end{macrocode}
 %
@@ -2779,7 +2764,7 @@
       \def\clozemulti@coding{}%
       \edef\clozemulti@coding{\csname moodle@default grade\endcsname:}%
       \ifmoodle@multiple
-        \PackageWarning{moodle}{Cloze Multiresponse only supported by Moodle 3.7+}
+        \PackageWarning{moodle}{Cloze Multiresponse only supported by Moodle 3.5+}
         \g@addto@macro{\clozemulti@coding}{MULTIRESPONSE}%
       \else
         \g@addto@macro{\clozemulti@coding}{MULTICHOICE}%
