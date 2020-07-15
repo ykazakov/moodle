@@ -780,11 +780,11 @@
 %     |\textbf| & |\textit| & |\texttt|\\
 %     |\underline| & |\par| & |\relax| \\
 %     |\ldots| & |\dots| & |\euro|\\
-%     |\texteuro| \\
+%     |\texteuro| & |\tikz|\\
 %     |\begin{center}| \\
 %     |\begin{enumerate}| \\
 %     |\begin{itemize}| \\
-%     |\begin{tikzpicture}| \\
+%     |\begin{tikzpicture}|
 %   \end{tabular}
 % \end{center}
 % Single and double quotation marks, french quotation marks and the diacritical 
@@ -833,6 +833,9 @@
 % That value may be changed by setting the |ppi| key (e.g., |ppi=72|); 
 % this is probably best done for the entire document with a |\moodleset| command,
 % rather than image-by-image.
+% \DescribeMacro{\graphicspath}
+% You can use |\graphicpath{{|\emph{path}|}}| to specify a directory where the
+% pictures to be included are located.
 % 
 % The mechanism used is somewhat fragile and relies upon one \TikZ\ library and three free external programs.
 % \begin{enumerate}
@@ -863,7 +866,7 @@
 %   \item As of now, graphics are only supported when compiling directly to a PDF
 %         with |pdflatex|.  Including PS graphics or using \TikZ\ with the DVI$\to$PS workflow is not
 %         yet supported.
-%   \item Filenames should not contains spaces or special characters like |_| or |\|.
+%   \item Filenames should not contains spaces or, under windows, special characters like |_| or |\|.
 %   \item You must have Ghostscript, ImageMagick, and OptiPNG installed on your system
 %         to fully use the graphics-handling capabilities of \textsf{moodle.sty}.
 %   \item \LaTeX\ must be able to call system commands; that is, |\write18| must be enabled.
@@ -4389,6 +4392,11 @@
         \edef\htmlize@imagetag{<IMG SRC="data:image/png;base64,\csname picbaselxiv@\the\numpicturesread\endcsname">}%
         \xa\g@addto@macro\xa\htmlize@output\xa{\htmlize@imagetag}%
       }[\htmlize@patchendenvironment]%
+    }%
+    \html@action@def\tikz#1{%
+      \global\advance\numpicturesread by 1\relax
+      \edef\htmlize@imagetag{<IMG SRC="data:image/png;base64,\csname picbaselxiv@\the\numpicturesread\endcsname">}%
+      \xa\g@addto@macro\xa\htmlize@output\xa{\htmlize@imagetag}%
     }%
   \else
     %TikZ not loaded.  Provide dummy definitions for commands.
