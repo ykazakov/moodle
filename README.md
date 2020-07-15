@@ -17,7 +17,7 @@ The Current Maintainer of this work is Anders O.F. Hendrickson.
 
 Original contents (2016): Anders O.F. Hendrickson (anders.hendrickson@snc.edu)
 
-2019-2020: Matthieu Guerquin-Kern
+2019-2020: Matthieu Guerquin-Kern (guerquin-kern@crans.org)
 
 # Contents
 
@@ -39,10 +39,10 @@ To gain access to the project, you must have an account on this server. To
 create an account, there are two ways:
 1. visit <https://gitlab.mattgk.myds.me> and register an account using your
 email in "@ensea.fr".
-2. send a public key (RSA or other) to the authors. They will create it for you.
+2. send a public key (RSA or other) to Matthieu Guerquin-Kern.
 
 Using your account, you can see the activity of the project at
-<https://gitlab.mattgk.myds.me/ensea/ss_fame>. There, among other things, you
+<https://gitlab.mattgk.myds.me/ensea/moodle>. There, among other things, you
 can download the latest version of the project files. If you upload a public key
 in your profile settings, you will be able to access the project through GIT
 (see below).
@@ -67,7 +67,7 @@ environment using either
 2. a virtual machine (see virtualbox for instance).
 
 An installation of the TexLive suite is required. The complete installation is
-not necessary but the moodle package requires the following packages:
+not necessary but the moodle package (.sty file) requires the following packages:
 - environ (texlive-latex-extra),
 - xkeyval (texlive-latex-recommended),
 - amssymb (texlive-base),
@@ -75,10 +75,8 @@ not necessary but the moodle package requires the following packages:
 - etex (texlive-base),
 - etoolbox (texlive-latex-recommended),
 - xpatch (texlive-latex-extra),
-- array,
+- array (texlive-latex-extra),
 - ifplatform (texlive-base),
-- ifpdf (texlive-base),
-- ifxetex (texlive-base),
 - fancybox (texlive-latex-recommended),
 - getitems (texlive-latex-extra).
 
@@ -87,9 +85,19 @@ In order to manipulate images, the package uses:
 - ImageMagick (www.imagemagick.org), and
 - optipng (http://optipng.sourceforge.net/).
 
+In addition, to compile the documentation, the following LaTeX packages are
+necessary: amssymb, metalogo, fancyvrb, multirow, hhline, colortbl,
+threeparttable, booktabs, xcolor, graphicx, hyperref, and tikz.
+
 # Building
 
 The GNU MAKE mechanism is used to automate the building process.
 Standard targets 'all', 'clean', 'distclean' are available.
 On multicore machines, you might want to parallelize the building process using
 the '-j' option of MAKE.
+
+# Unit Test
+A rudimentary unit test system is located in the test/ folder. That helps
+ensuring no regression occurs. This system relies on the makefile mechanism.
+To run the unit tests:
+    $ make tests

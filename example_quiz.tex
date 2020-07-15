@@ -116,15 +116,15 @@ latter only allows text: pictures cannot be placed and neither HTML nor
 
 \begin{matching}[dd]{Matching}
 This question type comes with a specific Moodle plugin. In the offered
-answers, it allows to get \embedaspict{\LaTeX} equations rendered. There is a 
-bug that prevents pictures to be used in answers.
+answers, it allows to get \embedaspict{\LaTeX} equations and pictures rendered.
+%There is a bug that prevents pictures to be used in answers.
 \item[feedback={this feedback is garbage: it is placed in the XML but won't 
 make it through the Moodle import}] \embedaspict{Orange} \answer Orange
 \item[feedback={Actually, Moodle's matching question type does not support
 feedback}] Lemon $\myequation$ \answer Yellow
 \item[feedback={sadly...}] Banana \answer Yellow
 % "Yellow" is repeated twice but will appear only once in the offered answers
-\item[] Strawberry \answer Red
+\item[] Strawberry \answer\embedaspict{Red}
 \item[]  \answer Black $\myequation$
 \end{matching}
 
