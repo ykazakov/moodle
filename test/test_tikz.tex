@@ -17,7 +17,7 @@ execute at end node={\end{varwidth}}]
 \newcommand\embedaspictenv[1]{\begin{tikzpicture}
 [baseline=-\the\dimexpr\fontdimen22\textfont2\relax]
 \node[pict]{\mbox{#1}};\end{tikzpicture}}
-\newcommand\embedaspictcom[1]{\tikz[baseline=-\the\dimexpr\fontdimen22\textfont2\relax]{\node[pict]{\mbox{#1}};}}
+\newcommand\embedaspictcom[1]{\tikz{\node[pict]{\mbox{#1}};}}
 
 \htmlregister{\embedaspictenv}
 \htmlregister{\embedaspictcom}
@@ -33,8 +33,8 @@ Ti\emph{k}Z.
 
 \begin{multi}{Multi}
 \embedaspictcom{1}
-\item[feedback={\embedaspictcom{2}}]* test \embedaspictenv{toast}
-\item[feedback={\embedaspictenv{4}}] test \embedaspictcom{toast}
+\item[feedback={\embedaspictcom{2}}]* \embedaspictenv{3}
+\item[feedback={\embedaspictenv{4}}] \embedaspictcom{5}
 \end{multi}
 
 \begin{matching}[dd]{Matching}

@@ -1156,25 +1156,25 @@
     \def\moodle@stamp{This file was generated on \the\year-\two@digits\month-\two@digits\day}
     \ifpdftex % pdflatex or latex
       \ifpdf % pdflatex
-        \g@addto@macro{\moodle@stamp}{ by pdfLaTeX }
+        \g@addto@macro{\moodle@stamp}{ by pdfLaTeX }%
       \else % latex
-        \g@addto@macro{\moodle@stamp}{ by LaTeX }
+        \g@addto@macro{\moodle@stamp}{ by LaTeX }%
       \fi
     \else
       \ifxetex % xetex
-        \g@addto@macro{\moodle@stamp}{ by XeTeX }
+        \g@addto@macro{\moodle@stamp}{ by XeTeX }%
       \else
         \ifluatex % 
-          \g@addto@macro{\moodle@stamp}{ LuaLaTeX }
+          \g@addto@macro{\moodle@stamp}{ LuaLaTeX }%
         \else
-          \g@addto@macro{\moodle@stamp}{ a TeX engine }
+          \g@addto@macro{\moodle@stamp}{ a TeX engine }%
           \fi
       \fi
     \fi
-    \writetomoodle{<!-- \moodle@stamp -->}
-    \def\moodle@stamp{running on \platformname}
-    \g@addto@macro{\moodle@stamp}{ with the package moodle v0.7 }
-    \writetomoodle{<!-- \moodle@stamp -->}
+    \writetomoodle{<!-- \moodle@stamp -->}%
+    \def\moodle@stamp{running on \platformname}%
+    \g@addto@macro{\moodle@stamp}{ with the package moodle v0.7 }%
+    \writetomoodle{<!-- \moodle@stamp -->}%
   \fi
   \immediate\write\moodle@outfile{}%
   \writetomoodle{<quiz>}%
