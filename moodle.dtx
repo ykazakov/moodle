@@ -891,6 +891,9 @@
 %   \item \LaTeX\ must be able to call system commands; that is, |\write18| must be enabled.
 %         For Mik\TeX, this means adding |--enable-write18| to the command line of |pdflatex|;
 %         for \TeX Live, this means adding |--shell-escape=true|.
+%   \item Users of the |circuitikz| package must enclose their circuits in the |tikzpicture|
+%         environment instead of using |\begin{circuitikz}...\end{circuitikz}|. That is required,
+%         as of Tikz 2.1, by the |external| library.
 % \end{itemize}
 % 
 % \section{Known Limitations and Call for Bug Reports}
