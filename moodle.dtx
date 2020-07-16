@@ -32,11 +32,18 @@
 %
 %<*driver>
 \documentclass[a4paper]{ltxdoc}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+\usepackage{iftex}
+\ifxetex
+  \usepackage{fontspec}
+\else
+  \usepackage[utf8]{inputenc} % necessary
+  \usepackage[T1]{fontenc} % necessary
+\fi
 %\usepackage{moodle}[2020/07/09]
-\usepackage{amssymb,metalogo,multirow,threeparttable,booktabs,hyperref,tikz}
+\usepackage{libertine,amssymb,metalogo,,multirow,threeparttable,booktabs,hyperref,tikz,minted}
+\usepackage[protrusion=true]{microtype}
 \usetikzlibrary{arrows,positioning}
+\usemintedstyle{tango}
 \EnableCrossrefs         
 \CodelineIndex
 \OnlyDescription
@@ -228,7 +235,7 @@
 % and editing Moodle quizzes through the web interface.
 % The |xkeyval| package is used to provide a key-value interface.
 % Here is a simple example document:
-% \begin{verbatim}
+% \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   \documentclass[12pt]{article}
 %   \usepackage[section]{moodle}
 %   \def\myreactiontoasillyanswer{What!?}
@@ -241,7 +248,7 @@
 %       \item 11
 %     \end{numerical}
 %     
-%     \begin{shortanswer}[case sensitive=true]{Newton's name}
+%     \begin{shortanswer}[usecase]{Newton's name}
 %       What was Newton's first name?
 %       \item Isaac
 %       \item[fraction=0, feedback={No, silly!}] Fig
@@ -250,14 +257,15 @@
 %     
 %     \begin{multi}[points=3]{A first derivative}
 %       What is the first derivative of $x^3$?
-%       \item[feedback={\myreactiontoasillyanswer}]  $\frac{1}{4} x^4+C$
+%       \item[feedback={no!}]  $\frac{1}{4} x^4+C$
 %       \item* $3x^2$
 %       \item[feedback={\myreactiontoasillyanswer}]  $51$
 %     \end{multi}
 %   \end{quiz}
 %   
 %   \end{document}
-% \end{verbatim}
+% \end{VerbatimOut}
+% \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
 % Key features to note in this first example are that a |quiz| environment
 % contains several question environments.
 % Each question takes a name as a mandatory argument, 
@@ -284,10 +292,10 @@
 % By default, the package will output a stamp as comment in the XML file.
 % This stamp contains information gathered about the TeX engine, the
 % operating system used and the package version. For instance:
-% \begin{verbatim}
-% <!-- This file was generated on 2020-07-15 by pdfLaTeX -->
-% <!-- running on Linux with the package moodle v0.7 -->
-% \end{verbatim}
+% \begin{quote}\small
+% |<!-- This file was generated on 2020-07-15 by pdfLaTeX -->|
+% |<!-- running on Linux with the package moodle v0.7 -->|
+% \end{quote}
 % The package option
 % |nostamp| prevents this stamp to be written in the XML file.
 %
@@ -455,14 +463,15 @@
 % \DescribeMacro{fraction}
 % The |fraction| key can be used to designate some wrong answers
 % as being worth partial credit.  For example, a question might read thus:
-% \begin{verbatim}
+% \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   \begin{multi}{my question}
 %     Compute $\int 4x^3\,dx$.
 %     \item* $x^4+C$
 %     \item[fraction=50] $x^4$
 %     \item $12x^2$
 %   \end{multi}
-% \end{verbatim}
+% \end{VerbatimOut}
+% \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
 % Thus the asterisk |*| is shorthand for |fraction=100|, 
 % whereas a bare |\item| sets |fraction=0|.
 % 
@@ -479,7 +488,7 @@
 % If you simply designate each correct answer with |\item*|, then \textsf{moodle.sty}
 % will divide the 100\% equally among those answers.
 % For example, the following two examples produce equivalent results:
-% \begin{verbatim}
+% \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   \begin{multi}[multiple]{my question}
 %     Which numbers are prime?
 %     \item* 5
@@ -487,8 +496,7 @@
 %     \item* 7
 %     \item[fraction=-50] 8
 %   \end{multi}
-% \end{verbatim}
-% \begin{verbatim}
+%   
 %   \begin{multi}[multiple]{my question}
 %     Which numbers are prime?
 %     \item[fraction=50] 5
@@ -496,7 +504,8 @@
 %     \item[fraction=50] 7
 %     \item[fraction=-50] 8
 %   \end{multi}
-% \end{verbatim}
+% \end{VerbatimOut}
+% \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
 % Note that, in this example, negative fractions are set for wrong choices. This
 % prevents students selecting all options to obtain a good grade with no merit.
 % 
@@ -523,13 +532,14 @@
 % \DescribeMacro{tolerance} 
 % The |tolerance| key can be used to specify the validity of answers within some margin.
 % For example, with the question
-% \begin{verbatim}
+% \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   \begin{numerical}[tolerance=0.01]{my question}
 %     Approximate value of $\sqrt{2}$?
 %     \item 1.4142
 %     \item[fraction=0,feedback={twice this!}] 0.70711
 %   \end{numerical}
-% \end{verbatim}
+% \end{VerbatimOut}
+% \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
 % In this case, the input \textsf{1.41} will be validated and the input \textsf{0.71} will
 % get the specific feedback.
 % 
@@ -549,13 +559,14 @@
 % You can make the text box appear as part of the question with the 
 % control sequence |\blank|.  For example,
 % your question might read 
-% \begin{verbatim}
+% \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   \begin{shortanswer}{Leibniz}
 %     Newton's rival was Gottfried Wilhelm \blank.
 %     \item Leibniz
 %     \item Leibniz.
 %   \end{shortanswer}
-% \end{verbatim}
+% \end{VerbatimOut}
+% \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
 % Note that as the blank occurred at the end of a sentence, 
 % we included two answers, 
 % lest students get the question wrong merely by
@@ -674,7 +685,7 @@
 % To encode cloze questions in \LaTeX\ using this package is easy:
 % you simply nest one or more |multi|, |shortanswer|, or |numerical| environments
 % within a |cloze| environment, as in the following example:
-% \begin{verbatim}
+% \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   \begin{cloze}{my cloze question} \\
 %     Thanks to calculus, invented by Isaac
 %     \begin{shortanswer}[usecase]
@@ -692,7 +703,8 @@
 %     \end{numerical}.
 %     Thanks, Isaac!
 %   \end{cloze}
-% \end{verbatim}
+% \end{VerbatimOut}
+% \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
 % Note that when used as a subquestion within a cloze question,
 % |\begin{multi}| is \emph{not} followed by name in braces;
 % the same is true for the |shortanswer| and |numerical|
@@ -958,10 +970,11 @@
 %
 %\begin{table}[tbp]
 % \centering
+% \begin{threeparttable}[b]
 % \caption{Support for special characters, accents and other diacritical marks 
 % in a UTF8-coded \TeX~document compiled with pdf\TeX\ (packages 
-% \texttt{inputenc} with option \texttt{utf8} and \texttt{fontenc} with option
-% \texttt{T1}) or \XeTeX\ (package \texttt{fontspec}).}
+% \texttt{inputenc} with option \texttt{utf8}, \texttt{fontenc} with option \texttt{T1},
+% and \texttt{libertine}) or \XeTeX\ (packages \texttt{fontspec} and \texttt{libertine}).}
 % \label{tab:accents}
 % \begin{tabular}{cccc}
 % \toprule
@@ -980,6 +993,9 @@
 % \texttt{\`u} or \texttt{\`U} & \verb|\`u| or \verb|\`U| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \texttt{\"u} or \texttt{\"U} & \verb|\"u| or \verb|\"U| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \texttt{\^u} or \texttt{\^U} & \verb|\^u| or \verb|\^U| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \texttt{\~a} or \texttt{\~A} & \verb|\~a| or \verb|\~A| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \texttt{\~n} or \texttt{\~N} & \verb|\~n| or \verb|\~N| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \texttt{\~o} or \texttt{\~O} & \verb|\~o| or \verb|\~O| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \texttt{\c{c}} or \texttt{\c{C}} & \verb|\c{c}| or \verb|\c{C}| & Unicode and \LaTeX &
 % Unicode and \LaTeX \\
 % \texttt{\c{s}} or \texttt{\c{S}} & \verb|\c{s}| or \verb|\c{S}| & Unicode and \LaTeX & \LaTeX\ only\\
@@ -1003,9 +1019,16 @@
 % \texttt{\aa} or \texttt{\AA} & \verb|\aa| or \verb|\AA| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \texttt{\ae} or \texttt{\AE} & \verb|\ae| or \verb|\AE| & Unicode and \LaTeX & \LaTeX\ only\\
 % \texttt{\oe} or \texttt{\OE} & \verb|\oe| or \verb|\OE| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\ss} or \texttt{\SS} & \verb|\ss| or \verb|\SS| & Unicode and \LaTeX & \LaTeX\ only\tnote{1}\\
+% \texttt{\l} or \texttt{\L} & \verb|\l| or \verb|\L| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\o} or \texttt{\O} & \verb|\o| or \verb|\O| & Unicode and \LaTeX & \LaTeX\ only\\
 % \texttt{«} or \texttt{»} & \verb|\og| or \verb|\fg| & Unicode and \LaTeX & \LaTeX\ only\\
 % \bottomrule
 % \end{tabular}
+% \begin{tablenotes}
+%   \item[1] \LaTeX\ defines the \verb|\SS| macro but pdf\LaTeX\ renders it as a doubled capital S.
+% \end{tablenotes}
+% \end{threeparttable}
 % \end{table}
 % Some features of Moodle quizzes have not yet been implemented in \textsf{moodle.sty}.
 % Here is a non-exhaustive list.
@@ -1165,7 +1188,7 @@
       \fi
     \else
       \ifxetex % xetex
-        \g@addto@macro{\moodle@stamp}{ by XeTeX }%
+        \g@addto@macro{\moodle@stamp}{ by XeLaTeX }%
       \else
         \ifluatex % 
           \g@addto@macro{\moodle@stamp}{ LuaLaTeX }%
@@ -4047,7 +4070,7 @@
               \ifx\test@i\@i
                 \def\toadd{\otherampersand\otherhash301\othersemicol}%
               \else
-                \ifx\test@i\@i
+                \ifx\test@i\@ii
                   \def\toadd{\otherampersand\otherhash301\othersemicol}%
                 \else
                   \ifx\test@i\@O
@@ -4101,6 +4124,7 @@
 \html@def\o{\&oslash;}%
 \html@def\O{\&Oslash;}%
 \html@def\ss{\&szlig;}%
+\html@def\SS{\&\#7838;}%
 \html@def\l{\&lstrok;}%
 \html@def\L{\&Lstrok;}%
 \html@def\og{\&laquo;\&\#8239;}%

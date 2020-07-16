@@ -10,26 +10,36 @@
 	\usepackage[utf8]{inputenc} % necessary
 	\usepackage[T1]{fontenc} % necessary
 \fi
+\usepackage{libertine} % includes the "großes Eszett" ß
 
 \usepackage[french]{babel} % for french quotes
 
 \def\UTFdiacriticLC
-{à â é è ë ê î ï ô ö ù ü û ç ş ţ ő ű å ă ĕ ğ ĭ ŏ ŭ č ď ě ľ ň ř š ť ž }
+{à â é è ë ê î ï ô ö ù ü û ã ñ õ ç å 
+ş ţ ő ű ă ĕ ğ ĭ ŏ ŭ č ď ě ľ ň ř š ť ž } % in this line XML is only correct when 
+%compiled with xelatex
 \def\UTFdiacriticUC
-{À Â É È Ë Ê Î Ï Ô Ö Ù Ü Û Ç Ş Ţ Ő Ű Å Ă Ĕ Ğ Ĭ Ŏ Ŭ Č Ď Ě Ľ Ň Ř Š Ť Ž }
+{À Â É È Ë Ê Î Ï Ô Ö Ù Ü Û Ã Ñ Õ Ç Å 
+Ş Ţ Ő Ű Ă Ĕ Ğ Ĭ Ŏ Ŭ Č Ď Ě Ľ Ň Ř Š Ť Ž } % in this line XML is only correct when 
+%compiled with xelatex
 \def\LaTeXdiacriticLC
-{\`a \^a \'e \`e \"e \^e \^i \"i \"o \^o \`u \"u \^u \c{c} \c{s} \c{t} \H{o} 
-\H{u} \aa\ \u{a} \u{e} \u{g} \u{\i} \u{o} \u{u} \v{c} \v{d} \v{e} 
+{\`a \^a \'e \`e \"e \^e \^i \"i \"o \^o \`u \"u \^u \~a \~n \~o \c{c} \aa\ 
+\c{s} \c{t} \H{o} \H{u} \u{a} \u{e} \u{g} \u{\i} \u{o} \u{u} \v{c} \v{d} \v{e} 
 \v{l} \v{n} \v{r} \v{s} \v{t} \v{z} }
 \def\LaTeXdiacriticUC
-{\`A \^A \'E \`E \"E \^E \^I \"I \"O \^O \`U \"U \^U \c{C} \c{S} \c{T} \H{O} 
-\H{U} \AA\ \u{A} \u{E} \u{G} \u{I} \u{O} \u{U} \v{C} \v{D} \v{E} \v{L} \v{N} 
-\v{R} \v{S} \v{T} \v{Z} }
+{\`A \^A \'E \`E \"E \^E \^I \"I \"O \^O \`U \"U \^U \~A \~N \~O \c{C} \AA\  
+\c{S} \c{T} \H{O} \H{U} \u{A} \u{E} \u{G} \u{I} \u{O} \u{U} \v{C} \v{D} \v{E} 
+\v{L} \v{N} \v{R} \v{S} \v{T} \v{Z} }
 
-\def\UTFligaturesLC{œ   æ } % XML is only correct when compiled with xelatex
-\def\UTFligaturesUC{Œ   Æ } % XML is only correct when compiled with xelatex
-\def\LaTeXligaturesLC{\oe\ \ae\ }
-\def\LaTeXligaturesUC{\OE\ \AE\ }
+\def\UTFligaturesLC{œ   æ   ß } % XML is only correct when compiled with xelatex
+\def\UTFligaturesUC{Œ   Æ   ẞ } % XML is only correct when compiled with xelatex
+\def\LaTeXligaturesLC{\oe\ \ae\ \ss\ }
+\def\LaTeXligaturesUC{\OE\ \AE\ \SS\ }
+
+\def\UTFotherLC{ø ł }
+\def\UTFotherUC{Ø Ł }
+\def\LaTeXotherLC{\o\ \l\ }
+\def\LaTeXotherUC{\O\ \L\ }
 
 \htmlregister{\UTFdiacriticLC}
 \htmlregister{\UTFdiacriticUC}
@@ -39,6 +49,10 @@
 \htmlregister{\UTFligaturesUC}
 \htmlregister{\LaTeXligaturesLC}
 \htmlregister{\LaTeXligaturesUC}
+\htmlregister{\UTFotherLC}
+\htmlregister{\UTFotherUC}
+\htmlregister{\LaTeXotherLC}
+\htmlregister{\LaTeXotherUC}
 
 \begin{document}
 
@@ -50,12 +64,14 @@ and ligatures found in french typesetting.
 For most of them, two ways of encoding are tested: UTF8 et \LaTeX{} syntax.
 
 \begin{quiz}[points=1]{Diacritical marks and ligatures}
-
+\NoAutoSpacing
 \begin{multi}{\UTFdiacriticUC}
-«~\UTFligaturesLC \UTFligaturesUC»\\ % only xelatex produces an adequate XML
+%«~\UTFligaturesLC \UTFligaturesUC»\\ % only xelatex produces an adequate XML
 %when using UTF8-coded ligatures and french quotes
 \UTFdiacriticLC\\
-\UTFdiacriticUC
+\UTFdiacriticUC\\
+%\UTFotherUC \UTFotherLC\\ % only xelatex produces an adequate XML
+%when using UTF8-coded ligatures and french quotes
 \item[feedback={\UTFdiacriticUC}] \UTFdiacriticLC
 \item[feedback={\UTFdiacriticLC}]* \UTFdiacriticUC
 \end{multi}
@@ -63,7 +79,8 @@ For most of them, two ways of encoding are tested: UTF8 et \LaTeX{} syntax.
 \begin{multi}{\LaTeXdiacriticUC} % Here both pdflatex and xelatex should work
 \og\LaTeXligaturesLC \LaTeXligaturesUC\fg\\
 \LaTeXdiacriticLC\\
-\LaTeXdiacriticUC\fg
+\LaTeXdiacriticUC
+\LaTeXotherUC \LaTeXotherLC\\
 \item[feedback={\LaTeXdiacriticUC}] \LaTeXdiacriticLC 
 \item[feedback={\LaTeXdiacriticLC}]* \LaTeXdiacriticUC
 \end{multi}

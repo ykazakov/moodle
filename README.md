@@ -86,8 +86,8 @@ In order to manipulate images, the package uses:
 - optipng (http://optipng.sourceforge.net/).
 
 In addition, to compile the documentation, the following LaTeX packages are
-necessary:
-amssymb, metalogo, multirow, threeparttable, booktabs, hyperref, and tikz.
+necessary: amssymb, metalogo, multirow, threeparttable, booktabs, hyperref,
+tikz, minted, and microtype.
 
 # Building
 
