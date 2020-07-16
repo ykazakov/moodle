@@ -821,7 +821,8 @@
 % Single and double quotation marks, french quotation marks and the diacritical 
 % commands  |\^|, |\'|, |\`|, |\"|, |\~|, |\c|, |\u|, |\v| and |\H| are also handled,
 % as are the characters |\aa|, |\ae|, |\oe|, |\o|, |\ss|, |\l|, and their 
-% capitalizations. See Table~\ref{tab:accents} for more details.
+% capitalizations. See Tables~\ref{tab:diacritical}, \ref{tab:ligatures}, and
+% \ref{tab:other} for more details.
 %   
 % In addition, |<| and |>| will be converted to |&lt;| and |&gt;| \emph{within math mode only}.
 % If they should be typed outside of math mode, they will be passed as typed to
@@ -852,7 +853,7 @@
 % When using |\includegraphics|, the only options currently supported 
 % are |height| and |width|.  Attempts to use other |\includegraphics| options,
 % such as |scale| or |angle|, will affect the PDF but not the XML output.
-% The dimensions set by |height| and |width| are \TeX\ dimensions such as |4in| or |2.3cm|.
+% The dimensions set by |height| and |width| are \TeX\ dimensions such as 4\,in or 2.3\,cm.
 % In order to prepare the image for web viewing, this package converts those 
 % dimensions to pixels using a default of 
 % 103 pixels per inch.\footnote{This
@@ -916,7 +917,7 @@
 %\centering
 %\begin{threeparttable}[b]
 %\caption{Content enrichment support after XML import in Moodle 
-%\texttt{v3.5.7}, depending on the question type.}
+%         v3.5.7, depending on the question type.}
 %\label{tab:support-limitations}
 %\begin{tabular}{rlccc}
 % \toprule
@@ -965,68 +966,109 @@
 %\end{threeparttable}
 %\end{table}
 %
-% Table~\ref{tab:accents} describes the current support for some special characters 
-% accents and other diacritical marks.
+% Tables~\ref{tab:diacritical}, \ref{tab:ligatures}, and \ref{tab:other} describe the current
+% support for some special characters, accents and other diacritical marks.
+%
+%\begin{table}[tbp]
+% \centering
+% \caption{Support for diacritical marks 
+% in a UTF8-coded \TeX~document compiled with (pdf)\LaTeX\ (packages 
+% \texttt{inputenc} with option \texttt{utf8} and \texttt{fontenc} with option \texttt{T1})
+% or \XeLaTeX\ (package \texttt{fontspec}).}
+% \label{tab:diacritical}
+% \begin{threeparttable}
+% \begin{tabular}{cccc}
+% \toprule
+% \multicolumn{2}{c}{Input type} & \multicolumn{2}{c}{Engine support}\\
+% Unicode & \LaTeX & \XeLaTeX & (pdf)\LaTeX \\\midrule
+% \aa\ \emph{or} \AA & \verb|\aa| or \verb|\AA| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \`a \emph{or} \`A & \verb|\`a| or \verb|\`A| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \^a \emph{or} \^A & \verb|\^a| or \verb|\^A| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \'e \emph{or} \'E & \verb|\'e| or \verb|\'E| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \`e \emph{or} \`E & \verb|\`e| or \verb|\`E| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \"e \emph{or} \"E & \verb|\"e| or \verb|\"E| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \^e \emph{or} \^E & \verb|\^e| or \verb|\^E| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \^i \emph{or} \^I & \verb|\^i| or \verb|\^I| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \"i \emph{or} \"I & \verb|\"i| or \verb|\"I| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \"o \emph{or} \"O & \verb|\"o| or \verb|\"O| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \^o \emph{or} \^O & \verb|\^o| or \verb|\^O| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \`u \emph{or} \`U & \verb|\`u| or \verb|\`U| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \"u \emph{or} \"U & \verb|\"u| or \verb|\"U| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \^u \emph{or} \^U & \verb|\^u| or \verb|\^U| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \~a \emph{or} \~A & \verb|\~a| or \verb|\~A| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \~n \emph{or} \~N & \verb|\~n| or \verb|\~N| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \~o \emph{or} \~O & \verb|\~o| or \verb|\~O| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \c{c} \emph{or} \c{C} & \verb|\c{c}| or \verb|\c{C}| & Unicode and \LaTeX &
+% Unicode and \LaTeX \\
+% \c{s} \emph{or} \c{S} & \verb|\c{s}| or \verb|\c{S}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \c{t} \emph{or} \c{T} & \verb|\c{t}| or \verb|\c{T}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \H{o} \emph{or} \H{O} & \verb|\H{o}| or \verb|\H{O}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \H{u} \emph{or} \H{U} & \verb|\H{u}| or \verb|\H{U}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \u{a} \emph{or} \u{A} & \verb|\u{a}| or \verb|\u{A}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \u{e} \emph{or} \u{E} & \verb|\u{e}| or \verb|\u{E}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \u{g} \emph{or} \u{G} & \verb|\u{g}| or \verb|\u{G}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \u{\i} \emph{or} \u{I} & \verb|\u{\i}| or \verb|\u{I}| & Unicode and \LaTeX & \LaTeX\ only\tnote{1}\\
+% \u{o} \emph{or} \u{O} & \verb|\u{o}| or \verb|\u{O}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \v{c} \emph{or} \v{C} & \verb|\v{c}| or \verb|\v{C}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \v{d} \emph{or} \v{D} & \verb|\v{d}| or \verb|\v{D}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \v{e} \emph{or} \v{E} & \verb|\v{e}| or \verb|\v{E}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \v{l} \emph{or} \v{L} & \verb|\v{l}| or \verb|\v{L}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \v{n} \emph{or} \v{N} & \verb|\v{n}| or \verb|\v{N}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \v{r} \emph{or} \v{R} & \verb|\v{r}| or \verb|\v{R}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \v{s} \emph{or} \v{S} & \verb|\v{s}| or \verb|\v{S}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \v{t} \emph{or} \v{T} & \verb|\v{t}| or \verb|\v{T}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \v{z} \emph{or} \v{Z} & \verb|\v{z}| or \verb|\v{Z}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \bottomrule
+% \end{tabular}
+% \begin{tablenotes}
+%   \item[1] \XeLaTeX\ renders correctly |\u{i}|, that is, without a dot. Instead, with (pdf)\LaTeX\
+%            the rendering of |\u{i}| is flawed by the superposition of the dot and the breve. Both
+%            engines render |\u{\i}| as expected.
+% \end{tablenotes}
+% \end{threeparttable}
+% \end{table}
 %
 %\begin{table}[tbp]
 % \centering
 % \begin{threeparttable}[b]
-% \caption{Support for special characters, accents and other diacritical marks 
-% in a UTF8-coded \TeX~document compiled with pdf\TeX\ (packages 
-% \texttt{inputenc} with option \texttt{utf8}, \texttt{fontenc} with option \texttt{T1},
-% and \texttt{libertine}) or \XeTeX\ (packages \texttt{fontspec} and \texttt{libertine}).}
-% \label{tab:accents}
+% \caption{Support for ligatures in a UTF8-coded \TeX~document compiled with (pdf)\LaTeX\ (packages 
+% \texttt{inputenc} with option \texttt{utf8}, \texttt{fontenc} with option \texttt{T1})
+% or \XeLaTeX\ (package \texttt{fontspec}).}
+% \label{tab:ligatures}
 % \begin{tabular}{cccc}
 % \toprule
 % \multicolumn{2}{c}{Input type} & \multicolumn{2}{c}{Engine support}\\
-% Unicode & \LaTeX & \XeLaTeX & pdf\LaTeX \\\midrule
-% \texttt{\`a} or \texttt{\`A} & \verb|\`a| or \verb|\`A| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\^a} or \texttt{\^A}  & \verb|\^a| or \verb|\^A| & Unicode and \LaTeX & Unicode and \LaTeX\\
-% \texttt{\'e} or \texttt{\'E} & \verb|\'e| or \verb|\'E| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\`e} or \texttt{\`E} & \verb|\`e| or \verb|\`E| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\"e} or \texttt{\"E} & \verb|\"e| or \verb|\"E| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\^e} or \texttt{\^E} & \verb|\^e| or \verb|\^E| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\^i} or \texttt{\^I} & \verb|\^i| or\verb|\^I| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\"i} or \texttt{\"I}  & \verb|\"i| or \verb|\"I| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\"o} or \texttt{\"O} & \verb|\"o| or \verb|\"O| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\^o} or \texttt{\^O} & \verb|\^o| or \verb|\^O| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\`u} or \texttt{\`U} & \verb|\`u| or \verb|\`U| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\"u} or \texttt{\"U} & \verb|\"u| or \verb|\"U| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\^u} or \texttt{\^U} & \verb|\^u| or \verb|\^U| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\~a} or \texttt{\~A} & \verb|\~a| or \verb|\~A| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\~n} or \texttt{\~N} & \verb|\~n| or \verb|\~N| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\~o} or \texttt{\~O} & \verb|\~o| or \verb|\~O| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\c{c}} or \texttt{\c{C}} & \verb|\c{c}| or \verb|\c{C}| & Unicode and \LaTeX &
-% Unicode and \LaTeX \\
-% \texttt{\c{s}} or \texttt{\c{S}} & \verb|\c{s}| or \verb|\c{S}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\c{t}} or \texttt{\c{T}} & \verb|\c{t}| or \verb|\c{T}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\H{o}} or \texttt{\H{O}} & \verb|\H{o}| or \verb|\H{O}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\H{u}} or \texttt{\H{U}} & \verb|\H{u}| or \verb|\H{U}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\u{a}} or \texttt{\u{A}} & \verb|\u{a}| or \verb|\u{A}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\u{e}} or \texttt{\u{E}} & \verb|\u{e}| or \verb|\u{E}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\u{g}} or \texttt{\u{G}} & \verb|\u{g}| or \verb|\u{G}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\u{\i}} or \texttt{\u{I}} & \verb|\u{\i}| or \verb|\u{I}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\u{o}} or \texttt{\u{O}} & \verb|\u{o}| or \verb|\u{O}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\v{c}} or \texttt{\v{C}} & \verb|\v{c}| or \verb|\v{C}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\v{d}} or \texttt{\v{D}} & \verb|\v{d}| or \verb|\v{D}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\v{e}} or \texttt{\v{E}} & \verb|\v{e}| or \verb|\v{E}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\v{l}} or \texttt{\v{L}} & \verb|\v{l}| or \verb|\v{L}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\v{n}} or \texttt{\v{N}} & \verb|\v{n}| or \verb|\v{N}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\v{r}} or \texttt{\v{R}} & \verb|\v{r}| or \verb|\v{R}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\v{s}} or \texttt{\v{S}} & \verb|\v{s}| or \verb|\v{S}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\v{t}} or \texttt{\v{T}} & \verb|\v{t}| or \verb|\v{T}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\v{z}} or \texttt{\v{Z}} & \verb|\v{z}| or \verb|\v{Z}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\aa} or \texttt{\AA} & \verb|\aa| or \verb|\AA| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\ae} or \texttt{\AE} & \verb|\ae| or \verb|\AE| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\oe} or \texttt{\OE} & \verb|\oe| or \verb|\OE| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\ss} or \texttt{\SS} & \verb|\ss| or \verb|\SS| & Unicode and \LaTeX & \LaTeX\ only\tnote{1}\\
-% \texttt{\l} or \texttt{\L} & \verb|\l| or \verb|\L| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{\o} or \texttt{\O} & \verb|\o| or \verb|\O| & Unicode and \LaTeX & \LaTeX\ only\\
-% \texttt{«} or \texttt{»} & \verb|\og| or \verb|\fg| & Unicode and \LaTeX & \LaTeX\ only\\
+% Unicode & \LaTeX & \XeLaTeX & (pdf)\LaTeX \\\midrule
+% \ae\ \emph{or} \AE & \verb|\ae| or \verb|\AE| & Unicode and \LaTeX & \LaTeX\ only\\
+% \oe\ \emph{or} \OE & \verb|\oe| or \verb|\OE| & Unicode and \LaTeX & \LaTeX\ only\\
+% \ss\ \emph{or} \SS & \verb|\ss| or \verb|\SS| & Unicode and \LaTeX\tnote{1} & \LaTeX\ only\tnote{2}\\
 % \bottomrule
 % \end{tabular}
 % \begin{tablenotes}
-%   \item[1] \LaTeX\ defines the \verb|\SS| macro but pdf\LaTeX\ renders it as a doubled capital S.
+%   \item[1] the package |libertine| defines the symbol \SS. This is not the case with most fonts.
+%   \item[2] \LaTeX\ defines the \verb|\SS| macro but (pdf)\LaTeX\ renders it as a doubled capital S.
+% \end{tablenotes}
+% \end{threeparttable}
+% \end{table}
+%
+%\begin{table}[tbp]
+% \centering
+% \begin{threeparttable}[b]
+% \caption{Support for other graphemes and punctuation marks in a UTF8-coded \TeX~document compiled
+% with (pdf)\LaTeX\ (packages \texttt{inputenc} with option \texttt{utf8}, \texttt{fontenc} with
+% option \texttt{T1}) or \XeLaTeX\ (package \texttt{fontspec}).}
+% \label{tab:other}
+% \begin{tabular}{cccc}
+% \toprule
+% \multicolumn{2}{c}{Input type} & \multicolumn{2}{c}{Engine support}\\
+% Unicode & \LaTeX & \XeLaTeX & (pdf)\LaTeX \\\midrule
+% \l\ \emph{or} \L & \verb|\l| or \verb|\L| & Unicode and \LaTeX & \LaTeX\ only\\
+% \o\ \emph{or} \O & \verb|\o| or \verb|\O| & Unicode and \LaTeX & \LaTeX\ only\\
+% « \emph{or} » & \verb|\og| or \verb|\fg|\tnote{1} & Unicode and \LaTeX & \LaTeX\ only\\
+% \bottomrule
+% \end{tabular}
+% \begin{tablenotes}
+%   \item[1] the package |babel| loaded with option |french| defines |\og| and |\fg|.
 % \end{tablenotes}
 % \end{threeparttable}
 % \end{table}
