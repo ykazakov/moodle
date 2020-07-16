@@ -1,6 +1,6 @@
-PREFIX=test_
-SUFFIX=-moodle
-TEST_FILES=$(wildcard $(PREFIX)*.tex)
+PREFIX=test
+SUFFIX=moodle
+TEST_FILES=$(wildcard $(PREFIX)_*.tex)
 LATEX=latex
 PDFLATEX=xelatex
 LATEXFLAGS=-interaction=nonstopmode -shell-escape
@@ -16,20 +16,20 @@ endif
 
 all: test
 
-test: $(TEST_FILES:.tex=$(SUFFIX).xml) $(TEST_FILES:.tex=.diff)
+test: $(TEST_FILES:.tex=-$(SUFFIX).xml) $(TEST_FILES:.tex=.diff)
 
-references: $(TEST_FILES:.tex=$(SUFFIX).ref)
+references: $(TEST_FILES:.tex=-$(SUFFIX).ref)
 
 clean:
 	rm -rf $(FILE_CLEAN)
 
 distclean: clean
-	rm -rf *.pdf *.xml *.diff
+	rm -rf *.pdf *.xml *.diff $(SUFFIX).sty
 
-%$(SUFFIX).xml : %.tex ../moodle.sty
+%-$(SUFFIX).xml : %.tex $(SUFFIX).sty
 	@$(PDFLATEX) $(LATEXFLAGS) $< $(DEBUG)
 
-$(PREFIX)%.diff : $(PREFIX)%$(SUFFIX).ref $(PREFIX)%$(SUFFIX).xml
+$(PREFIX)_%.diff : $(PREFIX)_%-$(SUFFIX).ref $(PREFIX)_%-$(SUFFIX).xml
 	@$(DIFFTOOL) $(basename $<).xml $< > $@ && echo 'OK   <- $*' || echo 'FAIL <- $*'
 
 # DISABLING THE FOLLOWING FOR SAFETY
@@ -37,5 +37,7 @@ $(PREFIX)%.diff : $(PREFIX)%$(SUFFIX).ref $(PREFIX)%$(SUFFIX).xml
 #%.ref : %.xml
 #	@cp $< $@
 
-../moodle.sty:
+$(SUFFIX).sty: ../$(SUFFIX).sty
+	cp $< $@
+../$(SUFFIX).sty: ../$(SUFFIX).dtx
 	$(MAKE) -C ../ moodle.sty

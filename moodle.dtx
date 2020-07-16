@@ -35,9 +35,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 %\usepackage{moodle}[2020/07/09]
-\usepackage{amssymb,metalogo}
-\usepackage{fancyvrb}
-\usepackage{multirow,hhline,colortbl,threeparttable,booktabs,xcolor,graphicx,hyperref,tikz}
+\usepackage{amssymb,metalogo,multirow,threeparttable,booktabs,hyperref,tikz}
 \usetikzlibrary{arrows,positioning}
 \EnableCrossrefs         
 \CodelineIndex
@@ -188,28 +186,36 @@
 % cmnt/.style={font=\footnotesize,align=center},
 % bigcmnt/.style={font=\normalsize,align=center},pre/.style={<-,>=stealth',thick},
 % post/.style={->,>=stealth',thick}, prepost/.style={<->,>=stealth',thick}]
-% \node[box] (tex) {\texttt{.tex} source file};
-% \node[rectangle,draw,align=center,text 
-% width=2.5cm,below=of tex] (comp) {\LaTeX{}\\ compilation};
-% \node[rectangle,draw,align=center,text width=2.5cm,below=of comp] (extern) 
-% {Image\\externalization};
-% \node[box,right=of tex,xshift=2cm] (pdf) {\texttt{.pdf} file for proofreading};
-% \node[box,below=of pdf] (xml) {\texttt{.xml} file with embedded images};
-% \node[rectangle,draw,align=center,text width=2.5cm,below=of xml] (moodle) 
+% \draw[white,fill=orange!20,rounded corners=20]
+% (-1.5,0)--++(.5,.8)--++(9.5,0)--++(0.5,-.8)--++(-5,-3)--cycle;
+% \node[orange!80!black] (dev) at (5,-.3) {\textit{Developpement}};
+% \fill[green,fill opacity=.2,rounded corners=20]
+% (-1.5,1)--++(0,-5.8)--++(10.5,0)--++(0,1.5)--cycle;
+% \node[green!80!black] (dev) at (6.2,-3) {\textit{Publishing}}; 
+% \node[box,text width=2cm] (tex) {\texttt{.tex} source file};
+% \node[rectangle,fill=white,draw,align=center,text 
+% width=1.5cm,below=of tex] (compfinal) {\LaTeX{}\\ engine};
+% \node[rectangle,fill=white,draw,align=center,text width=1.5cm,right=of tex,xshift=4.5cm]
+% (compdraft) {\LaTeX{}\\ engine};
+% \node[box,right=of compfinal,xshift=.5cm] (pdf) {\texttt{.pdf} file for proofreading};
+% \node[rectangle,fill=white,draw,align=center,text width=2cm,below=of compfinal] (extern) 
+% {Picture\\processing};
+% \draw (pdf|-extern) node[box,anchor=center] (xml) {\texttt{.xml} file\\(pictures embedded)};
+% \draw (compdraft|-xml)
+% node[rectangle,fill=white,draw,align=center,text width=1.5cm,anchor=center] (moodle) 
 % {Moodle\\Server};
-% \draw (tex) edge [post,green,bend right=10] (comp); % 
-% \draw (comp) edge [post,green,bend right=10] node[cmnt,pos=.5,above,sloped] 
-% {\texttt{draft}, \texttt{final}} (pdf);
-% \draw (comp) edge [post,green,bend right=10] node[cmnt,pos=.5,above,sloped] 
-% {\texttt{final}} (xml);
-% \draw (comp) edge [post,green,bend right=30] 
-% node[cmnt,black!40,pos=.5,below,left] {\texttt{.png}} (extern);
-% \draw (extern) edge [post,green,bend right=30] 
-% node[cmnt,black!40,pos=.5,below,right] {\texttt{base64}} (comp);
-% \draw (pdf) edge [post,red,bend right=10] node[cmnt,pos=.5,below] 
+% \draw (tex) edge [post,bend right=10] node[cmnt,pos=.5,left] {\texttt{final}} (compfinal);
+% \draw (tex) edge [post,bend left=10] node[cmnt,pos=.5,above] {\texttt{draft}} (compdraft);
+% \draw (compdraft) edge [post,bend left=10] (pdf);
+% \draw (compfinal) edge [post] (pdf);
+% \draw (compfinal) edge [post,bend left=10] (xml);
+% \draw (compfinal) edge [post,bend right=30] node[cmnt,black!40,pos=.5,text width=1cm,left]
+% {\texttt{tikz}, \texttt{.png}, \texttt{.jpg}} (extern);
+% \draw (extern) edge [post,green,bend right=30] node[cmnt,black!40,pos=.5,below,right]
+% {\texttt{base64}} (compfinal);
+% \draw (pdf) edge [post,red,bend left=10] node[cmnt,pos=.5,above right] 
 % {improvements} (tex);
-% \draw (xml) edge [post,red,bend right=-20] node[cmnt,pos=.5,right] 
-% {import} (moodle);
+% \draw (xml) edge [post,red] node[cmnt,pos=.5,above] {import} (moodle);
 % \end{tikzpicture}
 % \caption{Block diagram describing a typical workflow using the \texttt{moodle} package.}
 % \label{fig:workflow}
@@ -273,6 +279,17 @@
 % quiz containing graphics, so as to avoid the time spent converting
 % image files. The package option |final| might be useful if one wants
 % to avoid the option |draft| to be inherited from the |documentclass|.
+%
+% \DescribeMacro{nostamp}
+% By default, the package will output a stamp as comment in the XML file.
+% This stamp contains information gathered about the TeX engine, the
+% operating system used and the package version. For instance:
+% \begin{verbatim}
+% <!-- This file was generated on 2020-07-15 by pdfLaTeX -->
+% <!-- running on Linux with the package moodle v0.7 -->
+% \end{verbatim}
+% The package option
+% |nostamp| prevents this stamp to be written in the XML file.
 %
 % \DescribeMacro{section}
 % \DescribeMacro{section*}
@@ -713,54 +730,55 @@
 % and answer levels depending on the question type. For the essay questions,
 % please refer to section~\ref{subsubsect:essay}.
 % 
-% \begin{table*}[tbp]
+% \begin{table}[tbp]
 % \centering
 % \caption{Options available at the question and answer
 % levels depending on the question type.}
 % \label{tab:key-options}
 % \small
-% \begin{tabular}{rl|cccccccccc|ccc}
-% \multicolumn{2}{c|}{}& \multicolumn{10}{c|}{Question} & 
-% \multicolumn{3}{c}{Answer}\\
-% \multicolumn{2}{c|}{Question type}& \rotatebox{90}{points} & 
+% \begin{tabular}{rl*{10}{c}@{\hspace{3em}}ccc}
+% \toprule
+% && \multicolumn{10}{c}{Question} & \multicolumn{3}{c}{Answer}\\
+% \multicolumn{2}{c}{Question type}& \rotatebox{90}{points} & 
 % \rotatebox{90}{penalty} & \rotatebox{90}{feedback} & \rotatebox{90}{tags} & 
 % \rotatebox{90}{shuffle} & \rotatebox{90}{numbering} & \rotatebox{90}{multiple} &
 % \rotatebox{90}{usecase} & \rotatebox{90}{tolerance} &\rotatebox{90}{dd} &
 % \rotatebox{90}{fraction} & \rotatebox{90}{feedback} & 
-% \rotatebox{90}{tolerance}\\\hline\hline
+% \rotatebox{90}{tolerance}\\\midrule
 % &\href{https://docs.moodle.org/35/en/Multiple_Choice_question_type} 
 % {Multichoice} & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & 
 % $\bullet$ & $\bullet$ & $\bullet$ & & & & $\bullet$ & $\bullet$ 
-% & \\\hline
+% & \\
 % & \href{https://docs.moodle.org/35/en/Numerical_question_type}{Numerical}
 % & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & 
-% & & $\bullet$ & & $\bullet$ & $\bullet$ & $\bullet$ \\\hline
+% & & $\bullet$ & & $\bullet$ & $\bullet$ & $\bullet$ \\
 % & \href{https://docs.moodle.org/35/en/Short-Answer_question_type}{Short
 % Answer} & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & 
-% & $\bullet$ & & & $\bullet$ & $\bullet$ \\\hline
+% & $\bullet$ & & & $\bullet$ & $\bullet$ \\
 % &\href{https://docs.moodle.org/35/en/Matching_question_type}{Matching}
 % & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & 
-% & & & $\bullet$ & $\bullet$ & \\\hline
+% & & & $\bullet$ & $\bullet$ & \\
 % & \href{https://docs.moodle.org/35/en/Multiple_True/False_Question_Type}
 % {True/False} & $\bullet$ & & $\bullet$ & $\bullet$ & & & 
-% & & & & & $\bullet$ \\\hline
+% & & & & & $\bullet$ \\\midrule
 % ^^A&\href{https://docs.moodle.org/35/en/Essay_question_type}{Essay} & \\\hline%
 % \parbox[t]{2mm}{\multirow{6}{*}{\rotatebox[origin=c]{90}{\href{https://docs.moodle.org/35/en/Embedded_Answers_(Cloze)_question_type}
 % {Cloze}}}}
 % &Cloze & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & 
-% & & & & & \\\cline{2-15}
+% & & & & & \\
 % &Numerical & $\bullet$ & & & & & & 
-% & &$\bullet$ & & $\bullet$ & $\bullet$ & $\bullet$ \\\cline{2-15}
+% & &$\bullet$ & & $\bullet$ & $\bullet$ & $\bullet$ \\
 % &Short Answer & $\bullet$ & & & & & & 
-% & $\bullet$ & & & $\bullet$ & $\bullet$ \\\cline{2-15}
+% & $\bullet$ & & & $\bullet$ & $\bullet$ \\
 % &Multi (regular) & $\bullet$ & & & & $\bullet$ & & $\bullet$ 
-% & & & & $\bullet$ & $\bullet$ \\\cline{2-15}
+% & & & & $\bullet$ & $\bullet$ \\
 % &Multi (horizontal)& $\bullet$ & & & & $\bullet$ & & $\bullet$ 
-% & & & & $\bullet$ & $\bullet$ \\\cline{2-15}
+% & & & & $\bullet$ & $\bullet$ \\
 % &Multi (vertical)& $\bullet$ & & & & $\bullet$ & & 
-% & & & & $\bullet$ & $\bullet$ \\\hline
+% & & & & $\bullet$ & $\bullet$ \\
+% \bottomrule
 % \end{tabular}
-% \end{table*}
+% \end{table}
 % 
 % \section{Conversion to HTML}
 % 
@@ -879,90 +897,68 @@
 % Table~\ref{tab:support-limitations} lists some different features supported, limitations, and
 % bugs.
 %
-%\begin{table*}[tbp]
+%\begin{table}[tbp]
 %\centering
-%\def\OKcell{\cellcolor{green}}
-%\def\KOcell{\cellcolor{red}}
-%\def\DNAcell{\cellcolor{black!20}}
-%\def\Warncell{\cellcolor{orange}}
-%{\catcode`\|=12\relax\gdef\MyLine{\hhline{~-|>{\arrayrulecolor{green}}->{\arrayrulecolor{black}}--|}}
-%}
 %\begin{threeparttable}[b]
 %\caption{Content enrichment support after XML import in Moodle 
-%\texttt{v3.5.7}, depending on the question type. Color convention: green for 
-%\colorbox{green}{full support}, and gray for \colorbox{black!20}
-%{support limitations intrinsic to the question type} defined by Moodle.}
+%\texttt{v3.5.7}, depending on the question type.}
 %\label{tab:support-limitations}
 %\begin{tabular}{rlccc}
+% \toprule
 %\multicolumn{2}{c}{}& \multicolumn{3}{c}{XML rendering}\\
-%\multicolumn{2}{c}{Question type}& Question & Answer & Feedback\\\hhline{*{5}{:=}:}
-%
-%&\href{https://docs.moodle.org/31/en/Multiple_Choice_question_type} 
-%{Multichoice} & \OKcell & \OKcell & \OKcell \\\hhline{*{5}{-}}
-%
+%\multicolumn{2}{c}{Question type}& Question & Answer & Feedback\\\midrule
+%&\href{https://docs.moodle.org/31/en/Multiple_Choice_question_type}{Multichoice}
+%& yes & yes & yes \\
 %& \href{https://docs.moodle.org/31/en/Numerical_question_type}{Numerical}
-%& \OKcell & \DNAcell Text only\tnote{3} & \OKcell \\\hhline{*{5}{-}}
-%
-%& \href{https://docs.moodle.org/31/en/Short-Answer_question_type}{Short
-%Answer} & \OKcell & \DNAcell Text only\tnote{3} & \OKcell \\\hhline{*{5}{-}}
-%
-%&Matching 
-%(\href{https://docs.moodle.org/31/en/Matching_question_type}{std})
-%& \OKcell & \DNAcell Text only\tnote{4} & \DNAcell Undef.\tnote{5} \\\hhline{*{5}{-}}
-%
-%&Matching 
-%(\href{https://docs.moodle.org/31/en/Drag_and_drop_matching_question_type}
-%{dd}) & \OKcell & \OKcell note\tnote{2} & \DNAcell Undef.\tnote{5} \\\hhline{*{5}{-}}
-%
-%&\href{https://docs.moodle.org/31/en/Essay_question_type}{Essay}  & \OKcell & 
-%\OKcell note\tnote{6}, note\tnote{7} & \OKcell note\tnote{6} \\\hhline{*{5}{-}}
-%
-%\parbox[t]{2mm}{\multirow{5}{*}{\rotatebox[origin=c]{90}{\href{https://docs.moodle.org/31/en/Embedded_Answers_(Cloze)_question_type}
-%{Cloze}}}}
-%&Numerical & \OKcell & \DNAcell Text only\tnote{3} & \OKcell \\\MyLine
-%
-%&Short Answer & \OKcell & \DNAcell Text only\tnote{3} & \OKcell note\tnote{1} \\\MyLine
-%
-%&Multi (regular) & \OKcell & \DNAcell Text only\tnote{4} &\OKcell note\tnote{1} \\\MyLine
-%
-%&Multi (horizontal)& \OKcell & \OKcell & \OKcell \\\MyLine
-%
-%&Multi (vertical)& \OKcell & \OKcell & \OKcell \\\hline
+%& yes & no\tnote{1} & yes \\
+%& \href{https://docs.moodle.org/31/en/Short-Answer_question_type}{Short Answer}
+% & yes & no\tnote{1} & yes \\
+%&Matching (\href{https://docs.moodle.org/31/en/Matching_question_type}{std})
+%& yes & no\tnote{2} & no\tnote{3} \\
+%&Matching (\href{https://docs.moodle.org/31/en/Drag_and_drop_matching_question_type}{dd})
+% & yes & yes\tnote{4} & no\tnote{3} \\
+%&\href{https://docs.moodle.org/31/en/Essay_question_type}{Essay}
+%& yes & yes\tnote{5,6} & yes\tnote{5} \\\midrule
+%\parbox[t]{2mm}{\multirow{5}{*}{\rotatebox[origin=c]{90}{
+%\href{https://docs.moodle.org/31/en/Embedded_Answers_(Cloze)_question_type}{Cloze}}}}
+%&Numerical & yes & no\tnote{1} & yes \\
+%&Short Answer & yes & no\tnote{1} & yes\tnote{7} \\
+%&Multi (regular) & yes & no\tnote{2} & yes\tnote{7} \\
+%&Multi (horizontal) & yes & yes & yes \\
+%&Multi (vertical) & yes & yes & yes \\\bottomrule
 %\end{tabular}
 %\begin{tablenotes}
-%\item[1] Moodle only reveals the feedback when hovering the checkmark or X 
-%mark with the mouse.
-%\item[2] The drag-and-drop-matching plugin seems broken before version 1.6 
+%\item[1] Moodle prompts the student for an answer and then compares it to the 
+%solutions provided. This is text-only.
+%\item[2] Moodle uses a dropdown list to let one choose among the possible 
+%answers. This forbids either picture inclusion and \LaTeX\ rendering.
+%\item[3] Not supported by Moodle (in this context, answer-specific feedback 
+%represents lots of possible combinations).
+%\item[4] The drag-and-drop-matching plugin seems broken before version 1.6 
 %20190409. Moodle's XML import fails with a \textsf{dmlwriteexception} when 
 %the field content exceeds few hundreds characters. This prevents the inclusion 
 %of most base64 images and maybe some complicated equations.
-%\item[3] Moodle prompts the student for an answer and then compares it to the 
-%solutions provided. This is text-only.
-%\item[4] Moodle uses a dropdown list to let one choose among the possible 
-%answers. This forbids either picture inclusion and \LaTeX\ rendering.
-%\item[5] Not supported by Moodle (in this context, answer-specific feedback 
-%represents lots of possible combinations).
-%\item[6] For this question type and in the context of XML generation, the 
+%\item[5] For this question type and in the context of XML generation, the 
 %Answer column represents the ``template" while the Feedback column represents 
 %the ``notes for the grader". Obviously, the grading process is not automatic 
 %and there is no answer-specific feedback.
-%\item[7] Picture and \LaTeX\ rendering could be done, but only after 
+%\item[6] Picture and \LaTeX\ rendering could be done, but only after 
 %submission and only if the keyval ``response format" is set to ``html".
+%\item[7] Moodle only reveals the feedback when hovering the checkmark or X 
+%mark with the mouse.
 %\end{tablenotes}
 %\end{threeparttable}
-%\end{table*}
+%\end{table}
 %
 % Table~\ref{tab:accents} describes the current support for some special characters 
 % accents and other diacritical marks.
 %
-%\begin{table*}[tbp]
+%\begin{table}[tbp]
 % \centering
 % \caption{Support for special characters, accents and other diacritical marks 
 % in a UTF8-coded \TeX~document compiled with pdf\TeX\ (packages 
 % \texttt{inputenc} with option \texttt{utf8} and \texttt{fontenc} with option
-% \texttt{T1}) or \XeTeX\ (package \texttt{fontspec}). In this table, \emph{both}
-% stands for \emph{both input types are supported} and \LaTeX\ stands for \emph{only 
-% \LaTeX\ input type is supported}.}
+% \texttt{T1}) or \XeTeX\ (package \texttt{fontspec}).}
 % \label{tab:accents}
 % \begin{tabular}{cccc}
 % \toprule
@@ -981,32 +977,33 @@
 % \texttt{\`u} or \texttt{\`U} & \verb|\`u| or \verb|\`U| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \texttt{\"u} or \texttt{\"U} & \verb|\"u| or \verb|\"U| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \texttt{\^u} or \texttt{\^U} & \verb|\^u| or \verb|\^U| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\c{c}} or \texttt{\c{C}} & \verb|\c{c}| or \verb|\c{C}| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\c{s}} or \texttt{\c{S}} & \verb|\c{s}| or \verb|\c{S}| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{\c{t}} or \texttt{\c{T}} & \verb|\c{t}| or \verb|\c{T}| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{\H{o}} or \texttt{\H{O}} & \verb|\H{o}| or \verb|\H{O}| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{\H{u}} or \texttt{\H{U}} & \verb|\H{u}| or \verb|\H{U}| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{\u{a}} or \texttt{\u{A}} & \verb|\u{a}| or \verb|\u{A}| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{\u{e}} or \texttt{\u{E}} & \verb|\u{e}| or \verb|\u{E}| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{\u{g}} or \texttt{\u{G}} & \verb|\u{g}| or \verb|\u{G}| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{\u{\i}} or \texttt{\u{I}} & \verb|\u{\i}| or \verb|\u{I}| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{\u{o}} or \texttt{\u{O}} & \verb|\u{o}| or \verb|\u{O}| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{\v{c}} or \texttt{\v{C}} & \verb|\v{c}| or \verb|\v{C}| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{\v{d}} or \texttt{\v{D}} & \verb|\v{d}| or \verb|\v{D}| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{\v{e}} or \texttt{\v{E}} & \verb|\v{e}| or \verb|\v{E}| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{\v{l}} or \texttt{\v{L}} & \verb|\v{l}| or \verb|\v{L}| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{\v{n}} or \texttt{\v{N}} & \verb|\v{n}| or \verb|\v{N}| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{\v{r}} or \texttt{\v{R}} & \verb|\v{r}| or \verb|\v{R}| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{\v{s}} or \texttt{\v{S}} & \verb|\v{s}| or \verb|\v{S}| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{\v{t}} or \texttt{\v{T}} & \verb|\v{t}| or \verb|\v{T}| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{\v{z}} or \texttt{\v{Z}} & \verb|\v{z}| or \verb|\v{Z}| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\c{c}} or \texttt{\c{C}} & \verb|\c{c}| or \verb|\c{C}| & Unicode and \LaTeX &
+% Unicode and \LaTeX \\
+% \texttt{\c{s}} or \texttt{\c{S}} & \verb|\c{s}| or \verb|\c{S}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\c{t}} or \texttt{\c{T}} & \verb|\c{t}| or \verb|\c{T}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\H{o}} or \texttt{\H{O}} & \verb|\H{o}| or \verb|\H{O}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\H{u}} or \texttt{\H{U}} & \verb|\H{u}| or \verb|\H{U}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\u{a}} or \texttt{\u{A}} & \verb|\u{a}| or \verb|\u{A}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\u{e}} or \texttt{\u{E}} & \verb|\u{e}| or \verb|\u{E}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\u{g}} or \texttt{\u{G}} & \verb|\u{g}| or \verb|\u{G}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\u{\i}} or \texttt{\u{I}} & \verb|\u{\i}| or \verb|\u{I}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\u{o}} or \texttt{\u{O}} & \verb|\u{o}| or \verb|\u{O}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\v{c}} or \texttt{\v{C}} & \verb|\v{c}| or \verb|\v{C}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\v{d}} or \texttt{\v{D}} & \verb|\v{d}| or \verb|\v{D}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\v{e}} or \texttt{\v{E}} & \verb|\v{e}| or \verb|\v{E}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\v{l}} or \texttt{\v{L}} & \verb|\v{l}| or \verb|\v{L}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\v{n}} or \texttt{\v{N}} & \verb|\v{n}| or \verb|\v{N}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\v{r}} or \texttt{\v{R}} & \verb|\v{r}| or \verb|\v{R}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\v{s}} or \texttt{\v{S}} & \verb|\v{s}| or \verb|\v{S}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\v{t}} or \texttt{\v{T}} & \verb|\v{t}| or \verb|\v{T}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\v{z}} or \texttt{\v{Z}} & \verb|\v{z}| or \verb|\v{Z}| & Unicode and \LaTeX & \LaTeX\ only\\
 % \texttt{\aa} or \texttt{\AA} & \verb|\aa| or \verb|\AA| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \texttt{\ae} or \texttt{\AE} & \verb|\ae| or \verb|\AE| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{\oe} or \texttt{\OE} & \verb|\oe| or \verb|\OE| & Unicode and \LaTeX & \LaTeX \\
-% \texttt{«} or \texttt{»} & \verb|\og| or \verb|\fg| & Unicode and \LaTeX & \LaTeX \\
+% \texttt{\ae} or \texttt{\AE} & \verb|\ae| or \verb|\AE| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{\oe} or \texttt{\OE} & \verb|\oe| or \verb|\OE| & Unicode and \LaTeX & \LaTeX\ only\\
+% \texttt{«} or \texttt{»} & \verb|\og| or \verb|\fg| & Unicode and \LaTeX & \LaTeX\ only\\
 % \bottomrule
 % \end{tabular}
-% \end{table*}
+% \end{table}
 % Some features of Moodle quizzes have not yet been implemented in \textsf{moodle.sty}.
 % Here is a non-exhaustive list.
 % \begin{itemize}
@@ -1062,6 +1059,7 @@
 % \subsection{Packages, Options, and Utilities}
 %    \begin{macrocode}
 \newif\ifmoodle@draftmode
+\newif\ifmoodle@stampmode
 \newif\ifmoodle@tikzloaded
 \newif\ifmoodle@section
 \newif\ifmoodle@subsection
@@ -1070,12 +1068,14 @@
 %%DECLARATION OF OPTIONS
 \DeclareOption{draft}{\moodle@draftmodetrue}
 \DeclareOption{final}{\moodle@draftmodefalse}
+\DeclareOption{nostamp}{\moodle@stampmodefalse}
 \DeclareOption{section}{\moodle@sectiontrue\moodle@numberedtrue}
 \DeclareOption{section*}{\moodle@sectiontrue\moodle@numberedfalse}
 \DeclareOption{subsection}{\moodle@sectionfalse\moodle@numberedtrue}
 \DeclareOption{subsection*}{\moodle@sectionfalse\moodle@numberedfalse}
 
 \moodle@draftmodefalse
+\moodle@stampmodetrue
 \moodle@tikzloadedfalse
 \moodle@subsectiontrue
 \moodle@numberedfalse
@@ -1152,6 +1152,31 @@
       %\stop
     \fi
   \fi
+  \ifmoodle@stampmode
+    \def\moodle@stamp{This file was generated on \the\year-\two@digits\month-\two@digits\day}
+    \ifpdftex % pdflatex or latex
+      \ifpdf % pdflatex
+        \g@addto@macro{\moodle@stamp}{ by pdfLaTeX }
+      \else % latex
+        \g@addto@macro{\moodle@stamp}{ by LaTeX }
+      \fi
+    \else
+      \ifxetex % xetex
+        \g@addto@macro{\moodle@stamp}{ by XeTeX }
+      \else
+        \ifluatex % 
+          \g@addto@macro{\moodle@stamp}{ LuaLaTeX }
+        \else
+          \g@addto@macro{\moodle@stamp}{ a TeX engine }
+          \fi
+      \fi
+    \fi
+    \writetomoodle{<!-- \moodle@stamp -->}
+    \def\moodle@stamp{running on \platformname}
+    \g@addto@macro{\moodle@stamp}{ with the package moodle v0.7 }
+    \writetomoodle{<!-- \moodle@stamp -->}
+  \fi
+  \immediate\write\moodle@outfile{}%
   \writetomoodle{<quiz>}%
 }%
 \def\closemoodleout{%

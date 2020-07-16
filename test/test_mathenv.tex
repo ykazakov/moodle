@@ -1,5 +1,13 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = en_US
 \documentclass{article}
-\usepackage{../moodle}
+\usepackage[nostamp]{moodle}
+\ifxetex % FOR XELATEX
+	\usepackage{fontspec}
+\else %% FOR PDFLATEX
+	\usepackage[utf8]{inputenc} % necessary
+	\usepackage[T1]{fontenc} % necessary
+\fi
 \begin{document}
 \begin{quiz}{Example Quiz}
 \begin{multi}{Multiple Choice}

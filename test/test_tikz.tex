@@ -1,26 +1,23 @@
 % !TeX encoding = UTF-8
 % !TeX spellcheck = en_US
 \documentclass{article}
-
-\usepackage{../moodle}
-
+\usepackage[nostamp]{moodle}
 \ifxetex % FOR XELATEX
 	\usepackage{fontspec}
 \else %% FOR PDFLATEX
 	\usepackage[utf8]{inputenc} % necessary
 	\usepackage[T1]{fontenc} % necessary
 \fi
-
 \usepackage{tikz}
 \usepackage{varwidth}
-
 \tikzstyle{pict} = [minimum height=1em,inner sep=0pt,execute at begin 
 node={\begin{varwidth}{\linewidth}},
 execute at end node={\end{varwidth}}]
 
-\newcommand\embedaspictenv[1]{\begin{tikzpicture}[baseline=-\the\dimexpr\fontdimen22\textfont2\relax
- ]\node[pict]{\mbox{#1}};\end{tikzpicture}}
-\newcommand\embedaspictcom[1]{\tikz{\node[pict]{\mbox{#1}};}}
+\newcommand\embedaspictenv[1]{\begin{tikzpicture}
+[baseline=-\the\dimexpr\fontdimen22\textfont2\relax]
+\node[pict]{\mbox{#1}};\end{tikzpicture}}
+\newcommand\embedaspictcom[1]{\tikz[baseline=-\the\dimexpr\fontdimen22\textfont2\relax]{\node[pict]{\mbox{#1}};}}
 
 \htmlregister{\embedaspictenv}
 \htmlregister{\embedaspictcom}
@@ -36,8 +33,8 @@ Ti\emph{k}Z.
 
 \begin{multi}{Multi}
 \embedaspictcom{1}
-\item[feedback={\embedaspictcom{2}}]* \embedaspictenv{3}
-\item[feedback={\embedaspictenv{4}}] \embedaspictcom{5}
+\item[feedback={\embedaspictcom{2}}]* test \embedaspictenv{toast}
+\item[feedback={\embedaspictenv{4}}] test \embedaspictcom{toast}
 \end{multi}
 
 \begin{matching}[dd]{Matching}
