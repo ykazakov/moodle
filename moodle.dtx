@@ -35,13 +35,15 @@
 \usepackage{iftex}
 \ifxetex
   \usepackage{fontspec}
+  \setmainfont[Mapping=tex-text]{Linux Libertine O}
 \else
   \usepackage[utf8]{inputenc} % necessary
   \usepackage[T1]{fontenc} % necessary
+  \usepackage{microtype}
+  \usepackage[ttscale=.875]{libertine}
 \fi
 %\usepackage{moodle}[2020/07/09]
-\usepackage{libertine,amssymb,metalogo,,multirow,threeparttable,booktabs,hyperref,tikz,minted}
-\usepackage[protrusion=true]{microtype}
+\usepackage{amssymb,metalogo,,multirow,threeparttable,booktabs,hyperref,tikz,minted}
 \usetikzlibrary{arrows,positioning}
 \usemintedstyle{tango}
 \EnableCrossrefs         
@@ -293,7 +295,7 @@
 % This stamp contains information gathered about the TeX engine, the
 % operating system used and the package version. For instance:
 % \begin{quote}\small
-% |<!-- This file was generated on 2020-07-15 by pdfLaTeX -->|
+% |<!-- This file was generated on 2020-07-15 by pdfLaTeX -->|\\
 % |<!-- running on Linux with the package moodle v0.7 -->|
 % \end{quote}
 % The package option
@@ -303,12 +305,11 @@
 % \DescribeMacro{section*}
 % \DescribeMacro{subsection}
 % \DescribeMacro{subsection*}
-% If the package option |section| is invoked, by calling
-% |\usepackage[section]{moodle}|, then each quiz is represented by a
-% different \LaTeX\ section. Stared versions correspond to unnumbered
-% sections or subsections. To preserve compatibility with Version 0.5,
-% the default is |subsection*|. Consequently, |\usepackage{moodle}| is
-% equivalent to |\usepackage[subsection*]{moodle}|.
+% If the package option |section| is invoked (|\usepackage[section]{moodle}|),
+% then each quiz is represented by a different \LaTeX\ section. Stared
+% versions correspond to unnumbered sections or subsections. To preserve
+% compatibility with Version 0.5, the default is |subsection*|. Consequently,
+% |\usepackage{moodle}| is equivalent to |\usepackage[subsection*]{moodle}|.
 %
 % \subsection{Quiz and Question Environments}
 % 
@@ -686,7 +687,7 @@
 % you simply nest one or more |multi|, |shortanswer|, or |numerical| environments
 % within a |cloze| environment, as in the following example:
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
-%   \begin{cloze}{my cloze question} \\
+%   \begin{cloze}{my cloze question}
 %     Thanks to calculus, invented by Isaac
 %     \begin{shortanswer}[usecase]
 %       \item Newton
@@ -744,49 +745,50 @@
 % 
 % \begin{table}[tbp]
 % \centering
-% \caption{Options available at the question and answer
-% levels depending on the question type.}
+% \caption{Options offered at the question and answer levels for each question type.}
 % \label{tab:key-options}
 % \small
-% \begin{tabular}{rl*{10}{c}@{\hspace{3em}}ccc}
+% \begin{tabular}{*{14}{l}}
 % \toprule
-% && \multicolumn{10}{c}{Question} & \multicolumn{3}{c}{Answer}\\
-% \multicolumn{2}{c}{Question type}& \rotatebox{90}{points} & 
+% & \multicolumn{10}{l}{Question} & \multicolumn{3}{l}{Answer}\\
+% \cmidrule(lr){2-11}\cmidrule(lr){12-14}
+% Question type & \rotatebox{90}{points} & 
 % \rotatebox{90}{penalty} & \rotatebox{90}{feedback} & \rotatebox{90}{tags} & 
 % \rotatebox{90}{shuffle} & \rotatebox{90}{numbering} & \rotatebox{90}{multiple} &
 % \rotatebox{90}{usecase} & \rotatebox{90}{tolerance} &\rotatebox{90}{dd} &
 % \rotatebox{90}{fraction} & \rotatebox{90}{feedback} & 
-% \rotatebox{90}{tolerance}\\\midrule
-% &\href{https://docs.moodle.org/35/en/Multiple_Choice_question_type} 
+% \rotatebox{90}{tolerance}\\\cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}
+% \cmidrule(lr){4-4}\cmidrule(lr){5-5}\cmidrule(lr){6-6}\cmidrule(lr){7-7}
+% \cmidrule(lr){8-8}\cmidrule(lr){9-9}\cmidrule(lr){10-10}\cmidrule(lr){11-11}
+% \cmidrule(lr){12-12}\cmidrule(lr){13-13}\cmidrule(lr){14-14}
+% \href{https://docs.moodle.org/35/en/Multiple_Choice_question_type} 
 % {Multichoice} & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & 
-% $\bullet$ & $\bullet$ & $\bullet$ & & & & $\bullet$ & $\bullet$ 
-% & \\
-% & \href{https://docs.moodle.org/35/en/Numerical_question_type}{Numerical}
+% $\bullet$ & $\bullet$ & $\bullet$ & & & & $\bullet$ & $\bullet$ \\
+% \href{https://docs.moodle.org/35/en/Numerical_question_type}{Numerical}
 % & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & 
 % & & $\bullet$ & & $\bullet$ & $\bullet$ & $\bullet$ \\
-% & \href{https://docs.moodle.org/35/en/Short-Answer_question_type}{Short
+% \href{https://docs.moodle.org/35/en/Short-Answer_question_type}{Short
 % Answer} & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & 
 % & $\bullet$ & & & $\bullet$ & $\bullet$ \\
-% &\href{https://docs.moodle.org/35/en/Matching_question_type}{Matching}
+% \href{https://docs.moodle.org/35/en/Matching_question_type}{Matching}
 % & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & 
 % & & & $\bullet$ & $\bullet$ & \\
-% & \href{https://docs.moodle.org/35/en/Multiple_True/False_Question_Type}
+% \href{https://docs.moodle.org/35/en/Multiple_True/False_Question_Type}
 % {True/False} & $\bullet$ & & $\bullet$ & $\bullet$ & & & 
-% & & & & & $\bullet$ \\\midrule
-% ^^A&\href{https://docs.moodle.org/35/en/Essay_question_type}{Essay} & \\\hline%
-% \parbox[t]{2mm}{\multirow{6}{*}{\rotatebox[origin=c]{90}{\href{https://docs.moodle.org/35/en/Embedded_Answers_(Cloze)_question_type}
-% {Cloze}}}}
-% &Cloze & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & 
-% & & & & & \\
-% &Numerical & $\bullet$ & & & & & & 
+% & & & & & $\bullet$ \\
+% ^^A\href{https://docs.moodle.org/35/en/Essay_question_type}{Essay} & \\\hline%
+% \href{https://docs.moodle.org/35/en/Embedded_Answers_(Cloze)_question_type}{Cloze}
+% & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & 
+% & & & & & \\\cmidrule(lr){1-1}
+% \hspace{1em}Numerical & $\bullet$ & & & & & & 
 % & &$\bullet$ & & $\bullet$ & $\bullet$ & $\bullet$ \\
-% &Short Answer & $\bullet$ & & & & & & 
+% \hspace{1em}Short Answer & $\bullet$ & & & & & & 
 % & $\bullet$ & & & $\bullet$ & $\bullet$ \\
-% &Multi (regular) & $\bullet$ & & & & $\bullet$ & & $\bullet$ 
+% \hspace{1em}Multi (regular) & $\bullet$ & & & & $\bullet$ & & $\bullet$ 
 % & & & & $\bullet$ & $\bullet$ \\
-% &Multi (horizontal)& $\bullet$ & & & & $\bullet$ & & $\bullet$ 
+% \hspace{1em}Multi (horizontal)& $\bullet$ & & & & $\bullet$ & & $\bullet$ 
 % & & & & $\bullet$ & $\bullet$ \\
-% &Multi (vertical)& $\bullet$ & & & & $\bullet$ & & 
+% \hspace{1em}Multi (vertical)& $\bullet$ & & & & $\bullet$ & & 
 % & & & & $\bullet$ & $\bullet$ \\
 % \bottomrule
 % \end{tabular}
@@ -800,24 +802,28 @@
 % The package \textsf{moodle.sty} automatically converts
 % this \LaTeX\ code into HTML for web display.
 % 
-% The following table lists \LaTeX\ commands and environments that 
-% will be converted to HTML: 
-% \begin{center}
-%   \begin{tabular}{lll}
-%     |~| & |\#| & |\$| \\
-%     |\&| & |\\| & |\S| \\
-%     |\{| & |\}| & {\ttfamily\catcode`\ =12\relax\catcode`\\=12\relax\ }\\
-%     |\thinspace| & |\,| & |\emph| \\
-%     |\textbf| & |\textit| & |\texttt|\\
-%     |\underline| & |\par| & |\relax| \\
-%     |\ldots| & |\dots| & |\euro|\\
-%     |\texteuro| & |\tikz|\\
-%     |\begin{center}| \\
-%     |\begin{enumerate}| \\
-%     |\begin{itemize}| \\
-%     |\begin{tikzpicture}|
-%   \end{tabular}
-% \end{center}
+% Table~\ref{tab:html} lists \LaTeX\ macros, commands, and environments that 
+% are specifically converted to HTML.
+% \begin{table}[tbp]
+% \centering
+% \caption{Conversion of \LaTeX\ material to HTML.}
+% \label{tab:html}
+% \begin{tabular}{llll}
+% \toprule
+% \multicolumn{2}{l}{Macros} & Commands & Environnments \\
+% \cmidrule(lr){1-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}
+% |~| & |\#| &|\emph{}| & |\begin{center}|\\
+% |\$| & |\&| &|\textbf{}| & |\begin{enumerate}|\\
+% |\\| & |\par| &|\textit{}| & |\begin{itemize}|\\
+% |\&| & |\S| & |\texttt{}| & |\begin{tikzpicture}|\\
+% |\{| & |\}| & |\underline{}|& \\
+% |\relax| & |\|\textvisiblespace &|\tikz{}| &\\
+% |\thinspace| & |\,| & |\includegraphics[]{}|& \\
+% |\ldots| & |\dots| && \\
+% |\euro| & |\texteuro| & & \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
 % Single and double quotation marks, french quotation marks and the diacritical 
 % commands  |\^|, |\'|, |\`|, |\"|, |\~|, |\c|, |\u|, |\v| and |\H| are also handled,
 % as are the characters |\aa|, |\ae|, |\oe|, |\o|, |\ss|, |\l|, and their 
@@ -880,7 +886,10 @@
 %         or |gs| (if |\ifwindows| returns false).
 %         If your system requires a different command line to invoke Ghostscript,
 %         \DescribeMacro{\ghostscriptcommand}
-%         you may change it by invoking |\ghostscriptcommand|\marg{executable filename}.
+%         you may change it by invoking:
+%            \begin{quote}
+%             |\ghostscriptcommand|\marg{executable filename}
+%            \end{quote}
 %   \item When external graphics files such as JPG or GIF are included,
 %         the open-source ImageMagick software (\url{www.imagemagick.org})
 %         converts each file to PNG format.
@@ -905,8 +914,8 @@
 %         For Mik\TeX, this means adding |--enable-write18| to the command line of |pdflatex|;
 %         for \TeX Live, this means adding |--shell-escape=true|.
 %   \item Users of the |circuitikz| package must enclose their circuits in the |tikzpicture|
-%         environment instead of using |\begin{circuitikz}...\end{circuitikz}|. That is required,
-%         as of Tikz 2.1, by the |external| library.
+%         environment instead of |circuitikz|. That is required,
+%         as of \TikZ\ 2.1, by the |external| library.
 % \end{itemize}
 % 
 % \section{Known Limitations and Call for Bug Reports}
@@ -916,32 +925,32 @@
 %\begin{table}[tbp]
 %\centering
 %\begin{threeparttable}[b]
-%\caption{Content enrichment support after XML import in Moodle 
-%         v3.5.7, depending on the question type.}
+%\caption{Content enrichment (pictures, equations) support after XML import in Moodle v3.5.7,
+% depending on the question type.}
 %\label{tab:support-limitations}
-%\begin{tabular}{rlccc}
+%\begin{tabular}{lccc}
 % \toprule
-%\multicolumn{2}{c}{}& \multicolumn{3}{c}{XML rendering}\\
-%\multicolumn{2}{c}{Question type}& Question & Answer & Feedback\\\midrule
-%&\href{https://docs.moodle.org/31/en/Multiple_Choice_question_type}{Multichoice}
+% & \multicolumn{3}{l}{XML rendering in\dots}\\\cmidrule(lr){2-4}
+%Question type & Question & Answer & Feedback\\\cmidrule(lr){1-1}\cmidrule(lr){2-2}
+%\cmidrule(lr){3-3}\cmidrule(lr){4-4}
+% \href{https://docs.moodle.org/31/en/Multiple_Choice_question_type}{Multichoice}
 %& yes & yes & yes \\
-%& \href{https://docs.moodle.org/31/en/Numerical_question_type}{Numerical}
+% \href{https://docs.moodle.org/31/en/Numerical_question_type}{Numerical}
 %& yes & no\tnote{1} & yes \\
-%& \href{https://docs.moodle.org/31/en/Short-Answer_question_type}{Short Answer}
+% \href{https://docs.moodle.org/31/en/Short-Answer_question_type}{Short Answer}
 % & yes & no\tnote{1} & yes \\
-%&Matching (\href{https://docs.moodle.org/31/en/Matching_question_type}{std})
+% Matching (\href{https://docs.moodle.org/31/en/Matching_question_type}{std})
 %& yes & no\tnote{2} & no\tnote{3} \\
-%&Matching (\href{https://docs.moodle.org/31/en/Drag_and_drop_matching_question_type}{dd})
+% Matching (\href{https://docs.moodle.org/31/en/Drag_and_drop_matching_question_type}{dd})
 % & yes & yes\tnote{4} & no\tnote{3} \\
-%&\href{https://docs.moodle.org/31/en/Essay_question_type}{Essay}
-%& yes & yes\tnote{5,6} & yes\tnote{5} \\\midrule
-%\parbox[t]{2mm}{\multirow{5}{*}{\rotatebox[origin=c]{90}{
-%\href{https://docs.moodle.org/31/en/Embedded_Answers_(Cloze)_question_type}{Cloze}}}}
-%&Numerical & yes & no\tnote{1} & yes \\
-%&Short Answer & yes & no\tnote{1} & yes\tnote{7} \\
-%&Multi (regular) & yes & no\tnote{2} & yes\tnote{7} \\
-%&Multi (horizontal) & yes & yes & yes \\
-%&Multi (vertical) & yes & yes & yes \\\bottomrule
+% \href{https://docs.moodle.org/31/en/Essay_question_type}{Essay}
+%& yes & yes\tnote{5,6} & yes\tnote{5} \\\cmidrule(lr){1-1}
+%\href{https://docs.moodle.org/31/en/Embedded_Answers_(Cloze)_question_type}{Cloze} & yes & & \\
+%\hspace{1em}Numerical & yes & no\tnote{1} & yes \\
+%\hspace{1em}Short Answer & yes & no\tnote{1} & yes\tnote{7} \\
+%\hspace{1em}Multi (regular) & yes & no\tnote{2} & yes\tnote{7} \\
+%\hspace{1em}Multi (horizontal) & yes & yes & yes \\
+%\hspace{1em}Multi (vertical) & yes & yes & yes \\\bottomrule
 %\end{tabular}
 %\begin{tablenotes}
 %\item[1] Moodle prompts the student for an answer and then compares it to the 
@@ -976,48 +985,50 @@
 % \texttt{inputenc} with option \texttt{utf8} and \texttt{fontenc} with option \texttt{T1})
 % or \XeLaTeX\ (package \texttt{fontspec}).}
 % \label{tab:diacritical}
-% \begin{threeparttable}
-% \begin{tabular}{cccc}
+% \begin{threeparttable}[t]
+% \begin{tabular}{*{6}{l}}
 % \toprule
-% \multicolumn{2}{c}{Input type} & \multicolumn{2}{c}{Engine support}\\
-% Unicode & \LaTeX & \XeLaTeX & (pdf)\LaTeX \\\midrule
-% \aa\ \emph{or} \AA & \verb|\aa| or \verb|\AA| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \`a \emph{or} \`A & \verb|\`a| or \verb|\`A| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \^a \emph{or} \^A & \verb|\^a| or \verb|\^A| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \'e \emph{or} \'E & \verb|\'e| or \verb|\'E| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \`e \emph{or} \`E & \verb|\`e| or \verb|\`E| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \"e \emph{or} \"E & \verb|\"e| or \verb|\"E| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \^e \emph{or} \^E & \verb|\^e| or \verb|\^E| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \^i \emph{or} \^I & \verb|\^i| or \verb|\^I| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \"i \emph{or} \"I & \verb|\"i| or \verb|\"I| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \"o \emph{or} \"O & \verb|\"o| or \verb|\"O| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \^o \emph{or} \^O & \verb|\^o| or \verb|\^O| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \`u \emph{or} \`U & \verb|\`u| or \verb|\`U| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \"u \emph{or} \"U & \verb|\"u| or \verb|\"U| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \^u \emph{or} \^U & \verb|\^u| or \verb|\^U| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \~a \emph{or} \~A & \verb|\~a| or \verb|\~A| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \~n \emph{or} \~N & \verb|\~n| or \verb|\~N| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \~o \emph{or} \~O & \verb|\~o| or \verb|\~O| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \c{c} \emph{or} \c{C} & \verb|\c{c}| or \verb|\c{C}| & Unicode and \LaTeX &
+% \multicolumn{4}{l}{Input type} & \multicolumn{2}{l}{Engine support}\\
+% \cmidrule(lr){1-4}\cmidrule(lr){5-6}
+% \multicolumn{2}{l}{Unicode} & \multicolumn{2}{l}{\LaTeX} & \XeLaTeX & (pdf)\LaTeX \\
+% \cmidrule(lr){1-2}\cmidrule(lr){3-4}\cmidrule(lr){5-5}\cmidrule(lr){6-6}
+% \aa & \AA & \verb|\aa| & \verb|\AA| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \`a & \`A & \verb|\`a| & \verb|\`A| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \^a & \^A & \verb|\^a| & \verb|\^A| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \'e & \'E & \verb|\'e| & \verb|\'E| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \`e & \`E & \verb|\`e| & \verb|\`E| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \"e & \"E & \verb|\"e| & \verb|\"E| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \^e & \^E & \verb|\^e| & \verb|\^E| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \^i & \^I & \verb|\^i| & \verb|\^I| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \"i & \"I & \verb|\"i| & \verb|\"I| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \"o & \"O & \verb|\"o| & \verb|\"O| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \^o & \^O & \verb|\^o| & \verb|\^O| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \`u & \`U & \verb|\`u| & \verb|\`U| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \"u & \"U & \verb|\"u| & \verb|\"U| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \^u & \^U & \verb|\^u| & \verb|\^U| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \~a & \~A & \verb|\~a| & \verb|\~A| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \~n & \~N & \verb|\~n| & \verb|\~N| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \~o & \~O & \verb|\~o| & \verb|\~O| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \c{c} & \c{C} & \verb|\c{c}| & \verb|\c{C}| & Unicode and \LaTeX &
 % Unicode and \LaTeX \\
-% \c{s} \emph{or} \c{S} & \verb|\c{s}| or \verb|\c{S}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \c{t} \emph{or} \c{T} & \verb|\c{t}| or \verb|\c{T}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \H{o} \emph{or} \H{O} & \verb|\H{o}| or \verb|\H{O}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \H{u} \emph{or} \H{U} & \verb|\H{u}| or \verb|\H{U}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \u{a} \emph{or} \u{A} & \verb|\u{a}| or \verb|\u{A}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \u{e} \emph{or} \u{E} & \verb|\u{e}| or \verb|\u{E}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \u{g} \emph{or} \u{G} & \verb|\u{g}| or \verb|\u{G}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \u{\i} \emph{or} \u{I} & \verb|\u{\i}| or \verb|\u{I}| & Unicode and \LaTeX & \LaTeX\ only\tnote{1}\\
-% \u{o} \emph{or} \u{O} & \verb|\u{o}| or \verb|\u{O}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \v{c} \emph{or} \v{C} & \verb|\v{c}| or \verb|\v{C}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \v{d} \emph{or} \v{D} & \verb|\v{d}| or \verb|\v{D}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \v{e} \emph{or} \v{E} & \verb|\v{e}| or \verb|\v{E}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \v{l} \emph{or} \v{L} & \verb|\v{l}| or \verb|\v{L}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \v{n} \emph{or} \v{N} & \verb|\v{n}| or \verb|\v{N}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \v{r} \emph{or} \v{R} & \verb|\v{r}| or \verb|\v{R}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \v{s} \emph{or} \v{S} & \verb|\v{s}| or \verb|\v{S}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \v{t} \emph{or} \v{T} & \verb|\v{t}| or \verb|\v{T}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \v{z} \emph{or} \v{Z} & \verb|\v{z}| or \verb|\v{Z}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \c{s} & \c{S} & \verb|\c{s}| & \verb|\c{S}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \c{t} & \c{T} & \verb|\c{t}| & \verb|\c{T}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \H{o} & \H{O} & \verb|\H{o}| & \verb|\H{O}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \H{u} & \H{U} & \verb|\H{u}| & \verb|\H{U}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \u{a} & \u{A} & \verb|\u{a}| & \verb|\u{A}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \u{e} & \u{E} & \verb|\u{e}| & \verb|\u{E}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \u{g} & \u{G} & \verb|\u{g}| & \verb|\u{G}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \u{\i} & \u{I} & \verb|\u{\i}| & \verb|\u{I}| & Unicode and \LaTeX & \LaTeX\ only\tnote{1}\\
+% \u{o} & \u{O} & \verb|\u{o}| & \verb|\u{O}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \v{c} & \v{C} & \verb|\v{c}| & \verb|\v{C}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \v{d} & \v{D} & \verb|\v{d}| & \verb|\v{D}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \v{e} & \v{E} & \verb|\v{e}| & \verb|\v{E}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \v{l} & \v{L} & \verb|\v{l}| & \verb|\v{L}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \v{n} & \v{N} & \verb|\v{n}| & \verb|\v{N}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \v{r} & \v{R} & \verb|\v{r}| & \verb|\v{R}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \v{s} & \v{S} & \verb|\v{s}| & \verb|\v{S}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \v{t} & \v{T} & \verb|\v{t}| & \verb|\v{T}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \v{z} & \v{Z} & \verb|\v{z}| & \verb|\v{Z}| & Unicode and \LaTeX & \LaTeX\ only\\
 % \bottomrule
 % \end{tabular}
 % \begin{tablenotes}
@@ -1030,22 +1041,24 @@
 %
 %\begin{table}[tbp]
 % \centering
-% \begin{threeparttable}[b]
+% \begin{threeparttable}[t]
 % \caption{Support for ligatures in a UTF8-coded \TeX~document compiled with (pdf)\LaTeX\ (packages 
 % \texttt{inputenc} with option \texttt{utf8}, \texttt{fontenc} with option \texttt{T1})
 % or \XeLaTeX\ (package \texttt{fontspec}).}
 % \label{tab:ligatures}
-% \begin{tabular}{cccc}
+% \begin{tabular}{llllll}
 % \toprule
-% \multicolumn{2}{c}{Input type} & \multicolumn{2}{c}{Engine support}\\
-% Unicode & \LaTeX & \XeLaTeX & (pdf)\LaTeX \\\midrule
-% \ae\ \emph{or} \AE & \verb|\ae| or \verb|\AE| & Unicode and \LaTeX & \LaTeX\ only\\
-% \oe\ \emph{or} \OE & \verb|\oe| or \verb|\OE| & Unicode and \LaTeX & \LaTeX\ only\\
-% \ss\ \emph{or} \SS & \verb|\ss| or \verb|\SS| & Unicode and \LaTeX\tnote{1} & \LaTeX\ only\tnote{2}\\
+% \multicolumn{4}{l}{Input type} & \multicolumn{2}{l}{Engine support}\\
+% \cmidrule(lr){1-4}\cmidrule(lr){5-6}
+% \multicolumn{2}{l}{Unicode} & \multicolumn{2}{l}{\LaTeX} & \XeLaTeX & (pdf)\LaTeX \\
+% \cmidrule(lr){1-2}\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){6-6}
+% \ae & \AE & \verb|\ae| & \verb|\AE| & Unicode and \LaTeX & \LaTeX\ only\\
+% \oe & \OE & \verb|\oe| & \verb|\OE| & Unicode and \LaTeX & \LaTeX\ only\\
+% \ss & \SS & \verb|\ss| & \verb|\SS| & Unicode and \LaTeX\tnote{1} & \LaTeX\ only\tnote{2}\\
 % \bottomrule
 % \end{tabular}
-% \begin{tablenotes}
-%   \item[1] the package |libertine| defines the symbol \SS. This is not the case with most fonts.
+% \begin{tablenotes}[b]
+%   \item[1] the package |libertine| defines the glyph \SS. This is not the case with most fonts.
 %   \item[2] \LaTeX\ defines the \verb|\SS| macro but (pdf)\LaTeX\ renders it as a doubled capital S.
 % \end{tablenotes}
 % \end{threeparttable}
@@ -1054,17 +1067,19 @@
 %\begin{table}[tbp]
 % \centering
 % \begin{threeparttable}[b]
-% \caption{Support for other graphemes and punctuation marks in a UTF8-coded \TeX~document compiled
+% \caption{Support for other glyphs and punctuation marks in a UTF8-coded \TeX~document compiled
 % with (pdf)\LaTeX\ (packages \texttt{inputenc} with option \texttt{utf8}, \texttt{fontenc} with
 % option \texttt{T1}) or \XeLaTeX\ (package \texttt{fontspec}).}
 % \label{tab:other}
-% \begin{tabular}{cccc}
+% \begin{tabular}{llllll}
 % \toprule
-% \multicolumn{2}{c}{Input type} & \multicolumn{2}{c}{Engine support}\\
-% Unicode & \LaTeX & \XeLaTeX & (pdf)\LaTeX \\\midrule
-% \l\ \emph{or} \L & \verb|\l| or \verb|\L| & Unicode and \LaTeX & \LaTeX\ only\\
-% \o\ \emph{or} \O & \verb|\o| or \verb|\O| & Unicode and \LaTeX & \LaTeX\ only\\
-% « \emph{or} » & \verb|\og| or \verb|\fg|\tnote{1} & Unicode and \LaTeX & \LaTeX\ only\\
+% \multicolumn{4}{l}{Input type} & \multicolumn{2}{l}{Engine support}\\
+% \cmidrule(lr){1-4}\cmidrule(lr){5-6}
+% \multicolumn{2}{l}{Unicode} & \multicolumn{2}{l}{\LaTeX} & \XeLaTeX & (pdf)\LaTeX \\
+% \cmidrule(lr){1-2}\cmidrule(lr){3-4}\cmidrule(lr){5-5}\cmidrule(lr){6-6}
+% \l & \L & \verb|\l| & \verb|\L| & Unicode and \LaTeX & \LaTeX\ only\\
+% \o & \O & \verb|\o| & \verb|\O| & Unicode and \LaTeX & \LaTeX\ only\\
+% « & » & \verb|\og| & \verb|\fg|\tnote{1} & Unicode and \LaTeX & \LaTeX\ only\\
 % \bottomrule
 % \end{tabular}
 % \begin{tablenotes}
