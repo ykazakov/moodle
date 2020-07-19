@@ -102,8 +102,8 @@
 % \section{Motivation}
 %
 % The acronym Moodle stands for ``Modular Object-Oriented Dynamic Learning Environment.''
-% It is an open source learning management system employed by many universities, colleges, 
-% and high schools to provide digital access to course materials, such as
+% It is an open source learning management system (LMS) employed by many universities,
+% colleges, and high schools to provide digital access to course materials, such as
 % notes, video lectures, forums, and the like; see
 % \url{https://moodle.com/moodle-lms/} for more information. 
 % One of the many useful
@@ -163,14 +163,24 @@
 % and the PDF may be previewed onscreen or printed out for ease of proofreading.
 % Mathematical graphics can be integrated within the main file through \TikZ,
 % and of course \LaTeX\ macros can be customized.
-% Using the present \textsf{moodle.sty} package,
+% Using the present \textsf{moodle} package,
 % a quiz author can type a quiz using familiar \LaTeX\ syntax and document 
 % structure.  Upon compilation, \LaTeX\ will generate both a well-organized
 % PDF that is easy to proofread and an XML file that can be uploaded directly
 % to Moodle.  The entire process is far faster than using Moodle's own
 % web-based editor, makes it easier to catch one's mistakes, 
 % and the ultimate source code of one's work is a human-readable |.tex| file 
-% that can be archived, browsed, and edited offline.
+% that can be archived, versioned, browsed, and edited offline.
+% 
+% Strictly speaking, the \texttt{moodle} package does not generate quizzes:
+% it generates question banks that can be imported in the LMS. The teacher
+% still needs to compose manually a quiz from the question banks. Hopefully,
+% two Moodle features supported by the package make this task easier:
+% categories and tags.
+%
+% In this documentation the LMS is referred to as Moodle (uppercase M) while
+% the \LaTeX\ package that is documented here is referred to as
+% \texttt{moodle} (lower case and typewriter font).
 % 
 % \section{Workflow}
 % The process of creating a quiz in Moodle using this package is depicted in
@@ -406,8 +416,8 @@
 % \begin{quote}
 %   |\begin{truefalse}|\oarg{question options}\marg{question name} \\
 %   \rule{2em}{0pt}\meta{question text} \\
-%   \rule{2em}{0pt}|\item*| \meta{feedback when "true" is chosen} \\
-%   \rule{2em}{0pt}|\item| \meta{feedback when "false" is chosen} \\
+%   \rule{2em}{0pt}|\item*| \meta{feedback when ``true" is chosen} \\
+%   \rule{2em}{0pt}|\item| \meta{feedback when ``false" is chosen} \\
 %   |\end{truefalse}|
 % \end{quote}
 % The correct answer is designated by the asterisk |*| after the |\item|;
@@ -418,11 +428,11 @@
 % \begin{quote}
 %   |\begin{truefalse}|\oarg{question options}\marg{question name} \\
 %   \rule{2em}{0pt}\meta{question text} \\
-%   \rule{2em}{0pt}|\item[feedback={|\meta{When "true" is chosen}|}]*| \\
+%   \rule{2em}{0pt}|\item[feedback={|\meta{When ``true" is chosen}|}]*| \\
 %   |\end{truefalse}|
 % \end{quote}
 % Note that, in this example, no feedback is defined for the incorrect answer
-% "False": the corresponding item can be omitted.
+% ``False": the corresponding item can be omitted.
 % 
 % With the True/False question type, the |penalty| key has no effect.
 %
@@ -485,7 +495,7 @@
 % To do this, use the key |multiple| or |single=false|.
 % 
 % The worth of each correct answers in |multiple| mode may be set by |fraction|,
-% but Moodle will require that all the fractions add up to at least 100.
+% but Moodle will require that all the fractions add up to \emph{exactly} 100.
 % If you simply designate each correct answer with |\item*|, then \textsf{moodle.sty}
 % will divide the 100\% equally among those answers.
 % For example, the following two examples produce equivalent results:
@@ -1058,7 +1068,8 @@
 % \bottomrule
 % \end{tabular}
 % \begin{tablenotes}[b]
-%   \item[1] the package |libertine| defines the glyph \SS. This is not the case with most fonts.
+%   \item[1] the Libertine font, used in this documentation and available for instance via the
+%            package |libertine|, defines the glyph \SS. Most fonts do not define this glyph.
 %   \item[2] \LaTeX\ defines the \verb|\SS| macro but (pdf)\LaTeX\ renders it as a doubled capital S.
 % \end{tablenotes}
 % \end{threeparttable}
@@ -1079,11 +1090,12 @@
 % \cmidrule(lr){1-2}\cmidrule(lr){3-4}\cmidrule(lr){5-5}\cmidrule(lr){6-6}
 % \l & \L & \verb|\l| & \verb|\L| & Unicode and \LaTeX & \LaTeX\ only\\
 % \o & \O & \verb|\o| & \verb|\O| & Unicode and \LaTeX & \LaTeX\ only\\
-% « & » & \verb|\og| & \verb|\fg|\tnote{1} & Unicode and \LaTeX & \LaTeX\ only\\
+% « & » & \verb|\guillemotleft| & \verb|\guillemotright|\tnote{1} & Unicode and \LaTeX & \LaTeX\ only\\
 % \bottomrule
 % \end{tabular}
 % \begin{tablenotes}
-%   \item[1] the package |babel| loaded with option |french| defines |\og| and |\fg|.
+%   \item[1] the package |babel| loaded with option |french| defines |\og| and |\fg| for
+%            the same symbols. These are also supported by \texttt{moodle}.
 % \end{tablenotes}
 % \end{threeparttable}
 % \end{table}
@@ -4185,7 +4197,9 @@
 \html@def\l{\&lstrok;}%
 \html@def\L{\&Lstrok;}%
 \html@def\og{\&laquo;\&\#8239;}%
+\html@def\guillemotleft{\&laquo;\&\#8239;}%
 \html@def\fg{\&\#8239;\&raquo;}%
+\html@def\guillemotright{\&\#8239;\&raquo;}%
 \html@def\,{\&\#8239;}%
 \html@def\thinspace{\&\#8239;}%
 

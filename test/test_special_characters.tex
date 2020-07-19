@@ -9,7 +9,6 @@
 	\usepackage[T1]{fontenc} % necessary
 \fi
 \usepackage{libertine} % includes the "großes Eszett" ß
-\usepackage[french]{babel} % defines the french quotes: \og \fg
 
 \def\UTFdiacriticLC{å à â é è ë ê î ï ô ö ù ü û ã ñ õ ç }
 \def\UTFdiacriticUC{Å À Â É È Ë Ê Î Ï Ô Ö Ù Ü Û Ã Ñ Õ Ç }
@@ -36,7 +35,7 @@
 \v{L} \v{N} \v{R} \v{S} \v{T} \v{Z} }
 \def\LaTeXligaturesLC{\oe\ \ae\ \ss\ }
 \def\LaTeXligaturesUC{\OE\ \AE\ \SS\ }
-\def\LaTeXotherLC{\og \o\ \l \fg\ }
+\def\LaTeXotherLC{\guillemotleft\ \o\ \l\ \guillemotright }
 \def\LaTeXotherUC{\O\ \L\ }
 
 \htmlregister{\UTFdiacriticLC}
@@ -57,12 +56,12 @@
 \section*{Introduction}
 
 This document is intended to check the support of diacritical marks (accents) 
-and ligatures found in french typesetting.
+and ligatures found in different languages written with the latin alphabet.
 
 For most of them, two ways of encoding are tested: UTF8 et \LaTeX{} syntax.
 
 \begin{quiz}[points=1]{Diacritical marks and ligatures}
-\NoAutoSpacing
+
 \begin{multi}{\UTFdiacriticUC}
 \UTFdiacriticLC\\
 \UTFdiacriticUC\\
