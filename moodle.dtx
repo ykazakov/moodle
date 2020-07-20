@@ -488,32 +488,38 @@
 % 
 % \DescribeMacro{single}\DescribeMacro{multiple}
 % By default, the |multi| environment produces
-% a multiple choice question operates with only one correct answer;
+% a multiple choice question with only one correct answer;
 % this is called |single| mode, and on Moodle it appears with radio buttons.
-% It is also possible to write questions with more than one correct answer,
+% It is also possible to write questions with possibly more than one correct answer,
 % asking the user to check all correct answers.
 % To do this, use the key |multiple| or |single=false|.
 % 
 % The worth of each correct answers in |multiple| mode may be set by |fraction|,
-% but Moodle will require that all the fractions add up to \emph{exactly} 100.
+% but Moodle asks that all the fractions add up to \emph{exactly} 100.
 % If you simply designate each correct answer with |\item*|, then \textsf{moodle.sty}
 % will divide the 100\% equally among those answers.
-% For example, the following two examples produce equivalent results:
+% Items that are not given a |fraction| are considered incorrect and selecting them
+% results in negative points such that the sum of all incorrect answers is -100\%.
+% For example, the following two examples are equivalent:
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   \begin{multi}[multiple]{my question}
 %     Which numbers are prime?
+%     \item[fraction=20] 2
 %     \item* 5
-%     \item[fraction=-50] 6
 %     \item* 7
-%     \item[fraction=-50] 8
+%     \item[fraction=-10] 1 
+%     \item 6
+%     \item 8
 %   \end{multi}
 %   
 %   \begin{multi}[multiple]{my question}
 %     Which numbers are prime?
-%     \item[fraction=50] 5
-%     \item[fraction=-50] 6
-%     \item[fraction=50] 7
-%     \item[fraction=-50] 8
+%     \item[fraction=20] 2
+%     \item[fraction=40] 5
+%     \item[fraction=40] 7
+%     \item[fraction=-10] 1
+%     \item[fraction=-45] 6
+%     \item[fraction=-45] 8
 %   \end{multi}
 % \end{VerbatimOut}
 % \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
@@ -2323,22 +2329,23 @@
 }
 
 \def\moodle@multi@latexprocessing{%
-      \moodle@countcorrectanswers%
-      \begin{enumerate}\moodle@obeynumberingstyle%
-                       %\renewcommand{\theenumi}{\alph{enumi}}%
-                       \setlength\itemsep{0pt}\setlength\parskip{0pt}%
-        \loopthroughitemswithcommand{\moodle@print@multichoice@answer}%
-      \end{enumerate}%
-      \ifx\moodle@generalfeedback\@empty\relax\else%
-        \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
-      \fi%
+  \moodle@countcorrectanswers%
+  \begin{enumerate}\moodle@obeynumberingstyle%
+    %\renewcommand{\theenumi}{\alph{enumi}}%
+    \setlength\itemsep{0pt}\setlength\parskip{0pt}%
+    \loopthroughitemswithcommand{\moodle@print@multichoice@answer}%
+  \end{enumerate}%
+  \ifx\moodle@generalfeedback\@empty\relax\else%
+    \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+  \fi%
 }
   \def\moodle@print@multichoice@answer#1{%
     \let\moodle@feedback=\@empty%
     \moodle@print@multichoice@answer@int#1 \@rdelim%
   }%
   \newcommand\moodle@print@multichoice@answer@int[1][]{%
-    \setkeys{moodle}{fraction=0,#1}%
+    \let\moodle@fraction\@empty%
+    \setkeys{moodle}{#1}%
     \moodle@print@multichoice@answer@int@int%
   }%
   \def\moodle@print@multichoice@answer@int@int#1#2\@rdelim{%
@@ -2354,10 +2361,13 @@
       \fi
     \else
       \g@addto@macro\moodle@answertext{#1#2}%
-      \trim@spaces@in\moodle@answertext%
-      \trim@spaces@in\moodle@answertext%
     \fi
+    \trim@spaces@in\moodle@answertext%
+    \trim@spaces@in\moodle@answertext%
     \ifmoodle@single%
+      \ifx\moodle@fraction\@empty\relax%
+        \setkeys{moodle}{fraction=\moodle@autosanctions}%
+      \fi
       \ifx\moodle@fraction\@hundred%
         \trim@spaces@in\moodle@answertext%
         \g@addto@macro\moodle@answertext{$~\checkmark$}%
@@ -2366,7 +2376,10 @@
           \g@addto@macro\moodle@answertext{$~(\moodle@fraction\%)$}%
         \fi
       \fi
-    \else
+    \else% multiple
+      \ifx\moodle@fraction\@empty\relax%
+        \setkeys{moodle}{fraction=\moodle@autosanctions}%
+      \fi
       \g@addto@macro\moodle@answertext{$~(\moodle@fraction\%)$}%
     \fi
     \moodle@answertext
@@ -2375,22 +2388,58 @@
     \fi%
   }%
 
-% COMMON UTILITY: COUNTING CORRECT ANSWERS
-   \newcounter{moodle@numcorrectanswers}%
+% COMMON UTILITY: COUNTING CORRECT ANSWERS (AND A BIT MORE...)
+   \newcounter{moodle@numcorrectanswers}% count the stars
+   \newcounter{moodle@numincorrectanswers}% count the items without fraction key indicated
    \newlength{\moodle@pointspercorrect}%
+   \newlength{\moodle@pointsperincorrect}%
+   \newlength{\moodle@sumofpositivefractions}% sums user-set positive fractions
+   \newlength{\moodle@sumofnegativefractions}% sums user-set negative fractions
    \def\moodle@countcorrectanswers{%
      \setcounter{moodle@numcorrectanswers}{0}%
+     \setcounter{moodle@numincorrectanswers}{0}%
      \global\setlength{\moodle@pointspercorrect}{100pt}%
+     \global\setlength{\moodle@pointsperincorrect}{-100pt}%
+     \global\setlength{\moodle@sumofpositivefractions}{0pt}%
+     \global\setlength{\moodle@sumofnegativefractions}{0pt}%
      \loopthroughitemswithcommand{\moodle@countcorrectanswers@a}%
-     \ifnum0=\c@moodle@numcorrectanswers\relax
-       \PackageWarning{moodle}{No answer is explicitly marked as correct (*). Be sure some answers lead to points.}%
-       % Changing the above line in a warning because with the 'multiple' keyword, one could choose to split unenvenly the point
-       % among the right answers. In this case, therefore, you would use the 'fraction' keyword and not the star.
-       \gdef\moodle@autopoints{0}%
+     \global\advance\moodle@pointspercorrect by-\moodle@sumofpositivefractions\relax%
+     \def\ds{\strip@pt\moodle@sumofpositivefractions}%
+     \ifnum0=\c@moodle@numcorrectanswers\relax%
+       % autopoints will never be used but we check if the sum of positive fractions is 100%
+       \ifdim0pt=\moodle@pointspercorrect\relax\else%
+         \ifdim0pt>\moodle@pointspercorrect\relax%
+           \PackageWarning{moodle}{Positive fractions sum up to more than 100/100 (here: \ds/100)}%
+         \else
+           \PackageError{moodle}{Positive fractions sum up to less than 100/100 (here: \ds/100)}
+         \fi
+       \fi
      \else
-       \global\divide\moodle@pointspercorrect by \c@moodle@numcorrectanswers\relax
-       \gdef\moodle@autopoints{\strip@pt\moodle@pointspercorrect}%
+       \ifdim0pt<\moodle@pointspercorrect\relax\else%
+         % we have stars so the sum of user-set positive fractions must be less than 100%
+         % otherwise, stars would become penalties
+         \PackageError{moodle}{Positive fractions sum up to 100/100 or more (here: \ds/100):
+                                there is no positive points left to be given to starred items.}%
+       \fi
+       \global\divide\moodle@pointspercorrect by \c@moodle@numcorrectanswers\relax%
      \fi
+     \gdef\moodle@autopoints{\strip@pt\moodle@pointspercorrect}%
+     \global\advance\moodle@pointsperincorrect by-\moodle@sumofnegativefractions\relax%
+     \def\ds{\strip@pt\moodle@sumofnegativefractions}%
+     \ifnum0=\c@moodle@numincorrectanswers\relax%
+       % autosanctions will never be used and
+       % we do not care about the sum of negative fractions (might be less than -100)
+     \else
+       \ifdim0pt<\moodle@pointsperincorrect\relax%
+         % we have items without fractions set: to prevent auto sanctions from becoming bonues,
+         % such items are neutralized.
+         \PackageWarning{moodle}{Negative fractions sum up to -100/100 or less (here: \ds/100):
+                                  items with no fraction key set will be considered as neutral.}%
+         \global\setlength{\moodle@pointsperincorrect}{0pt}%
+       \fi
+       \global\divide\moodle@pointsperincorrect by \c@moodle@numincorrectanswers\relax%
+     \fi
+     \gdef\moodle@autosanctions{\strip@pt\moodle@pointsperincorrect}%
    }
    \def\moodle@countcorrectanswers@a#1{%
      %The grouping is to keep key answer-specific key changes local.
@@ -2400,7 +2449,8 @@
    }%
    \newcommand\moodle@countcorrectanswers@b[1][]{%
      %\ifx&#1&%
-       \setkeys{moodle}{fraction=0,#1}%
+       \let\moodle@fraction\@empty%
+       \setkeys{moodle}{#1}%
        \moodle@countcorrectanswers@c%
      %\fi
    }%
@@ -2409,7 +2459,15 @@
      \ifx\test@i\@star
        \stepcounter{moodle@numcorrectanswers}%
      \else
-       \global\addtolength{\moodle@pointspercorrect}{-\moodle@fraction pt}%
+       \ifx\moodle@fraction\@empty\relax%
+         \stepcounter{moodle@numincorrectanswers}%
+       \else
+         \ifdim0pt<\moodle@fraction pt\relax%
+           \global\addtolength{\moodle@sumofpositivefractions}{\moodle@fraction pt}%
+         \else
+           \global\addtolength{\moodle@sumofnegativefractions}{\moodle@fraction pt}%
+         \fi
+       \fi
      \fi
    }%
    \def\moodle@setautopoints#1pt{%
@@ -2428,7 +2486,8 @@
   \egroup
 }%
   \newcommand\savemultianswer@int[1][]{%
-    \setkeys{moodle}{fraction=0,#1}%
+    \let\moodle@fraction\@empty%
+    \setkeys{moodle}{#1}%
     \savemultianswer@int@int%
   }%
   \def\savemultianswer@int@int#1#2\moodle@answer@rdelim{%
@@ -2442,6 +2501,13 @@
       \def\moodle@answertext{#2}%
     \else
       \def\moodle@answertext{#1#2}%
+    \fi
+    \ifx\moodle@fraction\@empty\relax%
+      \ifmoodle@single\relax
+        \setkeys{moodle}{fraction=0}%
+      \else% multiple
+        \setkeys{moodle}{fraction=\moodle@autosanctions}%
+      \fi
     \fi
     \trim@spaces@in\moodle@answertext
     \trim@spaces@in\moodle@answertext

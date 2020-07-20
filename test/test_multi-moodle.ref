@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <quiz>
  
 <question type="category">
@@ -36,7 +37,7 @@
   <answer fraction="-70" format="html">
     <text><![CDATA[<p>8</p>]]></text>
   </answer>
-  <answer fraction="0" format="html">
+  <answer fraction="-20" format="html">
     <text><![CDATA[<p><CODE>nothing</CODE></p>]]></text>
   </answer>
 </question>
