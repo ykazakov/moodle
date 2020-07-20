@@ -172,15 +172,15 @@
 % and the ultimate source code of one's work is a human-readable |.tex| file 
 % that can be archived, versioned, browsed, and edited offline.
 % 
-% Strictly speaking, the \texttt{moodle} package does not generate quizzes:
+% Strictly speaking, the \textsf{moodle} package does not generate quizzes:
 % it generates question banks that can be imported in the LMS. The teacher
 % still needs to compose manually a quiz from the question banks. Hopefully,
 % two Moodle features supported by the package make this task easier:
 % categories and tags.
 %
-% In this documentation the LMS is referred to as Moodle (uppercase M) while
-% the \LaTeX\ package that is documented here is referred to as
-% \texttt{moodle} (lower case and typewriter font).
+% In this documentation the LMS is referred to as Moodle (uppercase M and
+% roman font) while the \LaTeX\ package that is documented here is referred
+% to as \textsf{moodle} (all lower case and sans serif font).
 % 
 % \section{Workflow}
 % The process of creating a quiz in Moodle using this package is depicted in
@@ -236,7 +236,7 @@
 % {improvements} (tex);
 % \draw (xml) edge [post,red] node[cmnt,pos=.5,above] {import} (moodle);
 % \end{tikzpicture}
-% \caption{Block diagram describing a typical workflow using the \texttt{moodle} package.}
+% \caption{Block diagram describing a typical workflow using the \textsf{moodle} package.}
 % \label{fig:workflow}
 % \end{figure}
 %
@@ -327,7 +327,7 @@
 % A |.tex| document to generate Moodle quizzes contains one or more
 % |quiz| environments, within which various question environments are nested.
 % The required argument to the |quiz| environment names the ``question bank''
-% to which the questions inside will belong after being uploaded to moodle.
+% to which the questions inside will belong after being uploaded to Moodle.
 % \begin{center}
 % |\begin{quiz}|\oarg{options}\marg{question bank name}%
 % \end{center}
@@ -388,7 +388,7 @@
 % may also be given by setting the |feedback| key \emph{at the individual answer}.
 %
 % \DescribeMacro{tags}
-% The |tags| key sets a keyword for the question that will be taken into account by moodle for
+% The |tags| key sets a keyword for the question that will be taken into account by Moodle for
 % filtering purposes or classification of questions inside the question bank. It is possible
 % for instance to build a quiz with questions cherry-picked among the set of questions holding
 % a particular tag.
@@ -406,7 +406,7 @@
 % 
 % \subsection{Question Types}
 % 
-% We next discuss the various question types supported by \textsf{moodle.sty}
+% We next discuss the various question types supported by \textsf{moodle}
 % and the options that may be set.
 %
 %\subsubsection{True/False}
@@ -486,18 +486,19 @@
 % Thus the asterisk |*| is shorthand for |fraction=100|, 
 % whereas a bare |\item| sets |fraction=0|.
 % 
-% \DescribeMacro{single}\DescribeMacro{multiple}
+% \DescribeMacro{single}
 % By default, the |multi| environment produces
 % a multiple choice question with only one correct answer;
 % this is called |single| mode, and on Moodle it appears with radio buttons.
+%
+% \DescribeMacro{multiple}
 % It is also possible to write questions with possibly more than one correct answer,
-% asking the user to check all correct answers.
-% To do this, use the key |multiple| or |single=false|.
-% 
+% asking the user to check all correct answers. To do this, use the key |multiple|
+% or |single=false|.
 % The worth of each correct answers in |multiple| mode may be set by |fraction|,
 % but Moodle asks that all the fractions add up to \emph{exactly} 100.
-% If you simply designate each correct answer with |\item*|, then \textsf{moodle.sty}
-% will divide the 100\% equally among those answers.
+% If you simply designate each correct answer with |\item*|, then \textsf{moodle}
+% will divide equally among those answers the points lefts for a sum of 100\%.
 % Items that are not given a |fraction| are considered incorrect and selecting them
 % results in negative points such that the sum of all incorrect answers is -100\%.
 % For example, the following two examples are equivalent:
@@ -590,8 +591,10 @@
 % including or omitting a period.
 % 
 % \DescribeMacro{case sensitive}\DescribeMacro{usecase}
-% By default, Moodle ignores the distinction between upper- and lower-case letters
-% when grading a short answer question.
+% The default setting when creating a Short Answer question in Moodle
+% is to ignore the distinction between upper- and lower-case letters
+% when grading a short answer question. This default is preserved by
+% \textsf{moodle}.
 % You can make a question case-sensitive with the key |case sensitive| 
 % or its shorter synonym |usecase|.
 % 
@@ -683,7 +686,7 @@
 % permute the questions and answers; by default |shuffle=true|.
 % 
 % \DescribeMacro{drag and drop}\DescribeMacro{dd}
-% The standard matching question offered by moodle corresponds to
+% The standard matching question offered by Moodle corresponds to
 % a dropdown box for choosing the answer to each question.
 % There also exists a ``drag and drop matching'' plugin for Moodle that
 % shows all questions in one column,
@@ -851,7 +854,7 @@
 % the HTML, and probably interpreted by students' browsers as HTML tags
 % or other unpredicated results.
 % 
-% Be aware that \emph{\textsf{moodle.sty} does not know how to convert any 
+% Be aware that \emph{\textsf{moodle} does not know how to convert any 
 % other \TeX\ or \LaTeX\ commands to HTML.}
 % If other sequences are used, they may be passed verbatim to the XML file
 % or may cause unpredicted results. The |\htmlregister| command lets you specify
@@ -862,7 +865,7 @@
 % so that it may be added to a future revision of the package.
 % 
 % \section{Graphics}
-% The \textsf{moodle.sty} package can handle two kinds of graphics seamlessly.
+% The \textsf{moodle} package can handle two kinds of graphics seamlessly.
 % External graphics files may be included with the |\includegraphics| command
 % from the |graphicx| package,
 % and graphics may be generated internally using \TikZ.  In either case, the 
@@ -893,7 +896,7 @@
 % 
 % The mechanism used is somewhat fragile and relies upon one \TikZ\ library and three free external programs.
 % \begin{enumerate}
-%   \item \textsf{moodle.sty} invokes |\usetikzlibrary{external}|,
+%   \item \textsf{moodle} invokes |\usetikzlibrary{external}|,
 %         so that each |tikzpicture| environment is compiled to a freestanding PDF file.
 %   \item GhostScript (\url{www.ghostscript.com}) is used to convert the PDF output
 %         from \TikZ\ into a PNG raster graphics file.
@@ -925,7 +928,7 @@
 %         yet supported.
 %   \item Filenames should not contains spaces or, under windows, special characters like |_| or |\|.
 %   \item You must have Ghostscript, ImageMagick, and OptiPNG installed on your system
-%         to fully use the graphics-handling capabilities of \textsf{moodle.sty}.
+%         to fully use the graphics-handling capabilities of \textsf{moodle}.
 %   \item \LaTeX\ must be able to call system commands; that is, |\write18| must be enabled.
 %         For Mik\TeX, this means adding |--enable-write18| to the command line of |pdflatex|;
 %         for \TeX Live, this means adding |--shell-escape=true|.
@@ -1101,11 +1104,11 @@
 % \end{tabular}
 % \begin{tablenotes}
 %   \item[1] the package |babel| loaded with option |french| defines |\og| and |\fg| for
-%            the same symbols. These are also supported by \texttt{moodle}.
+%            the same symbols. These are also supported by \textsf{moodle}.
 % \end{tablenotes}
 % \end{threeparttable}
 % \end{table}
-% Some features of Moodle quizzes have not yet been implemented in \textsf{moodle.sty}.
+% Some features of Moodle quizzes have not yet been implemented in \textsf{moodle}.
 % Here is a non-exhaustive list.
 % \begin{itemize}
 %   \item Moodle's feature of designating feedback for correct, 
@@ -1128,7 +1131,7 @@
 % specifying your version of Moodle in the |.tex| file to help ensure compatibility.
 % 
 % As the ultimate purpose of this package is the generation of XML files,
-% future versions of \textsf{moodle.sty} will attempt to maintain backwards 
+% future versions of \textsf{moodle} will attempt to maintain backwards 
 % compatability with earlier versions of regarding the XML output, apart from
 % bug fixes.  
 % Backwards compatibility of the PDF output is not yet guaranteed, however,
@@ -1136,14 +1139,14 @@
 % the underlying XML data to be proofread.
 % 
 % In other words, compiling your current |.tex| file with a future version 
-% of \textsf{moodle.sty} should produce the same XML file it does now 
+% of \textsf{moodle} should produce the same XML file it does now 
 % (apart from bug fixes),
 % but it might produce a more informative, and hence different,
 % PDF output.
 % 
 % 
 % \section{Unrelated Tip: Quality of Moodle \TeX\ Images}
-% This has nothing to do with |moodle.sty|, but is a Frequently Asked Question
+% This has nothing to do with \textsf{moodle}, but is a Frequently Asked Question
 % in is own right.
 % On some servers, at least, Moodle's default ``\TeX\ Filter'' for 
 % displaying mathematical notation is of abysmally poor quality, rending mathematics
