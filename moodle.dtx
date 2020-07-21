@@ -835,11 +835,12 @@
 % |\$| & |\&| &|\textbf{}| & |\begin{enumerate}|\\
 % |\\| & |\par| &|\textit{}| & |\begin{itemize}|\\
 % |\&| & |\S| & |\texttt{}| & |\begin{tikzpicture}|\\
-% |\{| & |\}| & |\underline{}|& \\
-% |\relax| & |\|\textvisiblespace &|\tikz{}| &\\
-% |\thinspace| & |\,| & |\includegraphics[]{}|& \\
-% |\ldots| & |\dots| && \\
-% |\euro| & |\texteuro| & & \\
+% |\{| & |\}| & |\textsc{]| & \\
+% |\relax| & |\|\textvisiblespace & |\underline{}| &\\
+% |\thinspace| & |\,| & |\url{}| & \\
+% |\ldots| & |\dots| & |\href{}{}| & \\
+% |\euro| & |\texteuro| & |\tikz{}| & \\
+% & & |\includegraphics[]{}| & \\
 % \bottomrule
 % \end{tabular}
 % \end{table}
@@ -891,7 +892,7 @@
 % this is probably best done for the entire document with a |\moodleset| command,
 % rather than image-by-image.
 % \DescribeMacro{\graphicspath}
-% You can use |\graphicpath{{|\emph{path}|}}| to specify a directory where the
+% You can use |\graphicspath{{|\emph{path}|}}| to specify a directory where the
 % pictures to be included are located.
 % 
 % The mechanism used is somewhat fragile and relies upon one \TikZ\ library and three free external programs.
@@ -1014,22 +1015,22 @@
 % \aa & \AA & \verb|\aa| & \verb|\AA| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \`a & \`A & \verb|\`a| & \verb|\`A| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \^a & \^A & \verb|\^a| & \verb|\^A| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \~a & \~A & \verb|\~a| & \verb|\~A| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \'e & \'E & \verb|\'e| & \verb|\'E| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \`e & \`E & \verb|\`e| & \verb|\`E| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \"e & \"E & \verb|\"e| & \verb|\"E| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \^e & \^E & \verb|\^e| & \verb|\^E| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \^i & \^I & \verb|\^i| & \verb|\^I| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \"i & \"I & \verb|\"i| & \verb|\"I| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \~n & \~N & \verb|\~n| & \verb|\~N| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \~o & \~O & \verb|\~o| & \verb|\~O| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \"o & \"O & \verb|\"o| & \verb|\"O| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \^o & \^O & \verb|\^o| & \verb|\^O| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \`u & \`U & \verb|\`u| & \verb|\`U| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \"u & \"U & \verb|\"u| & \verb|\"U| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \^u & \^U & \verb|\^u| & \verb|\^U| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \~a & \~A & \verb|\~a| & \verb|\~A| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \~n & \~N & \verb|\~n| & \verb|\~N| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \~o & \~O & \verb|\~o| & \verb|\~O| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \c{c} & \c{C} & \verb|\c{c}| & \verb|\c{C}| & Unicode and \LaTeX &
-% Unicode and \LaTeX \\
+% \"y & \"Y & \verb|\"y| & \verb|\"Y| & Unicode and \LaTeX & Unicode and \LaTeX \\
+% \c{c} & \c{C} & \verb|\c{c}| & \verb|\c{C}| & Unicode and \LaTeX & Unicode and \LaTeX \\
 % \c{s} & \c{S} & \verb|\c{s}| & \verb|\c{S}| & Unicode and \LaTeX & \LaTeX\ only\\
 % \c{t} & \c{T} & \verb|\c{t}| & \verb|\c{T}| & Unicode and \LaTeX & \LaTeX\ only\\
 % \H{o} & \H{O} & \verb|\H{o}| & \verb|\H{O}| & Unicode and \LaTeX & \LaTeX\ only\\
@@ -1051,9 +1052,10 @@
 % \bottomrule
 % \end{tabular}
 % \begin{tablenotes}
-%   \item[1] \XeLaTeX\ renders correctly |\u{i}|, that is, without a dot. Instead, with (pdf)\LaTeX\
-%            the rendering of |\u{i}| is flawed by the superposition of the dot and the breve. Both
-%            engines render |\u{\i}| as expected.
+%   \item[1] \XeLaTeX\ renders correctly |\u{i}|, that is, without a superscript dot.
+%            Instead, with (pdf)\LaTeX\ the rendering of |\u{i}| is flawed by the
+%            superposition of the superscript dot and the breve diacritical mark.
+%            Both engines render |\u{\i}| as expected.
 % \end{tablenotes}
 % \end{threeparttable}
 % \end{table}
@@ -4112,8 +4114,16 @@
 }
 \htmlize@define@diacritic{\^}{circ}%
 \htmlize@define@diacritic{\'}{acute}%
-\htmlize@define@diacritic{\"}{uml}%
 \htmlize@define@diacritic{\`}{grave}%
+
+%Diaeresis/Tréma/Umlaut
+{\catcode`|=3\relax
+ \gdef\htmlize@diaeresis{a|e|i|o|u|y|A|E|I|O|U|Y|}}
+\html@action@def\"#1{%
+    \ifinlist{#1}{\htmlize@diaeresis}%
+      {\g@addto@macro\htmlize@output{\otherampersand#1uml\othersemicol}}%
+      {\xa\g@addto@macro\htmlize@output\xa{\string\"#1}}%
+}%
 
 %Hungarian long-umlaut diacritics
 \def\@o{o}\def\@O{O}\def\@u{u}\def\@U{U}%
@@ -4241,11 +4251,14 @@
 % \subsubsection{Command sequences for Expansion}
 % 
 %    \begin{macrocode}
-\html@def\underline#1{<SPAN STYLE="text-decoration: underline;">#1</SPAN>}
+\html@def\underline#1{<SPAN STYLE=\&\#34;text-decoration: underline;\&\#34;>#1</SPAN>}
 \html@def\emph#1{<EM>#1</EM>}%
 \html@def\textit#1{<I>#1</I>}%
 \html@def\textbf#1{<B>#1</B>}%
 \html@def\texttt#1{<CODE>#1</CODE>}%
+\html@def\textsc#1{<SPAN STYLE=\&\#34;font-variant: small-caps;\&\#34;>#1</SPAN>}
+\html@def\url#1{<A href=\&\#34;#1\&\#34;>#1</A>}%
+\html@def\href#1#2{<A href=\&\#34;#1\&\#34;>#2</A>}%
 \html@def\blank{____________}%
 \html@def\par{</P><P>}%
 \html@def\aa{\&aring;}%

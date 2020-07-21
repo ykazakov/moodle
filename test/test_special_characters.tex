@@ -1,5 +1,6 @@
 % !TeX encoding = UTF-8
 % !TeX spellcheck = en_US
+% !TEX TS-program = xelatex
 \documentclass{article}
 \usepackage[nostamp]{moodle}
 \ifxetex % FOR XELATEX
@@ -10,8 +11,8 @@
 \fi
 \usepackage{libertine} % includes the "großes Eszett" ß
 
-\def\UTFdiacriticLC{å à â é è ë ê î ï ô ö ù ü û ã ñ õ ç }
-\def\UTFdiacriticUC{Å À Â É È Ë Ê Î Ï Ô Ö Ù Ü Û Ã Ñ Õ Ç }
+\def\UTFdiacriticLC{å à â ã é è ë ê î ï ñ õ ô ö ù ü û ÿ ç }
+\def\UTFdiacriticUC{Å À Â Ã É È Ë Ê Î Ï Ñ Õ Ô Ö Ù Ü Û Ÿ Ç }
 \def\UTFligaturesLC{}
 \def\UTFligaturesUC{}
 \def\UTFotherLC{}
@@ -26,11 +27,11 @@
   \addtomacro{\UTFotherUC}{Ø Ł }%
 \fi
 \def\LaTeXdiacriticLC
-{\aa\ \`a \^a \'e \`e \"e \^e \^i \"i \"o \^o \`u \"u \^u \~a \~n \~o \c{c}
+{\aa\ \`a \^a \~a \'e \`e \"e \^e \^i \"i \~n \~o \"o \^o \`u \"u \^u \"y \c{c}
 \c{s} \c{t} \H{o} \H{u} \u{a} \u{e} \u{g} \u{i} \u{\i} \u{o} \u{u} \v{c} \v{d} 
 \v{e} \v{l} \v{n} \v{r} \v{s} \v{t} \v{z} }
 \def\LaTeXdiacriticUC
-{\AA\ \`A \^A \'E \`E \"E \^E \^I \"I \"O \^O \`U \"U \^U \~A \~N \~O \c{C}
+{\AA\ \`A \^A \~A \'E \`E \"E \^E \^I \"I \~N \~O \"O \^O \`U \"U \^U \"Y \c{C}
 \c{S} \c{T} \H{O} \H{U} \u{A} \u{E} \u{G} \u{I} \u{O} \u{U} \v{C} \v{D} \v{E} 
 \v{L} \v{N} \v{R} \v{S} \v{T} \v{Z} }
 \def\LaTeXligaturesLC{\oe\ \ae\ \ss\ }

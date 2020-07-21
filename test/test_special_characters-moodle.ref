@@ -10,10 +10,10 @@
  
 <question type="multichoice">
   <name format="html">
-    <text><![CDATA[Å À Â É È Ë Ê Î Ï Ô Ö Ù Ü Û Ã Ñ Õ Ç Ş Ţ Ő Ű Ă Ĕ Ğ Ĭ Ŏ Ŭ Č Ď Ě Ľ Ň Ř Š Ť Ž ]]></text>
+    <text><![CDATA[Å À Â Ã É È Ë Ê Î Ï Ñ Õ Ô Ö Ù Ü Û Ÿ Ç Ş Ţ Ő Ű Ă Ĕ Ğ Ĭ Ŏ Ŭ Č Ď Ě Ľ Ň Ř Š Ť Ž ]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>å à â é è ë ê î ï ô ö ù ü û ã ñ õ ç ş ţ ő ű ă ĕ ğ ĭ ŏ ŭ č ď ě ľ ň ř š ť ž <BR/> Å À Â É È Ë Ê Î Ï Ô Ö Ù Ü Û Ã Ñ Õ Ç Ş Ţ Ő Ű Ă Ĕ Ğ Ĭ Ŏ Ŭ Č Ď Ě Ľ Ň Ř Š Ť Ž <BR/> œ æ ß Œ Æ ẞ Ø Ł « ø ł » </p>]]></text>
+    <text><![CDATA[<p>å à â ã é è ë ê î ï ñ õ ô ö ù ü û ÿ ç ş ţ ő ű ă ĕ ğ ĭ ŏ ŭ č ď ě ľ ň ř š ť ž <BR/> Å À Â Ã É È Ë Ê Î Ï Ñ Õ Ô Ö Ù Ü Û Ÿ Ç Ş Ţ Ő Ű Ă Ĕ Ğ Ĭ Ŏ Ŭ Č Ď Ě Ľ Ň Ř Š Ť Ž <BR/> œ æ ß Œ Æ ẞ Ø Ł « ø ł » </p>]]></text>
   </questiontext>
   <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
@@ -23,20 +23,20 @@
   <shuffleanswers>1</shuffleanswers>
   <answernumbering>abc</answernumbering>
   <answer fraction="0" format="html">
-    <text><![CDATA[<p>å à â é è ë ê î ï ô ö ù ü û ã ñ õ ç ş ţ ő ű ă ĕ ğ ĭ ŏ ŭ č ď ě ľ ň ř š ť ž </p>]]></text>
-    <feedback format="html"><text><![CDATA[<p>Å À Â É È Ë Ê Î Ï Ô Ö Ù Ü Û Ã Ñ Õ Ç Ş Ţ Ő Ű Ă Ĕ Ğ Ĭ Ŏ Ŭ Č Ď Ě Ľ Ň Ř Š Ť Ž </p>]]></text></feedback>
+    <text><![CDATA[<p>å à â ã é è ë ê î ï ñ õ ô ö ù ü û ÿ ç ş ţ ő ű ă ĕ ğ ĭ ŏ ŭ č ď ě ľ ň ř š ť ž </p>]]></text>
+    <feedback format="html"><text><![CDATA[<p>Å À Â Ã É È Ë Ê Î Ï Ñ Õ Ô Ö Ù Ü Û Ÿ Ç Ş Ţ Ő Ű Ă Ĕ Ğ Ĭ Ŏ Ŭ Č Ď Ě Ľ Ň Ř Š Ť Ž </p>]]></text></feedback>
   </answer>
   <answer fraction="100" format="html">
-    <text><![CDATA[<p>Å À Â É È Ë Ê Î Ï Ô Ö Ù Ü Û Ã Ñ Õ Ç Ş Ţ Ő Ű Ă Ĕ Ğ Ĭ Ŏ Ŭ Č Ď Ě Ľ Ň Ř Š Ť Ž </p>]]></text>
-    <feedback format="html"><text><![CDATA[<p>å à â é è ë ê î ï ô ö ù ü û ã ñ õ ç ş ţ ő ű ă ĕ ğ ĭ ŏ ŭ č ď ě ľ ň ř š ť ž </p>]]></text></feedback>
+    <text><![CDATA[<p>Å À Â Ã É È Ë Ê Î Ï Ñ Õ Ô Ö Ù Ü Û Ÿ Ç Ş Ţ Ő Ű Ă Ĕ Ğ Ĭ Ŏ Ŭ Č Ď Ě Ľ Ň Ř Š Ť Ž </p>]]></text>
+    <feedback format="html"><text><![CDATA[<p>å à â ã é è ë ê î ï ñ õ ô ö ù ü û ÿ ç ş ţ ő ű ă ĕ ğ ĭ ŏ ŭ č ď ě ľ ň ř š ť ž </p>]]></text></feedback>
   </answer>
 </question>
 <question type="multichoice">
   <name format="html">
-    <text><![CDATA[&Aring; &Agrave; &Acirc; &Eacute; &Egrave; &Euml; &Ecirc; &Icirc; &Iuml; &Ouml; &Ocirc; &Ugrave; &Uuml; &Ucirc; &Atilde; &Ntilde; &Otilde; &Ccedil; &#350; &#354; &#336; &#368; &Abreve; &#276; &Gbreve; &#300; &#334; &Ubreve; &Ccaron; &Dcaron; &Ecaron; &Lcaron; &Ncaron; &Rcaron; &Scaron; &Tcaron; &Zcaron; ]]></text>
+    <text><![CDATA[&Aring; &Agrave; &Acirc; &Atilde; &Eacute; &Egrave; &Euml; &Ecirc; &Icirc; &Iuml; &Ntilde; &Otilde; &Ouml; &Ocirc; &Ugrave; &Uuml; &Ucirc; &Yuml; &Ccedil; &#350; &#354; &#336; &#368; &Abreve; &#276; &Gbreve; &#300; &#334; &Ubreve; &Ccaron; &Dcaron; &Ecaron; &Lcaron; &Ncaron; &Rcaron; &Scaron; &Tcaron; &Zcaron; ]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>&aring; &agrave; &acirc; &eacute; &egrave; &euml; &ecirc; &icirc; &iuml; &ouml; &ocirc; &ugrave; &uuml; &ucirc; &atilde; &ntilde; &otilde; &ccedil; &#351; &#355; &#337; &#369; &abreve; &#277; &gbreve; &#301; &#301; &#335; &ubreve; &ccaron; &dcaron; &ecaron; &lcaron; &ncaron; &rcaron; &scaron; &tcaron; &zcaron; <BR/> &Aring; &Agrave; &Acirc; &Eacute; &Egrave; &Euml; &Ecirc; &Icirc; &Iuml; &Ouml; &Ocirc; &Ugrave; &Uuml; &Ucirc; &Atilde; &Ntilde; &Otilde; &Ccedil; &#350; &#354; &#336; &#368; &Abreve; &#276; &Gbreve; &#300; &#334; &Ubreve; &Ccaron; &Dcaron; &Ecaron; &Lcaron; &Ncaron; &Rcaron; &Scaron; &Tcaron; &Zcaron; <BR/> &oelig; &aelig; &szlig; &OElig; &AElig; &#7838; &Oslash; &Lstrok; &laquo;&#8239;&oslash; &lstrok;&#8239;&raquo; </p>]]></text>
+    <text><![CDATA[<p>&aring; &agrave; &acirc; &atilde; &eacute; &egrave; &euml; &ecirc; &icirc; &iuml; &ntilde; &otilde; &ouml; &ocirc; &ugrave; &uuml; &ucirc; &yuml; &ccedil; &#351; &#355; &#337; &#369; &abreve; &#277; &gbreve; &#301; &#301; &#335; &ubreve; &ccaron; &dcaron; &ecaron; &lcaron; &ncaron; &rcaron; &scaron; &tcaron; &zcaron; <BR/> &Aring; &Agrave; &Acirc; &Atilde; &Eacute; &Egrave; &Euml; &Ecirc; &Icirc; &Iuml; &Ntilde; &Otilde; &Ouml; &Ocirc; &Ugrave; &Uuml; &Ucirc; &Yuml; &Ccedil; &#350; &#354; &#336; &#368; &Abreve; &#276; &Gbreve; &#300; &#334; &Ubreve; &Ccaron; &Dcaron; &Ecaron; &Lcaron; &Ncaron; &Rcaron; &Scaron; &Tcaron; &Zcaron; <BR/> &oelig; &aelig; &szlig; &OElig; &AElig; &#7838; &Oslash; &Lstrok; &laquo;&#8239; &oslash; &lstrok; &#8239;&raquo;</p>]]></text>
   </questiontext>
   <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
@@ -46,12 +46,12 @@
   <shuffleanswers>1</shuffleanswers>
   <answernumbering>abc</answernumbering>
   <answer fraction="0" format="html">
-    <text><![CDATA[<p>&aring; &agrave; &acirc; &eacute; &egrave; &euml; &ecirc; &icirc; &iuml; &ouml; &ocirc; &ugrave; &uuml; &ucirc; &atilde; &ntilde; &otilde; &ccedil; &#351; &#355; &#337; &#369; &abreve; &#277; &gbreve; &#301; &#301; &#335; &ubreve; &ccaron; &dcaron; &ecaron; &lcaron; &ncaron; &rcaron; &scaron; &tcaron; &zcaron; </p>]]></text>
-    <feedback format="html"><text><![CDATA[<p>&Aring; &Agrave; &Acirc; &Eacute; &Egrave; &Euml; &Ecirc; &Icirc; &Iuml; &Ouml; &Ocirc; &Ugrave; &Uuml; &Ucirc; &Atilde; &Ntilde; &Otilde; &Ccedil; &#350; &#354; &#336; &#368; &Abreve; &#276; &Gbreve; &#300; &#334; &Ubreve; &Ccaron; &Dcaron; &Ecaron; &Lcaron; &Ncaron; &Rcaron; &Scaron; &Tcaron; &Zcaron; </p>]]></text></feedback>
+    <text><![CDATA[<p>&aring; &agrave; &acirc; &atilde; &eacute; &egrave; &euml; &ecirc; &icirc; &iuml; &ntilde; &otilde; &ouml; &ocirc; &ugrave; &uuml; &ucirc; &yuml; &ccedil; &#351; &#355; &#337; &#369; &abreve; &#277; &gbreve; &#301; &#301; &#335; &ubreve; &ccaron; &dcaron; &ecaron; &lcaron; &ncaron; &rcaron; &scaron; &tcaron; &zcaron; </p>]]></text>
+    <feedback format="html"><text><![CDATA[<p>&Aring; &Agrave; &Acirc; &Atilde; &Eacute; &Egrave; &Euml; &Ecirc; &Icirc; &Iuml; &Ntilde; &Otilde; &Ouml; &Ocirc; &Ugrave; &Uuml; &Ucirc; &Yuml; &Ccedil; &#350; &#354; &#336; &#368; &Abreve; &#276; &Gbreve; &#300; &#334; &Ubreve; &Ccaron; &Dcaron; &Ecaron; &Lcaron; &Ncaron; &Rcaron; &Scaron; &Tcaron; &Zcaron; </p>]]></text></feedback>
   </answer>
   <answer fraction="100" format="html">
-    <text><![CDATA[<p>&Aring; &Agrave; &Acirc; &Eacute; &Egrave; &Euml; &Ecirc; &Icirc; &Iuml; &Ouml; &Ocirc; &Ugrave; &Uuml; &Ucirc; &Atilde; &Ntilde; &Otilde; &Ccedil; &#350; &#354; &#336; &#368; &Abreve; &#276; &Gbreve; &#300; &#334; &Ubreve; &Ccaron; &Dcaron; &Ecaron; &Lcaron; &Ncaron; &Rcaron; &Scaron; &Tcaron; &Zcaron; </p>]]></text>
-    <feedback format="html"><text><![CDATA[<p>&aring; &agrave; &acirc; &eacute; &egrave; &euml; &ecirc; &icirc; &iuml; &ouml; &ocirc; &ugrave; &uuml; &ucirc; &atilde; &ntilde; &otilde; &ccedil; &#351; &#355; &#337; &#369; &abreve; &#277; &gbreve; &#301; &#301; &#335; &ubreve; &ccaron; &dcaron; &ecaron; &lcaron; &ncaron; &rcaron; &scaron; &tcaron; &zcaron; </p>]]></text></feedback>
+    <text><![CDATA[<p>&Aring; &Agrave; &Acirc; &Atilde; &Eacute; &Egrave; &Euml; &Ecirc; &Icirc; &Iuml; &Ntilde; &Otilde; &Ouml; &Ocirc; &Ugrave; &Uuml; &Ucirc; &Yuml; &Ccedil; &#350; &#354; &#336; &#368; &Abreve; &#276; &Gbreve; &#300; &#334; &Ubreve; &Ccaron; &Dcaron; &Ecaron; &Lcaron; &Ncaron; &Rcaron; &Scaron; &Tcaron; &Zcaron; </p>]]></text>
+    <feedback format="html"><text><![CDATA[<p>&aring; &agrave; &acirc; &atilde; &eacute; &egrave; &euml; &ecirc; &icirc; &iuml; &ntilde; &otilde; &ouml; &ocirc; &ugrave; &uuml; &ucirc; &yuml; &ccedil; &#351; &#355; &#337; &#369; &abreve; &#277; &gbreve; &#301; &#301; &#335; &ubreve; &ccaron; &dcaron; &ecaron; &lcaron; &ncaron; &rcaron; &scaron; &tcaron; &zcaron; </p>]]></text></feedback>
   </answer>
 </question>
  

@@ -1,5 +1,6 @@
 % !TeX encoding = UTF-8
 % !TeX spellcheck = en_US
+% !TEX TS-program = xelatex
 \documentclass{article}
 \usepackage[nostamp]{moodle}
 \ifxetex % FOR XELATEX
@@ -9,7 +10,31 @@
 	\usepackage[T1]{fontenc} % necessary
 \fi
 \usepackage[french]{babel} % for french quotes
-
+\usepackage{hyperref}
+% pangramme conçu par Gilles Esposito-Farèse et cité dans "Petites leçonsde 
+%typographie" de Jacques André
+% https://jacques-andre.fr/faqtypo/lessons.pdf
+\ifxetex
+  \def\myquestiontext{ \underline{Pangramme} conçu par Gilles 
+  \textsc{Esposito-Farèse}:}
+  \def\pangramme{Dès Noël où un zéphyr haï me vêt de glaçons würmiens je dîne 
+d’exquis rôtis de bœuf au kir à l’aÿ d’âge mûr \& cætera\,!}
+  \def\myfeedback{cité dans 
+  \og\emph{\href{https://jacques-andre.fr/faqtypo/lessons.pdf}{Petites 
+  leçons de typographie}}\fg\ de Jacques \textsc{André}.}
+\else
+  \def\myquestiontext{ \underline{Pangramme} con\c{c}u par Gilles 
+  \textsc{Esposito-Far\`ese}\,:}
+  \def\pangramme{D\`es No\"el o\`u un z\'ephyr ha\"i me v\^et de 
+gla\c{c}ons w\"urmiens je d\^ine d'exquis r\^otis de b\oe uf au kir \`a l'a\"y 
+d'\^age m\^ur \& c\ae tera\,!}
+  \def\myfeedback{cit\'e dans 
+\og\,\emph{\href{https://jacques-andre.fr/faqtypo/lessons.pdf}{Petites 
+  le\c{c}ons de typographie}}\,\fg\ de Jacques \textsc{Andr\'e}.}
+\fi
+\htmlregister{\myquestiontext}
+\htmlregister{\pangramme}
+\htmlregister{\myfeedback}
 \begin{document}
 
 \section*{Introduction}
@@ -18,13 +43,17 @@ This document is intended to check the support of the \texttt{babel} package
 with option \texttt{french} that causes problems during \texttt{pdfLaTeX} 
 compilation, due to autospacing.
 
-\begin{quiz}[points=1]{French Issues}
-\NoAutoSpacing % this option preserves pdflatex compilation
+Secondarily, the use of \verb|\textsc|, \verb|\underline|, \verb|\url|, and 
+\verb|\href| is also demonstrated.
 
+\begin{quiz}[points=1]{French Issues}
+\ifpdftex
+  \NoAutoSpacing % this option preserves pdflatex compilation
+\fi
 \begin{multi}[feedback={test}]{Test french}
-\og Coucou\,!\fg, dit-il. On lui r\'epondit\,: \og Qui est-ce\,?\fg
-\item* A
-\item B
+\myquestiontext
+\item[feedback={\myfeedback}]* \pangramme
+\item Portez ce vieux whisky au juge blond qui fume.
 \end{multi}
 
 \end{quiz}
