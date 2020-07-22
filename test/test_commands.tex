@@ -1,0 +1,37 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = en_US
+% !TEX TS-program = xelatex
+\documentclass{article}
+\usepackage[nostamp]{moodle}
+\ifxetex % FOR XELATEX
+	\usepackage{fontspec}
+\else %% FOR PDFLATEX
+	\usepackage[utf8]{inputenc} % necessary
+	\usepackage[T1]{fontenc} % necessary
+\fi
+\usepackage{hyperref}
+
+\begin{document}
+
+\section*{Introduction}
+
+This document is intended to check the support of some \LaTeX\ commands for 
+conversion to HTML.
+
+\begin{quiz}[points=1]{LaTeX Commands}
+\begin{multi}{LaTeX Commands}
+Find the answer with small capitals
+\item \emph{emphasis}
+\item \textbf{bold}
+\item \textit{italic}
+\item \texttt{typewriter}
+\item* \textsc{Small Capitals}
+\item \underline{underlined}
+\item M\textsuperscript{me}
+\item H\textsubscript{2}O
+\item \url{http://192.0.0.256}
+\item \href{mailto:name@server.com}{Contact me}
+\end{multi}
+
+\end{quiz}
+\end{document}

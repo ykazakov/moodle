@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<quiz>
+ 
+<question type="category">
+  <category>
+    <text>$course$/top/LaTeX Macros</text>
+  </category>
+</question>
+ 
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[LaTeX Macros]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>The following commands should not be placed in items: <BR/> and </P><P>Find the \(\rm\LaTeX\) logo </p>]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>\(\rm\TeX\) and \(\rm\LaTeX\)</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>(tilde)&nbsp;and #</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>$ and &</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>& and &sect;</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>{ and }</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>(relax) and (space)</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>(thinspace)&#8239;and&#8239;(space)</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>&hellip; and &hellip;</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>&euro; and &euro;</p>]]></text>
+  </answer>
+</question>
+ 
+</quiz>

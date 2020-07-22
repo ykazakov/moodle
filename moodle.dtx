@@ -840,7 +840,7 @@
 % |\thinspace| & |\,| & |\textsuperscript{}| & \\
 % |\ldots| & |\dots| & |\textsubscript{}| & \\
 % |\euro| & |\texteuro| & |\url{}| & \\
-% & & |\href{}{}| & \\
+% |\TeX| & |\LaTeX|& |\href{}{}| & \\
 % & & |\tikz{}| & \\
 % & & |\includegraphics[]{}| & \\
 % \bottomrule
@@ -4074,11 +4074,11 @@
   }%
 \html@action@def\ldots{%
     \moodle@ifmathmode{\g@addto@macro\htmlize@output{\string\ldots}}%
-                      {\g@addto@macro\htmlize@output{...}}%
+                      {\g@addto@macro\htmlize@output{\otherampersand hellip\othersemicol}}%
   }%
 \html@action@def\dots{%
     \moodle@ifmathmode{\g@addto@macro\htmlize@output{\string\dots}}%
-                      {\g@addto@macro\htmlize@output{...}}%
+                      {\g@addto@macro\htmlize@output{\otherampersand hellip\othersemicol}}%
   }%
 \html@action@def\ {%
     \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherbackslash\otherspace}}%
@@ -4097,6 +4097,12 @@
 \html@action@def\clozerbrace{%
     \xa\g@addto@macro\xa\htmlize@output\xa{\otherrbrace}%
     \endclozemode
+  }%
+\html@action@def\TeX{%
+    \g@addto@macro\htmlize@output{\otherbackslash(\otherbackslash rm\otherbackslash TeX\otherbackslash)}
+  }%
+\html@action@def\LaTeX{%
+    \g@addto@macro\htmlize@output{\otherbackslash(\otherbackslash rm\otherbackslash LaTeX\otherbackslash)}
   }%
 
 {\catcode`;=12\relax\gdef\othersemicol{;}}

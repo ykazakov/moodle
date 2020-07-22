@@ -1,0 +1,37 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = en_US
+% !TEX TS-program = xelatex
+\documentclass{article}
+\usepackage[nostamp]{moodle}
+\ifxetex % FOR XELATEX
+	\usepackage{fontspec}
+\else %% FOR PDFLATEX
+	\usepackage[utf8]{inputenc} % necessary
+	\usepackage[T1]{fontenc} % necessary
+\fi
+\usepackage{eurosym,textcomp}
+
+\begin{document}
+
+\section*{Introduction}
+
+This document is intended to check the support of some \LaTeX\ macros for 
+conversion to HTML.
+
+\begin{quiz}[points=1]{LaTeX Macros}
+\begin{multi}{LaTeX Macros}
+The following commands should not be placed in items: \\ and \par
+Find the \LaTeX\ logo
+\item* \TeX\ and \LaTeX
+\item (tilde)~and \#
+\item \$ and \&
+\item \& and \S
+\item \{ and \}
+\item (relax) \relax and\ (space)
+\item (thinspace)\thinspace and\,(space)
+\item \ldots\ and \dots
+\item \euro\ and \texteuro
+\end{multi}
+
+\end{quiz}
+\end{document}
