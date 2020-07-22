@@ -837,9 +837,11 @@
 % |\&| & |\S| & |\texttt{}| & |\begin{tikzpicture}|\\
 % |\{| & |\}| & |\textsc{]| & \\
 % |\relax| & |\|\textvisiblespace & |\underline{}| &\\
-% |\thinspace| & |\,| & |\url{}| & \\
-% |\ldots| & |\dots| & |\href{}{}| & \\
-% |\euro| & |\texteuro| & |\tikz{}| & \\
+% |\thinspace| & |\,| & |\textsuperscript{}| & \\
+% |\ldots| & |\dots| & |\textsubscript{}| & \\
+% |\euro| & |\texteuro| & |\url{}| & \\
+% & & |\href{}{}| & \\
+% & & |\tikz{}| & \\
 % & & |\includegraphics[]{}| & \\
 % \bottomrule
 % \end{tabular}
@@ -4259,6 +4261,10 @@
 \html@def\textsc#1{<SPAN STYLE=\&\#34;font-variant: small-caps;\&\#34;>#1</SPAN>}
 \html@def\url#1{<A href=\&\#34;#1\&\#34;>#1</A>}%
 \html@def\href#1#2{<A href=\&\#34;#1\&\#34;>#2</A>}%
+\html@def\textsuperscript#1{<SUP>#1</SUP>}%
+\html@def\up#1{<SUP>#1</SUP>}%
+\html@def\fup#1{<SUP>#1</SUP>}%
+\html@def\textsubscript#1{<SUB>#1</SUB>}%
 \html@def\blank{____________}%
 \html@def\par{</P><P>}%
 \html@def\aa{\&aring;}%

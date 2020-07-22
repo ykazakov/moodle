@@ -20,17 +20,17 @@
   \def\pangramme{Dès Noël où un zéphyr haï me vêt de glaçons würmiens je dîne 
 d’exquis rôtis de bœuf au kir à l’aÿ d’âge mûr \& cætera\,!}
   \def\myfeedback{cité dans 
-  \og\emph{\href{https://jacques-andre.fr/faqtypo/lessons.pdf}{Petites 
-  leçons de typographie}}\fg\ de Jacques \textsc{André}.}
+  \og\href{https://jacques-andre.fr/faqtypo/lessons.pdf}{Petites 
+  leçons de typographie}\fg\ de Jacques \textsc{André}.}
 \else
-  \def\myquestiontext{ \underline{Pangramme} con\c{c}u par Gilles 
-  \textsc{Esposito-Far\`ese}\,:}
+  \def\myquestiontext{ \underline{Pangramme} con\c{c}u par M\textsuperscript{r} 
+  Gilles \textsc{Esposito-Far\`ese}\,:}
   \def\pangramme{D\`es No\"el o\`u un z\'ephyr ha\"i me v\^et de 
 gla\c{c}ons w\"urmiens je d\^ine d'exquis r\^otis de b\oe uf au kir \`a l'a\"y 
 d'\^age m\^ur \& c\ae tera\,!}
   \def\myfeedback{cit\'e dans 
-\og\,\emph{\href{https://jacques-andre.fr/faqtypo/lessons.pdf}{Petites 
-  le\c{c}ons de typographie}}\,\fg\ de Jacques \textsc{Andr\'e}.}
+\og\,\href{https://jacques-andre.fr/faqtypo/lessons.pdf}{Petites 
+  le\c{c}ons de typographie}\,\fg\ de Jacques \textsc{Andr\'e}.}
 \fi
 \htmlregister{\myquestiontext}
 \htmlregister{\pangramme}
@@ -43,14 +43,17 @@ This document is intended to check the support of the \texttt{babel} package
 with option \texttt{french} that causes problems during \texttt{pdfLaTeX} 
 compilation, due to autospacing.
 
-Secondarily, the use of \verb|\textsc|, \verb|\underline|, \verb|\url|, and 
-\verb|\href| is also demonstrated.
+Secondarily, the use of \verb|\textsuperscript| (and french adaptation 
+\verb|\fup|), \verb|\textsubscript|, \verb|\textsc|, \verb|\underline|, 
+\verb|\url|, and \verb|\href| is also demonstrated.
 
 \begin{quiz}[points=1]{French Issues}
 \ifpdftex
   \NoAutoSpacing % this option preserves pdflatex compilation
 \fi
-\begin{multi}[feedback={test}]{Test french}
+\begin{multi}[feedback={1\fup{er}, M\fup{me}, N\fup{o}\\
+1\textsuperscript{er}, M\textsuperscript{me}, N\textsuperscript{o}\\
+H\textsubscript{2}O}]{Test french}
 \myquestiontext
 \item[feedback={\myfeedback}]* \pangramme
 \item Portez ce vieux whisky au juge blond qui fume.

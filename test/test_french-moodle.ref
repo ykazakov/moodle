@@ -17,7 +17,7 @@
   </questiontext>
   <defaultgrade>1</defaultgrade>
   <generalfeedback format="html">
-    <text><![CDATA[<p>test</p>]]></text>
+    <text><![CDATA[<p>1<SUP>er</SUP>, M<SUP>me</SUP>, N<SUP>o</SUP><BR/> 1<SUP>er</SUP>, M<SUP>me</SUP>, N<SUP>o</SUP><BR/> H<SUB>2</SUB>O</p>]]></text>
   </generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
@@ -26,7 +26,7 @@
   <answernumbering>abc</answernumbering>
   <answer fraction="100" format="html">
     <text><![CDATA[<p>Dès Noël où un zéphyr haï me vêt de glaçons würmiens je dîne d’exquis rôtis de bœuf au kir à l’aÿ d’âge mûr & cætera&#8239;!</p>]]></text>
-    <feedback format="html"><text><![CDATA[<p>cité dans &laquo;&#8239;<EM><A href=&#34;https://jacques-andre.fr/faqtypo/lessons.pdf&#34;>Petites leçons de typographie</A></EM>&#8239;&raquo; de Jacques <SPAN STYLE=&#34;font-variant: small-caps;&#34;>André</SPAN>.</p>]]></text></feedback>
+    <feedback format="html"><text><![CDATA[<p>cité dans &laquo;&#8239;<A href=&#34;https://jacques-andre.fr/faqtypo/lessons.pdf&#34;>Petites leçons de typographie</A>&#8239;&raquo; de Jacques <SPAN STYLE=&#34;font-variant: small-caps;&#34;>André</SPAN>.</p>]]></text></feedback>
   </answer>
   <answer fraction="0" format="html">
     <text><![CDATA[<p>Portez ce vieux whisky au juge blond qui fume.</p>]]></text>
