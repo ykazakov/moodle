@@ -4612,10 +4612,19 @@
 \AtEndDocument{%
   \ifmoodle@tikzloaded
     \@moodle@ifgeneratexml{%
-      \ifwindows
-        \immediate\write18{del \tikzexternalrealjob-tikztemp-*.*}%
+      \ifxetex
+        % we must leave picture pdf's for later linking
+        \ifwindows
+          \immediate\write18{powershell.exe -noexit "del * -include \tikzexternalrealjob-tikztemp-*.* -exclude *.pdf}%
+        \else
+          \immediate\write18{find . -type f -name "\tikzexternalrealjob-tikztemp-*.*" -not -name "*.pdf" -delete}%
+        \fi
       \else
-        \immediate\write18{rm -f \tikzexternalrealjob-tikztemp-*.*}%
+        \ifwindows
+          \immediate\write18{del \tikzexternalrealjob-tikztemp-*.*}%
+        \else
+          \immediate\write18{rm -f \tikzexternalrealjob-tikztemp-*.*}%
+        \fi
       \fi
     }{}%
   \fi

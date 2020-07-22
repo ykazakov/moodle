@@ -5,7 +5,7 @@ LATEX=latex
 PDFLATEX=xelatex
 LATEXFLAGS=-interaction=nonstopmode -shell-escape
 DIFFTOOL=diff -abBwZ
-FILE_CLEAN=*.sty *.log *.aux *.auxlock *.out *.blg *.bbl *.toc *.xml *.bcf *.synctex.gz *~ *.nav *.snm *.idx *.ilg *.ind _minted-* *.glo *.gls *.dpth
+FILE_CLEAN=*.sty *.log *.aux *.auxlock *.out *.blg *.bbl *.toc *.xml *.bcf *.synctex.gz *~ *.nav *.snm *.idx *.ilg *.ind _minted-* *.glo *.gls *.dpth *-tikztemp-*.pdf
 ifndef DEBUG
 	DEBUG=> /dev/null
 endif
