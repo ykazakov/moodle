@@ -836,7 +836,7 @@
 % |\$| & |\&| &|\textbf{}| & |\begin{enumerate}|\\
 % |\\| & |\par| &|\textit{}| & |\begin{itemize}|\\
 % |\&| & |\S| & |\texttt{}| & |\begin{tikzpicture}|\\
-% |\{| & |\}| & |\textsc{]| & \\
+% |\{| & |\}| & |\textsc{}| & \\
 % |\relax| & |\|\textvisiblespace & |\underline{}| &\\
 % |\thinspace| & |\,| & |\textsuperscript{}| & \\
 % |\ldots| & |\dots| & |\textsubscript{}| & \\
@@ -3445,9 +3445,15 @@
 %    \end{macrocode}
 %
 % \subsection{Level-Tracking}
+%
+% \subsubsection{TeX groups}
+% While parsing, we'll need to keep track of how deeply nested in \TeX\ groups we are.
+\newcount\grouplevel
+%    \end{macrocode}
+%
+% \subsubsection{Math mode}
 % While parsing, we'll need to keep track of whether
-% we are in math mode (and how many levels deep the math mode might be nested),
-% and also how deeply nested in \TeX\ groups we are.
+% we are in math mode (and how many levels deep the math mode might be nested).
 %    \begin{macrocode}
 \newcount\moodle@mathmodedepth
 \moodle@mathmodedepth=0\relax
@@ -3457,12 +3463,15 @@
   \else
     #2%
   \fi
-}
+}%
+%    \end{macrocode}
+%
+% \subsubsection{Nested Lists}
+% While parsing, we'll need to keep track levels of nested list.
+%    \begin{macrocode}
+\newcount\moodle@listdepth
+\moodle@listdepth=0\relax
 
-\newcount\grouplevel
-
-\newif\ifhtmlizer@active
-\htmlizer@activefalse
 %    \end{macrocode}
 %
 % \subsection{Separation}
@@ -3500,6 +3509,8 @@
 % \subsection{Main Code: the HTMLizer}
 % 
 %    \begin{macrocode}
+\newif\ifhtmlizer@active
+\htmlizer@activefalse
 \newif\ifhtmlize@actioncs
 \newif\ifhtmlize@expandcs
 \newif\ifhtmlize@passcs
@@ -3520,7 +3531,7 @@
   \advance\grouplevel by 1\relax
   \bgroup
     \ultradetokenize@to@macro\htmlize@texttoscan{#1}%
-    \xa\htmlize@recursive@i\htmlize@texttoscan\@htmlize@stop\@htmlize@stop\@htmlize@stop\htmlize@rdelim@i
+    \xa\htmlize@recursive@i\htmlize@texttoscan\@htmlize@stop\@htmlize@stop\@htmlize@stop\htmlize@rdelim@i%
   \egroup
   \advance\grouplevel by -1\relax
 }%
@@ -3537,43 +3548,6 @@
   \ifx\test@i\@@htmlize@stop
     \let\htmlize@next@i=\relax
   \else
-%    \ifx\test@i\@clozelbrace%
-%      \xa\g@addto@macro\xa\htmlize@output\xa{\otherlbrace}%
-%\bgroup
-%        \normalcatcodes
-        %We need to rescan the input as TeX code,
-        % so TeX can automatically pull off the first group in braces.
-        % First, let's get rid of the terminal \@htmlize@stop codes.
-%       {\def\@htmlize@stop{}\xdef\htmlize@scrap{#1#2#3}}%
-%        \let\htmlize@text@to@rescan=\htmlize@scrap%
-        % Next, we retokenize the code.
-%        \xa\retokenizenormal@to@macro\xa\htmlize@rescanned\xa{\htmlize@text@to@rescan}%
-        % Now break it up into two pieces.
-%        \xa\htmlize@grabblock\htmlize@rescanned\@htmlize@stop\htmlize@rdelim@ii%
-        % The first piece, \htmlize@blockinbraces, will be passed as a unit to \converttohtml@int.
-        % The second part, \htmlize@remainder, will continue at this depth of grouping.
-        % Therefore we'll detokenize \htmlize@remainder here.
-%        \xa\ultradetokenize@to@macro\xa\htmlize@remainder@detokenized\xa{\htmlize@remainder}%
-%        \edef\htmlize@remainder@detokenized{\xa\htmlize@remove@stopcode\htmlize@remainder@detokenized}%
-        % 
-        % Now build \htmlize@next@i.
-        % When done, should look like
-        %   \converttohtml@int{\htmlize@blockinbraces}%
-        %   \g@addto@macro\htmlize@output{\otherrbrace}%
-        %   \htmlize@recursive@i\htmlize@remainder@detokenized\@htmlize@stop\@htmlize@stop\@htmlize@stop\htmlize@rdelim@i%
-        % but with all three arguments expanded.
-        % Note that we are running
-%        \gdef\htmlize@scrap{\converttohtml@int}%
-%        \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\htmlize@blockinbraces}}%
-%        \g@addto@macro\htmlize@scrap{\g@addto@macro\htmlize@output}%
-%        \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\otherbackslash\otherrbrace}}%
-%        \g@addto@macro\htmlize@scrap{\htmlize@recursive@i}%
-        %\xa\g@addto@macro\xa\htmlize@scrap\xa{\htmlize@remainder@detokenized\@htmlize@stop\@htmlize@stop\@htmlize@stop\htmlize@rdelim@i}%
-        % Okay, that's done.  It's stored in a global macro.
-        % Now we get it out of this group.
-%      \egroup
-%      \let\htmlize@next@i=\htmlize@scrap
-%    \else
     \ifx\test@i\@otherlbrace%
       \xa\g@addto@macro\xa\htmlize@output\xa{\otherlbrace}%
       \bgroup
@@ -3809,7 +3783,6 @@
         \fi% \ifx\test@i\@otherbackslash%
       \fi% \ifx\test@i\@otherdollar%
     \fi% \ifx\test@i\@otherlbrace%
-%\fi% \ifx\test@i\@clozelbrace%
   \fi% \ifx\test@i\@@htmlize@stop
   \htmlize@next@i
 }%
@@ -4010,20 +3983,50 @@
 \htmlize@record@environment{shortanswer}
 
 \html@newenvironment{center}{\xdef\htmlize@afteraction@hook{<CENTER>\expandonce\BODY</CENTER>}}%
-\html@newenvironment{enumerate}{%
-    \xa\gatheritems\xa{\BODY}%
-    \gdef\htmlize@afteraction@hook{<OL>}%
-    \loopthroughitemswithcommand{\moodle@itemtoLI}%
-    \g@addto@macro\htmlize@afteraction@hook{</OL>}%
+
+\def\moodle@save@getitems@state{%
+  \global\xa\xdef\csname moodle@currentitemnumber@level@\the\moodle@listdepth\xa\endcsname\xa{\thecurrentitemnumber}%
+  \global\xa\xdef\csname moodle@numgathereditems@level@\the\moodle@listdepth\xa\endcsname\xa{\thenumgathereditems}%
+  \moodle@saveitems{\thenumgathereditems}%
 }%
-\html@newenvironment{itemize}{%
-    \xa\gatheritems\xa{\BODY}%
-    \gdef\htmlize@afteraction@hook{<UL>}%
-    \loopthroughitemswithcommand{\moodle@itemtoLI}%
-    \g@addto@macro\htmlize@afteraction@hook{</UL>}%
+\def\moodle@restore@getitems@state{%
+  \setcounter{numgathereditems}{\csname moodle@numgathereditems@level@\the\moodle@listdepth\endcsname}%
+  \setcounter{currentitemnumber}{\csname moodle@currentitemnumber@level@\the\moodle@listdepth\endcsname}%
+  \moodle@restoreitems{\thenumgathereditems}%
 }%
+\def\moodle@saveitems#1{%
+  \ifnum#1>0%
+    \global\csletcs{moodle@level@\the\moodle@listdepth @item@#1}{getitems@item@#1}%
+    \xa\moodle@saveitems\xa{\number\numexpr#1-1\expandafter}%
+  \fi
+}%
+\def\moodle@restoreitems#1{%
+  \ifnum#1>0%
+    \global\csletcs{getitems@item@#1}{moodle@level@\the\moodle@listdepth @item@#1}%
+    \global\xa\let\csname moodle@level@\the\moodle@listdepth @item@#1\endcsname=\@undefined
+    \xa\moodle@restoreitems\xa{\number\numexpr#1-1\expandafter}%
+  \fi
+}%
+\def\moodle@makelistenv#1#2{%
+  \html@newenvironment{#1}{%
+    \advance\moodle@listdepth by 1\relax
+    \moodle@save@getitems@state%
+      \xa\gatheritems\xa{\BODY}%
+      \gdef\htmlize@afteraction@hook{<#2>}%
+      \loopthroughitemswithcommand{\moodle@itemtoLI}%
+      \g@addto@macro\htmlize@afteraction@hook{</#2>}%
+    \moodle@restore@getitems@state%
+    \advance\moodle@listdepth by -1\relax
+  }%
+}%
+
+\moodle@makelistenv{enumerate}{OL}%
+\moodle@makelistenv{itemize}{UL}%
+
 \def\moodle@itemtoLI#1{%
-  \g@addto@macro\htmlize@afteraction@hook{<LI>#1</LI>}%
+  \g@addto@macro\htmlize@afteraction@hook{<LI>#1}%
+  \trim@spaces@in\htmlize@afteraction@hook%
+  \g@addto@macro\htmlize@afteraction@hook{</LI>}%
 }%
 
 %    \end{macrocode}

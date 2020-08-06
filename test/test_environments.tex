@@ -1,0 +1,54 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = en_US
+% !TEX TS-program = xelatex
+\documentclass{article}
+\usepackage{../moodle} %[nostamp]
+\ifxetex % FOR XELATEX
+	\usepackage{fontspec}
+\else %% FOR PDFLATEX
+	\usepackage[utf8]{inputenc} % necessary
+	\usepackage[T1]{fontenc} % necessary
+\fi
+%\usepackage{yfonts} % for fraktur font
+%\usepackage{varwidth}
+%\usepackage{tikz}
+
+\renewcommand\theenumiii{\arabic{enumiii}}% third level
+\begin{document}
+
+\section*{Introduction}
+
+This document is intended to check the support of some \LaTeX\ environments for 
+conversion to HTML.
+
+\begin{quiz}[points=1]{LaTeX Environments}
+\begin{multi}{LaTeX Environments}
+\begin{center}
+\textsc{This is a question}
+\end{center}
+Select the numbered list
+\item[feedback={yes}]* \begin{enumerate}
+         \item C
+         \item D
+         \begin{itemize}
+           \item S
+           \item T
+           \item U
+          \end{itemize}  
+       \end{enumerate}
+\item[feedback={Example of numbered list:\\\begin{enumerate}
+\item first item
+\item second item
+\end{enumerate}
+}] \begin{itemize}
+         \item E
+         \begin{enumerate}
+         \item X
+         \item Y
+         \item Z
+         \end{enumerate}
+         \item F
+      \end{itemize}
+\end{multi}
+\end{quiz}
+\end{document}
