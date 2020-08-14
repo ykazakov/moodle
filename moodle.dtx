@@ -4418,7 +4418,7 @@
     \message{moodle.sty:   Converting '#2' to PNG...^^J}%
     \expandafter\immediate\expandafter\write18\expandafter{\cmdline}%
     %Next, optimize
-    \edef\cmdline{\optipng\otherspace -clobber -quiet #2.png}
+    \edef\cmdline{\optipng\otherspace -clobber -strip all -quiet #2.png}
     \message{moodle.sty:   Optimizing '#2.png'...^^J}%
     \expandafter\immediate\expandafter\write18\expandafter{\cmdline}%
     %Next, convert the PNG to base64 encoding
@@ -4498,7 +4498,7 @@
     \long\def\tikzifexternalizing#1#2{#2}%
   \else
   \ifmoodle@tikzloaded
-    \usetikzlibrary{external}
+    \usetikzlibrary{external}%
     \tikzexternalize%
     \tikzset{external/force remake}%
 
@@ -4519,7 +4519,7 @@
                     \expandafter\immediate\expandafter\write18\expandafter{\gscmdline}}%
       \fi
     \fi
-    \def\pngoptim{\edef\cmdline{\optipng\otherspace -clobber -quiet \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png}%
+    \def\pngoptim{\edef\cmdline{\optipng\otherspace -clobber -strip all -quiet \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png}%
       \expandafter\immediate\expandafter\write18\expandafter{\cmdline}}%
     \ifwindows
       \def\pngtobaselxiv{\edef\baselxivcmdline{\baselxiv\otherspace -encode \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png tmp.b64 && findstr /vbc:"---" tmp.b64 > \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc && del tmp.b64}%
