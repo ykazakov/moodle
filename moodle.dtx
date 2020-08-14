@@ -842,7 +842,7 @@
 % |\ldots| & |\dots| & |\textsubscript{}| & \\
 % |\euro| & |\texteuro| & |\url{}| & \\
 % |\TeX| & |\LaTeX|& |\href{}{}| & \\
-% & & |\tikz{}| & \\
+% & & |\tikz[]{}| & \\
 % & & |\includegraphics[]{}| & \\
 % \bottomrule
 % \end{tabular}
@@ -871,18 +871,19 @@
 % \section{Graphics}
 % The \textsf{moodle} package can handle two kinds of graphics seamlessly.
 % External graphics files may be included with the |\includegraphics| command
-% from the |graphicx| package,
-% and graphics may be generated internally using \TikZ.  In either case, the 
-% graphics will be embedded in base-64 encoding directly within
+% from the |graphicx| package, and graphics may be generated internally using \TikZ. 
+% In either case, the graphics will be embedded in base-64 encoding directly within
 % the Moodle~XML produced.  This prevents the hassle of managing separate
 % graphics files on the Moodle server, as Moodle will store the picture 
 % within the question in the question bank.
 % 
+% \subsection{Default \texttt{includegraphics}}
 % \DescribeMacro{\includegraphics}\DescribeMacro{height}\DescribeMacro{width}
 % When using |\includegraphics|, the only options currently supported 
 % are |height| and |width|.  Attempts to use other |\includegraphics| options,
 % such as |scale| or |angle|, will affect the PDF but not the XML output.
-% The dimensions set by |height| and |width| are \TeX\ dimensions such as 4\,in or 2.3\,cm.
+% The dimensions set by |height| and |width| are \TeX\ dimensions such as \texttt{4\,in}
+% or \texttt{2.3\,cm}.
 % In order to prepare the image for web viewing, this package converts those 
 % dimensions to pixels using a default of 
 % 103 pixels per inch.\footnote{This
@@ -897,11 +898,36 @@
 % \DescribeMacro{\graphicspath}
 % You can use |\graphicspath{{|\emph{path}|}}| to specify a directory where the
 % pictures to be included are located.
-% 
-% The mechanism used is somewhat fragile and relies upon one \TikZ\ library and three free external programs.
+%
+% \subsection{\TikZ\ Pictures}
+% When \TikZ\ is loaded and used to define pictures, \textsf{moodle} invokes
+% the |external| \TikZ\ library, so that each |tikzpicture| environment is compiled
+% to a freestanding PDF file.
+%
+% \subsection{Package Option \texttt{tikz}}
+% \DescribeMacro{tikz}
+% The \textsf{moodle} package admits a \texttt{tikz} option which has the following effects:
+% \begin{itemize}
+% \item the package \texttt{tikz} is loaded.
+% \item \texttt{includegraphics} is embedded in a \TikZ\ picture. Consequences are that
+%   \begin{itemize}
+%     \item the pictures encoded in the XML file are resampled. This prevents encoding
+%           images at a higher resolution than rendered by Moodle.
+%     \item the full potential of \texttt{includegraphics} options is accessible,
+% e.g.~|scale=.5|, |angle=90|, or |width=.2\textwidth|.
+%   \end{itemize}
+% \item \DescribeMacro{\embedaspict} a macro |\embedaspict{...}| is defined for the
+% inclusion of \LaTeX\ material as images. This can be a fallback solution for limitations
+% of this package---like the conversion of tabulars to HTML---or limitations of Moodle itself.
+% For the definition of this macro, the package \texttt{varwidth} is loaded.
+% \item optimizations of the \TikZ-external library are disabled. Compilation might get
+% sensibly slower.
+% \end{itemize}
+%
+% \subsection{External Tools}
+% The mechanisms used for handling graphics are somewhat fragile and rely upon
+% three free external programs.
 % \begin{enumerate}
-%   \item \textsf{moodle} invokes |\usetikzlibrary{external}|,
-%         so that each |tikzpicture| environment is compiled to a freestanding PDF file.
 %   \item GhostScript (\url{www.ghostscript.com}) is used to convert the PDF output
 %         from \TikZ\ into a PNG raster graphics file.
 %         The default command line is presumed to be |gswin64c.exe| 
@@ -1169,6 +1195,7 @@
 %    \begin{macrocode}
 \newif\ifmoodle@draftmode
 \newif\ifmoodle@stampmode
+\newif\ifmoodle@tikz
 \newif\ifmoodle@tikzloaded
 \newif\ifmoodle@section
 \newif\ifmoodle@subsection
@@ -1178,6 +1205,7 @@
 \DeclareOption{draft}{\moodle@draftmodetrue}
 \DeclareOption{final}{\moodle@draftmodefalse}
 \DeclareOption{nostamp}{\moodle@stampmodefalse}
+\DeclareOption{tikz}{\moodle@tikztrue}
 \DeclareOption{section}{\moodle@sectiontrue\moodle@numberedtrue}
 \DeclareOption{section*}{\moodle@sectiontrue\moodle@numberedfalse}
 \DeclareOption{subsection}{\moodle@sectionfalse\moodle@numberedtrue}
@@ -1185,6 +1213,7 @@
 
 \moodle@draftmodefalse
 \moodle@stampmodetrue
+\moodle@tikzfalse
 \moodle@tikzloadedfalse
 \moodle@subsectiontrue
 \moodle@numberedfalse
@@ -1205,7 +1234,6 @@
 %     2) when output pdf is latin1-encoded (ifpdf)
 %     3) when output xml is utf8-encoded (if?tex)
 \RequirePackage{fancybox} % Needed for fancy LaTeX tags
-
 \RequirePackage{getitems} %To gather the header and items
 
 \let\xa=\expandafter
@@ -1214,6 +1242,7 @@
 \def\@fifty{50}%
 \def\@moodle@empty{}%
 \def\@relax{\relax}%
+\def\@moodle@par{\par}%
 %    \end{macrocode}
 % As the package involves a fair bit of file processing,
 % we automate the naming of auxiliary files.
@@ -3929,6 +3958,25 @@
   \xa\g@addto@macro\xa\htmlize@activate@css\xa{\htmlize@scrap}%
   \xa\def\csname html@\string#1\endcsname% %And this \def\html@\oldcsname is follows by the remainder of the definition.
 }
+\def\html@action@newcommand#1[#2][#3]#4{%
+  %\message{>>> Defining #1[#2][#3]{...} ^^J}
+  \ifmoodle@draftmode
+  \else
+    \xa\html@action@def\csname #1\endcsname{\csname moodle@#1@int\endcsname}%
+  \fi
+  % Note that \htmlize@do@actioncs will 'patch' this by putting 
+  % '\xa\htmlize@proceedwiththerest\htmlize@afteraction@hook'
+  % at the end.  We want those 3 tokens to occur instead after
+  % the graphics filename.
+  \xa\csdef{moodle@#1@int}##1##2##3{\csname moodle@#1@int@int\endcsname}%
+  % This gobbles up those three spurious tokens,
+  % which we will re-insert after our work is done.
+  \xa\newcommand\csname moodle@#1@int@int\endcsname[#2][#3]{%
+    #4%
+    % Now we re-insert the code to get the HTMLizing going again.
+    \xa\htmlize@proceedwiththerest\htmlize@afteraction@hook
+  }%
+}
 %    \end{macrocode}
 % 
 % \subsubsection{Engine for expansion control sequences}
@@ -4369,19 +4417,33 @@
 %    \end{macrocode}
 % 
 % \subsubsection{Graphics conversion to HTML}
+% If the |tikz| option is loaded, we define the |embedaspict| command.
+% Furthermore, |includegraphics| is packed into a TikZ node.
+% This allows externalization with regular options for |includegraphics|.
+% Otherwise, |includegraphics| is redefined with a limited set of options supported.
 %    \begin{macrocode}
-\ifmoodle@draftmode
+\ifmoodle@tikz
+\AfterEndPreamble{%
+  %\tikzstyle{moodlepict}=[minimum height=1em,inner sep=0pt,execute at begin node={\begin{varwidth}{\linewidth}},execute at end node={\end{varwidth}}]%
+  %\newcommand\embedaspict[1]{\tikz[baseline=-\the\dimexpr\fontdimen22\textfont2\relax]{\node[moodlepict]{\mbox{#1}};}}%
+  %\htmlize@record@expand{\embedaspict}%
+  \let\oldincludegraphics=\includegraphics
+  % patching includegraphics to trigger externalization
+  \renewcommand{\includegraphics}[2][]{%
+    %\message{moodle.sty: Processing \string\includegraphics[#1]{#2} for HTML^^J}%
+    \tikz{\node[inner sep=0pt]{\oldincludegraphics[#1]{#2}};}%
+  }%
+  % externalized images must be included with the regular command
+  \pgfkeys{/pgf/images/include external/.code={\oldincludegraphics{#1}}}%
+  \html@action@newcommand{includegraphics}[2][]{%
+    \message{moodle.sty: Processing \string\includegraphics[#1]{#2} ^^J}
+    \global\advance\numpicturesread by 1\relax
+    \edef\htmlize@imagetag{<IMG SRC="data:image/png;base64,\csname picbaselxiv@\the\numpicturesread\endcsname">}%
+    \xa\g@addto@macro\xa\htmlize@output\xa{\htmlize@imagetag}%
+  }%
+}%
 \else
-\html@action@def\includegraphics{\moodle@includegraphics@int}%
-\fi
-  % Note that \htmlize@do@actioncs will 'patch' this by putting 
-  % '\xa\htmlize@proceedwiththerest\htmlize@afteraction@hook'
-  % at the end.  We want those 3 tokens to occur instead after
-  % the graphics filename.
-\def\moodle@includegraphics@int#1#2#3{\moodle@includegraphics@int@int}%
-  % This gobbles up those three spurious tokens,
-  % which we will re-insert after our work is done.
-\newcommand\moodle@includegraphics@int@int[2][]{%
+\html@action@newcommand{includegraphics}[2][]{%
   \bgroup% The grouping is to localize the changes caused by \setkeys.
     \message{moodle.sty: Processing \string\includegraphics[#1]{#2} for HTML...^^J}
     \setkeys*{moodle@includegraphics}{#1}%
@@ -4451,9 +4513,8 @@
     \xa\g@addto@macro\xa\htmlize@output\xa{\htmlize@imagetag}%
     \message{moodle.sty:   <IMG> tag inserted.^^J}%
   \egroup
-  % Now we re-insert the code to get the HTMLizing going again.
-  \xa\htmlize@proceedwiththerest\htmlize@afteraction@hook
-}
+}%
+\fi
 %    \end{macrocode}
 % The following code accomplishes the reading of an |.enc| file into memory.
 % It is also used by the \TikZ\ code below.
@@ -4581,8 +4642,12 @@
         \message{moodle.sty:   base64 data saved.^^J}%
       }{}%
     }
-    \tikzset{external/optimize=true}
-    \tikzset{external/optimize command away={\VerbatimInput}{1}}
+    \ifmoodle@tikz
+      \tikzset{external/optimize=false} % due to redefinition, includegraphics must not be optimized away
+    \else
+      \tikzset{external/optimize=true}
+      \tikzset{external/optimize command away={\VerbatimInput}{1}}
+    \fi
     %
     % The HTMLizer version of the tikzpicture environment,
     % which writes an <IMG> tag to the XML file.
@@ -4595,7 +4660,8 @@
         \xa\g@addto@macro\xa\htmlize@output\xa{\htmlize@imagetag}%
       }[\htmlize@patchendenvironment]%
     }%
-    \html@action@def\tikz#1{%
+    \html@action@newcommand{tikz}[2][]{%
+%      \message{>>> Processing \string\tikz[#1]{...} ^^J}
       \global\advance\numpicturesread by 1\relax
       \edef\htmlize@imagetag{<IMG SRC="data:image/png;base64,\csname picbaselxiv@\the\numpicturesread\endcsname">}%
       \xa\g@addto@macro\xa\htmlize@output\xa{\htmlize@imagetag}%
@@ -4604,6 +4670,11 @@
     %TikZ not loaded.  Provide dummy definitions for commands.
     \long\def\tikzifexternalizing#1#2{#2}%
   \fi
+  \fi
+  \ifmoodle@tikz
+    \tikzstyle{moodlepict}=[minimum height=1em,inner sep=0pt,execute at begin node={\begin{varwidth}{\linewidth}},execute at end node={\end{varwidth}}]
+    \newcommand\embedaspict[1]{\tikz[baseline=-\the\dimexpr\fontdimen22\textfont2\relax]{\node[moodlepict]{\mbox{#1}};}}
+    \htmlize@record@expand{\embedaspict}
   \fi
 }
 
@@ -4620,7 +4691,13 @@
   \xa\global\xa\let\csname picbaselxiv@\the\numconvertedpictures\endcsname=\moodle@newpic@baselxiv%
 }
 
-\def\@moodle@par{\par}%
+\ifmoodle@tikz
+  \ifmoodle@tikzloaded
+    \PackageWarning{moodle}{With package option 'tikz', you should not load TikZ manually.}%
+  \fi
+  \RequirePackage{tikz}%
+  \RequirePackage{varwidth}% for the command |embedaspict|
+\fi
 %    \end{macrocode}
 % Finally, we clean up our mess by deleting the temporary PDF, PNG, and ENC 
 % files we created.

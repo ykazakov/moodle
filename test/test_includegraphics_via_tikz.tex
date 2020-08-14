@@ -1,0 +1,38 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = en_US
+% !TEX TS-program = xelatex
+\documentclass{article}
+\usepackage[nostamp,tikz]{moodle}
+\ifxetex % FOR XELATEX
+	\usepackage{fontspec}
+\else %% FOR PDFLATEX
+	\usepackage[utf8]{inputenc} % necessary
+	\usepackage[T1]{fontenc} % necessary
+\fi
+\begin{document}
+
+\section*{Introduction}
+
+This document is intended to experiment the support of picture inclusion using 
+\texttt{includegraphics} via \texttt{tikz}.
+
+\begin{quiz}{Includegraphics with TikZ}
+
+\begin{multi}{Picture}
+\includegraphics[width=2em,angle=90]{fig/1.png}
+%\includegraphics{fig/1.png}
+\item* \includegraphics[scale=.5]{fig/2.png}
+\item \includegraphics{fig/3.png}
+\end{multi}
+
+\graphicspath{{./fig/}}
+\begin{matching}[dd]{Picture}
+\includegraphics{1.png}
+\item \includegraphics[angle=45]{2.png} \answer \includegraphics{3.png}
+\item \includegraphics[angle=-45]{4.png} \answer 
+\includegraphics{5.png}
+\end{matching}
+
+\end{quiz}
+
+\end{document}
