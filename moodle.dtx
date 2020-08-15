@@ -254,20 +254,17 @@
 %   \def\myreactiontoasillyanswer{What!?}
 %   \htmlregister{\myreactiontoasillyanswer}
 %   \begin{document}
-%   
 %   \begin{quiz}{My first quiz}
 %     \begin{numerical}[points=2]{Basic addition}
 %       What is $8+3$?
 %       \item 11
 %     \end{numerical}
-%     
 %     \begin{shortanswer}[usecase]{Newton's name}
 %       What was Newton's first name?
 %       \item Isaac
 %       \item[fraction=0, feedback={No, silly!}] Fig
 %       \item[fraction=0] Sir
 %     \end{shortanswer}
-%     
 %     \begin{multi}[points=3]{A first derivative}
 %       What is the first derivative of $x^3$?
 %       \item[feedback={no!}]  $\frac{1}{4} x^4+C$
@@ -275,7 +272,6 @@
 %       \item[feedback={\myreactiontoasillyanswer}]  $51$
 %     \end{multi}
 %   \end{quiz}
-%   
 %   \end{document}
 % \end{VerbatimOut}
 % \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
@@ -913,12 +909,13 @@
 %   \begin{itemize}
 %     \item the pictures encoded in the XML file are resampled. This prevents encoding
 %           images at a higher resolution than rendered by Moodle.
-%     \item the full potential of \texttt{includegraphics} options is accessible,
+%     \item the full set of \texttt{includegraphics} options is accessible,
 % e.g.~|scale=.5|, |angle=90|, or |width=.2\textwidth|.
 %   \end{itemize}
-% \item \DescribeMacro{\embedaspict} a macro |\embedaspict{...}| is defined for the
-% inclusion of \LaTeX\ material as images. This can be a fallback solution for limitations
-% of this package---like the conversion of tabulars to HTML---or limitations of Moodle itself.
+% \item \DescribeMacro{\embedaspict} a macro |\embedaspict{...}| is provided for the
+% inclusion of inline \LaTeX\ material as images. This can serve as a workaround to
+% overcome limitations of this package---like the conversion of tabulars to HTML---
+% or limitations of Moodle itself.
 % For the definition of this macro, the package \texttt{varwidth} is loaded.
 % \item optimizations of the \TikZ-external library are disabled. Compilation might get
 % sensibly slower.
@@ -1715,7 +1712,7 @@
           \renewcommand\labelenumii{$\bullet$~}%
         \fi
       }
-      %TO DO: * In the PDF, how should 'none' in a multi look different from 
+      %TODO: * In the PDF, how should 'none' in a multi look different from 
       %         short answer or numerical options?
       %       * Instead of \theenumi and \labelenumi,
       %         use \@enumdepth to automatically set the correct depth.
@@ -1736,7 +1733,7 @@
       %tolerance is given within the answer tag,
       %like <answer fraction=100 tolerance=0.03>.
 
-% TO DO: implement unit-handling for numerical questions!
+% TODO: implement unit-handling for numerical questions!
 %    \end{macrocode}
 % \subsubsection{Keys for short answer questions}
 %    \begin{macrocode}
@@ -1811,7 +1808,7 @@
 
 %% RESPONSE REQUIRED
       \define@boolkey{moodle}[moodle@]{response required}[true]{}%
-      % TO DO: Make synonym 'required'
+      % TODO: Make synonym 'required'
       \generate@moodle@write@code*{responserequired}<responserequired>{\csname ifmoodle@response required\endcsname 1\else 0\fi}%
       \moodleset{response required=false}%
 
@@ -1865,7 +1862,7 @@
       }%
       \moodleset{clearwrong=false}%
 
-% TO DO: Implement hints
+% TODO: Implement hints
 %    \end{macrocode}
 %
 % \subsection{Answer handling}
@@ -2083,7 +2080,7 @@
   \egroup
 }%
 
-%%%% TO DO
+%%%% TODO
 %%%% To make essay work will be tough.
 %%%% Every line from \ifnum\c@numgathereditems=0\relax through its \else and \fi,
 %%%% with the exception of
@@ -2159,7 +2156,7 @@
 % 
 %    \begin{macrocode}
 \def\blank{\rule{1in}{0.5pt}}%
-% TO DO: Make an optional argument for width?  This wouldn't affect Moodle,
+% TODO: Make an optional argument for width?  This wouldn't affect Moodle,
 %        only the appearance in the PDF.  It doesn't seem worth it.
 
 %\NewEnviron{shortanswer}[2][]{%
@@ -4449,10 +4446,11 @@
     \setkeys*{moodle@includegraphics}{#1}%
     % Height or width should be given in TeX dimensions like cm or pt or in,
     % and are converted to pixels for web use using the ppi key.  
-    % TO DO: Can we modify \includegraphics to accept height or width in 
+    % TODO: Can we modify \includegraphics to accept height or width in 
     %        pixels?
-    % TO DO: What about \includegraphics[scale=0.7] ?
+    % TODO: What about \includegraphics[scale=0.7] ?
     %        Other keys: keepaspectratio=true|false, angle (rotation), clip & trim
+    %           -> the package option 'tikz' offers a workaround for this
     \ifnum\moodle@graphics@height@pixels=0\relax
       \ifnum\moodle@graphics@width@pixels=0\relax
         % No size specified.  Default to height of 200 pixels.
