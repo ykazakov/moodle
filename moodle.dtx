@@ -57,7 +57,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{5815} ^^A Comment \OnlyDescription above to adjust
+% \CheckSum{6438} ^^A Comment \OnlyDescription above to adjust
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -840,6 +840,11 @@
 % |\TeX| & |\LaTeX|& |\href{}{}| & \\
 % & & |\tikz[]{}| & \\
 % & & |\includegraphics[]{}| & \\
+% & & |\verbatiminput{}| & \\
+% & & |\VerbatimInput[]{}| & \\
+% & & |\LVerbatimInput[]{}| & \\
+% & & |\BVerbatimInput[]{}| & \\
+% & & |\inputminted[]{}{}| & \\
 % \bottomrule
 % \end{tabular}
 % \end{table}
@@ -963,7 +968,84 @@
 %         environment instead of |circuitikz|. That is required,
 %         as of \TikZ\ 2.1, by the |external| library.
 % \end{itemize}
+%
+% \section{Verbatim Code}
+% Because, for HTML translation, \textsf{moodle} parses the body of questions, the use of 
+% verbatim code results in compilation errors. This is why the use of |\verb|,
+% |\begin{verbatim}| and other standard utilities is not supported.
+%
+% However, using the following three utilities, verbatim code can be imported from an external file:
+% \begin{enumerate}
+%   \item \DescribeMacro{\verbatiminput}|\verbatiminput|\marg{filename} from the \textsf{verbatim}
+%         package inserts verbatim code in both the PDF and the XML for moodle, without fancy additions.
+%   \item \DescribeMacro{\VerbatimInput}The macro |\VerbatimInput|\marg{options}\marg{filename} from
+%         \textsf{fancyvrb} or \textsf{fvextra} does more, with several options and settings offered
+%         (see below).
+%         The variants \DescribeMacro{\BVerbatimInput}|\VBerbatimInput| and
+%         \DescribeMacro{\LVerbatimInput}|\LBerbatimInput| are also supported, with identical
+%         effect on the XML output.
+%         The variants with a star are unsupported and result in errors when used.
+%   \item \DescribeMacro{\inputminted}On top of that |\inputminted|\oarg{options}\marg{lang}
+%         \marg{filename}from the \textsf{minted} package offers syntaxic highlighting tailored to the
+%         specified language.
+% \end{enumerate}
+% The \textsf{moodle} package handles these three commands to pass the code in the output XML.
+%
+% With |\VerbatimInput| and |\inputminted|, the options that are taken care of for XML
+% generation are listed in Table~\ref{tab:verbatim-options}. Using |\fvset|\marg{key=value,...},
+% options can be set globally. Equivalently, with \textsf{minted},
+% |\setminted|\oarg{lang}\marg{key=value,...} is available.
+%
+% \begin{table}[tbp]
+% \centering
+% \begin{threeparttable}[b]
+% \caption{Options and corresponding values considered for XML generation of verbatim material
+% with \texttt{VerbatimInput} and \texttt{inputminted}.}
+% \label{tab:verbatim-options}
+% \begin{tabular}{ll}
+% \toprule
+% Option keys & Possible values\\\cmidrule(lr){1-1}\cmidrule(lr){2-2}
+% ^^A\texttt{commentchar} & \meta{character}\\
+% \texttt{gobble} & \meta{integer}\\
+% \texttt{autogobble}\tnote{1} & \texttt{true} or \texttt{false}\\
+% \texttt{tabsize} & \meta{integer}\\
+% \texttt{numbers} & \texttt{none}, \texttt{left}, \texttt{right}, or \texttt{both}\tnote{2}\\
+% \texttt{firstnumber} & \texttt{auto}, \texttt{last}, or \meta{integer}\\
+% \texttt{firstline} & \meta{integer}\\
+% \texttt{lastline} & \meta{integer}\\
+% \texttt{numberblanklines} & \texttt{true} or \texttt{false}\\
+% \texttt{highlightlines}\tnote{2} & \marg{coma-separated list of integers or ranges}\\
+% \texttt{style}\tnote{1} & \meta{string}\\
+% \bottomrule
+% \end{tabular}
+%\begin{tablenotes}
+%\item[1] \texttt{autogobble}, \texttt{numbers=both}, and \texttt{style} are offered only by \textsf{minted}.
+%\item[2] line highlighting is offered only with \textsf{fvextra} or \textsf{minted} loaded.
+%\end{tablenotes}
+%\end{threeparttable}
+%\end{table}
+%
+% In order to define the verbatim code from the \LaTeX\ document itself, it is still possible
+% to use, outside the scope of the \textsf{moodle} questions, the environments |filecontents*|  (from the
+% \textsf{filecontents} package or \LaTeX\ kernel itself since 2019) or |VerbatimOut|
+% (from the \textsf{fancyvrb} and \textsf{fvextra} packages).
 % 
+% When code decorated with left-side line numbers is placed in question items, the output PDF could
+% show a collision between numbers of the item and the first line. To avoid this, |\LVerbatimInput| or
+% |\BVerbatimInput| can be used. Instead, when \textsf{minted} is used, the ``left-right'' mode can be
+% enforced with the \LaTeX\ command:
+% \begin{quote}
+%   |\RecustomVerbatimEnvironment{Verbatim}{LVerbatim}{}|
+%  \end{quote}
+%
+% When using utilies from \textsf{fancyvrb}, \textsf{fvextra}, or \textsf{minted}, \textsf{moodle} sets
+% framing options for the display of code in the output PDF:
+% \begin{quote}
+%   |\fvset{frame=lines,label={[Beginning of code]End of code},|\\
+%   |       framesep=3mm,numbersep=9pt}|
+% \end{quote}
+% These settings can be overidden using |\fvset| after the preamble.
+%
 % \section{Known Limitations and Call for Bug Reports}
 % Table~\ref{tab:support-limitations} lists some different features supported, limitations, and
 % bugs.
@@ -3474,6 +3556,7 @@
 %
 % \subsubsection{TeX groups}
 % While parsing, we'll need to keep track of how deeply nested in \TeX\ groups we are.
+%    \begin{macrocode}
 \newcount\grouplevel
 %    \end{macrocode}
 %
@@ -4421,8 +4504,6 @@
 %    \begin{macrocode}
 \ifmoodle@tikz
 \AfterEndPreamble{%
-  %\tikzstyle{moodlepict}=[minimum height=1em,inner sep=0pt,execute at begin node={\begin{varwidth}{\linewidth}},execute at end node={\end{varwidth}}]%
-  %\newcommand\embedaspict[1]{\tikz[baseline=-\the\dimexpr\fontdimen22\textfont2\relax]{\node[moodlepict]{\mbox{#1}};}}%
   %\htmlize@record@expand{\embedaspict}%
   \let\oldincludegraphics=\includegraphics
   % patching includegraphics to trigger externalization
@@ -4726,6 +4807,289 @@
 % * In cloze multi, how to handle HTML or TeX in answers?  In particular, what about ~?
 %\end{macro}
 %
+% \subsection{Verbatim Code}
+% 
+% We start by defining a macro to parameter a style for code box display in Moodle
+%    \begin{macrocode}
+\def\xmlDisplayVerbatimBox{border-top: thin solid; border-bottom: thin solid}%
+%    \end{macrocode}
+% First, let us handle |\verbatiminput| from the `verbatim' package
+%    \begin{macrocode}
+\html@action@def\verbatiminput#1{%
+  \message{moodle.sty: Processing \string\verbatiminput{#1} for HTML ^^J}%
+  \g@addto@macro\htmlize@output{<PRE style="\xmlDisplayVerbatimBox"><CODE>}%
+  %%%%%%%%%%%%%% from verbatim %%%%%%%%%%%%%%%%%
+  \@bsphack
+  \let\do\@makeother\dospecials
+  \catcode`\^^M\active
+  \def\verbatim@processline{\xa\g@addto@macro\xa\htmlize@output\xa{\the\verbatim@line<BR/>}}
+  \verbatim@readfile{#1}%
+  \@esphack
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \g@addto@macro\htmlize@output{</CODE></PRE>}%
+}%
+%    \end{macrocode}
+% Second, we deal with |\VerbatimInput| from `fancyvrb' or `fvextra'
+%    \begin{macrocode}
+\@ifpackageloaded{minted}{\PackageError{moodle}{'moodle' should be loaded before 'minted'.}%
+{'moodle' loads 'fancybox' which, unfortunately, redefines verbatim commands.}}%
+\@ifpackageloaded{fvextra}{\PackageError{moodle}{'moodle' should be loaded before 'fvextra'.}%
+{'moodle' loads 'fancybox' which, unfortunately, redefines verbatim commands.}}%
+\@ifpackageloaded{fancyvrb}{\PackageError{moodle}{'moodle' should be loaded before 'fancyvrb'.}%
+{'moodle' loads 'fancybox' which, unfortunately, redefines verbatim commands.}}%
+
+\html@action@newcommand{VerbatimInput}[2][]{%
+  \message{moodle.sty: Processing \string\VerbatimInput[#1]{#2} for HTML ^^J}%
+  \def\FV@KeyValues{#1}%
+  \FV@UseKeyValues% import options defined in #1
+  \moodle@VerbatimInput{#2}%
+}%
+\html@action@newcommand{LVerbatimInput}[2][]{%
+  \message{moodle.sty: Processing \string\LVerbatimInput[#1]{#2} for HTML ^^J}%
+  \def\FV@KeyValues{#1}%
+  \FV@UseKeyValues% import options defined in #1
+  \moodle@VerbatimInput{#2}%
+}%
+\html@action@newcommand{BVerbatimInput}[2][]{%
+  \message{moodle.sty: Processing \string\BVerbatimInput[#1]{#2} for HTML ^^J}%
+  \def\FV@KeyValues{#1}%
+  \FV@UseKeyValues% import options defined in #1
+  \moodle@VerbatimInput{#2}%
+}%
+\def\moodle@VerbatimInput#1{%
+  \g@addto@macro\htmlize@output{<PRE style="\xmlDisplayVerbatimBox"><CODE>}%
+  %%%%%%%% using material from fancyvrb and fvextra  %%%%%%%%
+  %\begingroup
+  \def\moodle@verbatim@addlinenumber##1{%
+    \g@addto@macro\htmlize@output{<span style="font-size: 80\otherpercent; 
+         background-color: \otherhash f0f0f0; padding: 0 5px 0 5px; display:
+         inline-block; width: 16pt; ##1">}%
+    \if@FV@NumberBlankLines
+      \xa\g@addto@macro\xa\htmlize@output\xa{\the\c@FancyVerbLine</span>}%
+    \else
+      \ifx\FV@Line\empty
+        \xa\g@addto@macro\xa\htmlize@output\xa{\otherampersand nbsp;</span>}%
+      \else
+        \xa\g@addto@macro\xa\htmlize@output\xa{\the\c@FancyVerbLine</span>}%
+      \fi 
+    \fi
+  }
+  % redefine the ProcessLine routine ('fancyvrb' and 'fvextra') for XML output
+  \def\FV@ProcessLine##1{%
+    \ifcsname FV@HighlightLine:\number\c@FancyVerbLine\endcsname
+      \xdef\moodle@FV@tagB{<mark>}% fvextra triggered highlighting for this line
+      \xdef\moodle@FV@tagE{</mark>}%
+    \else
+      \xdef\moodle@FV@tagB{}% no highlighting
+      \xdef\moodle@FV@tagE{}%
+    \fi
+    \catcode`\`=12%
+    \def\FV@Line{##1}%
+    \ifx\FV@LeftListNumber\relax
+    
+    \else% line numbers displayed on the left side
+      \moodle@verbatim@addlinenumber{text-align: right}%
+    \fi
+    \xa\g@addto@macro\xa\htmlize@output\xa{\moodle@FV@tagB}%
+    \xa\g@addto@macro\xa\htmlize@output\xa{\FV@Line}%
+    \xa\g@addto@macro\xa\htmlize@output\xa{\moodle@FV@tagE}%
+    \ifx\FV@RightListNumber\relax\else% line numbers on the right side
+      \moodle@verbatim@addlinenumber{text-align: left; float: right}%
+    \fi
+    \g@addto@macro\htmlize@output{<BR/>}%linebreak
+  }
+  \global\FV@CodeLineNo\z@% reset codeline counter
+  \frenchspacing% Cancels special punctuation spacing.
+  \FV@DefineWhiteSpace
+  \def\FV@Space{\space}
+  \FV@DefineTabOut% replace tabs with a series a whitespaces
+  \ifdefined\FV@HighlightLinesPrep
+    \FV@HighlightLinesPrep% prepare highlighting if 'fvextra' is loaded
+  \fi
+  \FV@Input{#1}%
+  %\endgroup
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \g@addto@macro\htmlize@output{</CODE></PRE>}%
+}%
+\AtEndPreamble{%
+  \@ifpackageloaded{fancyvrb}{%
+    % custom settings for display
+    \fvset{frame=lines,label={[Beginning of code]End of code},framesep=3mm,numbersep=9pt}%
+  }{}%
+}
+%    \end{macrocode}
+% Third, we patch `minted' so that it also calls pygmentize to generate HTML code.
+%    \begin{macrocode}
+\AtEndPreamble{% this definition should prevail because `minted' gets loaded after `moodle'
+\@ifpackageloaded{minted}{%
+  \renewcommand{\minted@pygmentize}[2][\minted@outputdir\minted@jobname.pyg]{%
+    \minted@checkstyle{\minted@get@opt{style}{default}}%
+    \stepcounter{minted@pygmentizecounter}%
+    \ifthenelse{\equal{\minted@get@opt{autogobble}{false}}{true}}%
+      {\def\minted@codefile{\minted@outputdir\minted@jobname.pyg}}%
+      {\def\minted@codefile{#1}}%
+    \ifthenelse{\boolean{minted@isinline}}%
+      {\def\minted@optlistcl@inlines{%
+        \minted@optlistcl@g@i
+        \csname minted@optlistcl@lang\minted@lang @i\endcsname}}%
+      {\let\minted@optlistcl@inlines\@empty}%
+    \def\minted@cmdtemplate##1##2{%
+      \ifminted@kpsewhich
+        \ifwindows
+          \detokenize{for /f "usebackq tokens=*"}\space\@percentchar\detokenize{a 
+          in (`kpsewhich}\space\minted@codefile\detokenize{`) do}\space
+        \fi
+      \fi
+      \MintedPygmentize\space -l #2 -f ##1 -F tokenmerge
+      \minted@optlistcl@g \csname minted@optlistcl@lang\minted@lang\endcsname
+      \minted@optlistcl@inlines
+      \minted@optlistcl@cmd -o \minted@outputdir##2\space
+      \ifminted@kpsewhich
+        \ifwindows
+          \@percentchar\detokenize{a}%
+        \else
+          \detokenize{`}kpsewhich \minted@codefile\space
+            \detokenize{||} \minted@codefile\detokenize{`}%
+        \fi
+      \else
+        \minted@codefile
+      \fi}%
+    \def\minted@cmd{\minted@cmdtemplate{latex -P commandprefix=PYG}{\minted@infile}}
+    % For debugging, uncomment: %%%%
+    \immediate\typeout{\minted@cmd}%
+    % %%%%
+    \def\minted@cmdHTML{\minted@cmdtemplate{html -P noclasses -P 
+      nowrap -P hl_lines="\FV@HighlightLinesList" -P
+      style="\minted@get@opt{style}{default}"}{\csname minted@infileHTML\the\c@minted@pygmentizecounter\endcsname}}%
+    \def\minted@cmdPNG{\minted@cmdtemplate{png -P    
+      line_numbers=True}{\minted@infilePNG}}%
+    \def\minted@cmdSVG{\minted@cmdtemplate{svg -P 
+      linenos=True}{\minted@infileSVG}}%
+    \ifthenelse{\boolean{minted@cache}}%
+      {%
+        \ifminted@frozencache
+        \else
+          \ifx\XeTeXinterchartoks\minted@undefined
+            \ifthenelse{\equal{\minted@get@opt{autogobble}{false}}{true}}%
+              {\edef\minted@hash{\pdf@filemdfivesum{#1}%
+                \pdf@mdfivesum{\minted@cmd autogobble(\ifx\FancyVerbStartNum\z@ 
+                0\else\FancyVerbStartNum\fi-\ifx\FancyVerbStopNum\z@ 
+                0\else\FancyVerbStopNum\fi)}}}%
+              {\edef\minted@hash{\pdf@filemdfivesum{#1}%
+                \pdf@mdfivesum{\minted@cmd}}}%
+          \else
+            \ifx\mdfivesum\minted@undefined
+              \immediate\openout\minted@code\minted@jobname.mintedcmd\relax
+              \immediate\write\minted@code{\minted@cmd}%
+              \ifthenelse{\equal{\minted@get@opt{autogobble}{false}}{true}}%
+                {\immediate\write\minted@code{autogobble(\ifx\FancyVerbStartNum\z@
+                 0\else\FancyVerbStartNum\fi-\ifx\FancyVerbStopNum\z@ 
+                0\else\FancyVerbStopNum\fi)}}{}%
+              \immediate\closeout\minted@code
+              \edef\minted@argone@esc{#1}%
+              \StrSubstitute{\minted@argone@esc}{\@backslashchar}{\@backslashchar\@backslashchar}[\minted@argone@esc]%
+              \StrSubstitute{\minted@argone@esc}{"}{\@backslashchar"}[\minted@argone@esc]%
+              \edef\minted@tmpfname@esc{\minted@outputdir\minted@jobname}%
+              \StrSubstitute{\minted@tmpfname@esc}{\@backslashchar}{\@backslashchar\@backslashchar}[\minted@tmpfname@esc]%
+              \StrSubstitute{\minted@tmpfname@esc}{"}{\@backslashchar"}[\minted@tmpfname@esc]%
+              %Cheating a little here by using ASCII codes to write `{` and `}`
+              %in the Python code
+              \def\minted@hashcmd{%
+                \detokenize{python -c "import hashlib; import os;
+                  hasher = hashlib.sha1();
+                  f = 
+                  open(os.path.expanduser(os.path.expandvars(\"}\minted@tmpfname@esc.mintedcmd\detokenize{\")),
+                   \"rb\");
+                  hasher.update(f.read());
+                  f.close();
+                  f = 
+                  open(os.path.expanduser(os.path.expandvars(\"}\minted@argone@esc\detokenize{\")),
+                   \"rb\");
+                  hasher.update(f.read());
+                  f.close();
+                  f = 
+                  open(os.path.expanduser(os.path.expandvars(\"}\minted@tmpfname@esc.mintedmd5\detokenize{\")),
+                   \"w\");
+                  macro = \"\\edef\\minted@hash\" + chr(123) + hasher.hexdigest() 
+                  + chr(125) + \"\";
+                  f.write(\"\\makeatletter\" + macro + 
+                  \"\\makeatother\\endinput\n\");
+                  f.close();"}}%
+              \ShellEscape{\minted@hashcmd}%
+              \minted@input{\minted@outputdir\minted@jobname.mintedmd5}%
+            \else
+              \ifthenelse{\equal{\minted@get@opt{autogobble}{false}}{true}}%
+               {\edef\minted@hash{\mdfivesum file {#1}%
+                  \mdfivesum{\minted@cmd autogobble(\ifx\FancyVerbStartNum\z@ 
+                  0\else\FancyVerbStartNum\fi-\ifx\FancyVerbStopNum\z@ 
+                  0\else\FancyVerbStopNum\fi)}}}%
+               {\edef\minted@hash{\mdfivesum file {#1}%
+                  \mdfivesum{\minted@cmd}}}%
+            \fi
+          \fi
+          \edef\minted@infile{\minted@cachedir/\minted@hash.pygtex}%
+          \edef\minted@temp@infileHTML{\minted@cachedir/\minted@hash.html}%
+          \global\cslet{minted@infileHTML\the\c@minted@pygmentizecounter}{\minted@temp@infileHTML}%
+          %\global\edef\minted@infilePNG{\minted@cachedir/\minted@hash.png}%
+          %\global\edef\minted@infileSVG{\minted@cachedir/\minted@hash.svg}%
+          \IfFileExists{\minted@infile}{}{%
+            \ifthenelse{\equal{\minted@get@opt{autogobble}{false}}{true}}{%
+              \minted@autogobble{#1}}{}%
+            \ShellEscape{\minted@cmd}%
+            \ShellEscape{\minted@cmdHTML}%
+            %\ShellEscape{\minted@cmdPNG}%
+            %\ShellEscape{\minted@cmdSVG}%
+            }%
+        \fi
+        \ifthenelse{\boolean{minted@finalizecache}}%
+         {%
+            \edef\minted@cachefilename{listing\arabic{minted@pygmentizecounter}.pygtex}%
+            \edef\minted@actualinfile{\minted@cachedir/\minted@cachefilename}%
+            \ifwindows
+              \StrSubstitute{\minted@infile}{/}{\@backslashchar}[\minted@infile@windows]
+              \StrSubstitute{\minted@actualinfile}{/}{\@backslashchar}[\minted@actualinfile@windows]
+              \ShellEscape{move /y 
+              \minted@outputdir\minted@infile@windows\space\minted@outputdir\minted@actualinfile@windows}%
+            \else
+              \ShellEscape{mv -f 
+              \minted@outputdir\minted@infile\space\minted@outputdir\minted@actualinfile}%
+            \fi
+            \let\minted@infile\minted@actualinfile
+            \expandafter\minted@addcachefile\expandafter{\minted@cachefilename}%
+         }%
+         {\ifthenelse{\boolean{minted@frozencache}}%
+           {%
+              \edef\minted@cachefilename{listing\arabic{minted@pygmentizecounter}.pygtex}%
+              \edef\minted@infile{\minted@cachedir/\minted@cachefilename}%
+              \expandafter\minted@addcachefile\expandafter{\minted@cachefilename}}%
+           {\expandafter\minted@addcachefile\expandafter{\minted@hash.pygtex}}%
+         }%
+        \minted@inputpyg}%
+      {%
+        \ifthenelse{\equal{\minted@get@opt{autogobble}{false}}{true}}{%
+          \minted@autogobble{#1}}{}%
+        \ShellEscape{\minted@cmd}%
+        \ShellEscape{\minted@cmdHTML}%
+        %\ShellEscape{\minted@cmdPNG}%
+        %\ShellEscape{\minted@cmdSVG}%
+        \minted@inputpyg}%
+  }%
+}{}%
+}%
+\newcounter{moodle@pygmentizecounter}
+\html@action@newcommand{inputminted}[3][]{%
+  \message{moodle.sty: Processing \string\inputminted[#1]{#2}{#3} for HTML ^^J}%
+  % arguments #2 and #3 are thrown away: the job is done previously by minted when
+  % calling pygmentize. The file |\minted@infileHTML| generated with our hack will be used.
+  % Since minted is based upon `fvextra' the macro |\moodle@VerbatimInput| works here.
+  \minted@configlang{#2}% grab options set for this specific language
+  \setkeys{minted@opt@cmd}{#1}% grab options in #1
+  \minted@fvset% import options 
+  \stepcounter{moodle@pygmentizecounter}
+  \xa\moodle@VerbatimInput\xa{\csname minted@infileHTML\the\c@moodle@pygmentizecounter\endcsname}%
+}%
+%    \end{macrocode}
+%
 % \subsection{Warning users of \texttt{babel}}
 % Users of the |babel| package loaded with the 'french' option may experience problems
 % related to autospacing when using |pdfLaTeX|. We shall warn them.
@@ -4733,7 +5097,7 @@
 \AtBeginDocument{%
   \ifpdftex % pdflatex or latex
     \@ifpackagewith{babel}{french}{%
-      \PackageWarning{moodle}{Be careful when using latex, moodle, and the babel package with option 'french'. Autospacing produces in undesired symbols in the XML. You can either 1) compile with xelatex or 2) add '\NoAutoSpacing' after '\begin{quiz}'.}%
+      \PackageWarning{moodle}{Be careful when using LaTeX, moodle, and the babel package with option 'french'. Autospacing produces in undesired symbols in the XML. You can either 1) compile with xelatex or 2) add '\NoAutoSpacing' after '\begin{quiz}'.}%
     }{\relax}%
   \fi
 }%

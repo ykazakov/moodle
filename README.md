@@ -100,4 +100,4 @@ the '-j' option of MAKE.
 A rudimentary unit test system is located in the test/ folder. That helps
 ensuring no regression occurs. This system relies on the makefile mechanism.
 To run the unit tests:
-    $ make tests
+    $ make test

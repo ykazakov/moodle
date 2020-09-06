@@ -14,7 +14,7 @@ endif
 
 .DEFAULT_GOAL := all
 
-.PHONY: all diff clean distclean test
+.PHONY: all diff clean distclean test dist
 
 all: example_quiz.pdf example_quiz_v5.pdf $(PROJECT_NAME).pdf $(TESTDIR)/all
 
@@ -30,6 +30,11 @@ diff: $(PROJECT_NAME).sty $(PROJECT_NAME)v5.sty
 	$(DIFFTOOL) $(PROJECT_NAME).sty $(PROJECT_NAME)v5.sty
 
 test: $(TESTDIR)/test
+
+dist: $(PROJECT_NAME).pdf $(PROJECT_NAME).sty test
+	@$(MAKE) distclean -C $(TESTDIR)
+	@zip -r9 moodle_$(shell date +"%Y-%m-%d").zip $(PROJECT_NAME).pdf $(PROJECT_NAME).sty $(PROJECT_NAME).dtx $(PROJECT_NAME).ins makefile README.md test/
+	@$(MAKE) clean -C .
 
 $(PROJECT_NAME).sty: $(PROJECT_NAME).dtx
 
