@@ -1308,7 +1308,8 @@
 \RequirePackage{xpatch}  %To patch commands easily in HTML mode
 \RequirePackage{array}   %For formatting tables in the LaTeX mode of Clozes
 \RequirePackage{ifplatform} % To choose Ghostscript commands
-%\RequirePackage{iftex} % already required by ifplatform. Needed to know:
+\@ifpackageloaded{iftex}{}{\RequirePackage{iftex}}
+% iftex already required by recent versions of ifplatform. Needed to know:
 %     1) whether we can convert output from PDF to PNG (ifpdf), 
 %     2) when output pdf is latin1-encoded (ifpdf)
 %     3) when output xml is utf8-encoded (if?tex)
