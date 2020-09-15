@@ -49,6 +49,9 @@
   <answer fraction="0" format="html">
     <text><![CDATA[<p>&euro; and &euro;</p>]]></text>
   </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>\(\rm\TeX\) and \(\rm\LaTeX\)</p>]]></text>
+  </answer>
 </question>
  
 </quiz>

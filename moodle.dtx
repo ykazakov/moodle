@@ -287,6 +287,14 @@
 % \DescribeMacro{\htmlregister}
 % Using |\htmlregister|\marg{macroname}, tells \LaTeX\ about the macros you 
 % use. This way, the macros will be properly expanded in the XML file.
+% This works only if the macros are defined \emph{without} optional argument.
+%
+%^^A \DescribeMacro{\moodleregisternewcommands} 
+%^^A It can be cumbersome to record individually a list of macros for expansion.
+%^^A Calling |\moodleregisternewcommands| triggers the automatic
+%^^A expansion of macros defined subsequently using |\newcommand|.
+%^^A Again, this works only if the macros are defined \emph{without} optional
+%^^A argument.
 % 
 % \DescribeMacro{draft}
 % \DescribeMacro{final}
@@ -863,7 +871,15 @@
 % other \TeX\ or \LaTeX\ commands to HTML.}
 % If other sequences are used, they may be passed verbatim to the XML file
 % or may cause unpredicted results. The |\htmlregister| command lets you specify
-% the macros that must be expanded in the XML file.
+% the macros that must be expanded in the XML file. It works only when no
+% optional argument is used.
+% 
+% \DescribeMacro{\moodleregisternewcommands} 
+% It can be cumbersome to record individually a list of macros for expansion.
+% Calling |\moodleregisternewcommands| triggers the automatic
+% expansion of macros defined subsequently using |\newcommand|.
+% Again, this works only if the macros are defined \emph{without} optional
+% argument.
 % 
 % If you think of another \LaTeX\ command that should be changed to an HTML equivalent, 
 % please contact the author at \url{anders.hendrickson@snc.edu}
@@ -4078,6 +4094,22 @@
   \xa\listadd\xa\htmlize@cs@expandlist\xa{\string#1}%
 }
 \let\htmlregister=\htmlize@record@expand
+%    \end{macrocode}
+% Often users define a list of macros at the end of the preamble.
+% It can be cumbersome to record individually these macros for expansion.
+% By calling |\moodleregisternewcommands| they trigger the automatic
+% expansion of macros defined subsequently using |\newcommand...|.
+%    \begin{macrocode}
+\def\moodleregisternewcommands{%
+  %% INSPIRED FROM 
+  %https://tex.stackexchange.com/questions/73271/how-to-redefine-or-patch-the-newcommand-command
+  \newcommand*{\saved@ifdefinable}{}
+  \let\saved@ifdefinable\@ifdefinable
+  \renewcommand{\@ifdefinable}[2]{%
+    \saved@ifdefinable{##1}{##2}%
+    \htmlregister{##1}
+  }%
+}%
 %    \end{macrocode}
 % On the other hand, if an alternate version of the macro is 
 % needed for HTML purposes, you can define its HTML version with
