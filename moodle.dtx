@@ -321,8 +321,8 @@
 % \DescribeMacro{subsection}
 % \DescribeMacro{subsection*}
 % If the package option |section| is invoked (|\usepackage[section]{moodle}|),
-% then each quiz is represented by a different \LaTeX\ section. Stared
-% versions correspond to unnumbered sections or subsections. To preserve
+% then each quiz is represented by a different \LaTeX\ section. Starred
+% variants correspond to unnumbered sections or subsections. To preserve
 % compatibility with Version 0.5, the default is |subsection*|. Consequently,
 % |\usepackage{moodle}| is equivalent to |\usepackage[subsection*]{moodle}|.
 %
@@ -877,7 +877,8 @@
 % \DescribeMacro{\moodleregisternewcommands} 
 % It can be cumbersome to record individually a list of macros for expansion.
 % Calling |\moodleregisternewcommands| triggers the automatic
-% expansion of macros defined subsequently using |\newcommand|.
+% expansion of macros defined subsequently using |\newcommand|,
+% |\renewcommand|, |\providecommand|, or their starred variants.
 % Again, this works only if the macros are defined \emph{without} optional
 % argument.
 % 
@@ -1553,7 +1554,7 @@
 % to the output XML file.
 % 
 % The ordinary version |\generate@moodle@write@code| passes its output text |#3|
-% through the HTMLizer, producing HTML code, while the starred version 
+% through the HTMLizer, producing HTML code, while the starred variant
 % |\generate@moodle@write@code*| passes |#3| verbatim as text.
 % 
 % For example, 
@@ -4098,7 +4099,8 @@
 % Often users define a list of macros at the end of the preamble.
 % It can be cumbersome to record individually these macros for expansion.
 % By calling |\moodleregisternewcommands| they trigger the automatic
-% expansion of macros defined subsequently using |\newcommand...|.
+% expansion of macros defined subsequently using |\newcommand|,
+% |\renewcommand|, |\providecommand| or their starred variants.
 %    \begin{macrocode}
 \def\moodleregisternewcommands{%
   %% INSPIRED FROM 
@@ -4109,6 +4111,7 @@
     \saved@ifdefinable{##1}{##2}%
     \htmlregister{##1}
   }%
+  \let\@@ifdefinable\@ifdefinable
 }%
 %    \end{macrocode}
 % On the other hand, if an alternate version of the macro is 
