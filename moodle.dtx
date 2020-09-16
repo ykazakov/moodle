@@ -43,7 +43,7 @@
   \usepackage[ttscale=.875]{libertine}
 \fi
 %\usepackage{moodle}[2020/07/09]
-\usepackage{amssymb,metalogo,,multirow,threeparttable,booktabs,hyperref,tikz,minted}
+\usepackage{amssymb,metalogo,,multirow,threeparttable,booktabs,hyperref,tikz,minted,changelog}
 \usetikzlibrary{arrows,positioning}
 \usemintedstyle{tango}
 \EnableCrossrefs         
@@ -52,7 +52,7 @@
 \RecordChanges
 \begin{document}
   \DocInput{moodle.dtx}
-  \PrintChanges
+  %\PrintChanges
 \end{document}
 %</driver>
 % \fi
@@ -1282,7 +1282,91 @@
 % but turn ``MathJax'' \emph{on}.  This forces \TeX\ code to be rendered by MathJax
 % instead of Moodle, producing much higher-quality results.
 % 
-% \PrintChanges
+% \changes{v0.5}{2016/01/05}{Initial version}
+% \changes{v0.6}{2019/02/18}{Bux-fixing release}
+% \changes{v0.7}{2020/07/09}{Feature extensions}
+% \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
+%   \begin{version} ^^A[version=0.8,date=\today]
+%     \added
+%       \item Command to trigger the automatic recording of new commands.
+%     \changed
+%       \item The package \texttt{iftex} is now required.
+%   \end{version}
+%   \begin{version}[version=0.7,date=2020-09-06]
+%     \added
+%       \item Support for inclusion of verbatim code.
+%       \item Package option \texttt{tikz}.
+%       \item Support for |\"Y| and |\"y|.
+%       \item New commands converted to XML.
+%       \item Adding a stamp comment in XML, package option offered to disable
+%             this behavior.
+%       \item Support for the |\tikz| command.
+%       \item A different directory can be specified for picture inclusion.
+%       \item Warn user of the \texttt{babel} package set for french that autospacing
+%             must be deactivated.
+%       \item Square bracket math delimiters are recognized and converted properly.
+%       \item Support of breve and caron diacritical marks.
+%     \changed
+%       \item In multi with multiple answers allowed, choosing all options no longer
+%             results in a good grade. An automatic penalty mechanism is introduced.
+%             Can be overridden by manually setting fractions.
+%     \removed
+%       \item Irrelevant \texttt{penalty} tag in cloze subquestions.
+%     \fixed
+%       \item Non-integer fractions can now be specified in cloze subquestions.
+%       \item Signifiantly squeeze PNG images size by skipping ancillary data.
+%       \item Enumerate or itemize environment can now be nested in question items.
+%       \item Several pictures can be included in a question without being mixed
+%             in the XML file.
+%       \item management and rendering of fraction in questions.
+%       \item Correctly handling a \LaTeX\ starting the last item of a question.
+%       \item Closing braces escaped in cloze subquestions. This allows \LaTeX\
+%             equations or images to be included.
+%       \item Image inclusion with MacOS.
+%   \end{version}
+%   \begin{version}[version=0.6b,date=2019-11-27]
+%     \added
+%       \item New package options to set section or subsection at the quiz level.
+%       \item True/False question type is now supported.
+%       \item Moodle tags can now be specified for questions (and rendered in PDF
+%             as well).
+%       \item In cloze questions, the \texttt{multiresponse} subquestion type is
+%             now supported.
+%     \removed
+%       \item External dependency on \texttt{OpenSSL}.
+%       \item Irrelevant tags were written in XML for matching questions.
+%     \fixed
+%       \item \TikZ\ externalization now works when using Xe\LaTeX.
+%       \item It is now possible to set points manually among several correct
+%             answers in multichoice questions.
+%       \item General feedbacks can now contain backslashes.
+%       \item Several quizzes can now be defined in a single source file, each
+%             specifying a category for Moodle's question bank.
+%       \item Correct encoding information in now written in XML depending on
+%             the \LaTeX\ compiler used.
+%   \end{version}
+%   \begin{version}[version=0.6a,date=2019-06-21]
+%     \added
+%       \item Xe\LaTeX\ is now recommended when using UT8-encoded sources (support
+%             of accents).
+%       \item Feedbacks are now displayed in the PDF file produced.
+%       \item The \texttt{optipng} utility is used (and required) to reduce the size
+%             of images embedded in the XML file.
+%       \item Question options and settings are now displayed in the PDF file
+%       \item Supporting more \LaTeX\ macros for symbols and accents (mostly
+%             diacritical marks and ligatures).
+%       \item Introduce shuffle options in cloze-multi subquestions.
+%       \item Package option \texttt{final}.
+%     \changed
+%       \item In draft mode, \TikZ\ externalization in no longer triggered.
+%     \fixed
+%       \item In the different question types, the feedback fields are now converted
+%             for HTML allowing \LaTeX\ equation and images.
+%       \item Documentation improvements (limitations and previously undocumented
+%             features).
+%   \end{version}
+%   \shortversion{version=0.5,date=2016-01-05,simple,changes=Initial version,author={Anders O.F. Hendrickson}}
+% \end{changelog}
 %
 % \StopEventually{}
 %
