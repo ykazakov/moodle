@@ -7,6 +7,7 @@ DIFFTOOL=meld
 MAKEINDEX=makeindex
 TESTDIR=test
 RECURSIVE_TARGETS= all clean distclean test
+RERUNLATEX= '(There were undefined references|Rerun to get (cross-references|the bars) right)'
 
 ifndef DEBUG
 	DEBUG=> /dev/null
@@ -59,6 +60,10 @@ $(PROJECT_NAME)v5.pdf: $(PROJECT_NAME)v5.dtx
 
 %.pdf: %.dtx
 	$(PDFLATEX) $(LATEXFLAGS) $< $(DEBUG)
+	@if egrep -q $(RERUNLATEX) $(basename $@).log ; then \
+		echo "\trequires a new $(PDFLATEX) pass..."; \
+		$(PDFLATEX) $(LATEXFLAGS) $< $(DEBUG); \
+	fi
 
 %.sty: %.ins
 	rm -rf $@
