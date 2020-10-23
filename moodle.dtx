@@ -876,12 +876,12 @@
 % |\\| & |\par| &|\textit{}| & |\begin{itemize}|\\
 % |\&| & |\S| & |\texttt{}| & |\begin{tikzpicture}|\\
 % |\{| & |\}| & |\textsc{}| & \\
-% |\relax| & |\|\textvisiblespace & |\underline{}| &\\
-% |\thinspace| & |\,| & |\textsuperscript{}| & \\
-% |\ldots| & |\dots| & |\textsubscript{}| & \\
+% |\|\textvisiblespace & |\relax| & |\underline{}| &\\
+% |\,| & |\thinspace| & |\textsuperscript{}| & \\
+% |\dots| & |\ldots| & |\textsubscript{}| & \\
 % |\euro| & |\texteuro| & |\url{}| & \\
 % |\TeX| & |\LaTeX|& |\href{}{}| & \\
-% & & |\tikz[]{}| & \\
+% |\_| & |\textbackslash| & |\tikz[]{}| & \\
 % & & |\includegraphics[]{}| & \\
 % & & |\verbatiminput{}| & \\
 % & & |\VerbatimInput[]{}| & \\
@@ -4639,6 +4639,8 @@
 \html@def\guillemotright{\&\#8239;\&raquo;}%
 \html@def\,{\&\#8239;}%
 \html@def\thinspace{\&\#8239;}%
+\html@def\textbackslash{\&\#92;}%
+\html@def\_{\&\#95;}%
 
 % AH CUSTOM MACROS TO EXPAND --- remove these before publishing!
 %\htmlize@record@expand{\inv}%
