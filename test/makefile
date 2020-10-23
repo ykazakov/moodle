@@ -30,7 +30,7 @@ distclean: clean
 	@$(PDFLATEX) $(LATEXFLAGS) $< $(DEBUG)
 
 $(PREFIX)_%.diff : $(PREFIX)_%-$(SUFFIX).ref $(PREFIX)_%-$(SUFFIX).xml
-	@$(DIFFTOOL) $(basename $<).xml $< > $@ && echo 'OK   <- $*' || echo 'FAIL <- $*'
+	@$(DIFFTOOL) $(basename $<).xml $< > $@ && echo '[  OK  ]  $*' || echo '[FAILED]  $*'
 
 # DISABLING THE FOLLOWING FOR SAFETY
 # BE SURE OF THE CODE PRODUCED IF YOU UNCOMMENT

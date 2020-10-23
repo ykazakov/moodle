@@ -15,9 +15,9 @@
   <questiontext format="html">
     <text><![CDATA[<p><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEIAAAAqCAMAAAAwLX3tAAAAM1BMVEUAAAAAAAAAAAAAAAAAAAAA 
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACjBUbJAAAAEHRSTlMAE0RKU3WEiaWr 
-tczb5vX9QmfMGwAAAFhJREFUSMft0zkSgDAMBEGBOcxp//+1jCIyqiwyWR1tNNmKmB2okEhEIhLf 
-iWR2wlei/uYvcTcr8JW4oGOA8WaReBM7dIzoPbFAx4zeExN0ZLQlVmxwk3gA25M3WUObvk0AAAAA 
-SUVORK5CYII= 
+tczb5vX9QmfMGwAAAFlJREFUSMft08kRgDAMBEGBOSwuK/9o2U2AKss/oQmgfyPi70RmJkkkkcQ3 
+UfxdKBRhw8Ujnv4aCkXciMTEfJuFIQ5EYmZJjBIbIrGynxMLIlFZH7EjVQ1DvOOONZP3s13WAAAA 
+AElFTkSuQmCC 
 "> </p>]]></text>
   </questiontext>
   <defaultgrade>1.0</defaultgrade>
@@ -28,20 +28,19 @@ SUVORK5CYII=
   <shuffleanswers>1</shuffleanswers>
   <answernumbering>abc</answernumbering>
   <answer fraction="100" format="html">
-    <text><![CDATA[<p><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAOCAQAAAC4X5UdAAAAc0lEQVQIHQXBIQ6BARwH0JeM8I1k 
-cwTNRUySncAdXMNESZQ/E2RBEkwymv0PIHw/7zG08vDz1VrCW2uAxkZnxRQAO2cAYO4FACzcAYC9 
-LQBjHwGgcRVHgJ6TuOgDHMTNCIB4mgCsxQwAOlFKKaWIiIiI/AF5NymSFMxpBwAAAABJRU5ErkJg 
-gg== 
+    <text><![CDATA[<p><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAOCAQAAAC4X5UdAAAAcUlEQVQIHQXBIQ7BcRwH0Dc2I9gk 
+d9DcwiQncYX/JJewKZIoa7LgCAJB+U5l9vt4j7uIn4jY83C2NDK20YQZAHYCAKwEADgIACw0XwCm 
+nqID4CpO+gADcTEE6Dm6mQBsxQuAtXibA9DERymlFBEREZE/IqAvwnqJQo0AAAAASUVORK5CYII= 
 "></p>]]></text>
   </answer>
   <answer fraction="0" format="html">
-    <text><![CDATA[<p><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAcCAYAAABsxO8nAAABSElEQVQ4jcWVO0sEMRSFv4yzKMoK 
-oi4KCmJhJ2jjq7ZVUFAbC/+GlTYWyoIgVjbW/gFtxGJlwWaxsBDEB9gIwhZ2Lj7GYs+QEJZFhuhe 
-OHwnmUlILjeJAcapxyowLT8m9gGx/ItYBg7lr0QMsCW/jY0v8RXoku92vifiprgbESgMsCg/BFzI 
-34nfzr8j4h6w4q1sKtiKskQOeJASaSduOqRxfAA38qNiZ7CtZVlRBzDh9VX+Ndl5aU46wya5JMXG 
-GzQsPjeZuAoU5ffF2p8l+1N8dPryYr/YC6zJl8XLllT2gHSATXZNmvGT/ds4FjfE82Bba8s4rh24 
-x14nPS09a1C/AdyIsk607rWvg9bRqbSMrRU3ImlSOsHWUaqFoK9I0qD/XawCBfmc8z09k+m7VjTA 
-khrzwKz8oFgA3uSfxBJwJH+bzhxsaz9yJj2/LPoe5wAAAABJRU5ErkJggg== 
+    <text><![CDATA[<p><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAcCAYAAABsxO8nAAABQklEQVQ4jcWVvyvEYRzHX3dOpG6Q 
+H1GUbrCJiVgs5iuDsxj8AzZFFptBymKS8l+wyHA6WWQwkERJWAw3yd11X8O9Lt+OxPle96l3r3fP 
+83yePs/3+fGNASNUIgNM6Idlt0wAz/qc3JFnknUVhFRSTypf0x8AZbUCEAPSTjgAHOtvZJnPGJKb 
+ck4GwHiciCJWR06rvJYpYCOyihJ15BTlpUwBHU2tqF2OhdrOf5ucBKbUoaqepyyQaNj2D8qHH3Je 
+5ZbcBt4b9rFL8q6mPQn06LvkvMwBJ3852X1yTS7JAjDd1LtWjX25CBxFVlHLP3LbgFsq71JnPVek 
+GsWQjzf10lZjIeQvIt3+A/0ecKp/qRkXB0b1qzIT6k9HVhF8/V8FwJt6VIVvxhTVMlSWNuuEM8Ck 
+vl/2yjxwr8/KXXkFlbVHEh9rp0pwscOqPQAAAABJRU5ErkJggg== 
 "></p>]]></text>
   </answer>
 </question>
@@ -51,8 +50,8 @@ khrzwKz8oFgA3uSfxBJwJH+bzhxsaz9yJj2/LPoe5wAAAABJRU5ErkJggg==
   </name>
   <questiontext format="html">
     <text><![CDATA[<p><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAbCAYAAACa9mScAAAAdklEQVQ4jWNkYGAIZoAAQyhmQKIl 
-GRDAG0pvY0ADTOgC5AAWBgaGNZQaQjWXLIOyLzAwMJyHsmH0IwYGBi5iDImm1CVU8c6oIaOGjBoy 
-asigMoSRgYGhE8p2xiJviGTRHSj9EV0RCwMDgxKUbUzAQhVcElTxDgB7GQqJMo3mowAAAABJRU5E 
+GRDAG0pvY0ADTOgC5AAWBgaGNdQwZBmUfYGBgeE8lA2jHzEwMHARMoRq3omm1BCquGTUkFFDRg0Z 
+NWRQGcLIwMDQCWU7Y5E3RLLoDpT+iK6IhYGBQQnKNiZgoQouCap4BwCPsgqJWVTJ7gAAAABJRU5E 
 rkJggg== 
 "> </p>]]></text>
   </questiontext>
@@ -73,13 +72,13 @@ vmv1/DDmDUgetXn1TRwDBj3M+0yIGIuwAKyqnxCfeJgDtOUNYN/C3+KIeOAy//sRIcQH9TPigI95
 TH0k2YbjKmN+zt03qDuKtQ1/ihck29Drl8cK0KxdH3OItw1PxB6SlxKvex7zCrwWH6ic5s7BQNVT 
 5nTOH3s72Ks8+lbLEsKpP8JPbcrZkQazAAAAAElFTkSuQmCC 
 "></p>]]></text>
-    <answer format="html"><text><![CDATA[<p><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAcCAYAAABsxO8nAAABSElEQVQ4jcWVO0sEMRSFv4yzKMoK 
-oi4KCmJhJ2jjq7ZVUFAbC/+GlTYWyoIgVjbW/gFtxGJlwWaxsBDEB9gIwhZ2Lj7GYs+QEJZFhuhe 
-OHwnmUlILjeJAcapxyowLT8m9gGx/ItYBg7lr0QMsCW/jY0v8RXoku92vifiprgbESgMsCg/BFzI 
-34nfzr8j4h6w4q1sKtiKskQOeJASaSduOqRxfAA38qNiZ7CtZVlRBzDh9VX+Ndl5aU46wya5JMXG 
-GzQsPjeZuAoU5ffF2p8l+1N8dPryYr/YC6zJl8XLllT2gHSATXZNmvGT/ds4FjfE82Bba8s4rh24 
-x14nPS09a1C/AdyIsk607rWvg9bRqbSMrRU3ImlSOsHWUaqFoK9I0qD/XawCBfmc8z09k+m7VjTA 
-khrzwKz8oFgA3uSfxBJwJH+bzhxsaz9yJj2/LPoe5wAAAABJRU5ErkJggg== 
+    <answer format="html"><text><![CDATA[<p><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAcCAYAAABsxO8nAAABQklEQVQ4jcWVvyvEYRzHX3dOpG6Q 
+H1GUbrCJiVgs5iuDsxj8AzZFFptBymKS8l+wyHA6WWQwkERJWAw3yd11X8O9Lt+OxPle96l3r3fP 
+83yePs/3+fGNASNUIgNM6Idlt0wAz/qc3JFnknUVhFRSTypf0x8AZbUCEAPSTjgAHOtvZJnPGJKb 
+ck4GwHiciCJWR06rvJYpYCOyihJ15BTlpUwBHU2tqF2OhdrOf5ucBKbUoaqepyyQaNj2D8qHH3Je 
+5ZbcBt4b9rFL8q6mPQn06LvkvMwBJ3852X1yTS7JAjDd1LtWjX25CBxFVlHLP3LbgFsq71JnPVek 
+GsWQjzf10lZjIeQvIt3+A/0ecKp/qRkXB0b1qzIT6k9HVhF8/V8FwJt6VIVvxhTVMlSWNuuEM8Ck 
+vl/2yjxwr8/KXXkFlbVHEh9rp0pwscOqPQAAAABJRU5ErkJggg== 
 "></p>]]></text></answer>
   </subquestion>
   <subquestion format="html">
@@ -92,13 +91,12 @@ OMvt0MkWgjAMBdAgg4wyFJkrhQrm/79QBBVQws6d2bW55/S9AvznAEc4ETsVzAEcyqM8bRNV5abp
 otcaRaG4MAAIwzWwEKWMPTAMRRkvPgFYA4lj9j5/gYkwxmiwJptgSQgwExK8SEWDiVTVDpjILgBI 
 kgHUNQ3GkFgztgvy5ddtgXM+NiLEFPIRl3rl2cKy6KR7NX89d7gAHOZf/V4hAAAAAElFTkSuQmCC 
 "></p>]]></text>
-    <answer format="html"><text><![CDATA[<p><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAcCAYAAABsxO8nAAABIElEQVQ4jd2Vv0tCURiGn5uBS4iC 
-RIO4NBSIgi0NQZCTi1Nrc/0lTU5N0eJfIRgGOrs4RATR0HLJzR80BIpdh/terhwuqZdTQR8cnve7 
-55yP916+e44DVPGjxebRFSvbxsRUdNcsNAjEVgwXkWE6ehFLmxay5ugfFzI/dlC4KO4Dc+k38Rn4 
-+jVHBfHxmz0ucC19J3rLhTygLx300xjISx+LOeBW+ki8tPZqAHsa+RXrkho3+O6Xx7k1R07MfR3x 
-THxIxCyUBJ6AmvLMj/XRujE08p0/d3Rg5IPIVSsii/+buIR91LDaRz3pBnAv/S7OgJT0qVgHDqU/ 
-xbJVR17E8+Aw+wDSEfMT8UJsOsCVkhPCY2FXzAIj6VexTXiM2L8gF5Z8MhegacKfAAAAAElFTkSu 
-QmCC 
+    <answer format="html"><text><![CDATA[<p><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAcCAYAAABsxO8nAAABFUlEQVQ4je2VvUrEUBBGz6q4jQiC 
+iIXYWCiIgjYWgmBnoZ3PsGLjW9joA4iNzyEK6W0sRASxEERM524n+BeLPReihGA2d7FxYDgfyb1f 
+ZpLhBmDDzHrMBGCI7/EqH/l9pEVGt3KxghEAA1U3/Bv1Hj+/WjBekDPyA7hX38jPMqN5eVXy8DBj 
++/IYyPrSWgZcqsNgduQ0sKKekkdyGWhFq6gBTKqHgYeStU15IPdy97YbNYpI5DpwHq21wRp7m8A1 
+sAWM9W2yq8RzTo/UMZrN6fRPWxuXu7lrSdTJvlCfAKfqJ/kmR4E19aGcky/AUrSKoPin9262zaI1 
+HXMTuq3taLhK90gAmJDhxbaBO/WZDMdIChHP7C8k60QsipzNpAAAAABJRU5ErkJggg== 
 "></p>]]></text></answer>
   </subquestion>
 </question>

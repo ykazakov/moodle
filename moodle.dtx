@@ -27,7 +27,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\ProvidesPackage{moodle}
 %<*package>
-    [2020/07/09 v0.7 Moodle quiz XML generation]
+    [2020/07/09 v0.8 Moodle quiz XML generation]
 %</package>
 %
 %<*driver>
@@ -370,20 +370,55 @@
 % it may be set to any value between 0 and 1.
 % The default is |penalty=0.10|.
 % 
-% \DescribeMacro{fraction}
+% \DescribeMacro{fraction}\DescribeMacro{fractiontol}
 % In most question types, it is possible to designate some answers as being
 % worth partial credit---that is, some fraction of a completely correct answer.
-% The |fraction| key may be set to any integer or decimal number from |0| (entirely wrong)
-% to |100| (entirely correct). In questions where several choices can be selected
-% (see |multi| with the option |multiple|), it is possible to set negative fractions (from
-% -100 to 0) for wrong choices, in order to avoid a student to get a good grade by
-% selecting all the choices.
+% The |fraction| key may be set to any of the values given in Table~\ref{tab:fraction}, 
+% from |0| (entirely wrong) to |100| (entirely correct).
 % 
+% \begin{table}[tbp]
+% \centering
+% \caption{\href{https://github.com/moodle/moodle/blob/MOODLE\_310\_STABLE/question/engine/bank.php\#L339}{Valid positive options} for the \texttt{fraction} key: $100\cdot(p/q)$.}
+% \label{tab:fraction}
+% \begin{tabular}{r*{10}{l}}
+% \toprule
+% & \multicolumn{10}{c}{Numerator integer $p$}\\
+% \cmidrule{2-11}
+% $q$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9\\
+% \cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}
+% \cmidrule(lr){5-5}\cmidrule(lr){6-6}\cmidrule(lr){7-7}\cmidrule(lr){8-8}
+% \cmidrule(lr){9-9}\cmidrule(lr){10-10}\cmidrule(lr){11-11}
+% 1 & 0&100&&&&&&&&\\
+% 2 & 0&50&100&&&&&&&\\
+% 3 & 0&33.33333&66.66667&100&&&&&&\\
+% 4 & 0&25&&75&100&&&&&\\
+% 5 & 0&20&&&80&100&&&&\\
+% 6 & 0&16.66667&&&&83.33333&100&&&\\
+% 7 & 0&14.28571&&&&&&100&&\\
+% 8 & 0&12.5&&&&&&&100&\\
+% 9 & 0&11.11111&&&&&&&&100\\
+% 10 & 0&10&20&30&40&50&60&70&80&90\\
+% 20 & 0&5&&&&&&&&\\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+% In questions where several choices can be selected (see |multi| with the option
+% |multiple|), positive fractions must sum up to exactly 100. It is also possible to set
+% negative fractions (from -100 to 0) for wrong choices, in order to prevent the
+% selection of all choices from leading to a good grade.
+% In this case, the value ranging from -100 to 0 must be the opposite of one of the
+% values listed in Table~\ref{tab:fraction}.
+% 
+% The package tries to match the |fraction| key to one of the admissible values.
+% To this end, the tolerance is parameterized by the |fractiontol| key. It defaults
+% to |0.01| but may be changed. When no admissible fraction value is matched, the
+% package throws an error.
+%
 % \DescribeMacro{feedback}
 % The |feedback| key sets text that will appear to the student after completing the quiz.
 % For example, one might set 
 % \begin{center}
-%   |feedback={A question like this will appear on the exam.}|
+%   |feedback={This question might show up in the final exam.}|
 % \end{center}
 % The desired feedback should be included in braces.
 % 
@@ -1289,8 +1324,11 @@
 %   \begin{version} ^^A[version=0.8,date=\today]
 %     \added
 %       \item Command to trigger the automatic recording of new commands.
+%       \item Mechanism to match |fraction| key to values accepted by Moodle.
+%       \item A |fractiontol| key to control the tolerance in this mechanism.
 %     \changed
 %       \item The package \texttt{iftex} is now required.
+%       \item An error is thrown when |fraction| is set to an invalid value.
 %   \end{version}
 %   \begin{version}[version=0.7,date=2020-09-06]
 %     \added
@@ -1815,6 +1853,11 @@
       %We do not create \moodle@writefraction, because the fraction occurs in
       %the XML within the answer tag, like <answer fraction="75">.
       \moodleset{fraction=100} %This sets the default.
+%    \end{macrocode}
+%    \begin{macrocode}
+%% FRACTIONTOL -- the tolerance for fractions with respect to valid values
+      \define@cmdkey{moodle}[moodle@]{fractiontol}[0.1]{}%
+      \moodleset{fractiontol=0.1} %This sets the default.
 %    \end{macrocode}
 % \subsubsection{Keys for multiple choice questions}
 %    \begin{macrocode}
@@ -2406,6 +2449,7 @@
      \ifx\moodle@fraction\@hundred
        \item #1$~\checkmark$%
      \else
+       \moodle@checkfraction
        \item #1$~(\moodle@fraction\%)$%
      \fi
      \ifx\moodle@feedback\@empty\relax\else
@@ -2427,6 +2471,7 @@
    \def\saveshortansweranswer@int@int#1\moodle@answer@rdelim{%
      \def\moodle@answertext{#1}%
      \trim@spaces@in\moodle@answertext
+     \moodle@checkfraction
      \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
      \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext</text>}%
      \ifx\moodle@feedback\@empty\relax\else
@@ -2480,6 +2525,7 @@
      \ifx\moodle@fraction\@hundred
        \item $#1\moodle@numericalprint@tolerance~\checkmark$%
      \else
+       \moodle@checkfraction
        \item $#1\moodle@numericalprint@tolerance~(\moodle@fraction\%)$%
      \fi
      \ifx\moodle@feedback\@empty\relax\else
@@ -2501,6 +2547,7 @@
    \def\savenumericalanswer@int@int#1\moodle@answer@rdelim{%
      \def\moodle@answertext{#1}%
      \trim@spaces@in\moodle@answertext
+     \moodle@checkfraction
      \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
      \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext</text>}%
      \addto@xml[4]{\moodle@answers@xml}{  <tolerance>\moodle@tolerance</tolerance>}%
@@ -2590,6 +2637,7 @@
         \trim@spaces@in\moodle@answertext%
         \g@addto@macro\moodle@answertext{$~\checkmark$}%
       \else
+        \moodle@checkfraction
         \ifdim0pt=\moodle@fraction pt\relax\else%
           \g@addto@macro\moodle@answertext{$~(\moodle@fraction\%)$}%
         \fi
@@ -2598,6 +2646,7 @@
       \ifx\moodle@fraction\@empty\relax%
         \setkeys{moodle}{fraction=\moodle@autosanctions}%
       \fi
+      \moodle@checkfraction
       \g@addto@macro\moodle@answertext{$~(\moodle@fraction\%)$}%
     \fi
     \moodle@answertext
@@ -2625,18 +2674,18 @@
      \def\ds{\strip@pt\moodle@sumofpositivefractions}%
      \ifnum0=\c@moodle@numcorrectanswers\relax%
        % autopoints will never be used but we check if the sum of positive fractions is 100%
-       \ifdim0pt=\moodle@pointspercorrect\relax\else%
-         \ifdim0pt>\moodle@pointspercorrect\relax%
-           \PackageWarning{moodle}{Positive fractions sum up to more than 100/100 (here: \ds/100)}%
-         \else
-           \PackageError{moodle}{Positive fractions sum up to less than 100/100 (here: \ds/100)}
+       \ifdim\moodle@pointspercorrect<-\moodle@fractiontol pt\relax%
+         \PackageWarning{moodle}{Positive fractions sum up to more than 100 (here: \ds)}%
+       \else
+         \ifdim\moodle@pointspercorrect>\moodle@fractiontol pt\relax%
+           \PackageError{moodle}{Positive fractions sum up to less than 100 (here: \ds)}%
          \fi
        \fi
      \else
        \ifdim0pt<\moodle@pointspercorrect\relax\else%
-         % we have stars so the sum of user-set positive fractions must be less than 100%
-         % otherwise, stars would become penalties
-         \PackageError{moodle}{Positive fractions sum up to 100/100 or more (here: \ds/100):
+         % we have starred items so the sum of user-set positive fractions must be less than 100%
+         % otherwise, starred items would lead to penalties
+         \PackageError{moodle}{Positive fractions sum up to 100 or more (here: \ds):
                                 there is no positive points left to be given to starred items.}%
        \fi
        \global\divide\moodle@pointspercorrect by \c@moodle@numcorrectanswers\relax%
@@ -2649,9 +2698,9 @@
        % we do not care about the sum of negative fractions (might be less than -100)
      \else
        \ifdim0pt<\moodle@pointsperincorrect\relax%
-         % we have items without fractions set: to prevent auto sanctions from becoming bonues,
+         % we have items without fractions set: to prevent auto sanctions from becoming bonuses,
          % such items are neutralized.
-         \PackageWarning{moodle}{Negative fractions sum up to -100/100 or less (here: \ds/100):
+         \PackageWarning{moodle}{Negative fractions sum up to -100 or less (here: \ds):
                                   items with no fraction key set will be considered as neutral.}%
          \global\setlength{\moodle@pointsperincorrect}{0pt}%
        \fi
@@ -2688,10 +2737,47 @@
        \fi
      \fi
    }%
-   \def\moodle@setautopoints#1pt{%
-     \gdef\moodle@autopoints{#1}%
+   \newlength{\test@fraction}%
+   \newlength{\test@lower}%
+   \newlength{\test@upper}%
+   \def\moodle@fractionerror{%
+     \def\ds{\moodle@fraction}%
+     \PackageError{moodle}{the current fraction is not a valid value (here: \ds)}%
    }
-
+   {\catcode`|=3\relax
+   \gdef\moodle@validfractionlist{0|5|10|11.11111|12.5|14.28571|16.66667|20|25|30|33.33333|40|50|60|66.66667|70|75|80|83.33333|90|100}}
+   %\forcsvlist{\listadd\moodle@validfractionlist}{0pt,5pt,10pt,11.11111pt,12.5pt,14.28571pt,16.66667pt,20pt,25pt,30pt,33.33333pt,40pt,50pt,60pt,66.66667pt,70pt,75pt,80pt,83.33333pt,90pt,100pt}%
+   \def\moodle@isfractionnear#1{%
+     \setlength{\test@lower}{#1 pt}%
+     \addtolength{\test@lower}{-\moodle@fractiontol pt}%
+     \setlength{\test@upper}{#1 pt}%
+     \addtolength{\test@upper}{\moodle@fractiontol pt}%
+     \ifdim\test@upper>\test@fraction\relax
+       \ifdim\test@lower<\test@fraction\relax
+         \gdef\test@fractionmatched{#1}%
+       \fi
+     \fi
+   }
+   \def\moodle@checkfraction{%
+     %\def\test@i{#1}%
+     \setlength{\test@fraction}{\moodle@fraction pt}%
+     % take the absolute value
+     \ifdim0pt>\test@fraction\relax%
+       \setlength{\test@fraction}{-\moodle@fraction pt}%
+     \fi
+     % test if the fraction is an admissible value
+     \let\test@fractionmatched\@empty
+     \renewcommand*{\do}[1]{\moodle@isfractionnear{##1}}%
+     \dolistloop{\moodle@validfractionlist}%
+     \ifx\test@fractionmatched\@empty\relax
+       \moodle@fractionerror%
+     \fi
+     \ifdim\moodle@fraction pt<-\moodle@fractiontol pt\relax%
+       \setkeys{moodle}{fraction=-\test@fractionmatched}%
+     \else
+       \setkeys{moodle}{fraction=\test@fractionmatched}%
+     \fi
+   }
 % TODO: Put these macros in same order as other sections'.
 
 % SAVING ANSWERS TO MEMORY
@@ -2727,6 +2813,7 @@
     \fi
     \trim@spaces@in\moodle@answertext
     \trim@spaces@in\moodle@answertext
+    \moodle@checkfraction
     \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="html">}%
     \xa\converttohtmlmacro\xa\moodle@answertext@html\xa{\moodle@answertext}%
     \addto@xml[4]{\moodle@answers@xml}{  <text><![CDATA[<p>\moodle@answertext@html</p>]]></text>}%
@@ -3256,6 +3343,7 @@
   \ifx\moodle@fraction\@hundred
     \g@addto@macro\cloze@multichoice@table@text{$~\checkmark$}%
   \else
+    \moodle@checkfraction
     \ifdim0pt=\moodle@fraction pt\relax\else
       \xdef\cloze@multichoice@table@text{\expandonce\cloze@multichoice@table@text$~(\moodle@fraction\%)$}%
     \fi
@@ -3301,6 +3389,7 @@
   \ifx\moodle@fraction\@hundred
     \g@addto@macro\clozemulti@coding{=}%
   \else
+    \moodle@checkfraction
     \ifdim0pt=\moodle@fraction pt\relax\else
       \xdef\clozemulti@coding{\expandonce\clozemulti@coding\otherpercent\moodle@fraction\otherpercent}%
     \fi
@@ -3374,6 +3463,7 @@
   \ifx\moodle@fraction\@hundred
     \def\moodle@clozenumericalprint@fraction{$~\checkmark$}%
   \else
+    \moodle@checkfraction
     \edef\moodle@clozenumericalprint@fraction{$(~\moodle@fraction\%)$}%
   \fi
   \ifdim0pt=\moodle@tolerance pt\relax
@@ -3405,6 +3495,7 @@
   \ifx\moodle@fraction\@hundred
     \g@addto@macro\clozenumerical@coding{=}%
   \else
+    \moodle@checkfraction
     \ifdim0pt=\moodle@fraction pt\relax\else
       \xdef\clozenumerical@coding{\expandonce\clozenumerical@coding\otherpercent\moodle@fraction\otherpercent}%
     \fi
@@ -3490,6 +3581,7 @@
   \ifx\moodle@fraction\@hundred
     \def\moodle@clozeshortanswerprint@fraction{$~\checkmark$}%
   \else
+    \moodle@checkfraction
     \edef\moodle@clozeshortanswerprint@fraction{$~(\moodle@fraction\%)$}%
   \fi
   \xdef\moodle@clozeshortanswerprint@line{#1~\moodle@clozeshortanswerprint@fraction & \expandonce\emph{\expandonce\moodle@feedback}}%
@@ -3516,6 +3608,7 @@
   \ifx\moodle@fraction\@hundred
     \g@addto@macro\clozeshortanswer@coding{=}%
   \else
+    \moodle@checkfraction
     \ifdim0pt=\moodle@fraction pt\relax\else
       \xdef\clozeshortanswer@coding{\expandonce\clozeshortanswer@coding\otherpercent\moodle@fraction\otherpercent}%
     \fi
