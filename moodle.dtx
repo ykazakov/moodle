@@ -4075,7 +4075,7 @@
                       \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherampersand gt;}}%
                                         {\g@addto@macro\htmlize@output{>}}%
                       \def\htmlize@next@i{\htmlize@recursive@i#2#3\htmlize@rdelim@i}%
-                    \else                                      
+                    \else
                       % Default case: write first token to output, call self on remaining tokens.
                       \g@addto@macro\htmlize@output{#1}%
                       \def\htmlize@next@i{\htmlize@recursive@i#2#3\htmlize@rdelim@i}%
@@ -4400,7 +4400,8 @@
   }%
 \html@action@def\}{%
     \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherbackslash\otherrbrace}}%
-                      {\g@addto@macro\htmlize@output{\otherrbrace}}%
+                      {\ifmoodle@clozemode\g@addto@macro\htmlize@output{\otherbackslash}\fi
+                       \g@addto@macro\htmlize@output{\otherrbrace}}%
   }%
 \html@action@def\[{%
     \advancemathmodecounter{1}

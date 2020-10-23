@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <quiz>
  
 <question type="category">
@@ -12,7 +13,7 @@
     <text><![CDATA[Cloze]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>No escaping here: \(y=a\sqrt {x}/2+{b}\) </P><P>No escaping here: <CODE>text</CODE> \(y=a\sqrt {x}/2+{b}\) {4:MULTICHOICE_V:=that must be escaped: \(y=a\sqrt {x\}/2+{b\}\)#mip~%10%nap#that must be escaped: \(y=a\sqrt {x\}/2+{b\}\)}</P><P>{No escaping here: } \(y=a\sqrt {x}/2+{b}\) {1:SHORTANSWER:=chip#nip~%10%nop#that must be escaped: \(y=a\sqrt {x\}/2+{b\}\)}</P><P>{No escaping here: } \(y=a\sqrt {x}/2+{b}\) {1:NUMERICAL:=0:0#nip~%10%1:0#that must be escaped: \(y=a\sqrt {x\}/2+{b\}\)}</P><P></p>]]></text>
+    <text><![CDATA[<p>No escaping here: \(y=a\sqrt {x}/2+{b}\) </P><P>No escaping here: <CODE>text</CODE> \(y=a\sqrt {x}/2+{b}\) {4:MULTICHOICE_V:=\(\lbrace A\rbrace \)~{B\}}</P><P>{No escaping here: } \(y=a\sqrt {x}/2+{b}\) {1:SHORTANSWER:=chip#nip~%10%nop#that must be escaped: \(y=a\sqrt {x\}/2+{b\}\)}</P><P>{No escaping here: } \(y=a\sqrt {x}/2+{b}\) {1:NUMERICAL:=0:0#nip~%10%1:0#that must be escaped: \(y=a\sqrt {x\}/2+{b\}\)}</P><P></p>]]></text>
   </questiontext>
   <defaultgrade>2</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
