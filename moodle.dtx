@@ -251,8 +251,9 @@
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   \documentclass[12pt]{article}
 %   \usepackage[section]{moodle}
-%   \def\myreactiontoasillyanswer{What!?}
-%   \htmlregister{\myreactiontoasillyanswer}
+%   \moodleregisternewcommands
+%   \newcommand\monomial[1]{x^{#1}}
+%   \newcommand\sillyanswer{What!?}
 %   \begin{document}
 %   \begin{quiz}{My first quiz}
 %     \begin{numerical}[points=2]{Basic addition}
@@ -262,19 +263,19 @@
 %     \begin{shortanswer}[usecase]{Newton's name}
 %       What was Newton's first name?
 %       \item Isaac
-%       \item[fraction=0, feedback={No, silly!}] Fig
+%       \item[fraction=0, feedback={\sillyanswer}] Fig
 %       \item[fraction=0] Sir
 %     \end{shortanswer}
 %     \begin{multi}[points=3]{A first derivative}
-%       What is the first derivative of $x^3$?
-%       \item[feedback={no!}]  $\frac{1}{4} x^4+C$
-%       \item* $3x^2$
-%       \item[feedback={\myreactiontoasillyanswer}]  $51$
+%       What is the first derivative of $\monomial{3}$?
+%       \item $\frac{1}{4}\monomial{4}+C$
+%       \item[feedback={yes!}]* $3\monomial{2}$
+%       \item[feedback={\sillyanswer}]  $51$
 %     \end{multi}
 %   \end{quiz}
 %   \end{document}
 % \end{VerbatimOut}
-% \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
+% \inputminted[gobble=2,frame=lines,fontsize=\footnotesize]{latex}{minted.doc.out}
 % Key features to note in this first example are that a |quiz| environment
 % contains several question environments.
 % Each question takes a name as a mandatory argument, 
@@ -283,18 +284,6 @@
 % such as |itemize| or |enumerate|, in that answers are set off by 
 % |\item|'s, but the question itself is the text that occurs before
 % the first |\item|.
-% 
-% \DescribeMacro{\htmlregister}
-% Using |\htmlregister|\marg{macroname}, tells \LaTeX\ about the macros you 
-% use. This way, the macros will be properly expanded in the XML file.
-% This works only if the macros are defined \emph{without} optional argument.
-%
-%^^A \DescribeMacro{\moodleregisternewcommands} 
-%^^A It can be cumbersome to record individually a list of macros for expansion.
-%^^A Calling |\moodleregisternewcommands| triggers the automatic
-%^^A expansion of macros defined subsequently using |\newcommand|.
-%^^A Again, this works only if the macros are defined \emph{without} optional
-%^^A argument.
 % 
 % \DescribeMacro{draft}
 % \DescribeMacro{final}
@@ -323,8 +312,20 @@
 % If the package option |section| is invoked (|\usepackage[section]{moodle}|),
 % then each quiz is represented by a different \LaTeX\ section. Starred
 % variants correspond to unnumbered sections or subsections. To preserve
-% compatibility with Version 0.5, the default is |subsection*|. Consequently,
-% |\usepackage{moodle}| is equivalent to |\usepackage[subsection*]{moodle}|.
+% compatibility with Version 0.5 of this package, the default is |subsection*|.
+% Consequently, |\usepackage{moodle}| is equivalent to
+% |\usepackage[subsection*]{moodle}|.
+%
+% \DescribeMacro{\moodleregisternewcommands}\DescribeMacro{\htmlregister}
+% Calling |\moodleregisternewcommands| tells the package to treat
+% specifically the macros defined subsequently.
+% This way, the macros that Moodle's \LaTeX\ renderer does not know
+% about can be properly expanded in the XML file.
+% This mechanism applies only to the macros defined using |\newcommand|
+% and \emph{without} optional argument.
+% Using |\htmlregister|\marg{macroname}, lets you declare a specific
+% macro for expansion. This mechanism, instead, also applies to the
+% macros defined using \TeX's primitive |\def|.
 %
 % \subsection{Quiz and Question Environments}
 % 
@@ -370,7 +371,7 @@
 % it may be set to any value between 0 and 1.
 % The default is |penalty=0.10|.
 % 
-% \DescribeMacro{fraction}\DescribeMacro{fractiontol}
+% \DescribeMacro{fraction}
 % In most question types, it is possible to designate some answers as being
 % worth partial credit---that is, some fraction of a completely correct answer.
 % The |fraction| key may be set to any of the values given in Table~\ref{tab:fraction}, 
@@ -388,17 +389,17 @@
 % \cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}
 % \cmidrule(lr){5-5}\cmidrule(lr){6-6}\cmidrule(lr){7-7}\cmidrule(lr){8-8}
 % \cmidrule(lr){9-9}\cmidrule(lr){10-10}\cmidrule(lr){11-11}
-% 1 & 0&100&&&&&&&&\\
-% 2 & 0&50&100&&&&&&&\\
-% 3 & 0&33.33333&66.66667&100&&&&&&\\
-% 4 & 0&25&&75&100&&&&&\\
-% 5 & 0&20&&&80&100&&&&\\
-% 6 & 0&16.66667&&&&83.33333&100&&&\\
-% 7 & 0&14.28571&&&&&&100&&\\
-% 8 & 0&12.5&&&&&&&100&\\
-% 9 & 0&11.11111&&&&&&&&100\\
-% 10 & 0&10&20&30&40&50&60&70&80&90\\
 % 20 & 0&5&&&&&&&&\\
+% 10 & 0&10&20&30&40&50&60&70&80&90\\
+% 9 & 0&11.11111&&&&&&&&100\\
+% 8 & 0&12.5&&&&&&&100&\\
+% 7 & 0&14.28571&&&&&&100&&\\
+% 6 & 0&16.66667&&&&83.33333&100&&&\\
+% 5 & 0&20&&&80&100&&&&\\
+% 4 & 0&25&&75&100&&&&&\\
+% 3 & 0&33.33333&66.66667&100&&&&&&\\
+% 2 & 0&50&100&&&&&&&\\
+% 1 & 0&100&&&&&&&&\\
 % \bottomrule
 % \end{tabular}
 % \end{table}
@@ -409,8 +410,9 @@
 % In this case, the value ranging from -100 to 0 must be the opposite of one of the
 % values listed in Table~\ref{tab:fraction}.
 % 
+% \DescribeMacro{fractiontol}
 % The package tries to match the |fraction| key to one of the admissible values.
-% To this end, the tolerance is parameterized by the |fractiontol| key. It defaults
+% To this end, the tolerance is controlled by the |fractiontol| key. It defaults
 % to |0.01| but may be changed. When no admissible fraction value is matched, the
 % package throws an error.
 %
