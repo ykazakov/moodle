@@ -1,7 +1,7 @@
 PROJECT_NAME=moodle
 FILE_CLEAN=*.sty *.log *.aux *.auxlock *.out *.blg *.bbl *.toc *.xml *.bcf *.synctex.gz *~ *.nav *.snm *.idx *.ilg *.ind _minted-* *.glo *.gls *.dpth
 LATEX=latex
-PDFLATEX=xelatex
+PDFLATEX=lualatex
 LATEXFLAGS=-interaction=nonstopmode -shell-escape
 DIFFTOOL=meld
 MAKEINDEX=makeindex
