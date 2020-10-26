@@ -876,10 +876,12 @@
 % |\{| & |\}| & |\textsc{}| & \\
 % |\|\textvisiblespace & |\relax| & |\underline{}| &\\
 % |\,| & |\thinspace| & |\textsuperscript{}| & \\
-% |\dots| & |\ldots| & |\textsubscript{}| & \\
-% |\euro| & |\texteuro| & |\url{}| & \\
-% |\TeX| & |\LaTeX|& |\href{}{}| & \\
-% |\_| & |\textbackslash| & |\tikz[]{}| & \\
+% |\dots| & |\ldots| & |\up{}| & \\
+% |\euro| & |\texteuro| & |\fup{}| & \\
+% |\TeX| & |\LaTeX|& |\textsubscript{}| & \\
+% |\_| & |\textbackslash| & |\url{}| & \\
+% & & |\href{}{}| & \\
+% & & |\tikz[]{}| & \\
 % & & |\includegraphics[]{}| & \\
 % & & |\verbatiminput{}| & \\
 % & & |\VerbatimInput[]{}| & \\
@@ -1455,7 +1457,8 @@
 %     1) whether we can convert output from PDF to PNG (ifpdf), 
 %     2) when output pdf is latin1-encoded (ifpdf)
 %     3) when output xml is utf8-encoded (if?tex)
-\RequirePackage{fancybox} % Needed for fancy LaTeX tags
+\RequirePackage{shellesc} %luatex-compatible way of getting system access
+\RequirePackage{fancybox} %Needed for fancy LaTeX tags
 \RequirePackage{getitems} %To gather the header and items
 
 \let\xa=\expandafter
@@ -1465,6 +1468,12 @@
 \def\@moodle@empty{}%
 \def\@relax{\relax}%
 \def\@moodle@par{\par}%
+
+% Taken from https://tex.stackexchange.com/questions/47576/combining-ifxetex-and-ifluatex-with-the-logical-or-operation
+\newif\ifxetexorluatex % a new conditional starts as false
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi>0
+   \xetexorluatextrue
+\fi
 %    \end{macrocode}
 % As the package involves a fair bit of file processing,
 % we automate the naming of auxiliary files.
@@ -1505,7 +1514,7 @@
   \ifpdftex % pdflatex or latex
     \writetomoodle{<?xml version="1.0" encoding="iso-8859-1"?>}%
   \else
-    \ifxetex % xetex
+    \ifxetexorluatex % xetex or luatex
       \writetomoodle{<?xml version="1.0" encoding="UTF-8"?>}%
     \else % what shall we do?
       \writetomoodle{<?xml version="1.0" encoding="UTF-8"?>}%
@@ -1524,11 +1533,11 @@
       \ifxetex % xetex
         \g@addto@macro{\moodle@stamp}{ by XeLaTeX }%
       \else
-        \ifluatex % 
+        \ifluatex % luatex
           \g@addto@macro{\moodle@stamp}{ by LuaLaTeX }%
         \else
           \g@addto@macro{\moodle@stamp}{ a TeX engine }%
-          \fi
+        \fi
       \fi
     \fi
     \writetomoodle{<!-- \moodle@stamp -->}%
@@ -4776,11 +4785,11 @@
     \def\moodle@graphicspath{\@ifundefined{Ginput@path}{}{\xa\@firstofone\Ginput@path}}
     \edef\cmdline{\htmlize@imagemagick@convert\otherspace \moodle@graphicspath#2 -resize \moodle@graphics@geometry\otherspace #2.png}%
     \message{moodle.sty:   Converting '#2' to PNG...^^J}%
-    \expandafter\immediate\expandafter\write18\expandafter{\cmdline}%
+    \expandafter\ShellEscape\expandafter{\cmdline}%
     %Next, optimize
     \edef\cmdline{\optipng\otherspace -clobber -strip all -quiet #2.png}
     \message{moodle.sty:   Optimizing '#2.png'...^^J}%
-    \expandafter\immediate\expandafter\write18\expandafter{\cmdline}%
+    \expandafter\ShellEscape\expandafter{\cmdline}%
     %Next, convert the PNG to base64 encoding
     \ifwindows
       \def\cmdline{\baselxiv\otherspace -encode #2.png tmp.b64 && findstr /vbc:"---" tmp.b64 > #2.enc && del tmp.b64"}%
@@ -4794,7 +4803,7 @@
       % base64 is part of coreutils, add "-w 64" to get exactly the previous behavior  %
     \fi
     \message{moodle.sty:   Converting '#2.png' to base64...^^J}%
-    \expandafter\immediate\expandafter\write18\expandafter{\cmdline}%
+    \expandafter\ShellEscape\expandafter{\cmdline}%
     %Now, save that base64 encoding in a TeX macro
     \def\moodle@newpic@baselxiv{}%
     \message{moodle.sty:   Reading base64 file '#2.enc'...^^J}%
@@ -4802,9 +4811,9 @@
       \savebaselxivdata@recursive
     \closein\baseLXIVdatafile
     \ifwindows
-      \immediate\write18{del #2.enc #2.png}%
+      \ShellEscape{del #2.enc #2.png}%
     \else
-      \immediate\write18{rm -f #2.enc #2.png}%
+      \ShellEscape{rm -f #2.enc #2.png}%
     \fi
     \xa\global\xa\let\csname picbaselxiv@graphics@#2\endcsname=\moodle@newpic@baselxiv%
     \edef\htmlize@imagetag{<IMG \moodle@graphics@htmlgeometry\otherspace SRC="data:image/png;base64,\csname picbaselxiv@graphics@#2\endcsname">}%
@@ -4861,36 +4870,26 @@
     \tikzexternalize%
     \tikzset{external/force remake}%
 
-    \ifpdftex % pdflatex or latex
-      \ifpdf % pdflatex
+    \ifpdf % tex engines defaulting to PDF output
       \def\pdftopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf}%
-                    \expandafter\immediate\expandafter\write18\expandafter{\gscmdline}}%
-      \else % latex
-        \def\pstopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.ps}%
-                    \expandafter\immediate\expandafter\write18\expandafter{\gscmdline}}%
-      \fi
-    \else
-      \ifxetex % xetex
-        \def\pdftopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf}%
-                    \expandafter\immediate\expandafter\write18\expandafter{\gscmdline}}%
-      \else % What to do?
-        \def\pdftopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf}%
-                    \expandafter\immediate\expandafter\write18\expandafter{\gscmdline}}%
-      \fi
+                    \expandafter\ShellEscape\expandafter{\gscmdline}}%
+    \else % latex
+      \def\pstopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.ps}%
+                    \expandafter\ShellEscape\expandafter{\gscmdline}}%
     \fi
     \def\pngoptim{\edef\cmdline{\optipng\otherspace -clobber -strip all -quiet \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png}%
-      \expandafter\immediate\expandafter\write18\expandafter{\cmdline}}%
+      \expandafter\ShellEscape\expandafter{\cmdline}}%
     \ifwindows
       \def\pngtobaselxiv{\edef\baselxivcmdline{\baselxiv\otherspace -encode \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png tmp.b64 && findstr /vbc:"---" tmp.b64 > \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc && del tmp.b64}%
-                       \expandafter\immediate\expandafter\write18\expandafter{\baselxivcmdline}}
+                       \expandafter\ShellEscape\expandafter{\baselxivcmdline}}
       % Starting from Windows 7, CertUtils is included by default. There should be no windows XP still running in 2020
     \else
       \ifmacosx
         \def\pngtobaselxiv{\edef\baselxivcmdline{\baselxiv\otherspace -b 64 -i \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -o \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
-                       \expandafter\immediate\expandafter\write18\expandafter{\baselxivcmdline}}
-      \else
+                       \expandafter\ShellEscape\expandafter{\baselxivcmdline}}
+      \else % UNIX ?
         \def\pngtobaselxiv{\edef\baselxivcmdline{\baselxiv\otherspace \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png > \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
-                       \expandafter\immediate\expandafter\write18\expandafter{\baselxivcmdline}}
+                       \expandafter\ShellEscape\expandafter{\baselxivcmdline}}
       % base64 is part of coreutils, add "-w 64" to get exactly the previous behavior %
       \fi
     \fi
@@ -4914,22 +4913,12 @@
     }
     \def\moodle@endtikzpicture@hook{%
       \@moodle@ifgeneratexml{%
-        \ifpdftex % pdflatex or latex
-          \ifpdf % pdflatex
-            \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf' to PNG...^^J}%
-            \pdftopng
-          \else % latex
-            \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.ps' to PNG...^^J}%
-            \pstopng
-          \fi
-        \else
-          \ifxetex % xetex
-            \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf' to PNG...^^J}%
-            \pdftopng
-          \else % What to do?
-            \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf' to PNG...^^J}%
-            \pdftopng
-          \fi
+        \ifpdf % tex engines defaulting to PDF output
+          \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf' to PNG...^^J}%
+          \pdftopng
+        \else % latex?
+          \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.ps' to PNG...^^J}%
+          \pstopng
         \fi
         \message{moodle.sty:   Optimizing '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png'...^^J}%
         \pngoptim
@@ -5003,18 +4992,18 @@
 \AtEndDocument{%
   \ifmoodle@tikzloaded
     \@moodle@ifgeneratexml{%
-      \ifxetex
+      \ifxetexorluatex
         % we must leave picture pdf's for later linking
         \ifwindows
-          \immediate\write18{powershell.exe -noexit "del * -include \tikzexternalrealjob-tikztemp-*.* -exclude *.pdf}%
+          \ShellEscape{powershell.exe -noexit "del * -include \tikzexternalrealjob-tikztemp-*.* -exclude *.pdf}%
         \else
-          \immediate\write18{find . -type f -name "\tikzexternalrealjob-tikztemp-*.*" -not -name "*.pdf" -delete}%
+          \ShellEscape{find . -type f -name "\tikzexternalrealjob-tikztemp-*.*" -not -name "*.pdf" -delete}%
         \fi
       \else
         \ifwindows
-          \immediate\write18{del \tikzexternalrealjob-tikztemp-*.*}%
-        \else
-          \immediate\write18{rm -f \tikzexternalrealjob-tikztemp-*.*}%
+          \ShellEscape{del \tikzexternalrealjob-tikztemp-*.*}%
+        \else % UNIX?
+          \ShellEscape{rm -f \tikzexternalrealjob-tikztemp-*.*}%
         \fi
       \fi
     }{}%

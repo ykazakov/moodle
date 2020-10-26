@@ -2,7 +2,7 @@ PREFIX=test
 SUFFIX=moodle
 TEST_FILES=$(wildcard $(PREFIX)_*.tex)
 LATEX=latex
-PDFLATEX=xelatex
+PDFLATEX=lualatex
 LATEXFLAGS=-interaction=nonstopmode -shell-escape
 DIFFTOOL=diff -abBwZ
 FILE_CLEAN=*.sty *.log *.aux *.auxlock *.out *.blg *.bbl *.toc *.xml *.bcf *.synctex.gz *~ *.nav *.snm *.idx *.ilg *.ind _minted-* *.glo *.gls *.dpth *-tikztemp-*.pdf
@@ -30,7 +30,7 @@ distclean: clean
 	@$(PDFLATEX) $(LATEXFLAGS) $< $(DEBUG)
 
 $(PREFIX)_%.diff : $(PREFIX)_%-$(SUFFIX).ref $(PREFIX)_%-$(SUFFIX).xml
-	@$(DIFFTOOL) $(basename $<).xml $< > $@ && echo '[  OK  ]  $*' || echo '[FAILED]  $*'
+	@$(DIFFTOOL) $(basename $<).xml $< > $@ && echo '[  OK  ]  $*'  | sed -e "s/_/ /g" || echo '[FAILED]  $*' | sed -e "s/_/ /g"
 
 # DISABLING THE FOLLOWING FOR SAFETY
 # BE SURE OF THE CODE PRODUCED IF YOU UNCOMMENT

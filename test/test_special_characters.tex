@@ -1,13 +1,13 @@
 % !TeX encoding = UTF-8
 % !TeX spellcheck = en_US
-% !TEX TS-program = xelatex
+% !TEX TS-program = lualatex
 \documentclass{article}
 \usepackage[nostamp]{moodle}
-\ifxetex % FOR XELATEX
-	\usepackage{fontspec}
-\else %% FOR PDFLATEX
+\ifpdftex % FOR LATEX and PDFLATEX
 	\usepackage[utf8]{inputenc} % necessary
 	\usepackage[T1]{fontenc} % necessary
+\else % assuming XELATEX or LUALATEX
+	\usepackage{fontspec}
 \fi
 \usepackage{libertine} % includes the "großes Eszett" ß
 
@@ -17,14 +17,20 @@
 \def\UTFligaturesUC{}
 \def\UTFotherLC{}
 \def\UTFotherUC{}
-\ifxetex % only xelatex compiles fine the following in the XML
-  \newcommand\addtomacro[2]{\expandafter\def\expandafter#1\expandafter{#1#2}}%
+\def\UFTextend{
+  \newcommand\addtomacro[2]{\expandafter\def\expandafter##1\expandafter{##1##2}}%
   \addtomacro{\UTFdiacriticLC}{ş ţ ő ű ă ĕ ğ ĭ ŏ ŭ č ď ě ľ ň ř š ť ž }%
   \addtomacro{\UTFdiacriticUC}{Ş Ţ Ő Ű Ă Ĕ Ğ Ĭ Ŏ Ŭ Č Ď Ě Ľ Ň Ř Š Ť Ž }%
   \addtomacro{\UTFligaturesLC}{œ æ ß }%
   \addtomacro{\UTFligaturesLC}{Œ Æ ẞ }%
   \addtomacro{\UTFotherLC}{« ø ł » }%
   \addtomacro{\UTFotherUC}{Ø Ł }%
+}
+\ifxetex % xelatex compiles fine the following in the XML
+  \UFTextend
+\fi
+\ifluatex % lualatex compiles fine the following in the XML
+  \UFTextend
 \fi
 \def\LaTeXdiacriticLC
 {\aa\ \`a \^a \~a \'e \`e \"e \^e \^i \"i \~n \~o \"o \^o \`u \"u \^u \"y \c{c}

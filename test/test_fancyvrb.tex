@@ -1,13 +1,13 @@
 % !TeX encoding = UTF-8
 % !TeX spellcheck = en_US
-% !TEX TS-program = xelatex
+% !TEX TS-program = lualatex
 \documentclass{article}
 \usepackage[nostamp]{moodle}
-\ifxetex % FOR XELATEX
-	\usepackage{fontspec}
-\else %% FOR PDFLATEX
+\ifpdftex % FOR LATEX and PDFLATEX
 	\usepackage[utf8]{inputenc} % necessary
 	\usepackage[T1]{fontenc} % necessary
+\else % assuming XELATEX or LUALATEX
+	\usepackage{fontspec}
 \fi
 \newif\iffvextra
 \fvextratrue % comment this line to use vanilla 'fancyvrb'
