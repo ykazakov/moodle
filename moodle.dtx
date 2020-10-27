@@ -1098,6 +1098,81 @@
 % \end{quote}
 % These settings can be overidden using |\fvset| after the preamble.
 %
+% \section{Calculated Questions}
+% Moodle's calculated questions are not supported by this package.
+% 
+% However, as \href{https://github.com/avohns/python-latex-moodle-quiz}{demonstrated by A.
+% Vohns}, an advanced scripting language may be used to generate a series of questions sharing
+% the same prototype.
+% 
+% We suggest to apply a specific tag to these questions. After import in Moodle, when creating
+% a quizz, this tag can be selected to narrow down a random selection of question.
+% This would mimic the behavior of calculated questions while bringing the flexibility of your
+% favorite scripting language.
+% 
+% Here are two examples inspired from the work of A. Wohns. The first one relies on the
+% native Lua capabilities of \LuaLaTeX.
+% \begin{VerbatimOut}[gobble=1]{minted.doc.out}
+%   \begin{quiz}[tags={calculated}]{Example Quiz}
+%   \directlua{
+%   function clozenum_print(pair,op,result)
+%     tex.print("\\begin{numerical}$"..pair[1].." "..op.." "..pair[2].." 
+%     =$".."\\item ",result,"\\end{numerical}")
+%   end
+%   function cloze_print(pair,points)
+%     tex.print("\\begin{cloze}[points="..points.."]{Arithmetic Quiz 
+%     ("..pair[1]..", "..pair[2]..")}Solve the following tasks!\\\\")
+%     clozenum_print(pair,"+",pair[1]+pair[2])
+%     clozenum_print(pair,"-",pair[1]-pair[2])
+%     clozenum_print(pair,"*",pair[1]*pair[2])
+%     if pair[1]/pair[2]==math.floor(pair[1]/pair[2]) then
+%       clozenum_print(pair,":",math.floor(pair[1]/pair[2]))
+%     end
+%     tex.print("\\end{cloze}")
+%   end
+%   for x = 2,4 do
+%     for y = 2,4 do
+%       if x>y then
+%         if x/y==math.floor(x/y) then points=4 else points=3 end
+%         cloze_print({x,y},points)
+%       end
+%     end
+%   end
+%   }
+%   \end{quiz}
+% \end{VerbatimOut}
+% \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
+% The second example makes use of the \textsf{python} package (|\usepackage{python}|).
+% \begin{VerbatimOut}[gobble=1]{minted.doc.out}
+%   \begin{quiz}[tags={calculated}]{Example Quiz}
+%   \begin{python}
+%   def clozenum_print(pair,op,result):
+%     print(rf"""\begin{{numerical}}
+%   ${pair[0]} {op} {pair[1]} =$\item {result} 
+%   \end{{numerical}}""")
+%   def cloze_print(pair,points):
+%     print(rf"""\begin{{cloze}}[points={points}]{{Arithmetic Quiz 
+%     {(pair[0],pair[1])}}}Solve the following tasks!\\""")
+%     clozenum_print([x,y],"+",x+y)
+%     clozenum_print([x,y],"-",x-y)
+%     clozenum_print([x,y],"*",x*y)
+%     if pair[0]/pair[1] == pair[0]//pair[1]:
+%       clozenum_print([x,y],":",x//y)
+%     print("\end{cloze}")
+%   for x in range(2,5):
+%     for y in range(2,5):
+%       if x > y:
+%         if x/y == x//y:
+%           points=4
+%         else:
+%           points=3  
+%         cloze_print([x,y],points)
+%   \end{python}
+%   \end{quiz}
+% \end{VerbatimOut}
+% \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
+% These two codes yield the same XML content.
+% 
 % \section{Known Limitations and Call for Bug Reports}
 % Table~\ref{tab:support-limitations} lists some different features supported, limitations, and
 % bugs.
@@ -1275,14 +1350,14 @@
 % \begin{itemize}
 %   \item Moodle's feature of designating feedback for correct, 
 %         partially correct, and incorrect answers.
-%   \item Calculated questions; that is, automatically generated numerical questions 
-%         using randomly chosen numbers.
+%^^A   \item Calculated questions; that is, automatically generated numerical questions 
+%^^A         using randomly chosen numbers.
 %   \item Hints
 %   \item Multiple keywords (tags) for questions
 %   \item So-called ``description'' questions.
 % \end{itemize}
-% The authors have used together with a limited number of colleagues for a few
-% semesters of teaching. If other users adopt this package, we fully expect them
+% The authors have used this package together with a limited number of colleagues
+% for a few semesters of teaching. If other users adopt this package, we fully expect them
 % to find bugs. \emph{Please} send all bugs you find to \url{guerquin-kern@crans.org},
 % so that we can fix them for subsequent versions.
 % 
@@ -1325,6 +1400,7 @@
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version} ^^A[version=0.8,date=\today]
 %     \added
+%       \item Description of ways to reproduce the behavior of calculated questions.
 %       \item Command to trigger the automatic recording of new commands.
 %       \item Mechanism to match |fraction| key to values accepted by Moodle.
 %       \item A |fractiontol| key to control the tolerance in this mechanism.

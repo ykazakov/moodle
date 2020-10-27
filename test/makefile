@@ -24,7 +24,7 @@ clean:
 	rm -rf $(FILE_CLEAN)
 
 distclean: clean
-	rm -rf *.pdf *.xml *.diff $(SUFFIX).sty
+	rm -rf *.pdf *.xml *.diff *.md5 *.py *.err $(SUFFIX).sty
 
 %-$(SUFFIX).xml : %.tex $(SUFFIX).sty
 	@$(PDFLATEX) $(LATEXFLAGS) $< $(DEBUG)
