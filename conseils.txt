@@ -1,6 +1,0 @@
-Conseils d'utilisation du package LaTeX "moodle" (v0.6) pour des quizz en français:
-- éditer un fichier tex encodé en UTF8
-- si vous comptez mélanger équations LaTeX et accents codés en UTF8, compiler avec xelatex et le package "fontspec"
-- si vous codez les accents à la mode LaTeX (\`a, \'e, \"o, ...), pdflatex peut être utilisé pour compiler les documents avec \usepackage[utf8]{inputenc} et \usepackage[T1]{fontenc}
-- si vous compilez avec pdfLaTeX et utilisez \usepackage[french]{babel}, il y a des comportements indésirables avec certaines ponctuations (:!;?). Première solution: compiler avec XeLaTeX. Deuxième solution: suivre \begin{quiz}{...} de "\NoAutoSpacing". Troisième solution: se passer de babel.
-- avec \usepackage[french]{babel}, si vous voulez forcer une espace après le guillemet fermant, utiliser "\fg\ " plutôt que "\fg{}"

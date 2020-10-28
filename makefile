@@ -15,9 +15,9 @@ endif
 
 .DEFAULT_GOAL := all
 
-.PHONY: all diff clean distclean test dist
+.PHONY: all clean distclean test dist
 
-all: example_quiz.pdf example_quiz_v5.pdf $(PROJECT_NAME).pdf $(TESTDIR)/all
+all: $(PROJECT_NAME).pdf $(TESTDIR)/all
 
 clean: $(TESTDIR)/clean
 	rm -rf $(FILE_CLEAN)
@@ -26,9 +26,6 @@ distclean: clean
 
 distclean: $(TESTDIR)/distclean
 	rm -rf *.pdf *.xml
-
-diff: $(PROJECT_NAME).sty $(PROJECT_NAME)v5.sty
-	$(DIFFTOOL) $(PROJECT_NAME).sty $(PROJECT_NAME)v5.sty
 
 test: $(TESTDIR)/test
 
@@ -39,15 +36,7 @@ dist: $(PROJECT_NAME).pdf $(PROJECT_NAME).sty test
 
 $(PROJECT_NAME).sty: $(PROJECT_NAME).dtx
 
-$(PROJECT_NAME)v5.sty: $(PROJECT_NAME).dtx
-
-example_quiz.pdf: $(PROJECT_NAME).sty
-
-example_quiz_v5.pdf: $(PROJECT_NAME)v5.sty
-
 $(PROJECT_NAME).pdf: $(PROJECT_NAME).dtx $(PROJECT_NAME).gls
-
-$(PROJECT_NAME)v5.pdf: $(PROJECT_NAME)v5.dtx
 
 %.glo: %.dtx
 	$(PDFLATEX) $(LATEXFLAGS) $< $(DEBUG)
