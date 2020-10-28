@@ -26,12 +26,11 @@ These sources are hosted on a private server using hosting
 [GITLAB](https://gitlab.com).
 To gain access to the project, you must have an account on this server. To
 create an account, there are two ways:
-1. visit <https://gitlab.mattgk.myds.me> and register an account using your
-email in "@ensea.fr".
+1. visit <https://gitlab.mattgk.myds.me> and register
 2. send a public key (RSA or other) to Matthieu Guerquin-Kern.
 
 Using your account, you can see the activity of the project at
-<https://gitlab.mattgk.myds.me/ensea/moodle>. There, among other things, you
+<https://gitlab.mattgk.myds.me/mattguer/moodle>. There, among other things, you
 can download the latest version of the project files. If you upload a public key
 in your profile settings, you will be able to access the project through GIT
 (see below).
@@ -41,7 +40,7 @@ have the corresponding private key), you can use GIT to access the project files
 and contribute.
 The sources are cloned locally using the command:
 
-    $ git clone "ssh://git@gitlab.mattgk.myds.me:2222/ensea/moodle.git"
+    $ git clone "ssh://git@gitlab.mattgk.myds.me:2222/mattguer/moodle.git"
 
 # Requirements
 
