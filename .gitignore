@@ -20,3 +20,5 @@
 *.diff
 _minted-*/
 *~
+*.py
+*.py.err
