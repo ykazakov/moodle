@@ -29,8 +29,10 @@ distclean: clean
 %-$(SUFFIX).xml : %.tex $(SUFFIX).sty
 	@$(PDFLATEX) $(LATEXFLAGS) $< $(DEBUG)
 
+OK = "$$(tput setaf 0)$$(tput setab 2)[  OK  ]$$(tput sgr0)"
+KO = "$$(tput setaf 0)$$(tput setab 1)[FAILED]$$(tput sgr0)"
 $(PREFIX)_%.diff : $(PREFIX)_%-$(SUFFIX).ref $(PREFIX)_%-$(SUFFIX).xml
-	@$(DIFFTOOL) $(basename $<).xml $< > $@ && echo '[  OK  ]  $*'  | sed -e "s/_/ /g" || echo '[FAILED]  $*' | sed -e "s/_/ /g"
+	@$(DIFFTOOL) $(basename $<).xml $< > $@ && echo "$(OK) $*"  | sed -e "s/_/ /g" || echo "$(KO) $*" | sed -e "s/_/ /g"
 
 # DISABLING THE FOLLOWING FOR SAFETY
 # BE SURE OF THE CODE PRODUCED IF YOU UNCOMMENT
