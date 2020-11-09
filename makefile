@@ -15,7 +15,7 @@ endif
 
 .DEFAULT_GOAL := all
 
-.PHONY: all clean distclean test dist
+.PHONY: all clean distclean test dist install
 
 all: $(PROJECT_NAME).pdf $(TESTDIR)/all
 
@@ -25,14 +25,31 @@ clean: $(TESTDIR)/clean
 distclean: clean
 
 distclean: $(TESTDIR)/distclean
-	rm -rf *.pdf *.xml
+	rm -rf *.pdf *.xml *.tds.zip
+	rm -rf texmf/
 
 test: $(TESTDIR)/test
 
-dist: $(PROJECT_NAME).pdf $(PROJECT_NAME).sty test
+dist: test $(PROJECT_NAME).tds.zip
+
+$(PROJECT_NAME).tds.zip : $(PROJECT_NAME).pdf $(PROJECT_NAME).sty
+	@mkdir -p ./texmf/tex/latex/$(PROJECT_NAME)/
+	@mkdir -p ./texmf/source/latex/$(PROJECT_NAME)/
+	@mkdir -p ./texmf/doc/latex/$(PROJECT_NAME)/
+	@cp $(PROJECT_NAME).sty ./texmf/tex/latex/$(PROJECT_NAME)/
+	@cp $(PROJECT_NAME).dtx ./texmf/source/latex/$(PROJECT_NAME)/
+	@cp $(PROJECT_NAME).ins ./texmf/source/latex/$(PROJECT_NAME)/
+	@cp makefile ./texmf/source/latex/$(PROJECT_NAME)/
+	@cp $(PROJECT_NAME).pdf ./texmf/doc/latex/$(PROJECT_NAME)/
+	@cp README.md ./texmf/doc/latex/$(PROJECT_NAME)/
+	@cp LICENSE ./texmf/doc/latex/$(PROJECT_NAME)/
 	@$(MAKE) distclean -C $(TESTDIR)
-	@zip -r9 moodle_$(shell date +"%Y-%m-%d").zip $(PROJECT_NAME).pdf $(PROJECT_NAME).sty $(PROJECT_NAME).dtx $(PROJECT_NAME).ins makefile README.md test/
+	@rsync -avq --exclude='$(TESTDIR)/extra/' $(TESTDIR) ./texmf/doc/latex/$(PROJECT_NAME)
+	@cd texmf/ ; zip -r9 ../$(PROJECT_NAME).tds.zip tex source doc
 	@$(MAKE) clean -C .
+	
+install: $(PROJECT_NAME).tds.zip
+	@unzip -d ~/texmf ./$(PROJECT_NAME).tds.zip 
 
 $(PROJECT_NAME).sty: $(PROJECT_NAME).dtx
 

@@ -23,3 +23,5 @@ _minted-*/
 *.py
 *.py.err
 *.md5
+texmf/*
+*.tds.zip
