@@ -1,6 +1,6 @@
 # License
 
-See LICENSE file.
+See the [LICENSE](LICENSE) file.
 
 # Authors
 
@@ -11,8 +11,9 @@ Original contents (2016): Anders O.F. Hendrickson (anders.hendrickson@snc.edu)
 # Contents
 
 This work consists of the files [moodle.dtx](moodle.dtx) and [moodle.ins](moodle.ins)
-and the derived files `moodle.sty` and `moodle.pdf`. Test files are located in the `test/`
-folder with a rudimentary unit test system (see section [Unit Test](#unit-test) below).
+and the derived files `moodle.sty` and `moodle.pdf`. Test files are located in the
+[test/](test/) folder with a rudimentary unit test system (see section
+[Unit Test](#unit-test) below).
 
 MAKEFILES are distributed to automate the building process (see section
 [Building](#building) below).
@@ -51,17 +52,17 @@ environment using either
 
 An installation of the TexLive suite is required. The full installation is
 not necessary but the moodle package (`.sty` file) requires the following packages:
-- environ (texlive-latex-extra),
-- xkeyval (texlive-latex-recommended),
-- amssymb (texlive-base),
-- trimspaces (texlive-latex-extra),
-- etex (texlive-base),
-- etoolbox (texlive-latex-recommended),
-- xpatch (texlive-latex-extra),
-- array (texlive-latex-extra),
-- ifplatform (texlive-base),
-- fancybox (texlive-latex-recommended),
-- getitems (texlive-latex-extra).
+- `environ` (texlive-latex-extra),
+- `xkeyval` (texlive-latex-recommended),
+- `amssymb` (texlive-base),
+- `trimspaces` (texlive-latex-extra),
+- `etex` (texlive-base),
+- `etoolbox` (texlive-latex-recommended),
+- `xpatch` (texlive-latex-extra),
+- `array` (texlive-latex-extra),
+- `ifplatform` (texlive-base),
+- `fancybox` (texlive-latex-recommended),
+- `getitems` (texlive-latex-extra).
 
 In order to manipulate images, the package relies on:
 - GhostScript (www.ghostscript.com),
@@ -69,14 +70,14 @@ In order to manipulate images, the package relies on:
 - optipng (http://optipng.sourceforge.net/).
 
 In addition, to compile the documentation, the following LaTeX packages are
-necessary: amssymb, metalogo, multirow, threeparttable, booktabs, hyperref,
-tikz, minted, and microtype.
+necessary: `amssymb`, `metalogo`, `multirow`, `threeparttable`, `booktabs`, `hyperref`,
+`tikz`, `minted`, and `microtype`.
 
 # Building
 
 The GNU MAKE mechanism is used to automate the building process.
-In the [makefile](makefile), standard targets `all`, `clean`, `distclean`, `dist`, and `install`
-are defined.
+In the [root makefile](makefile), standard targets `all`, `clean`, `distclean`, `dist`,
+and `install` are defined.
 On multicore machines, you might want to parallelize the building process using
 the `-j` option of MAKE.
 
