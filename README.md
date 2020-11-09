@@ -10,11 +10,12 @@ Original contents (2016): Anders O.F. Hendrickson (anders.hendrickson@snc.edu)
 
 # Contents
 
-This work consists of the files moodle.dtx and moodle.ins and the derived
-files `moodle.sty` and `moodle.pdf`. Test files are located in the `test/`
-folder with a rudimentary unit test system (see #unit-test below).
+This work consists of the files [moodle.dtx](moodle.dtx) and [moodle.ins](moodle.ins)
+and the derived files `moodle.sty` and `moodle.pdf`. Test files are located in the `test/`
+folder with a rudimentary unit test system (see section [Unit Test](#unit-test) below).
 
-MAKEFILES are distributed to automate the building process (see #building below).
+MAKEFILES are distributed to automate the building process (see section
+[Building](#building) below).
 
 # Origin
 
@@ -34,7 +35,7 @@ You can use GIT to access the project files using the command:
 To gain write access to the project and contribute, you must have an account on
 this server. To create an account, there are two ways:
 1. visit <https://gitlab.mattgk.myds.me> and register
-2. contact Matthieu Guerquin-Kern (guerquin-kern@crans.org).
+2. contact [Matthieu Guerquin-Kern](mailto:guerquin-kern@crans.org).
 
 # Requirements
 
@@ -74,7 +75,8 @@ tikz, minted, and microtype.
 # Building
 
 The GNU MAKE mechanism is used to automate the building process.
-Standard targets `all`, `clean`, `distclean`, `dist`, and `install` are available.
+In the [makefile](makefile), standard targets `all`, `clean`, `distclean`, `dist`, and `install`
+are defined.
 On multicore machines, you might want to parallelize the building process using
 the `-j` option of MAKE.
 
@@ -85,7 +87,7 @@ To install the package on your local *nix system (under `~/texmf/`):
     $ make install
 
 # Unit Test
-A rudimentary unit test system is located in the `test/` folder. That helps
+A rudimentary unit test system is located in the [test/](test/) folder. That helps
 ensuring no regression occurs. This system relies on the makefile mechanism.
 To run the unit tests:
 
