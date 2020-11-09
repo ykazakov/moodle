@@ -11,11 +11,10 @@ Original contents (2016): Anders O.F. Hendrickson (anders.hendrickson@snc.edu)
 # Contents
 
 This work consists of the files moodle.dtx and moodle.ins and the derived
-files moodle.sty and moodle.pdf. Test files are located in the test/ folder
-with a rudimentary unit test system.
+files `moodle.sty` and `moodle.pdf`. Test files are located in the `test/`
+folder with a rudimentary unit test system (see #unit-test below).
 
-MAKEFILES are distributed to automate the building process (See Section BUILDING
-below).
+MAKEFILES are distributed to automate the building process (see #building below).
 
 # Origin
 
@@ -50,7 +49,7 @@ environment using either
 2. a virtual machine (see virtualbox for instance).
 
 An installation of the TexLive suite is required. The full installation is
-not necessary but the moodle package (.sty file) requires the following packages:
+not necessary but the moodle package (`.sty` file) requires the following packages:
 - environ (texlive-latex-extra),
 - xkeyval (texlive-latex-recommended),
 - amssymb (texlive-base),
@@ -86,7 +85,7 @@ To install the package on your local *nix system (under `~/texmf/`):
     $ make install
 
 # Unit Test
-A rudimentary unit test system is located in the test/ folder. That helps
+A rudimentary unit test system is located in the `test/` folder. That helps
 ensuring no regression occurs. This system relies on the makefile mechanism.
 To run the unit tests:
 
