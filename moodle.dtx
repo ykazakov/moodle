@@ -1016,8 +1016,13 @@
 %   \item \LaTeX\ must be able to call system commands; that is, |\write18| must be enabled.
 %         For Mik\TeX, this means adding |--enable-write18| to the command line of |pdflatex|;
 %         for \TeX Live, this means adding |--shell-escape=true|.
-%   \item Users of the |circuitikz| package must enclose their circuits in the |tikzpicture|
-%         environment instead of |circuitikz|. That is required,
+%   \item Due to a security issue with old versions of Ghostcript, some systems introduce a
+%         policy that prevents the conversion of PDF and PS to PNG. If the PDF graphics handled
+%         at the system-level are trusted or if you use a sandboxed environment, there are
+%         solutions to disable the security policy (and make things just work!). For example,
+%         \href{https://stackoverflow.com/a/52661288/14608059}{see this}.
+%   \item Users of the |circuitikz| package must enclose their circuits' \TikZ\ code in the
+%         |tikzpicture| environment instead of |circuitikz|. That is required,
 %         as of \TikZ\ 2.1, by the |external| library.
 % \end{itemize}
 %
@@ -1370,7 +1375,7 @@
 % 
 % As the ultimate purpose of this package is the generation of XML files,
 % future versions of \textsf{moodle} will attempt to maintain backwards 
-% compatability with earlier versions of regarding the XML output, apart from
+% compatability with earlier versions regarding the XML output, apart from
 % bug fixes.  
 % Backwards compatibility of the PDF output is not yet guaranteed, however,
 % in case the author or users discover better ways for the PDF to display 
