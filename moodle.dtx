@@ -8,7 +8,7 @@
 % of this license or (at your option) any later version.
 % The latest version of this license is in
 %   http://www.latex-project.org/lppl.txt
-% and version 1.3 or later is part of all distributions of LaTeX%
+% and version 1.3 or later is part of all distributions of LaTeX
 % version 2005/12/01 or later.
 %
 % This work has the LPPL maintenance status `maintained'.
@@ -1554,6 +1554,10 @@
 \newif\ifxetexorluatex % a new conditional starts as false
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi>0
    \xetexorluatextrue
+\fi
+\newif\ifpdfoutput % a new conditional starts as false
+\ifnum 0\ifxetexorluatex 1\fi\ifpdftex\ifpdf 1\fi\fi>0
+   \pdfoutputtrue
 \fi
 %    \end{macrocode}
 % As the package involves a fair bit of file processing,
@@ -4951,7 +4955,7 @@
     \tikzexternalize%
     \tikzset{external/force remake}%
 
-    \ifpdf % tex engines defaulting to PDF output
+    \ifpdfoutput% tex engines defaulting to PDF output (pdflatex, xelatex, lualatex)
       \def\pdftopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf}%
                     \expandafter\ShellEscape\expandafter{\gscmdline}}%
     \else % latex
@@ -4994,10 +4998,10 @@
     }
     \def\moodle@endtikzpicture@hook{%
       \@moodle@ifgeneratexml{%
-        \ifpdf % tex engines defaulting to PDF output
+        \ifpdfoutput % tex engines defaulting to PDF output (pdflatex, xelatex, lualatex)
           \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf' to PNG...^^J}%
           \pdftopng
-        \else % latex?
+        \else % latex? Does this actually does work?
           \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.ps' to PNG...^^J}%
           \pstopng
         \fi
@@ -5074,7 +5078,7 @@
   \ifmoodle@tikzloaded
     \@moodle@ifgeneratexml{%
       \ifxetexorluatex
-        % we must leave picture pdf's for later linking
+        % we must leave picture pdf's for subsequent linking
         \ifwindows
           \ShellEscape{powershell.exe -noexit "del * -include \tikzexternalrealjob-tikztemp-*.* -exclude *.pdf}%
         \else
