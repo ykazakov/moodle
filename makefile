@@ -31,6 +31,8 @@ distclean: $(TESTDIR)/distclean
 test: $(TESTDIR)/test
 
 dist: test $(PROJECT_NAME).tds.zip
+	@mv $(PROJECT_NAME).tds.zip $(PROJECT_NAME)_$(shell date +"%Y-%m-%d").tds.zip
+	@cp $(PROJECT_NAME).pdf $(PROJECT_NAME)_$(shell date +"%Y-%m-%d").pdf
 
 $(PROJECT_NAME).tds.zip : $(PROJECT_NAME).pdf $(PROJECT_NAME).sty
 	@mkdir -p ./texmf/tex/latex/$(PROJECT_NAME)/
