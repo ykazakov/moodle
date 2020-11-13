@@ -2607,7 +2607,9 @@
 
    \def\moodle@print@numerical@answer#1{%
        \let\moodle@feedback=\@empty
-       \moodle@print@numerical@answer@int#1\@rdelim
+       \bgroup
+         \moodle@print@numerical@answer@int#1\@rdelim
+       \egroup
    }%
    \newcommand\moodle@print@numerical@answer@int[1][]{%
      \setkeys{moodle}{#1}%

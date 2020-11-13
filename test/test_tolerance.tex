@@ -1,0 +1,57 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = en_US
+% !TEX TS-program = lualatex
+\documentclass{article}
+\usepackage[nostamp]{moodle}
+\ifpdftex % FOR LATEX and PDFLATEX
+	\usepackage[utf8]{inputenc} % necessary
+	\usepackage[T1]{fontenc} % necessary
+\else % assuming XELATEX or LUALATEX
+	\usepackage{fontspec}
+\fi
+\usepackage{hyperref}
+\usepackage{python}
+\begin{document}
+
+\section*{Introduction}
+
+This document is intended to check the support of the tolerance key for 
+numerical questions.
+
+\begin{quiz}[tolerance=1]{Tolerance}
+\begin{numerical}[tolerance=2]{Num}
+Give a number
+\item[tolerance=4] 1
+\item 0
+\end{numerical}
+\begin{numerical}{Num}
+Give a number
+\item[tolerance=4] 1
+\item 0
+\end{numerical}
+\begin{cloze}[tolerance=2]{ClozeNum}
+\begin{numerical}[tolerance=3]
+Give a number
+\item[tolerance=4] 1
+\item 0
+\end{numerical}
+\begin{numerical}
+Give a number
+\item[tolerance=4] 1
+\item 0
+\end{numerical}
+\end{cloze}
+\begin{cloze}{ClozeNum}
+\begin{numerical}[tolerance=3]
+Give a number
+\item[tolerance=4] 1
+\item 0
+\end{numerical}
+\begin{numerical}
+Give a number
+\item[tolerance=4] 1
+\item 0
+\end{numerical}
+\end{cloze}
+\end{quiz}
+\end{document}
