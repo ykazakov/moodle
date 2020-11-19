@@ -10,7 +10,7 @@
  
 <question type="numerical">
   <name format="html">
-    <text><![CDATA[Num]]></text>
+    <text><![CDATA[Num 1]]></text>
   </name>
   <questiontext format="html">
     <text><![CDATA[<p>Give a number </p>]]></text>
@@ -30,7 +30,7 @@
 </question>
 <question type="numerical">
   <name format="html">
-    <text><![CDATA[Num]]></text>
+    <text><![CDATA[Num 2]]></text>
   </name>
   <questiontext format="html">
     <text><![CDATA[<p>Give a number </p>]]></text>
@@ -40,17 +40,17 @@
   <penalty>0.10</penalty>
   <hidden>0</hidden>
   <answer fraction="100" format="plain_text">
-    <text>1</text>
-    <tolerance>4</tolerance>
+    <text>1,45E-3</text>
+    <tolerance>1,65e-4</tolerance>
   </answer>
   <answer fraction="100" format="plain_text">
     <text>0</text>
-    <tolerance>1</tolerance>
+    <tolerance>0</tolerance>
   </answer>
 </question>
 <question type="cloze">
   <name format="html">
-    <text><![CDATA[ClozeNum]]></text>
+    <text><![CDATA[ClozeNum 1]]></text>
   </name>
   <questiontext format="html">
     <text><![CDATA[<p>Give a number {1:NUMERICAL:=1:4~=0:3}Give a number {1:NUMERICAL:=1:4~=0:2}</p>]]></text>
@@ -62,10 +62,10 @@
 </question>
 <question type="cloze">
   <name format="html">
-    <text><![CDATA[ClozeNum]]></text>
+    <text><![CDATA[ClozeNum 2]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>Give a number {1:NUMERICAL:=1:4~=0:3}Give a number {1:NUMERICAL:=1:4~=0:1}</p>]]></text>
+    <text><![CDATA[<p>Give a number {1:NUMERICAL:=1,45e-3:1,65E-4~=0:0}</p>]]></text>
   </questiontext>
   <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>

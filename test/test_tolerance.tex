@@ -9,8 +9,7 @@
 \else % assuming XELATEX or LUALATEX
 	\usepackage{fontspec}
 \fi
-\usepackage{hyperref}
-\usepackage{python}
+%\usepackage{siunitx}
 \begin{document}
 
 \section*{Introduction}
@@ -18,18 +17,18 @@
 This document is intended to check the support of the tolerance key for 
 numerical questions.
 
-\begin{quiz}[tolerance=1]{Tolerance}
-\begin{numerical}[tolerance=2]{Num}
+\begin{quiz}[tolerance=0]{Tolerance}
+\begin{numerical}[tolerance=2]{Num 1}
 Give a number
 \item[tolerance=4] 1
 \item 0
 \end{numerical}
-\begin{numerical}{Num}
+\begin{numerical}{Num 2}
 Give a number
-\item[tolerance=4] 1
+\item[tolerance={1,65e-4}] 1,45E-3
 \item 0
 \end{numerical}
-\begin{cloze}[tolerance=2]{ClozeNum}
+\begin{cloze}[tolerance=2]{ClozeNum 1}
 \begin{numerical}[tolerance=3]
 Give a number
 \item[tolerance=4] 1
@@ -41,15 +40,10 @@ Give a number
 \item 0
 \end{numerical}
 \end{cloze}
-\begin{cloze}{ClozeNum}
-\begin{numerical}[tolerance=3]
-Give a number
-\item[tolerance=4] 1
-\item 0
-\end{numerical}
+\begin{cloze}{ClozeNum 2}
 \begin{numerical}
 Give a number
-\item[tolerance=4] 1
+\item[tolerance={1,65E-4}] 1,45e-3
 \item 0
 \end{numerical}
 \end{cloze}

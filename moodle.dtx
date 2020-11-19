@@ -587,6 +587,7 @@
 %
 % \DescribeMacro{tolerance} 
 % The |tolerance| key can be used to specify the validity of answers within some margin.
+% This key can be set at different levels: quiz, question, item.
 % For example, with the question
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   \begin{numerical}[tolerance=0.01]{my question}
@@ -598,6 +599,13 @@
 % \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
 % In this case, the input \textsf{1.41} will be validated and the input \textsf{0.71} will
 % get the specific feedback.
+% 
+% Both answers and tolerance can be specified with the comma as a decimal separator.
+% Exponent notation is accepted. After import, Moodle will recognize indifferently |0.000165|,
+% |0,000165|, |1.65E-4|, |1.65e-4|, |1,65E-4|, and |1,65e-4|.
+%
+% If the \textsf{siunitx} package is loaded, \textsf{moodle} will detect it and
+% numbers will be rendered nicely in the PDF output.
 % 
 % Units, unit-handling and multipliers are currently unsupported.
 %
@@ -757,7 +765,7 @@
 %     \end{multi}
 %     and that $\int_0^2 x^2\,dx$ equals
 %     \begin{numerical}
-%       \item[tolerance=0.0004] 2.667
+%       \item[tolerance={4e-4}] 2.667
 %     \end{numerical}.
 %     Thanks, Isaac!
 %   \end{cloze}
@@ -1539,7 +1547,7 @@
 %     1) whether we can convert output from PDF to PNG (ifpdf), 
 %     2) when output pdf is latin1-encoded (ifpdf)
 %     3) when output xml is utf8-encoded (if?tex)
-\@ifundefined{ifpdf}{\RequirePackage{iftex}}{}% old iftex would not define the conditional
+\@ifundefined{ifpdf}{\RequirePackage{ifpdf}}{}% old iftex would not define the conditional
 \RequirePackage{shellesc} %luatex-compatible way of getting system access
 \RequirePackage{fancybox} %Needed for fancy LaTeX tags
 \RequirePackage{getitems} %To gather the header and items
@@ -2600,6 +2608,10 @@
 
 \def\moodle@makelatextag@numerical{}
 
+\AtEndPreamble{
+  \@ifpackageloaded{siunitx}{\def\moodle@printnum#1{\num[omit-uncertainty,copy-decimal-marker]{#1}}}{\let\moodle@printnum\relax}%
+}
+
 \def\moodle@numerical@latexprocessing{%
       \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
         \loopthroughitemswithcommand{\moodle@print@numerical@answer}%
@@ -2620,16 +2632,16 @@
      \moodle@print@numerical@answer@int@int%
    }%
    \def\moodle@print@numerical@answer@int@int#1\@rdelim{%
-     \ifdim0pt=\moodle@tolerance pt\relax
-       \def\moodle@numericalprint@tolerance{}%
+     \ifnum\z@=\moodle@tolerance
+       \item \moodle@printnum{#1}%
      \else
-       \edef\moodle@numericalprint@tolerance{\noexpand\pm\moodle@tolerance}%
+       \item \moodle@printnum{\trim@post@space{#1}}$\,\pm\,$\moodle@printnum{\moodle@tolerance}%
      \fi
      \ifx\moodle@fraction\@hundred
-       \item $#1\moodle@numericalprint@tolerance~\checkmark$%
+       $~\checkmark$%
      \else
        \moodle@checkfraction
-       \item $#1\moodle@numericalprint@tolerance~(\moodle@fraction\%)$%
+       $~(\moodle@fraction\%)$%
      \fi
      \ifx\moodle@feedback\@empty\relax\else
        \hfill \emph{$\rightarrow$ \moodle@feedback}%
@@ -3567,12 +3579,12 @@
     \moodle@checkfraction
     \edef\moodle@clozenumericalprint@fraction{$(~\moodle@fraction\%)$}%
   \fi
-  \ifdim0pt=\moodle@tolerance pt\relax
+  \ifnum\z@=\moodle@tolerance
     \def\moodle@clozenumericalprint@tolerance{}%
   \else
-    \edef\moodle@clozenumericalprint@tolerance{\noexpand\pm\moodle@tolerance}%
+    \edef\moodle@clozenumericalprint@tolerance{$\,\pm\,$\moodle@printnum{\moodle@tolerance}}%
   \fi
-  \xdef\moodle@clozenumericalprint@line{$#1\moodle@clozenumericalprint@tolerance$~\moodle@clozenumericalprint@fraction & \expandonce\emph{\expandonce\moodle@feedback}}%
+  \xdef\moodle@clozenumericalprint@line{\moodle@printnum{\trim@post@space{#1}}\moodle@clozenumericalprint@tolerance~\moodle@clozenumericalprint@fraction & \expandonce\emph{\expandonce\moodle@feedback}}%
   \xa\g@addto@macro\xa\cloze@numerical@table@text\xa{\moodle@clozenumericalprint@line \\\hline}%
 }%
 
@@ -5140,11 +5152,11 @@
 % Second, we deal with |\VerbatimInput| from `fancyvrb' or `fvextra'
 %    \begin{macrocode}
 \@ifpackageloaded{minted}{\PackageError{moodle}{'moodle' should be loaded before 'minted'.}%
-{'moodle' loads 'fancybox' which, unfortunately, redefines verbatim commands.}}%
+{'moodle' loads 'fancybox' which, unfortunately, redefines verbatim commands.}}{\relax}%
 \@ifpackageloaded{fvextra}{\PackageError{moodle}{'moodle' should be loaded before 'fvextra'.}%
-{'moodle' loads 'fancybox' which, unfortunately, redefines verbatim commands.}}%
+{'moodle' loads 'fancybox' which, unfortunately, redefines verbatim commands.}}{\relax}%
 \@ifpackageloaded{fancyvrb}{\PackageError{moodle}{'moodle' should be loaded before 'fancyvrb'.}%
-{'moodle' loads 'fancybox' which, unfortunately, redefines verbatim commands.}}%
+{'moodle' loads 'fancybox' which, unfortunately, redefines verbatim commands.}}{\relax}%
 
 \html@action@newcommand{VerbatimInput}[2][]{%
   \message{moodle.sty: Processing \string\VerbatimInput[#1]{#2} for HTML ^^J}%
@@ -5223,7 +5235,7 @@
   \@ifpackageloaded{fancyvrb}{%
     % custom settings for display
     \fvset{frame=lines,label={[Beginning of code]End of code},framesep=3mm,numbersep=9pt}%
-  }{}%
+  }{\relax}%
 }
 %    \end{macrocode}
 % Third, we patch `minted' so that it also calls pygmentize to generate HTML code.
