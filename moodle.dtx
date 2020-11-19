@@ -33,7 +33,7 @@
 %<*driver>
 \documentclass[a4paper]{ltxdoc}
 \usepackage{iftex}
-\ifpdftex
+\ifPDFTeX
   \usepackage[utf8]{inputenc} % necessary
   \usepackage[T1]{fontenc} % necessary
   \usepackage[protrusion=true,expansion]{microtype}
@@ -1539,6 +1539,7 @@
 %     1) whether we can convert output from PDF to PNG (ifpdf), 
 %     2) when output pdf is latin1-encoded (ifpdf)
 %     3) when output xml is utf8-encoded (if?tex)
+\@ifundefined{ifpdf}{\RequirePackage{iftex}}{}% old iftex would not define the conditional
 \RequirePackage{shellesc} %luatex-compatible way of getting system access
 \RequirePackage{fancybox} %Needed for fancy LaTeX tags
 \RequirePackage{getitems} %To gather the header and items
@@ -1552,12 +1553,14 @@
 \def\@moodle@par{\par}%
 
 % Taken from https://tex.stackexchange.com/questions/47576/combining-ifxetex-and-ifluatex-with-the-logical-or-operation
-\newif\ifUTFviiEncoding % a new conditional starts as false
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi>0
-   \UTFviiEncodingtrue
-\fi
+\@ifundefined{ifTUTeX}{
+  \newif\ifTUTeX % a new conditional starts as false
+  \ifnum 0\ifXeTeX 1\fi\ifLuaTeX 1\fi>0%
+    \TUTeXtrue
+  \fi
+}{}%
 \newif\ifpdfoutput % a new conditional starts as false
-\ifnum 0\ifUTFviiEncoding 1\fi\ifpdftex\ifpdf 1\fi\fi>0
+\ifnum 0\ifTUTeX 1\fi\ifPDFTeX\ifpdf 1\fi\fi>0%
    \pdfoutputtrue
 \fi
 %    \end{macrocode}
@@ -1597,10 +1600,10 @@
 \newwrite\moodle@outfile
 \def\openmoodleout{%
   \immediate\openout\moodle@outfile=\outputfilename\relax
-  \ifpdftex % latin1-based engines (pdflatex or latex)
+  \ifPDFTeX % latin1-based engines (pdflatex or latex)
     \writetomoodle{<?xml version="1.0" encoding="iso-8859-1"?>}%
   \else
-    \ifUTFviiEncoding % UTF8-based engines (XeTeX or LuaTeX)
+    \ifTUTeX % UTF8-based engines (XeTeX or LuaTeX)
       \writetomoodle{<?xml version="1.0" encoding="UTF-8"?>}%
     \else % what shall we do?
       \writetomoodle{<?xml version="1.0" encoding="UTF-8"?>}%
@@ -1609,17 +1612,17 @@
   \fi
   \ifmoodle@stampmode
     \def\moodle@stamp{This file was generated on \the\year-\two@digits\month-\two@digits\day}
-    \ifpdftex % pdflatex or latex
+    \ifPDFTeX % pdflatex or latex
       \ifpdf % pdflatex
         \g@addto@macro{\moodle@stamp}{ by pdfLaTeX }%
       \else % latex
         \g@addto@macro{\moodle@stamp}{ by LaTeX }%
       \fi
     \else
-      \ifxetex % xetex
+      \ifXeTeX % xetex
         \g@addto@macro{\moodle@stamp}{ by XeLaTeX }%
       \else
-        \ifluatex % luatex
+        \ifLuaTeX % luatex
           \g@addto@macro{\moodle@stamp}{ by LuaLaTeX }%
         \else
           \g@addto@macro{\moodle@stamp}{ a TeX engine }%
@@ -5090,7 +5093,7 @@
 \AfterEndDocument{%
   \ifmoodle@tikzloaded
     \@moodle@ifgeneratexml{%
-      \ifxetex
+      \ifXeTeX
         % we must keep picture pdf's for subsequent linking (xdvipdfmx)
         \ifwindows
           \ShellEscape{powershell.exe -noexit "del * -include \tikzexternalrealjob-tikztemp-*.* -exclude *.pdf}%
@@ -5400,7 +5403,7 @@
 % related to autospacing when using |pdfLaTeX|. We shall warn them.
 %    \begin{macrocode}
 \AtBeginDocument{%
-  \ifpdftex % pdflatex or latex
+  \ifPDFTeX % pdflatex or latex
     \@ifpackagewith{babel}{french}{%
       \PackageWarning{moodle}{Be careful when using LaTeX, moodle, and the babel package with option 'french'. Autospacing produces in undesired symbols in the XML. You can either 1) compile with xelatex/lualatex or 2) add '\NoAutoSpacing' after '\begin{quiz}'.}%
     }{\relax}%
