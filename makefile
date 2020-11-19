@@ -17,7 +17,7 @@ endif
 
 .PHONY: all clean distclean test dist install
 
-all: $(PROJECT_NAME).pdf $(TESTDIR)/all
+all: $(PROJECT_NAME).pdf $(PROJECT_NAME).sty
 
 clean: $(TESTDIR)/clean
 	rm -rf $(FILE_CLEAN)
