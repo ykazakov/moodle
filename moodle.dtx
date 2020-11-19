@@ -1415,6 +1415,7 @@
 %       \item An error is thrown when |fraction| is set to an invalid value.
 %     \fixed
 %       \item Closing braces escaped in cloze subquestions outside math environment.
+%       \item The scope of the |tolerance| key is now respected.
 %   \end{version}
 %   \begin{version}[version=0.7,date=2020-09-06]
 %     \added
@@ -1551,12 +1552,12 @@
 \def\@moodle@par{\par}%
 
 % Taken from https://tex.stackexchange.com/questions/47576/combining-ifxetex-and-ifluatex-with-the-logical-or-operation
-\newif\ifxetexorluatex % a new conditional starts as false
+\newif\ifUTFviiEncoding % a new conditional starts as false
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi>0
-   \xetexorluatextrue
+   \UTFviiEncodingtrue
 \fi
 \newif\ifpdfoutput % a new conditional starts as false
-\ifnum 0\ifxetexorluatex 1\fi\ifpdftex\ifpdf 1\fi\fi>0
+\ifnum 0\ifUTFviiEncoding 1\fi\ifpdftex\ifpdf 1\fi\fi>0
    \pdfoutputtrue
 \fi
 %    \end{macrocode}
@@ -1596,10 +1597,10 @@
 \newwrite\moodle@outfile
 \def\openmoodleout{%
   \immediate\openout\moodle@outfile=\outputfilename\relax
-  \ifpdftex % pdflatex or latex
+  \ifpdftex % latin1-based engines (pdflatex or latex)
     \writetomoodle{<?xml version="1.0" encoding="iso-8859-1"?>}%
   \else
-    \ifxetexorluatex % xetex or luatex
+    \ifUTFviiEncoding % UTF8-based engines (XeTeX or LuaTeX)
       \writetomoodle{<?xml version="1.0" encoding="UTF-8"?>}%
     \else % what shall we do?
       \writetomoodle{<?xml version="1.0" encoding="UTF-8"?>}%
@@ -2844,8 +2845,7 @@
      \PackageError{moodle}{the current fraction is not a valid value (here: \ds)}%
    }
    {\catcode`|=3\relax
-   \gdef\moodle@validfractionlist{0|5|10|11.11111|12.5|14.28571|16.66667|20|25|30|33.33333|40|50|60|66.66667|70|75|80|83.33333|90|100}}
-   %\forcsvlist{\listadd\moodle@validfractionlist}{0pt,5pt,10pt,11.11111pt,12.5pt,14.28571pt,16.66667pt,20pt,25pt,30pt,33.33333pt,40pt,50pt,60pt,66.66667pt,70pt,75pt,80pt,83.33333pt,90pt,100pt}%
+   \gdef\moodle@validfractionlist{0|5|10|11.11111|12.5|14.28571|16.66667|20|25|30|33.33333|40|50|60|66.66667|70|75|80|83.33333|90|100}}%
    \def\moodle@isfractionnear#1{%
      \setlength{\test@lower}{#1 pt}%
      \addtolength{\test@lower}{-\moodle@fractiontol pt}%
@@ -2866,8 +2866,7 @@
      \fi
      % test if the fraction is an admissible value
      \let\test@fractionmatched\@empty
-     \renewcommand*{\do}[1]{\moodle@isfractionnear{##1}}%
-     \dolistloop{\moodle@validfractionlist}%
+     \forlistloop{\moodle@isfractionnear}{\moodle@validfractionlist}%
      \ifx\test@fractionmatched\@empty\relax
        \moodle@fractionerror%
      \fi
@@ -4998,12 +4997,22 @@
     \g@addto@macro{\tikzexternal@closeenvironments}{%
       \moodle@endtikzpicture@hook
     }
+% The following could replace calls to \pdftopng, \pngoptim and \pngtobaselxiv
+%    \tikzset{external/system call/.add={}{;
+%         gs -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile="\image.png" -r150 "\image.pdf";
+%         optipng -clobber -strip all -quiet "\image.png";
+%         base64 "\image.png" > "\image.enc"
+%      }
+%    }
+% With the following mechanism, we could trigger something when the externalized images are included back.
+%    \pgfkeys{/pgf/images/include external/.code={\pgfimage{#1}\@moodle@ifgeneratexml{\savebaselxivdata}{}}}
+%
     \def\moodle@endtikzpicture@hook{%
       \@moodle@ifgeneratexml{%
         \ifpdfoutput % tex engines defaulting to PDF output (pdflatex, xelatex, lualatex)
           \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf' to PNG...^^J}%
           \pdftopng
-        \else % latex? Does this actually does work?
+        \else % latex? Does this actually work?
           \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.ps' to PNG...^^J}%
           \pstopng
         \fi
@@ -5075,12 +5084,14 @@
 %    \end{macrocode}
 % Finally, we clean up our mess by deleting the temporary PDF, PNG, and ENC 
 % files we created.
+% With XeTeX, we cannot clean pictures pdf's because they are actually included in the final pdf afterwards, by xdvipdfmx.
+% With LuaTeX, it looks like |\AtEndDocument| is too early to for this cleaning step.
 %    \begin{macrocode}
-\AtEndDocument{%
+\AfterEndDocument{%
   \ifmoodle@tikzloaded
     \@moodle@ifgeneratexml{%
-      \ifxetexorluatex
-        % we must leave picture pdf's for subsequent linking
+      \ifxetex
+        % we must keep picture pdf's for subsequent linking (xdvipdfmx)
         \ifwindows
           \ShellEscape{powershell.exe -noexit "del * -include \tikzexternalrealjob-tikztemp-*.* -exclude *.pdf}%
         \else
@@ -5099,7 +5110,6 @@
 %    \end{macrocode}
 % TODO:
 % * sizing options for TikZ pictures?
-% * In cloze multi, how to handle HTML or TeX in answers?  In particular, what about ~?
 %\end{macro}
 %
 % \subsection{Verbatim Code}
