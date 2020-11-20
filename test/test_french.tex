@@ -13,7 +13,7 @@
 \usepackage{hyperref}
 % pangramme conçu par Gilles Esposito-Farèse et cité dans "Petites leçons de 
 % typographie" de Jacques André: https://jacques-andre.fr/faqtypo/lessons.pdf
-\ifpdftex
+\ifPDFTeX
   \def\myquestiontext{ \underline{Pangramme} con\c{c}u par Gilles 
   \textsc{Esposito-Far\`ese}\,:}
   \def\pangramme{D\`es No\"el o\`u un z\'ephyr ha\"i me v\^et de 
@@ -47,8 +47,8 @@ Secondarily, the use of \verb|\textsuperscript| (and french adaptation
 \verb|\url|, and \verb|\href| is also demonstrated.
 
 \begin{quiz}[points=1]{French Issues}
-\ifpdftex
-  \NoAutoSpacing % this option preserves pdflatex compilation
+\ifPDFTeX
+  \NoAutoSpacing% this option preserves pdflatex compilation
 \fi
 \begin{multi}[feedback={1\fup{er}, M\fup{me}, N\fup{o}\\
 1\textsuperscript{er}, M\textsuperscript{me}, N\textsuperscript{o}\\
