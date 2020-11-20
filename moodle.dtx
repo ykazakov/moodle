@@ -1421,6 +1421,9 @@
 %     \changed
 %       \item The package \texttt{iftex} is now required.
 %       \item An error is thrown when |fraction| is set to an invalid value.
+%       \item In numerical questions, the tolerance can be set in exponent form.
+%       \item Nicer PDF rendering of numbers in numerical questions if \textsf{siunitx] is loaded.
+%       \item Included PNG files (|.png| and |.PNG| extensions) are now directly converted to base64.
 %     \fixed
 %       \item Closing braces escaped in cloze subquestions outside math environment.
 %       \item The scope of the |tolerance| key is now respected.
@@ -4882,39 +4885,62 @@
         \edef\moodle@graphics@htmlgeometry{width=\number\moodle@graphics@width@pixels\otherspace height=\number\moodle@graphics@height@pixels}%
       \fi
     \fi
-    %First, convert it to PNG
     \def\moodle@graphicspath{\@ifundefined{Ginput@path}{}{\xa\@firstofone\Ginput@path}}
-    \edef\cmdline{\htmlize@imagemagick@convert\otherspace \moodle@graphicspath#2 -resize \moodle@graphics@geometry\otherspace #2.png}%
-    \message{moodle.sty:   Converting '#2' to PNG...^^J}%
-    \expandafter\ShellEscape\expandafter{\cmdline}%
-    %Next, optimize
-    \edef\cmdline{\optipng\otherspace -clobber -strip all -quiet #2.png}
-    \message{moodle.sty:   Optimizing '#2.png'...^^J}%
-    \expandafter\ShellEscape\expandafter{\cmdline}%
+    %If the file is not already PNG, convert it to PNG first
+    \def\moodle@pngext{png}%
+    \def\moodle@PNGext{PNG}%
+    \let\moodle@currentPNGext\moodle@pngext
+    \filename@parse{#2}
+    %\message{<<\filename@area>>^^J}
+    %\message{<<\filename@base>>^^J}
+    %\message{<<\filename@ext>>^^J}
+    \def\moodle@currentgraphicfilenamebase{\moodle@graphicspath\filename@area\filename@base}
+    \ifx\filename@ext\moodle@pngext\else%
+      \ifx\filename@ext\moodle@PNGext
+        \let\moodle@currentPNGext\moodle@PNGext
+      \else
+        \edef\cmdline{\htmlize@imagemagick@convert\otherspace \moodle@graphicspath#2 -resize \moodle@graphics@geometry\otherspace \moodle@currentgraphicfilenamebase.\moodle@currentPNGext}%
+        \message{moodle.sty:   Converting '#2' to PNG...^^J}%
+        \expandafter\ShellEscape\expandafter{\cmdline}%
+        %Next, optimize
+        \edef\cmdline{\optipng\otherspace -clobber -strip all -quiet \moodle@currentgraphicfilenamebase.\moodle@currentPNGext}
+        \message{moodle.sty:   Optimizing '\filename@base.\moodle@currentPNGext'...^^J}%
+        \expandafter\ShellEscape\expandafter{\cmdline}%
+      \fi
+    \fi
     %Next, convert the PNG to base64 encoding
     \ifwindows
-      \def\cmdline{\baselxiv\otherspace -encode #2.png tmp.b64 && findstr /vbc:"---" tmp.b64 > #2.enc && del tmp.b64"}%
+      \def\cmdline{\baselxiv\otherspace -encode \moodle@currentgraphicfilenamebase.\moodle@currentPNGext tmp.b64 && findstr /vbc:"---" tmp.b64 > \moodle@currentgraphicfilenamebase.enc && del tmp.b64"}%
       % Starting from Windows 7, CertUtil is included by default. There should be no windows XP still running
     \else
       \ifmacosx
-        \def\cmdline{\baselxiv\otherspace -b 64 -i #2.png -o #2.enc}
+        \def\cmdline{\baselxiv\otherspace -b 64 -i \moodle@currentgraphicfilenamebase.\moodle@currentPNGext -o \moodle@currentgraphicfilenamebase.enc}
       \else % Linux, Cygwin
-        \def\cmdline{\baselxiv\otherspace #2.png > #2.enc}
+        \def\cmdline{\baselxiv\otherspace \moodle@currentgraphicfilenamebase.\moodle@currentPNGext > \moodle@currentgraphicfilenamebase.enc}
       \fi
       % base64 is part of coreutils, add "-w 64" to get exactly the previous behavior  %
     \fi
-    \message{moodle.sty:   Converting '#2.png' to base64...^^J}%
+    \message{moodle.sty:   Converting '\filename@base.\moodle@currentPNGext' to base64...^^J}%
     \expandafter\ShellEscape\expandafter{\cmdline}%
     %Now, save that base64 encoding in a TeX macro
     \def\moodle@newpic@baselxiv{}%
-    \message{moodle.sty:   Reading base64 file '#2.enc'...^^J}%
-    \openin\baseLXIVdatafile=#2.enc\relax
+    \message{moodle.sty:   Reading base64 file '\filename@base.enc'...^^J}%
+    \openin\baseLXIVdatafile=\moodle@currentgraphicfilenamebase.enc\relax
       \savebaselxivdata@recursive
     \closein\baseLXIVdatafile
-    \ifwindows
-      \ShellEscape{del #2.enc #2.png}%
+    %Clean up files
+    \ifx\filename@ext\moodle@currentPNGext%
+      \ifwindows
+        \ShellEscape{del \moodle@currentgraphicfilenamebase.enc}%
+      \else
+        \ShellEscape{rm -f \moodle@currentgraphicfilenamebase.enc}%
+      \fi
     \else
-      \ShellEscape{rm -f #2.enc #2.png}%
+      \ifwindows
+        \ShellEscape{del \moodle@currentgraphicfilenamebase.enc \moodle@currentgraphicfilenamebase.\moodle@currentPNGext}%
+      \else
+        \ShellEscape{rm -f \moodle@currentgraphicfilenamebase.enc \moodle@currentgraphicfilenamebase.\moodle@currentPNGext}%
+      \fi
     \fi
     \xa\global\xa\let\csname picbaselxiv@graphics@#2\endcsname=\moodle@newpic@baselxiv%
     \edef\htmlize@imagetag{<IMG \moodle@graphics@htmlgeometry\otherspace SRC="data:image/png;base64,\csname picbaselxiv@graphics@#2\endcsname">}%
