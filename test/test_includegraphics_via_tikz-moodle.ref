@@ -28,9 +28,10 @@ AElFTkSuQmCC
   <shuffleanswers>1</shuffleanswers>
   <answernumbering>abc</answernumbering>
   <answer fraction="100" format="html">
-    <text><![CDATA[<p><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAOCAQAAAC4X5UdAAAAcUlEQVQIHQXBIQ7BcRwH0Dc2I9gk 
-d9DcwiQncYX/JJewKZIoa7LgCAJB+U5l9vt4j7uIn4jY83C2NDK20YQZAHYCAKwEADgIACw0XwCm 
-nqID4CpO+gADcTEE6Dm6mQBsxQuAtXibA9DERymlFBEREZE/IqAvwnqJQo0AAAAASUVORK5CYII= 
+    <text><![CDATA[<p><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAOCAQAAAC4X5UdAAAAiUlEQVQIHQXBsQoBYQAA4O+/jihs 
+N9wTXFnMrAa7TcoD2E1ewuYRPIBJyaB4AIOSlJTFSRYLw/m+4KYu9xYkUlsWJjKxko61HwkABp6R 
+HAA33wgAtFQBILPzBaBh7mMG0DD1sJQCNWNXK00BKkZONtoiiA0d7XXFQN/FQU8ZCO5SL2c/IChQ 
+APAH/tQgahKME3EAAAAASUVORK5CYII= 
 "></p>]]></text>
   </answer>
   <answer fraction="0" format="html">
