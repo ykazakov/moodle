@@ -592,15 +592,25 @@
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   \begin{numerical}[tolerance=0.01]{my question}
 %     Approximate value of $\sqrt{2}$?
-%     \item 1.4142
-%     \item[fraction=0,feedback={twice this!}] 0.70711
+%     \item[tolerance={1e-1}] 1.4142
+%     \item[fraction=20,feedback={twice this!}] 7.0711e-1
+%     \item[fraction=0,feedback={Wrong!}] *
 %   \end{numerical}
 % \end{VerbatimOut}
 % \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
-% In this case, the input \textsf{1.41} will be validated and the input \textsf{0.71} will
-% get the specific feedback.
+% In this example,
+% \begin{itemize}
+%   \item any answer in the range $[1.4042,1.4242]$ will be validated,
+%   \item any answer in the range $[0.69711,0.71711]$ will get the specific feedback
+%         \emph{twice this!} and 20\% of points,
+%   \item any other answer is incorrect and will get the specific feedback
+%         \emph{Wrong!}.
+% \end{itemize}
+%
+% When feedback is to be given for any non-specified answer, one can add a \emph{last} answer
+% item containing the wilcard character |*| only. In this case, the |tolerance| key is irrelevant.
 % 
-% Both answers and tolerance can be specified with the comma as a decimal separator.
+% Both answers and tolerance can be specified with the comma (|,|) as a decimal separator.
 % Exponent notation is accepted. After import, Moodle will recognize indifferently |0.000165|,
 % |0,000165|, |1.65E-4|, |1.65e-4|, |1,65E-4|, and |1,65e-4|.
 %
@@ -643,6 +653,18 @@
 % \textsf{moodle}.
 % You can make a question case-sensitive with the key |case sensitive| 
 % or its shorter synonym |usecase|.
+%
+% The wildcard character |*| can used to grab answers that match 
+% a specific pattern. For instance:
+% \begin{itemize}
+%   \item ``\emph{Sir Isaac Newton}'', ``\emph{Isaac Newton}'' and
+%         ``\emph{Newton}'' will match the pattern |*Newton|,
+%   \item ``\emph{Gaston}'' and ``\emph{Wellington}'' will match the
+%          pattern |*ton|,
+%   \item ``\emph{Isaac}'' and ``\emph{Isaac Newton}'' will match the
+%          pattern |Isaac*|,
+%   \item any non empty answer will match the pattern |*| (wildcard alone).
+% \end{itemize}
 % 
 % \subsubsection{Essay Questions}\label{subsubsect:essay}
 % Instructors may ask essay questions on a Moodle quiz,
@@ -1024,10 +1046,11 @@
 %   \item \LaTeX\ must be able to call system commands; that is, |\write18| must be enabled.
 %         For Mik\TeX, this means adding |--enable-write18| to the command line of |pdflatex|;
 %         for \TeX Live, this means adding |--shell-escape=true|.
-%   \item Due to a security issue with old versions of Ghostcript, some systems introduce a
-%         policy that prevents the conversion of PDF and PS to PNG. If the PDF graphics handled
-%         at the system-level are trusted or if you use a sandboxed environment, there are
-%         solutions to disable the security policy (and make things just work!). For example,
+%   \item Due to security issues with old versions of Ghostcript, some systems default to a
+%         policy that prevents the conversion of PDF and PS to PNG. Assuming that, as a user of
+%         \textsf{moodle} which requires shell escape capabilities, you either use a sandboxed
+%         environment or trust the files handled at the system-level, you may want to disable this
+%         over-zelous security policy. For example,
 %         \href{https://stackoverflow.com/a/52661288/14608059}{see this}.
 %   \item Users of the |circuitikz| package must enclose their circuits' \TikZ\ code in the
 %         |tikzpicture| environment instead of |circuitikz|. That is required,
@@ -1418,11 +1441,12 @@
 %       \item Mechanism to match |fraction| key to values accepted by Moodle.
 %       \item A |fractiontol| key to control the tolerance in this mechanism.
 %       \item Support for |\_| and |\textbackslash|.
+%       \item Support for the wildcard character as an answer in numerical questions.
 %     \changed
-%       \item The package \texttt{iftex} is now required.
+%       \item The package \textsf{iftex} is now required.
 %       \item An error is thrown when |fraction| is set to an invalid value.
 %       \item In numerical questions, the tolerance can be set in exponent form.
-%       \item Nicer PDF rendering of numbers in numerical questions if \textsf{siunitx] is loaded.
+%       \item Nicer PDF rendering of numbers in numerical questions if \textsf{siunitx} is loaded.
 %       \item Included PNG files (|.png| and |.PNG| extensions) are now directly converted to base64.
 %     \fixed
 %       \item Closing braces escaped in cloze subquestions outside math environment.
@@ -2612,7 +2636,7 @@
 \def\moodle@makelatextag@numerical{}
 
 \AtEndPreamble{
-  \@ifpackageloaded{siunitx}{\def\moodle@printnum#1{\num[omit-uncertainty,copy-decimal-marker]{#1}}}{\let\moodle@printnum\relax}%
+  \@ifpackageloaded{siunitx}{\def\moodle@printnum{\num[omit-uncertainty,copy-decimal-marker]}}{\let\moodle@printnum\trim@spaces}%
 }
 
 \def\moodle@numerical@latexprocessing{%
@@ -2635,10 +2659,14 @@
      \moodle@print@numerical@answer@int@int%
    }%
    \def\moodle@print@numerical@answer@int@int#1\@rdelim{%
-     \ifnum\z@=\moodle@tolerance
-       \item \moodle@printnum{#1}%
+     \xdef\test@i{\trim@spaces{#1}}%
+     \ifx\test@i\@star
+       \item \test@i
      \else
-       \item \moodle@printnum{\trim@post@space{#1}}$\,\pm\,$\moodle@printnum{\moodle@tolerance}%
+       \item \moodle@printnum{#1}%
+       \ifnum\z@=\moodle@tolerance\else
+         $\,\pm\,$\moodle@printnum{\moodle@tolerance}%
+       \fi
      \fi
      \ifx\moodle@fraction\@hundred
        $~\checkmark$%
@@ -2668,7 +2696,9 @@
      \moodle@checkfraction
      \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
      \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext</text>}%
-     \addto@xml[4]{\moodle@answers@xml}{  <tolerance>\moodle@tolerance</tolerance>}%
+     \ifx\moodle@answertext\@star\else
+       \addto@xml[4]{\moodle@answers@xml}{  <tolerance>\moodle@tolerance</tolerance>}%
+     \fi
      \ifx\moodle@feedback\@empty\relax\else
        \trim@spaces@in\moodle@feedback
        \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
@@ -3587,7 +3617,12 @@
   \else
     \edef\moodle@clozenumericalprint@tolerance{$\,\pm\,$\moodle@printnum{\moodle@tolerance}}%
   \fi
-  \xdef\moodle@clozenumericalprint@line{\moodle@printnum{\trim@post@space{#1}}\moodle@clozenumericalprint@tolerance~\moodle@clozenumericalprint@fraction & \expandonce\emph{\expandonce\moodle@feedback}}%
+  \xdef\test@i{\trim@spaces{#1}}%
+  \ifx\test@i\@star
+    \xdef\moodle@clozenumericalprint@line{#1~\moodle@clozenumericalprint@fraction & \expandonce\emph{\expandonce\moodle@feedback}}%
+  \else
+    \xdef\moodle@clozenumericalprint@line{\moodle@printnum{#1}\moodle@clozenumericalprint@tolerance~\moodle@clozenumericalprint@fraction & \expandonce\emph{\expandonce\moodle@feedback}}%
+  \fi
   \xa\g@addto@macro\xa\cloze@numerical@table@text\xa{\moodle@clozenumericalprint@line \\\hline}%
 }%
 
@@ -3616,7 +3651,11 @@
       \xdef\clozenumerical@coding{\expandonce\clozenumerical@coding\otherpercent\moodle@fraction\otherpercent}%
     \fi
   \fi
-  \xdef\clozenumerical@coding{\expandonce\clozenumerical@coding\moodle@answertext:\moodle@tolerance}%
+  \ifx\moodle@answertext\@star
+    \xdef\clozenumerical@coding{\expandonce\clozenumerical@coding\moodle@answertext}%
+  \else
+    \xdef\clozenumerical@coding{\expandonce\clozenumerical@coding\moodle@answertext:\moodle@tolerance}%
+  \fi
   \ifx\moodle@feedback\@empty\else
     %\trim@spaces@in\moodle@feedback
     \xdef\clozenumerical@coding{\expandonce\clozenumerical@coding\otherbackslash\otherhash\expandonce\moodle@feedback}%
@@ -4899,7 +4938,7 @@
       \ifx\filename@ext\moodle@PNGext
         \let\moodle@currentPNGext\moodle@PNGext
       \else
-        \edef\cmdline{\htmlize@imagemagick@convert\otherspace \moodle@graphicspath#2 -resize \moodle@graphics@geometry\otherspace \moodle@currentgraphicfilenamebase.\moodle@currentPNGext}%
+        \edef\cmdline{\htmlize@imagemagick@convert\otherspace \moodle@graphicspath#2 -resize \moodle@graphics@geometry\otherspace -colorspace RGB\otherspace \moodle@currentgraphicfilenamebase.\moodle@currentPNGext}%
         \message{moodle.sty:   Converting '#2' to PNG...^^J}%
         \expandafter\ShellEscape\expandafter{\cmdline}%
         %Next, optimize
