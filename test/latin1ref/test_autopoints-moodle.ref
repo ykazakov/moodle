@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<quiz>
+ 
+<question type="category">
+  <category>
+    <text>$course$/top/Example Quiz</text>
+  </category>
+</question>
+ 
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[All correct]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>100\% is distributed uniformly. </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>false</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="33.33333" format="html">
+    <text><![CDATA[<p>A</p>]]></text>
+  </answer>
+  <answer fraction="33.33333" format="html">
+    <text><![CDATA[<p>B</p>]]></text>
+  </answer>
+  <answer fraction="33.33333" format="html">
+    <text><![CDATA[<p>C</p>]]></text>
+  </answer>
+</question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Auto sanction]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Without the star, an error shall be issued because correct answers should sum up to 100\%. </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>false</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>A</p>]]></text>
+  </answer>
+  <answer fraction="-50" format="html">
+    <text><![CDATA[<p>B</p>]]></text>
+  </answer>
+  <answer fraction="-50" format="html">
+    <text><![CDATA[<p>C</p>]]></text>
+  </answer>
+</question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[All correct but sum \(\geq 100\)]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>A warning shall be issued because correct answers must sum up to 100\%. </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>false</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="50" format="html">
+    <text><![CDATA[<p>A</p>]]></text>
+  </answer>
+  <answer fraction="50" format="html">
+    <text><![CDATA[<p>B</p>]]></text>
+  </answer>
+  <answer fraction="50" format="html">
+    <text><![CDATA[<p>C</p>]]></text>
+  </answer>
+</question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Multiple Choice]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Select the following numbers that are prime. </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>false</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="20" format="html">
+    <text><![CDATA[<p>2</p>]]></text>
+  </answer>
+  <answer fraction="40" format="html">
+    <text><![CDATA[<p>5</p>]]></text>
+  </answer>
+  <answer fraction="40" format="html">
+    <text><![CDATA[<p>7</p>]]></text>
+  </answer>
+  <answer fraction="-50" format="html">
+    <text><![CDATA[<p>1</p>]]></text>
+  </answer>
+  <answer fraction="-25" format="html">
+    <text><![CDATA[<p>6</p>]]></text>
+  </answer>
+  <answer fraction="-25" format="html">
+    <text><![CDATA[<p>8</p>]]></text>
+  </answer>
+</question>
+ 
+</quiz>

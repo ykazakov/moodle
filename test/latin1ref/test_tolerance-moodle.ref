@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="iso-8859-1"?>
 
 <quiz>
  
@@ -27,6 +27,10 @@
     <text>0</text>
     <tolerance>2</tolerance>
   </answer>
+  <answer fraction="0" format="plain_text">
+    <text>*</text>
+    <feedback format="html"><text><![CDATA[<p>nope</p>]]></text></feedback>
+  </answer>
 </question>
 <question type="numerical">
   <name format="html">
@@ -47,13 +51,17 @@
     <text>0</text>
     <tolerance>0</tolerance>
   </answer>
+  <answer fraction="0" format="plain_text">
+    <text>*</text>
+    <feedback format="html"><text><![CDATA[<p>nope</p>]]></text></feedback>
+  </answer>
 </question>
 <question type="cloze">
   <name format="html">
     <text><![CDATA[ClozeNum 1]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>Give a number {1:NUMERICAL:=1:4~=0:3}Give a number {1:NUMERICAL:=1:4~=0:2}</p>]]></text>
+    <text><![CDATA[<p>Give a number {1:NUMERICAL:=1:4~=0:3~*#nope}Give a number {1:NUMERICAL:=1:4~=0:2~*#nope}</p>]]></text>
   </questiontext>
   <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
@@ -65,7 +73,7 @@
     <text><![CDATA[ClozeNum 2]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>Give a number {1:NUMERICAL:=1,45e-3:1,65E-4~=0:0}</p>]]></text>
+    <text><![CDATA[<p>Give a number {1:NUMERICAL:=1,45e-3:1,65E-4~=0:0~*#nope}</p>]]></text>
   </questiontext>
   <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<quiz>
+ 
+<question type="category">
+  <category>
+    <text>$course$/top/Diacritical marks and ligatures</text>
+  </category>
+</question>
+ 
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Å À Â Ã É È Ë Ê Î Ï Ñ Õ Ô Ö Ù Ü Û Ç ]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>å à â ã é è ë ê î ï ñ õ ô ö ù ü û ç <BR/> Å À Â Ã É È Ë Ê Î Ï Ñ Õ Ô Ö Ù Ü Û Ç <BR/> </p>]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>å à â ã é è ë ê î ï ñ õ ô ö ù ü û ç </p>]]></text>
+    <feedback format="html"><text><![CDATA[<p>Å À Â Ã É È Ë Ê Î Ï Ñ Õ Ô Ö Ù Ü Û Ç </p>]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>Å À Â Ã É È Ë Ê Î Ï Ñ Õ Ô Ö Ù Ü Û Ç </p>]]></text>
+    <feedback format="html"><text><![CDATA[<p>å à â ã é è ë ê î ï ñ õ ô ö ù ü û ç </p>]]></text></feedback>
+  </answer>
+</question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[&Aring; &Agrave; &Acirc; &Atilde; &Eacute; &Egrave; &Euml; &Ecirc; &Icirc; &Iuml; &Ntilde; &Otilde; &Ouml; &Ocirc; &Ugrave; &Uuml; &Ucirc; &Ccedil; &#350; &#354; &#336; &#368; &Yuml; &Abreve; &#276; &Gbreve; &#300; &#334; &Ubreve; &Ccaron; &Dcaron; &Ecaron; &Lcaron; &Ncaron; &Rcaron; &Scaron; &Tcaron; &Zcaron; ]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>&aring; &agrave; &acirc; &atilde; &eacute; &egrave; &euml; &ecirc; &icirc; &iuml; &ntilde; &otilde; &ouml; &ocirc; &ugrave; &uuml; &ucirc; &ccedil; &#351; &#355; &#337; &#369; &yuml; &abreve; &#277; &gbreve; &#301; &#301; &#335; &ubreve; &ccaron; &dcaron; &ecaron; &lcaron; &ncaron; &rcaron; &scaron; &tcaron; &zcaron; <BR/> &Aring; &Agrave; &Acirc; &Atilde; &Eacute; &Egrave; &Euml; &Ecirc; &Icirc; &Iuml; &Ntilde; &Otilde; &Ouml; &Ocirc; &Ugrave; &Uuml; &Ucirc; &Ccedil; &#350; &#354; &#336; &#368; &Yuml; &Abreve; &#276; &Gbreve; &#300; &#334; &Ubreve; &Ccaron; &Dcaron; &Ecaron; &Lcaron; &Ncaron; &Rcaron; &Scaron; &Tcaron; &Zcaron; <BR/> &oelig; &aelig; &szlig; &OElig; &AElig; &#7838; &Oslash; &Lstrok; &laquo;&#8239; &oslash; &lstrok; &#8239;&raquo;</p>]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>&aring; &agrave; &acirc; &atilde; &eacute; &egrave; &euml; &ecirc; &icirc; &iuml; &ntilde; &otilde; &ouml; &ocirc; &ugrave; &uuml; &ucirc; &ccedil; &#351; &#355; &#337; &#369; &yuml; &abreve; &#277; &gbreve; &#301; &#301; &#335; &ubreve; &ccaron; &dcaron; &ecaron; &lcaron; &ncaron; &rcaron; &scaron; &tcaron; &zcaron; </p>]]></text>
+    <feedback format="html"><text><![CDATA[<p>&Aring; &Agrave; &Acirc; &Atilde; &Eacute; &Egrave; &Euml; &Ecirc; &Icirc; &Iuml; &Ntilde; &Otilde; &Ouml; &Ocirc; &Ugrave; &Uuml; &Ucirc; &Ccedil; &#350; &#354; &#336; &#368; &Yuml; &Abreve; &#276; &Gbreve; &#300; &#334; &Ubreve; &Ccaron; &Dcaron; &Ecaron; &Lcaron; &Ncaron; &Rcaron; &Scaron; &Tcaron; &Zcaron; </p>]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>&Aring; &Agrave; &Acirc; &Atilde; &Eacute; &Egrave; &Euml; &Ecirc; &Icirc; &Iuml; &Ntilde; &Otilde; &Ouml; &Ocirc; &Ugrave; &Uuml; &Ucirc; &Ccedil; &#350; &#354; &#336; &#368; &Yuml; &Abreve; &#276; &Gbreve; &#300; &#334; &Ubreve; &Ccaron; &Dcaron; &Ecaron; &Lcaron; &Ncaron; &Rcaron; &Scaron; &Tcaron; &Zcaron; </p>]]></text>
+    <feedback format="html"><text><![CDATA[<p>&aring; &agrave; &acirc; &atilde; &eacute; &egrave; &euml; &ecirc; &icirc; &iuml; &ntilde; &otilde; &ouml; &ocirc; &ugrave; &uuml; &ucirc; &ccedil; &#351; &#355; &#337; &#369; &yuml; &abreve; &#277; &gbreve; &#301; &#301; &#335; &ubreve; &ccaron; &dcaron; &ecaron; &lcaron; &ncaron; &rcaron; &scaron; &tcaron; &zcaron; </p>]]></text></feedback>
+  </answer>
+</question>
+ 
+</quiz>

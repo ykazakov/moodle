@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<quiz>
+ 
+<question type="category">
+  <category>
+    <text>$course$/top/Truefalse questions</text>
+  </category>
+</question>
+ 
+<question type="truefalse">
+  <name format="html">
+    <text><![CDATA[Truefalse Test 1]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>This is a matching question. </p>]]></text>
+  </questiontext>
+  <defaultgrade>3</defaultgrade>
+  <generalfeedback format="html">
+    <text><![CDATA[<p>general feedback</p>]]></text>
+  </generalfeedback>
+  <penalty>1</penalty>
+  <hidden>0</hidden>
+  <answer fraction="0" format="plain_text">
+    <text>true</text>
+    <feedback format="html"><text><![CDATA[<p>Feedback for students choosing &rdquo;true&rdquo;</p>]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="plain_text">
+    <text>false</text>
+    <feedback format="html"><text><![CDATA[<p> Feedback for students choosing &rdquo;false&rdquo; </p>]]></text></feedback>
+  </answer>
+</question>
+<question type="truefalse">
+  <name format="html">
+    <text><![CDATA[Truefalse Test 2]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>This is an essay question. </p>]]></text>
+  </questiontext>
+  <defaultgrade>3</defaultgrade>
+  <generalfeedback format="html">
+    <text><![CDATA[<p>general feedback</p>]]></text>
+  </generalfeedback>
+  <penalty>1</penalty>
+  <hidden>0</hidden>
+  <answer fraction="0" format="plain_text">
+    <text>true</text>
+    <feedback format="html"><text><![CDATA[<p>Feedback for students choosing &rdquo;true&rdquo; </p>]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="plain_text">
+    <text>false</text>
+    <feedback format="html"><text><![CDATA[<p>Feedback for students choosing &rdquo;false&rdquo;</p>]]></text></feedback>
+  </answer>
+</question>
+<question type="truefalse">
+  <name format="html">
+    <text><![CDATA[Truefalse Test 3]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Please answer &rdquo;True&rdquo;. </p>]]></text>
+  </questiontext>
+  <defaultgrade>3</defaultgrade>
+  <generalfeedback format="html">
+    <text><![CDATA[<p>general feedback</p>]]></text>
+  </generalfeedback>
+  <penalty>1</penalty>
+  <hidden>0</hidden>
+  <answer fraction="100" format="plain_text">
+    <text>true</text>
+  </answer>
+  <answer fraction="0" format="plain_text">
+    <text>false</text>
+  </answer>
+</question>
+<question type="truefalse">
+  <name format="html">
+    <text><![CDATA[Truefalse Test 4]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Please answer &rdquo;False&rdquo;. </p>]]></text>
+  </questiontext>
+  <defaultgrade>3</defaultgrade>
+  <generalfeedback format="html">
+    <text><![CDATA[<p>general feedback</p>]]></text>
+  </generalfeedback>
+  <penalty>1</penalty>
+  <hidden>0</hidden>
+  <answer fraction="0" format="plain_text">
+    <text>true</text>
+  </answer>
+  <answer fraction="100" format="plain_text">
+    <text>false</text>
+  </answer>
+</question>
+ 
+</quiz>

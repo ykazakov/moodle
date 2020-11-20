@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<quiz>
+ 
+<question type="category">
+  <category>
+    <text>$course$/top/Tolerance</text>
+  </category>
+</question>
+ 
+<question type="numerical">
+  <name format="html">
+    <text><![CDATA[Num 1]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Give a number </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <answer fraction="100" format="plain_text">
+    <text>1</text>
+    <tolerance>4</tolerance>
+  </answer>
+  <answer fraction="100" format="plain_text">
+    <text>0</text>
+    <tolerance>2</tolerance>
+  </answer>
+  <answer fraction="0" format="plain_text">
+    <text>*</text>
+    <feedback format="html"><text><![CDATA[<p>nope</p>]]></text></feedback>
+  </answer>
+</question>
+<question type="numerical">
+  <name format="html">
+    <text><![CDATA[Num 2]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Give a number </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <answer fraction="100" format="plain_text">
+    <text>1,45E-3</text>
+    <tolerance>1,65e-4</tolerance>
+  </answer>
+  <answer fraction="100" format="plain_text">
+    <text>0</text>
+    <tolerance>0</tolerance>
+  </answer>
+  <answer fraction="0" format="plain_text">
+    <text>*</text>
+    <feedback format="html"><text><![CDATA[<p>nope</p>]]></text></feedback>
+  </answer>
+</question>
+<question type="cloze">
+  <name format="html">
+    <text><![CDATA[ClozeNum 1]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Give a number {1:NUMERICAL:=1:4~=0:3~*#nope}Give a number {1:NUMERICAL:=1:4~=0:2~*#nope}</p>]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+</question>
+<question type="cloze">
+  <name format="html">
+    <text><![CDATA[ClozeNum 2]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Give a number {1:NUMERICAL:=1,45e-3:1,65E-4~=0:0~*#nope}</p>]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+</question>
+ 
+</quiz>

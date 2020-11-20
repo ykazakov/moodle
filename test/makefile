@@ -1,24 +1,29 @@
 PREFIX=test
 SUFFIX=moodle
-TEST_FILES=$(wildcard $(PREFIX)_*.tex)
-LATEX=latex
-PDFLATEX=lualatex
+LUATEX_ONLY_TEST_FILES=test_calculated_lua.tex
+GENERIC_TEST_FILES=$(filter-out $(LUATEX_ONLY_TEST_FILES),$(wildcard $(PREFIX)_*.tex))
+TEX_ENGINES=pdflatex lualatex xelatex
 LATEXFLAGS=-interaction=nonstopmode -shell-escape
 DIFFTOOL=diff -abBwZ
-FILE_CLEAN=*.sty *.log *.aux *.auxlock *.out *.blg *.bbl *.toc *.xml *.bcf *.synctex.gz *~ *.nav *.snm *.idx *.ilg *.ind _minted-* *.glo *.gls *.dpth *-tikztemp-*.pdf
+FILE_CLEAN=*.log *.aux *.auxlock *.out *.blg *.bbl *.toc *.xml *.bcf *.synctex.gz *~ *.nav *.snm *.idx *.ilg *.ind _minted-* *.glo *.gls *.dpth *-tikztemp-*.pdf
 ifndef DEBUG
 	DEBUG=> /dev/null
 endif
 
 .DEFAULT_GOAL := all
 
-.PHONY: all test clean distclean references
+.PHONY: all test clean distclean $(TEX_ENGINES)
+.SECONDARY: $(foreach engine,$(TEX_ENGINES),$(GENERIC_TEST_FILES:.tex=_$(engine)-$(SUFFIX).xml)) $(LUATEX_ONLY_TEST_FILES:.tex=_lualatex-$(SUFFIX).xml)
 
 all: test
 
-test: $(TEST_FILES:.tex=-$(SUFFIX).xml) $(TEST_FILES:.tex=.diff)
+test: $(TEX_ENGINES)
 
-references: $(TEST_FILES:.tex=-$(SUFFIX).ref)
+pdflatex: $(GENERIC_TEST_FILES:.tex=_pdflatex.diff)
+
+xelatex: $(GENERIC_TEST_FILES:.tex=_xelatex.diff)
+
+lualatex: $(GENERIC_TEST_FILES:.tex=_lualatex.diff) $(LUATEX_ONLY_TEST_FILES:.tex=_lualatex.diff)
 
 clean:
 	rm -rf $(FILE_CLEAN)
@@ -26,20 +31,30 @@ clean:
 distclean: clean
 	rm -rf *.pdf *.xml *.diff *.md5 *.py *.err $(SUFFIX).sty
 
-%-$(SUFFIX).xml : %.tex $(SUFFIX).sty
-	@$(PDFLATEX) $(LATEXFLAGS) $< $(DEBUG)
+%_pdflatex-$(SUFFIX).xml : %.tex $(SUFFIX).sty
+	@pdflatex $(LATEXFLAGS) $< $(DEBUG)
+	@mv $(basename $<)-$(SUFFIX).xml $@
+
+%_xelatex-$(SUFFIX).xml : %.tex $(SUFFIX).sty
+	@xelatex $(LATEXFLAGS) $< $(DEBUG)
+	@mv $(basename $<)-$(SUFFIX).xml $@
+
+%_lualatex-$(SUFFIX).xml : %.tex $(SUFFIX).sty
+	@lualatex $(LATEXFLAGS) $< $(DEBUG)
+	@mv $(basename $<)-$(SUFFIX).xml $@
 
 OK = "$$(tput setaf 0)$$(tput setab 2)[  OK  ]$$(tput sgr0)"
 KO = "$$(tput setaf 0)$$(tput setab 1)[FAILED]$$(tput sgr0)"
-$(PREFIX)_%.diff : $(PREFIX)_%-$(SUFFIX).ref $(PREFIX)_%-$(SUFFIX).xml
-	@$(DIFFTOOL) $(basename $<).xml $< > $@ && echo "$(OK) $*"  | sed -e "s/_/ /g" || echo "$(KO) $*" | sed -e "s/_/ /g"
+$(PREFIX)_%_pdflatex.diff : latin1ref/$(PREFIX)_%-$(SUFFIX).ref $(PREFIX)_%_pdflatex-$(SUFFIX).xml
+	@$(DIFFTOOL) $^ > $@ && echo "$(OK) $* (pdflatex)"  | sed -e "s/_/ /g" || echo "$(KO) $* (pdflatex)" | sed -e "s/_/ /g"
 
-# DISABLING THE FOLLOWING FOR SAFETY
-# BE SURE OF THE CODE PRODUCED IF YOU UNCOMMENT
-#%.ref : %.xml
-#	@cp $< $@
+$(PREFIX)_%_xelatex.diff : uft8ref/$(PREFIX)_%-$(SUFFIX).ref $(PREFIX)_%_xelatex-$(SUFFIX).xml
+	@$(DIFFTOOL) $^ > $@ && echo "$(OK) $* (xelatex)"  | sed -e "s/_/ /g" || echo "$(KO) $* (xelatex)" | sed -e "s/_/ /g"
+	
+$(PREFIX)_%_lualatex.diff : uft8ref/$(PREFIX)_%-$(SUFFIX).ref $(PREFIX)_%_lualatex-$(SUFFIX).xml
+	@$(DIFFTOOL) $^ > $@ && echo "$(OK) $* (lualatex)"  | sed -e "s/_/ /g" || echo "$(KO) $* (lualatex)" | sed -e "s/_/ /g"
 
 $(SUFFIX).sty: ../$(SUFFIX).sty
 	cp $< $@
 ../$(SUFFIX).sty: ../$(SUFFIX).dtx
-	$(MAKE) -C ../ moodle.sty
+	$(MAKE) -C ../ $(SUFFIX).sty
