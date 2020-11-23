@@ -666,7 +666,7 @@
 %   \item any non empty answer will match the pattern |*| (wildcard alone).
 % \end{itemize}
 % 
-% \subsubsection{Essay Questions}\label{subsubsect:essay}
+% \subsubsection{Essay}\label{subsubsect:essay}
 % Instructors may ask essay questions on a Moodle quiz,
 % although Moodle's software is not up to the task of grading them!
 % Instead each essay question answer must be graded manually by the
@@ -724,7 +724,7 @@
 % will edit and/or type over, with the key |template=|\marg{template}.
 % The \meta{template} should be enclosed in braces.
 % 
-% \subsection{Matching Questions}
+% \subsubsection{Matching}
 % 
 % A matching question offers a series of subquestions
 % and a set of possible answers from which to choose.
@@ -765,7 +765,7 @@
 % If you choose the standard format, then due to the limitations of
 % dropdown boxes, no \LaTeX\ or HTML code can be used in the answers.
 % 
-% \subsection{Cloze Questions}
+% \subsubsection{Cloze Questions and Subquestions}
 % 
 % A ``cloze question'' has one or more subquestions embedded within a passage of text.  
 % For example, you might ask students to fill in several missing words within
@@ -824,6 +824,21 @@
 % Within a cloze question, the short answer question can be made case sensitive.
 % This option, disabled by default, is selected with |case sensitive| or |usecase|.
 % 
+%\subsubsection{Description}
+% 
+% The Moodle description type is not really a question. It is more like a label.
+% One can set a |feedback| that the student gets when reviewing its submission.
+% Tags can be set as well.
+% 
+% For descriptions, \textsf{moodle} redefines the existing |description| environment.
+%
+% The syntax for a Description question is as follows:
+% \begin{quote}
+%   |\begin{description}|\oarg{question options}\marg{question name} \\
+%   \rule{2em}{0pt}\meta{question text} \\
+%   |\end{description}|
+% \end{quote}
+%
 % \subsection{Summary of the Key Options}
 % 
 % Table~\ref{tab:key-options} summarizes the key options available at the question
@@ -860,9 +875,12 @@
 % \href{https://docs.moodle.org/35/en/Matching_question_type}{Matching}
 % & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & 
 % & & & $\bullet$ & $\bullet$ & \\
-% \href{https://docs.moodle.org/35/en/Multiple_True/False_Question_Type}
+% \href{https://docs.moodle.org/35/en/True/False_question_type}
 % {True/False} & $\bullet$ & & $\bullet$ & $\bullet$ & & & 
 % & & & & & $\bullet$ \\
+% \href{https://docs.moodle.org/35/en/Description_question_type} 
+% {Description} & & & $\bullet$ & $\bullet$ & & & 
+% & & & & & \\
 % ^^A\href{https://docs.moodle.org/35/en/Essay_question_type}{Essay} & \\\hline%
 % \href{https://docs.moodle.org/35/en/Embedded_Answers_(Cloze)_question_type}{Cloze}
 % & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & 
@@ -1151,6 +1169,9 @@
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   \begin{quiz}[tags={calculated}]{Example Quiz}
 %   \directlua{
+% \end{VerbatimOut}
+% \inputminted[gobble=2,frame=topline]{latex}{minted.doc.out}
+% \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   function clozenum_print(pair,op,result)
 %     tex.print("\\begin{numerical}$"..pair[1].." "..op.." "..pair[2].." 
 %     =$".."\\item ",result,"\\end{numerical}")
@@ -1174,14 +1195,20 @@
 %       end
 %     end
 %   end
+% \end{VerbatimOut}
+% \inputminted[]{lua}{minted.doc.out}
+% \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   }
 %   \end{quiz}
 % \end{VerbatimOut}
-% \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
+% \inputminted[gobble=2,frame=bottomline]{latex}{minted.doc.out}
 % The second example makes use of the \textsf{python} package (|\usepackage{python}|).
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   \begin{quiz}[tags={calculated}]{Example Quiz}
 %   \begin{python}
+% \end{VerbatimOut}
+% \inputminted[gobble=2,frame=topline]{latex}{minted.doc.out}
+% \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   def clozenum_print(pair,op,result):
 %     print(rf"""\begin{{numerical}}
 %   ${pair[0]} {op} {pair[1]} =$\item {result} 
@@ -1203,10 +1230,13 @@
 %         else:
 %           points=3  
 %         cloze_print([x,y],points)
+% \end{VerbatimOut}
+% \inputminted[]{python}{minted.doc.out}
+% \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   \end{python}
 %   \end{quiz}
 % \end{VerbatimOut}
-% \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
+% \inputminted[gobble=2,frame=bottomline]{latex}{minted.doc.out}
 % These two codes yield the same XML content.
 % 
 % \section{Known Limitations and Call for Bug Reports}
@@ -1224,19 +1254,24 @@
 % & \multicolumn{3}{l}{XML rendering in\dots}\\\cmidrule(lr){2-4}
 %Question type & Question & Answer & Feedback\\\cmidrule(lr){1-1}\cmidrule(lr){2-2}
 %\cmidrule(lr){3-3}\cmidrule(lr){4-4}
-% \href{https://docs.moodle.org/31/en/Multiple_Choice_question_type}{Multichoice}
+% \href{https://docs.moodle.org/35/en/Multiple_Choice_question_type}{Multichoice}
 %& yes & yes & yes \\
-% \href{https://docs.moodle.org/31/en/Numerical_question_type}{Numerical}
+% \href{https://docs.moodle.org/35/en/Numerical_question_type}{Numerical}
 %& yes & no\tnote{1} & yes \\
-% \href{https://docs.moodle.org/31/en/Short-Answer_question_type}{Short Answer}
+% \href{https://docs.moodle.org/35/en/Short-Answer_question_type}{Short Answer}
 % & yes & no\tnote{1} & yes \\
-% Matching (\href{https://docs.moodle.org/31/en/Matching_question_type}{std})
+% Matching (\href{https://docs.moodle.org/35/en/Matching_question_type}{std})
 %& yes & no\tnote{2} & no\tnote{3} \\
-% Matching (\href{https://docs.moodle.org/31/en/Drag_and_drop_matching_question_type}{dd})
+% Matching (\href{https://docs.moodle.org/35/en/Drag_and_drop_matching_question_type}{dd})
 % & yes & yes\tnote{4} & no\tnote{3} \\
-% \href{https://docs.moodle.org/31/en/Essay_question_type}{Essay}
-%& yes & yes\tnote{5,6} & yes\tnote{5} \\\cmidrule(lr){1-1}
-%\href{https://docs.moodle.org/31/en/Embedded_Answers_(Cloze)_question_type}{Cloze} & yes & & \\
+% \href{https://docs.moodle.org/35/en/Essay_question_type}{Essay}
+%& yes & yes\tnote{5,6} & yes\tnote{5} \\
+% \href{https://docs.moodle.org/35/en/True/False_question_type}{True/False}
+%& yes & no & yes \\
+% \href{https://docs.moodle.org/35/en/Description_question_type}{Description}
+%& yes & $\varnothing$ & yes \\
+%\href{https://docs.moodle.org/35/en/Embedded_Answers_(Cloze)_question_type}{Cloze} &
+%yes & $\varnothing$& $\varnothing$ \\\cmidrule(lr){1-1}
 %\hspace{1em}Numerical & yes & no\tnote{1} & yes \\
 %\hspace{1em}Short Answer & yes & no\tnote{1} & yes\tnote{7} \\
 %\hspace{1em}Multi (regular) & yes & no\tnote{2} & yes\tnote{7} \\
@@ -1390,7 +1425,6 @@
 %^^A         using randomly chosen numbers.
 %   \item Hints
 %   \item Multiple keywords (tags) for questions
-%   \item So-called ``description'' questions.
 % \end{itemize}
 % The authors have used this package together with a limited number of colleagues
 % for a few semesters of teaching. If other users adopt this package, we fully expect them
@@ -1436,8 +1470,9 @@
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version} ^^A[version=0.8,date=\today]
 %     \added
-%       \item \LuaLaTeX\ is now supported.
-%       \item Description of ways to reproduce the behavior of calculated questions.
+%       \item Description question type.
+%       \item \LuaLaTeX\ is now supported (and recommended for UTF8-coded sources).
+%       \item Examples of ways to reproduce the behavior of calculated questions.
 %       \item Command to trigger the automatic recording of new commands.
 %       \item Mechanism to match |fraction| key to values accepted by Moodle.
 %       \item A |fractiontol| key to control the tolerance in this mechanism.
@@ -1564,7 +1599,7 @@
 \RequirePackage{environ} %To be able to take environment body as a macro argument
 \RequirePackage{xkeyval} %For key-handling
 \RequirePackage{amssymb} %For \checkmark symbol
-\RequirePackage{trimspaces} %To remove extra spaces from strings
+%\RequirePackage{trimspaces} %To remove extra spaces from strings (loaded by environ)
 \RequirePackage{etex}    %Expansion control, detokenization, etc.
 \RequirePackage{etoolbox}%List management
 \RequirePackage{xpatch}  %To patch commands easily in HTML mode
@@ -1576,8 +1611,8 @@
 %     2) when output pdf is latin1-encoded (ifpdf)
 %     3) when output xml is utf8-encoded (if?tex)
 \@ifundefined{ifpdf}{\RequirePackage{ifpdf}}{}% old iftex would not define the conditional
-\RequirePackage{shellesc} %luatex-compatible way of getting system access
-\RequirePackage{fancybox} %Needed for fancy LaTeX tags
+\RequirePackage{shellesc} %Luatex-compatible way of getting system access
+\RequirePackage{fancybox} %For fancy LaTeX tags
 \RequirePackage{getitems} %To gather the header and items
 
 \let\xa=\expandafter
@@ -2264,14 +2299,6 @@
 %    \begin{macrocode}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% DESCRIPTION 'QUESTIONS' %%%%%%%%%%%%%
-
-% TODO: implement the \writedescription and a suitable front-end.
-%       Should this be \begin{description}...\end{description},
-%       or should \begin{quiz}...\end{quiz} just scoop up all
-%       text outside question environments and package it in descriptions?
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% CALCULATED %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % TODO: I don't think I really want to handle this.  Not now.
@@ -2372,10 +2399,51 @@
 }
 %    \end{macrocode}
 %
-% \subsubsection{Essay Question Front-End}
-% The essay question is the only question type whose front end
+% \subsubsection{Description Question Front-End}
+% Description and essay questions are the only question types whose front end
 % is not yet created by |\moodle@makefrontend|.
-% This is because of what it must do with its |\item|'s.
+% This is because of what need to be done with their contents.
+%
+% Description blocks can be empty. In this case, nothing is done.
+%
+%    \begin{macrocode}
+\let\description\relax% remove the meaning of existing \description and \enddescription
+\let\enddescription\relax
+\NewEnviron{description}[2][]{%
+  \bgroup
+    \setkeys{moodle}{#1,questionname={#2}}%
+    \let\moodle@questiontext=\BODY
+    \trim@spaces@in\moodle@questiontext
+    \ifx\moodle@questiontext\@empty\relax\else%
+      %First, the LaTeX processing.
+      \item \textbf{\moodle@questionname}%
+      \xa\xdef\xa\test@iii\xa{\moodle@tags}%
+      \ifx\test@iii\@moodle@empty\relax\else
+        \hfill tags: \texttt{\moodle@tags}%
+      \fi
+      \par
+      \noindent
+      \moodle@makelatextag@qtype{description}\par
+      \noindent
+      \moodle@questiontext
+      \ifx\moodle@feedback\@empty\relax\else
+        \fbox{\parbox{\linewidth}{\emph{\moodle@feedback}}}%
+      \fi
+      %Now, writing information to memory.
+      \@moodle@ifgeneratexml{%
+        \writetomoodle{<question type="description">}%
+        \moodle@writecommondata
+        \moodle@writetags%
+        \writetomoodle{</question>}%
+      }{}%
+    \fi
+  \egroup
+}%
+%    \end{macrocode}
+%
+% \subsubsection{Essay Question Front-End}
+% The front end is not yet created by |\moodle@makefrontend| because of
+% what must must be done with the |\item|'s.
 % 
 %    \begin{macrocode}
 \def\moodle@essay@latexprocessing{%

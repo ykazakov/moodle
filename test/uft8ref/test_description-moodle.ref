@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<quiz>
+ 
+<question type="category">
+  <category>
+    <text>$course$/top/Example Quiz</text>
+  </category>
+</question>
+ 
+<question type="description">
+  <name format="html">
+    <text><![CDATA[Requirements]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>This is a description. Not really a question. We can include environments and math. <UL><LI>This</LI><LI>That</LI></UL> <CENTER>\[\mathrm {e}^{2\mathrm {i}\pi }+1=0.\]</CENTER></p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html">
+    <text><![CDATA[<p>here is a feedback</p>]]></text>
+  </generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <tags>
+    <tag><text><![CDATA[descr]]></text></tag>
+  </tags>
+</question>
+ 
+</quiz>
