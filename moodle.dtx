@@ -1041,7 +1041,7 @@
 %            \begin{quote}
 %             |\ghostscriptcommand|\marg{executable filename}
 %            \end{quote}
-%   \item When external graphics files such as JPG or GIF are included,
+%   \item When external graphics files such as PDF are included,
 %         the open-source ImageMagick software (\url{www.imagemagick.org})
 %         converts each file to PNG format.
 %         The command line for ImageMagick is the nondescript word |convert|,
@@ -1049,18 +1049,19 @@
 %         but may be changed by invoking |\imagemagickcommand|\marg{executable filename}.
 %   \item OptiPNG (\url{http://optipng.sourceforge.net/}) is used to optimize the PNG images.
 %         The command line is presumed to be |optipng|, but can be changed with
-%         \DescribeMacro{\optipngcommand}
-%         |\optipngcommand|\marg{executable filename}.
+%         \DescribeMacro{\optipngcommand} |\optipngcommand|\marg{executable filename}.
 % \end{enumerate}
 % 
 % Please note the following vital points to make the graphics handling work:
 % \begin{itemize}
 %   \item As of now, graphics are only supported when compiling directly to a PDF
-%         with |pdflatex|.  Including PS graphics or using \TikZ\ with the DVI$\to$PS workflow is not
+%         with |pdflatex|. Including PS graphics or using \TikZ\ with the DVI$\to$PS workflow is not
 %         yet supported.
-%   \item Filenames should not contains spaces or, under windows, special characters like |_| or |\|.
-%   \item You must have Ghostscript, ImageMagick, and OptiPNG installed on your system
+%^^A   \item Filenames should not contains spaces or, under windows, special characters like |_| or |\|.
+%   \item You must have Ghostscript and ImageMagick installed on your system
 %         to fully use the graphics-handling capabilities of \textsf{moodle}.
+%   \item If OptiPNG is not installed the corresponding system calls will fail with otherwise no
+%         impact on the compilation process.
 %   \item \LaTeX\ must be able to call system commands; that is, |\write18| must be enabled.
 %         For Mik\TeX, this means adding |--enable-write18| to the command line of |pdflatex|;
 %         for \TeX Live, this means adding |--shell-escape=true|.
@@ -1470,6 +1471,7 @@
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version} ^^A[version=0.8,date=\today]
 %     \added
+%       \item Extensions can be omitted when including pictures.
 %       \item Description question type.
 %       \item \LuaLaTeX\ is now supported (and recommended for UTF8-coded sources).
 %       \item Examples of ways to reproduce the behavior of calculated questions.
@@ -1483,7 +1485,7 @@
 %       \item An error is thrown when |fraction| is set to an invalid value.
 %       \item In numerical questions, the tolerance can be set in exponent form.
 %       \item Nicer PDF rendering of numbers in numerical questions if \textsf{siunitx} is loaded.
-%       \item Included PNG files (|.png| and |.PNG| extensions) are now directly converted to base64.
+%       \item Included PNG and JPEG files are now directly converted to base64.
 %     \fixed
 %       \item Closing braces escaped in cloze subquestions outside math environment.
 %       \item The scope of the |tolerance| key is now respected.
@@ -4878,6 +4880,79 @@
 % 
 % \subsection{Graphics via {\ttfamily\string\includegraphics}}
 % 
+% \subsubsection{Finding Media Files}
+% The following code is adapted from the command |\Ginclude@graphics| as
+% found in |graphics.sty|.
+% Calling |\moodle@media@find|\marg{filename} looks for the file the
+% same way |\includegraphics| does, with or without extension provided,
+% in the current folder and in folders specified with |\graphicspath{}|.
+% The allowed extensions and their relative priorities can be set
+% via |\DeclareGraphicsExtensions{}|.
+% The outcome is that the macros |\moodle@media@base| and |\moodle@media@ext|
+% are set with the basename, including path, and extension, respectively.
+%
+%    \begin{macrocode}
+\def\moodle@media@find#1{%
+  \ifx\detokenize\@undefined\else
+    \edef\Gin@extensions{\detokenize\expandafter{\Gin@extensions}}%
+  \fi
+  \begingroup
+  \let\input@path\Ginput@path
+  \set@curr@file{#1}%
+  \expandafter\filename@parse\expandafter{\@curr@file}%
+  \ifx\filename@ext\Gin@gzext
+    \expandafter\filename@parse\expandafter{\filename@base}%
+    \ifx\filename@ext\relax
+      \let\filename@ext\Gin@gzext
+    \else
+      \edef\Gin@ext{\Gin@ext\Gin@sepdefault\Gin@gzext}%
+    \fi
+  \fi
+  \ifx\filename@ext\relax
+    \@for\Gin@temp:=\Gin@extensions\do{%
+      \ifx\Gin@ext\relax
+        \Gin@getbase\Gin@temp
+      \fi}%
+  \else
+    \Gin@getbase{\Gin@sepdefault\filename@ext}%
+    \ifnum0%
+        \ifx\Gin@ext\relax 1%
+        \else \@ifundefined{Gin@rule@\Gin@ext}{1}{0}%
+        \fi >0
+      \let\Gin@ext\relax
+      \let\Gin@savedbase\filename@base
+      \let\Gin@savedext\filename@ext
+      \edef\filename@base{\filename@base\Gin@sepdefault\filename@ext}%
+      \let\filename@ext\relax
+      \@for\Gin@temp:=\Gin@extensions\do{%
+          \ifx\Gin@ext\relax
+            \Gin@getbase\Gin@temp
+          \fi}%
+      \ifx\Gin@ext\relax
+        \let\filename@base\Gin@savedbase
+        \let\filename@ext\Gin@savedext
+      \fi
+    \fi
+    \ifx\Gin@ext\relax
+       \@warning{File `#1' not found}%
+       \def\Gin@base{\filename@area\filename@base}%
+       \edef\Gin@ext{\Gin@sepdefault\filename@ext}%
+    \fi
+  \fi
+    \ifx\Gin@ext\relax
+         \@latex@error{File `#1' not found}%
+         {I could not locate the file with any of these extensions:^^J%
+          \Gin@extensions^^J\@ehc}%
+    \else
+      % begin modified part
+       \xdef\moodle@media@base{\Gin@base}%
+       \xdef\moodle@media@ext{\Gin@ext}%
+      % end modfied part
+    \fi
+  \endgroup
+}
+%    \end{macrocode}
+%
 % \subsubsection{External program command lines}
 % We first set up commands for the external programs.
 %    \begin{macrocode}
@@ -4993,65 +5068,91 @@
         \edef\moodle@graphics@htmlgeometry{width=\number\moodle@graphics@width@pixels\otherspace height=\number\moodle@graphics@height@pixels}%
       \fi
     \fi
-    \def\moodle@graphicspath{\@ifundefined{Ginput@path}{}{\xa\@firstofone\Ginput@path}}
-    %If the file is not already PNG, convert it to PNG first
-    \def\moodle@pngext{png}%
-    \def\moodle@PNGext{PNG}%
-    \let\moodle@currentPNGext\moodle@pngext
-    \filename@parse{#2}
-    %\message{<<\filename@area>>^^J}
-    %\message{<<\filename@base>>^^J}
-    %\message{<<\filename@ext>>^^J}
-    \def\moodle@currentgraphicfilenamebase{\moodle@graphicspath\filename@area\filename@base}
-    \ifx\filename@ext\moodle@pngext\else%
-      \ifx\filename@ext\moodle@PNGext
-        \let\moodle@currentPNGext\moodle@PNGext
-      \else
-        \edef\cmdline{\htmlize@imagemagick@convert\otherspace \moodle@graphicspath#2 -resize \moodle@graphics@geometry\otherspace -colorspace RGB\otherspace \moodle@currentgraphicfilenamebase.\moodle@currentPNGext}%
-        \message{moodle.sty:   Converting '#2' to PNG...^^J}%
-        \expandafter\ShellEscape\expandafter{\cmdline}%
-        %Next, optimize
-        \edef\cmdline{\optipng\otherspace -clobber -strip all -quiet \moodle@currentgraphicfilenamebase.\moodle@currentPNGext}
-        \message{moodle.sty:   Optimizing '\filename@base.\moodle@currentPNGext'...^^J}%
-        \expandafter\ShellEscape\expandafter{\cmdline}%
-      \fi
-    \fi
-    %Next, convert the PNG to base64 encoding
+    \edef\moodle@media@ext@png{\detokenize{.png}}%
+    \edef\moodle@media@ext@PNG{\detokenize{.PNG}}%
+    \edef\moodle@media@ext@jpg{\detokenize{.jpg}}%
+    \edef\moodle@media@ext@jpeg{\detokenize{.jpeg}}%
+    \edef\moodle@media@ext@JPG{\detokenize{.JPG}}%
+    \edef\moodle@media@ext@JPEG{\detokenize{.JPEG}}%
+    %If the file is not already PNG or JPEG, convert it to PNG first
+    \moodle@media@find{#2}
+    %\message{<<\moodle@media@base>>^^J}
+    %\message{<<\moodle@media@ext>>^^J}
+    \edef\moodle@media@ext@current{\moodle@media@ext@png}%
+    \ifx\moodle@media@ext\moodle@media@ext@png
+    \else% not .png
+      \ifx\moodle@media@ext\moodle@media@ext@PNG
+        \edef\moodle@media@ext@current{\moodle@media@ext@PNG}%
+      \else% not .PNG
+        \ifx\moodle@media@ext\moodle@media@ext@jpg
+          \edef\moodle@media@ext@current{\moodle@media@ext@jpg}%
+        \else% not .jpg
+          \ifx\moodle@media@ext\moodle@media@ext@jpeg
+            \edef\moodle@media@ext@current{\moodle@media@ext@jpeg}%
+          \else% not .jpeg
+            \ifx\moodle@media@ext\moodle@media@ext@JPG
+              \edef\moodle@media@ext@current{\moodle@media@ext@JPG}%
+            \else% not .JPG
+              \ifx\moodle@media@ext\moodle@media@ext@JPEG
+                \edef\moodle@media@ext@current{\moodle@media@ext@JPEG}%
+              \else% not .JPEG
+                \edef\cmdline{\htmlize@imagemagick@convert\otherspace "\moodle@media@base\moodle@media@ext"\otherspace -resize \moodle@graphics@geometry\otherspace -colorspace RGB "\moodle@media@base.png"}%
+                \message{moodle.sty:   Converting '#2' to PNG...^^J}%
+                \expandafter\ShellEscape\expandafter{\cmdline}%
+                %Next, optimize
+                \edef\cmdline{\optipng\otherspace -clobber -strip all -quiet "\moodle@media@base.png"}%
+                \message{moodle.sty:   Optimizing '\moodle@media@base.png'...^^J}%
+                \expandafter\ShellEscape\expandafter{\cmdline}%
+              \fi% other
+            \fi% JPEG
+          \fi% jpeg
+        \fi% jpg
+      \fi% PNG
+    \fi% png
+    %Next, convert the file to base64 encoding
     \ifwindows
-      \def\cmdline{\baselxiv\otherspace -encode \moodle@currentgraphicfilenamebase.\moodle@currentPNGext tmp.b64 && findstr /vbc:"---" tmp.b64 > \moodle@currentgraphicfilenamebase.enc && del tmp.b64"}%
+      \def\cmdline{\baselxiv\otherspace -encode "\moodle@media@base\moodle@media@ext@current"\otherspace tmp.b64 && findstr /vbc:"---" tmp.b64 > "\moodle@media@base.enc" && del tmp.b64"}%
       % Starting from Windows 7, CertUtil is included by default. There should be no windows XP still running
     \else
       \ifmacosx
-        \def\cmdline{\baselxiv\otherspace -b 64 -i \moodle@currentgraphicfilenamebase.\moodle@currentPNGext -o \moodle@currentgraphicfilenamebase.enc}
+        \def\cmdline{\baselxiv\otherspace -b 64 -i "\moodle@media@base\moodle@media@ext@current"\otherspace -o "\moodle@media@base.enc"}
       \else % Linux, Cygwin
-        \def\cmdline{\baselxiv\otherspace \moodle@currentgraphicfilenamebase.\moodle@currentPNGext > \moodle@currentgraphicfilenamebase.enc}
+        \def\cmdline{\baselxiv\otherspace "\moodle@media@base\moodle@media@ext@current"\otherspace > "\moodle@media@base.enc"}
       \fi
       % base64 is part of coreutils, add "-w 64" to get exactly the previous behavior  %
     \fi
-    \message{moodle.sty:   Converting '\filename@base.\moodle@currentPNGext' to base64...^^J}%
+    \message{moodle.sty:   Converting '\moodle@media@base\moodle@media@ext@current' to base64...^^J}%
     \expandafter\ShellEscape\expandafter{\cmdline}%
     %Now, save that base64 encoding in a TeX macro
     \def\moodle@newpic@baselxiv{}%
-    \message{moodle.sty:   Reading base64 file '\filename@base.enc'...^^J}%
-    \openin\baseLXIVdatafile=\moodle@currentgraphicfilenamebase.enc\relax
+    \message{moodle.sty:   Reading base64 file '\moodle@media@base.enc'...^^J}%
+    \openin\baseLXIVdatafile="\moodle@media@base.enc"
       \savebaselxivdata@recursive
     \closein\baseLXIVdatafile
     %Clean up files
-    \ifx\filename@ext\moodle@currentPNGext%
+    \ifx\moodle@media@ext@current\moodle@media@ext
       \ifwindows
-        \ShellEscape{del \moodle@currentgraphicfilenamebase.enc}%
+        \ShellEscape{del "\moodle@media@base.enc"}%
       \else
-        \ShellEscape{rm -f \moodle@currentgraphicfilenamebase.enc}%
+        \ShellEscape{rm -f "\moodle@media@base.enc"}%
       \fi
     \else
       \ifwindows
-        \ShellEscape{del \moodle@currentgraphicfilenamebase.enc \moodle@currentgraphicfilenamebase.\moodle@currentPNGext}%
+        \ShellEscape{del "\moodle@media@base.enc" "\moodle@media@base\moodle@media@ext@current"}%
       \else
-        \ShellEscape{rm -f \moodle@currentgraphicfilenamebase.enc \moodle@currentgraphicfilenamebase.\moodle@currentPNGext}%
+        \ShellEscape{rm -f "\moodle@media@base.enc" "\moodle@media@base\moodle@media@ext@current"}%
       \fi
     \fi
     \xa\global\xa\let\csname picbaselxiv@graphics@#2\endcsname=\moodle@newpic@baselxiv%
-    \edef\htmlize@imagetag{<IMG \moodle@graphics@htmlgeometry\otherspace SRC="data:image/png;base64,\csname picbaselxiv@graphics@#2\endcsname">}%
+    \ifx\moodle@media@ext@current\moodle@media@ext@png
+      \edef\htmlize@imagetag{<IMG \moodle@graphics@htmlgeometry\otherspace SRC="data:image/png;base64,\csname picbaselxiv@graphics@#2\endcsname">}%
+    \else
+      \ifx\moodle@media@ext@current\moodle@media@ext@PNG
+        \edef\htmlize@imagetag{<IMG \moodle@graphics@htmlgeometry\otherspace SRC="data:image/png;base64,\csname picbaselxiv@graphics@#2\endcsname">}%
+      \else
+        \edef\htmlize@imagetag{<IMG \moodle@graphics@htmlgeometry\otherspace SRC="data:image/jpeg;base64,\csname picbaselxiv@graphics@#2\endcsname">}%
+      \fi
+    \fi
     \xa\g@addto@macro\xa\htmlize@output\xa{\htmlize@imagetag}%
     \message{moodle.sty:   <IMG> tag inserted.^^J}%
   \egroup

@@ -14,23 +14,24 @@
 \section*{Introduction}
 
 This document is intended to experiment the support of picture inclusion using 
-\texttt{includegraphics} via \texttt{tikz}.
+\verb|\includegraphics| via \texttt{tikz}. All options are supported.  The file 
+name or path may include spaces. The file path can be specified with 
+\verb|\graphicspath|. File extensions can be omitted.
 
 \begin{quiz}{Includegraphics with TikZ}
 
 \begin{multi}{Picture}
-\includegraphics[width=2em,angle=90]{fig/1.png}
+\includegraphics[width=2em,angle=90]{fig/1 1.PNG}
 %\includegraphics{fig/1.png}
-\item* \includegraphics[scale=.5]{fig/2.pdf}
+\item* \includegraphics[scale=.5]{fig/2 2.pdf}
 \item \includegraphics{fig/3.png}
 \end{multi}
 
 \graphicspath{{./fig/}}
 \begin{matching}[dd]{Picture}
-\includegraphics{1.png}
-\item \includegraphics[angle=45]{2.pdf} \answer \includegraphics{3.png}
-\item \includegraphics[angle=-45]{4.png} \answer 
-\includegraphics{5.png}
+\includegraphics{1 1}
+\item \includegraphics[angle=45]{2 2} \answer \includegraphics{3}
+\item \includegraphics[angle=-45]{4} \answer \includegraphics{5}
 \end{matching}
 
 \end{quiz}
