@@ -22,14 +22,11 @@
   \addtomacro{\UTFdiacriticLC}{ş ţ ő ű ÿ ă ĕ ğ ĭ ŏ ŭ č ď ě ľ ň ř š ť ž }%
   \addtomacro{\UTFdiacriticUC}{Ş Ţ Ő Ű Ÿ Ă Ĕ Ğ Ĭ Ŏ Ŭ Č Ď Ě Ľ Ň Ř Š Ť Ž }%
   \addtomacro{\UTFligaturesLC}{œ æ ß }%
-  \addtomacro{\UTFligaturesLC}{Œ Æ ẞ }%
-  \addtomacro{\UTFotherLC}{« ø ł » }%
+  \addtomacro{\UTFligaturesUC}{Œ Æ ẞ }%
+  \addtomacro{\UTFotherLC}{« ø ł » ¿ ¡ }%
   \addtomacro{\UTFotherUC}{Ø Ł }%
 }
-\ifxetex % xelatex compiles fine the following in the XML
-  \UFTextend
-\fi
-\ifluatex % lualatex compiles fine the following in the XML
+\ifTUTeX % xetex and luatex compile fine the following in the XML
   \UFTextend
 \fi
 \def\LaTeXdiacriticLC
@@ -42,7 +39,8 @@
 \v{E} \v{L} \v{N} \v{R} \v{S} \v{T} \v{Z} }
 \def\LaTeXligaturesLC{\oe\ \ae\ \ss\ }
 \def\LaTeXligaturesUC{\OE\ \AE\ \SS\ }
-\def\LaTeXotherLC{\guillemotleft\ \o\ \l\ \guillemotright }
+\def\LaTeXotherLC{\guillemotleft\ \o\ \l\ \guillemotright\ \textquestiondown\ %
+\textexclamdown\ }
 \def\LaTeXotherUC{\O\ \L\ }
 
 \htmlregister{\UTFdiacriticLC}

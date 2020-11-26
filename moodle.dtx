@@ -1408,7 +1408,10 @@
 % \cmidrule(lr){1-2}\cmidrule(lr){3-4}\cmidrule(lr){5-5}\cmidrule(lr){6-6}
 % \l & \L & \verb|\l| & \verb|\L| & Unicode and \LaTeX & \LaTeX\ only\\
 % \o & \O & \verb|\o| & \verb|\O| & Unicode and \LaTeX & \LaTeX\ only\\
-% « & » & \verb|\guillemotleft| & \verb|\guillemotright|\tnote{1} & Unicode and \LaTeX & \LaTeX\ only\\
+% « & & \verb|\guillemotleft|\tnote{1} & & Unicode and \LaTeX & \LaTeX\ only\\
+% » & & \verb|\guillemotright|\tnote{1} & & Unicode and \LaTeX & \LaTeX\ only\\
+% ¿ & & \verb|\textquestiondown| & & Unicode and \LaTeX & \LaTeX\ only\\
+% ¡ &  & \verb|\textexclamdown| & & Unicode and \LaTeX & \LaTeX\ only\\
 % \bottomrule
 % \end{tabular}
 % \begin{tablenotes}
@@ -1478,6 +1481,7 @@
 %       \item Command to trigger the automatic recording of new commands.
 %       \item Mechanism to match |fraction| key to values accepted by Moodle.
 %       \item A |fractiontol| key to control the tolerance in this mechanism.
+%       \item Support for inverted punctuation marks ¿ and ¡
 %       \item Support for |\_| and |\textbackslash|.
 %       \item Support for the wildcard character as an answer in numerical questions.
 %     \changed
@@ -4868,6 +4872,8 @@
 \html@def\thinspace{\&\#8239;}%
 \html@def\textbackslash{\&\#92;}%
 \html@def\_{\&\#95;}%
+\html@def\textquestiondown{\&iquest;}%
+\html@def\textexclamdown{\&iexcl;}%
 
 % AH CUSTOM MACROS TO EXPAND --- remove these before publishing!
 %\htmlize@record@expand{\inv}%
