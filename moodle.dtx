@@ -27,7 +27,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\ProvidesPackage{moodle}
 %<*package>
-    [2020/10/26 v0.8 Moodle quiz XML generation]
+    [2020/11/30 v0.8 Moodle quiz XML generation]
 %</package>
 %
 %<*driver>
@@ -57,7 +57,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{7150} ^^A Comment \OnlyDescription above to adjust
+% \CheckSum{7165} ^^A Comment \OnlyDescription above to adjust
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -90,7 +90,7 @@
 % Matthieu Guerquin-Kern\footnote{author of the updates (\texttt{v0.6} to \texttt{v0.8}),
 % partially funded by \href{https://www.ensea.fr/en/}{ENSEA Graduate School}, France.}\\
 % \href{mailto:guerquin-kern AT crans.org}{guerquin-kern AT crans.org}}
-% \date{July 9, 2020}
+% \date{November 30, 2020}
 % 
 % \maketitle
 %
@@ -317,8 +317,8 @@
 % file. This stamp contains information gathered about the TeX engine,
 % the operating system used and the package version. For instance:
 % \begin{quote}\small
-% |<!-- This file was generated on 2020-10-26 by LuaLaTeX -->|\\
-% |<!-- running on Linux with the package moodle v0.8 -->|
+% |<!-- This file was generated on 2020-11-30 by LuaLaTeX -->|\\
+% |<!-- running on Linux with the package moodle |\texttt{\fileversion}| -->|
 % \end{quote}
 % The package option
 % |nostamp| prevents this stamp to be written in the XML file.
@@ -1485,14 +1485,15 @@
 % but turn ``MathJax'' \emph{on}.  This forces \TeX\ code to be rendered by MathJax
 % instead of Moodle, producing much higher-quality results.
 % 
+% \newpage
 % \changes{v0.5}{2016/01/05}{Initial version}
 % \changes{v0.6}{2019/02/18}{Bux-fixing release}
 % \changes{v0.7}{2020/07/09}{Feature extensions}
-% \changes{v0.8}{2020/10/26}{Bug fixes and feature extensions}
+% \changes{v0.8}{2020/11/30}{Bug fixes and feature extensions}
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
-%   \begin{version} ^^A[version=0.8,date=\today]
+%   \begin{version}[version=0.8,date=2020-11-30]
 %     \added
-%       \item Package option |handout| for sharing PDF with students
+%       \item Package option |handout| for sharing PDF with students.
 %       \item Extensions can be omitted when including pictures.
 %       \item Description question type.
 %       \item \LuaLaTeX\ is now supported (and recommended for UTF8-coded sources).
@@ -1500,11 +1501,12 @@
 %       \item Command to trigger the automatic recording of new commands.
 %       \item Mechanism to match |fraction| key to values accepted by Moodle.
 %       \item A |fractiontol| key to control the tolerance in this mechanism.
-%       \item Support for inverted punctuation marks ¿ and ¡
+%       \item Support for inverted punctuation marks |¿| and |¡|.
 %       \item Support for |\_| and |\textbackslash|.
 %       \item Support for the wildcard character as an answer in numerical questions.
 %     \changed
-%       \item Improved display of matching questions in PDF
+%       \item In matching questions, warnings are raised if the number of items is insufficient.
+%       \item Improved display of matching questions in PDF.
 %       \item The package \textsf{iftex} is now required.
 %       \item An error is thrown when |fraction| is set to an invalid value.
 %       \item In numerical questions, the tolerance can be set in exponent form.
@@ -3255,13 +3257,13 @@
          \ifmoodle@handout\else
            ~$\checkmark$%
          \fi
-         \stepcounter{moodle@numcorrectanswers}
+         \stepcounter{moodle@numcorrectanswers}%
        \else
          ~%
        \fi
        \ifmoodle@handout\else
          \ifx\moodle@feedback\@empty\relax
-           \def\test@ii{#2}
+           \def\test@ii{#2}%
            \trim@spaces@in\test@ii
            \ifx\test@ii\@empty\relax\else
              \ifx\test@i\@star%
@@ -3361,9 +3363,9 @@
 % \subsubsection{Matching Question Front-End}
 % 
 %    \begin{macrocode}
-\let\answer=\hfill
+%\let\answer=\hfill
 
-\moodle@makefrontend{matching}{\moodle@makelatextag@matching}
+\moodle@makefrontend{matching}{\moodle@makelatextag@matching}%
 
 % LATEX PROCESSING
 
@@ -3380,14 +3382,24 @@
 
 \def\moodle@matching@latexprocessing{%
   \bgroup
-    \let\answer=\hfill
+    %\let\answer=\hfill
     \par%\noindent
     \ifmoodle@handout
       \NewList{questionlist}
       \NewList{answerlist}
     \fi
     \def\matching@table@text{}%
+    %  \ifnum\c@numgathereditems>2\relax%
+%    \PackageError{moodle}{Expecting at max two answers with truefalse type}
+%  \fi
+    \setcounter{moodle@numcorrectanswers}{0}% Here this counter is for "questions" (items on the left column)
     \loopthroughitemswithcommand{\moodle@print@matching@answer}%
+    \ifnum\c@numgathereditems<3%
+      \PackageWarning{moodle}{Moodle expects at least three "answers" with matching type}
+    \fi
+    \ifnum\c@moodle@numcorrectanswers<2%
+      \PackageWarning{moodle}{Moodle expects at least two "questions" with the matching type}
+    \fi
     \ifmoodle@handout
       \ifmoodle@shuffle
         \let\moodle@matching@loop=\ForEachRandomItem
@@ -3437,6 +3449,7 @@
     \ifx\test@i\@empty
       \g@addto@macro\matching@table@text{&&$\bullet$~#2\\}%
     \else
+      \stepcounter{moodle@numcorrectanswers}%
       \xa\g@addto@macro\xa\matching@table@text\xa{\test@i~$\bullet$&\leavevmode\cleaders\hb@xt@.44em{\hss$\cdot$\hss}\hfill\kern\z@&$\bullet$~#2\\}%
     \fi
   \fi
@@ -3455,7 +3468,7 @@
      \savematchinganswer@int@int%\space
    }%
    \long\def\savematchinganswer@int@int#1\answer#2\moodle@answer@rdelim{%
-     \typeout{\string#1 \answer \string#2}%
+     %\typeout{\string#1 \answer \string#2}%
      % Note that #1 may simply be \relax.
      \def\moodle@subquestiontext{#1}%
      \def\moodle@subanswertext{#2}%
