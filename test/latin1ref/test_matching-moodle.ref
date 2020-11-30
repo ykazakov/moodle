@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<quiz>
+ 
+<question type="category">
+  <category>
+    <text>$course$/top/Matching</text>
+  </category>
+</question>
+ 
+<question type="ddmatch">
+  <name format="html">
+    <text><![CDATA[Matching]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Question text </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <shuffleanswers>1</shuffleanswers>
+  <subquestion format="html">
+    <text><![CDATA[<p>A</p>]]></text>
+    <answer format="html"><text><![CDATA[<p>1</p>]]></text></answer>
+  </subquestion>
+  <subquestion format="html">
+    <text><![CDATA[<p>B</p>]]></text>
+    <answer format="html"><text><![CDATA[<p>2</p>]]></text></answer>
+  </subquestion>
+  <subquestion format="html">
+    <text><![CDATA[<p>C</p>]]></text>
+    <answer format="html"><text><![CDATA[<p>3</p>]]></text></answer>
+  </subquestion>
+  <subquestion format="html">
+    <text></text>
+    <answer format="html"><text><![CDATA[<p>4</p>]]></text></answer>
+  </subquestion>
+</question>
+<question type="matching">
+  <name format="html">
+    <text><![CDATA[Matching]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Question text </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <shuffleanswers>0</shuffleanswers>
+  <subquestion format="html">
+    <text><![CDATA[<p>A</p>]]></text>
+    <answer><text>1</text></answer>
+  </subquestion>
+  <subquestion format="html">
+    <text><![CDATA[<p>B</p>]]></text>
+    <answer><text>2</text></answer>
+  </subquestion>
+  <subquestion format="html">
+    <text><![CDATA[<p>C</p>]]></text>
+    <answer><text>3</text></answer>
+  </subquestion>
+  <subquestion format="html">
+    <text></text>
+    <answer><text>4</text></answer>
+  </subquestion>
+</question>
+ 
+</quiz>

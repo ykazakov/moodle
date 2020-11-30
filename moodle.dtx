@@ -57,7 +57,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{6560} ^^A Comment \OnlyDescription above to adjust
+% \CheckSum{7150} ^^A Comment \OnlyDescription above to adjust
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -279,7 +279,19 @@
 % such as |itemize| or |enumerate|, in that answers are set off by 
 % |\item|'s, but the question itself is the text that occurs before
 % the first |\item|.
+%
+%^^A \DescribeMacro{\moodleregisternewcommands}\DescribeMacro{\htmlregister}
+%^^A Calling |\moodleregisternewcommands| tells the package to treat
+%^^A specifically the macros defined subsequently.
+%^^A This way, the macros that Moodle's \LaTeX\ renderer does not know
+%^^A about can be properly expanded in the XML file.
+%^^A This mechanism applies only to the macros defined using |\newcommand|
+%^^A and \emph{without} optional argument.
+%^^A Using |\htmlregister|\marg{macroname}, lets you declare a specific
+%^^A macro for expansion. This mechanism, instead, also applies to the
+%^^A macros defined using \TeX's primitive |\def|.
 % 
+% \subsection{Package Options}
 % \DescribeMacro{draft}
 % \DescribeMacro{final}
 % If the package option |draft| is invoked, by calling
@@ -289,10 +301,21 @@
 % image files. The package option |final| might be useful if one wants
 % to avoid the option |draft| to be inherited from the |documentclass|.
 %
+% \DescribeMacro{handout}
+% If the package option |handout| is invoked (|\usepackage[handout]{moodle}|),
+% the PDF file is generated clean from teacher-only information (answers,
+% points, penalty, feedback, tags) and, hence, can be given  to students for
+% classroom work. In particular, as would Moodle do, answers in
+% \texttt{matching} questions are shuffled and the option \texttt{shuffle}
+% triggers the shuffling of choices offered (\texttt{multi} and 
+% \texttt{matching}). This is achieved thanks to the package
+% \texttt{randomlist}, loaded if the option is invoked.
+% The XML file is generated as usual.
+%
 % \DescribeMacro{nostamp}
-% By default, the package will output a stamp as comment in the XML file.
-% This stamp contains information gathered about the TeX engine, the
-% operating system used and the package version. For instance:
+% By default, the package will output a stamp as a comment in the XML
+% file. This stamp contains information gathered about the TeX engine,
+% the operating system used and the package version. For instance:
 % \begin{quote}\small
 % |<!-- This file was generated on 2020-10-26 by LuaLaTeX -->|\\
 % |<!-- running on Linux with the package moodle v0.8 -->|
@@ -311,16 +334,8 @@
 % Consequently, |\usepackage{moodle}| is equivalent to
 % |\usepackage[subsection*]{moodle}|.
 %
-% \DescribeMacro{\moodleregisternewcommands}\DescribeMacro{\htmlregister}
-% Calling |\moodleregisternewcommands| tells the package to treat
-% specifically the macros defined subsequently.
-% This way, the macros that Moodle's \LaTeX\ renderer does not know
-% about can be properly expanded in the XML file.
-% This mechanism applies only to the macros defined using |\newcommand|
-% and \emph{without} optional argument.
-% Using |\htmlregister|\marg{macroname}, lets you declare a specific
-% macro for expansion. This mechanism, instead, also applies to the
-% macros defined using \TeX's primitive |\def|.
+% \DescribeMacro{tikz} The package option \texttt{tikz} is described in section
+% \ref{subsec:tikz}.
 %
 % \subsection{Quiz and Question Environments}
 % 
@@ -825,9 +840,9 @@
 % This option, disabled by default, is selected with |case sensitive| or |usecase|.
 % 
 %\subsubsection{Description}
-% 
+% 	
 % The Moodle description type is not really a question. It is more like a label.
-% One can set a |feedback| that the student gets when reviewing its submission.
+% One can set a |feedback| that the student gets when reviewing the submission.
 % Tags can be set as well.
 % 
 % For descriptions, \textsf{moodle} redefines the existing |description| environment.
@@ -939,9 +954,10 @@
 % \bottomrule
 % \end{tabular}
 % \end{table}
-% Single and double quotation marks, french quotation marks and the diacritical 
-% commands  |\^|, |\'|, |\`|, |\"|, |\~|, |\c|, |\u|, |\v| and |\H| are also handled,
-% as are the characters |\aa|, |\ae|, |\oe|, |\o|, |\ss|, |\l|, and their 
+% Single and double quotation marks, french quotation marks, inverted exclamation and
+% question marks, and the diacritical 
+% commands  |\^|, |\'|, |\`|, |\"|, |\~|, |\c|, |\H|, |\u| and |\v| are also handled,
+% as are the characters |\aa|, |\ae|, |\l|, |\oe|, |\o|, |\ss|, and their 
 % capitalizations. See Tables~\ref{tab:diacritical}, \ref{tab:ligatures}, and
 % \ref{tab:other} for more details.
 %   
@@ -953,12 +969,14 @@
 % Be aware that \emph{\textsf{moodle} does not know how to convert any 
 % other \TeX\ or \LaTeX\ commands to HTML.}
 % If other sequences are used, they may be passed verbatim to the XML file
-% or may cause unpredicted results. The |\htmlregister| command lets you specify
+% or may cause unpredicted results.
+% \DescribeMacro{\htmlregister}The |\htmlregister| command lets you specify
 % the macros that must be expanded in the XML file. It works only when no
 % optional argument is used.
 % 
 % \DescribeMacro{\moodleregisternewcommands} 
-% It can be cumbersome to record individually a list of macros for expansion.
+% When the list of macros is long, it becomes cumbersome to record them
+% individually for expansion.
 % Calling |\moodleregisternewcommands| triggers the automatic
 % expansion of macros defined subsequently using |\newcommand|,
 % |\renewcommand|, |\providecommand|, or their starred variants.
@@ -1005,7 +1023,7 @@
 % the |external| \TikZ\ library, so that each |tikzpicture| environment is compiled
 % to a freestanding PDF file.
 %
-% \subsection{Package Option \texttt{tikz}}
+% \subsection{Package Option \texttt{tikz}}\label{subsec:tikz}
 % \DescribeMacro{tikz}
 % The \textsf{moodle} package admits a \texttt{tikz} option which has the following effects:
 % \begin{itemize}
@@ -1309,8 +1327,8 @@
 % \centering
 % \caption{Support for diacritical marks 
 % in a UTF8-coded \TeX~document compiled with (pdf)\LaTeX\ (packages 
-% \texttt{inputenc} with option \texttt{utf8} and \texttt{fontenc} with option \texttt{T1})
-% or \XeLaTeX\ (package \texttt{fontspec}).}
+% \texttt{inputenc} with option \texttt{utf8} and \texttt{fontenc} with option \texttt{T1}),
+% \LuaLaTeX\ or \XeLaTeX\ (package \texttt{fontspec}).}
 % \label{tab:diacritical}
 % \begin{threeparttable}[t]
 % \begin{tabular}{*{6}{l}}
@@ -1371,8 +1389,8 @@
 % \centering
 % \begin{threeparttable}[t]
 % \caption{Support for ligatures in a UTF8-coded \TeX~document compiled with (pdf)\LaTeX\ (packages 
-% \texttt{inputenc} with option \texttt{utf8}, \texttt{fontenc} with option \texttt{T1})
-% or \XeLaTeX\ (package \texttt{fontspec}).}
+% \texttt{inputenc} with option \texttt{utf8}, \texttt{fontenc} with option \texttt{T1}),
+% \LuaLaTeX\ or \XeLaTeX\ (package \texttt{fontspec}).}
 % \label{tab:ligatures}
 % \begin{tabular}{llllll}
 % \toprule
@@ -1398,7 +1416,7 @@
 % \begin{threeparttable}[b]
 % \caption{Support for other glyphs and punctuation marks in a UTF8-coded \TeX~document compiled
 % with (pdf)\LaTeX\ (packages \texttt{inputenc} with option \texttt{utf8}, \texttt{fontenc} with
-% option \texttt{T1}) or \XeLaTeX\ (package \texttt{fontspec}).}
+% option \texttt{T1}), \LuaLaTeX\ or \XeLaTeX\ (package \texttt{fontspec}).}
 % \label{tab:other}
 % \begin{tabular}{llllll}
 % \toprule
@@ -1474,6 +1492,7 @@
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version} ^^A[version=0.8,date=\today]
 %     \added
+%       \item Package option |handout| for sharing PDF with students
 %       \item Extensions can be omitted when including pictures.
 %       \item Description question type.
 %       \item \LuaLaTeX\ is now supported (and recommended for UTF8-coded sources).
@@ -1485,6 +1504,7 @@
 %       \item Support for |\_| and |\textbackslash|.
 %       \item Support for the wildcard character as an answer in numerical questions.
 %     \changed
+%       \item Improved display of matching questions in PDF
 %       \item The package \textsf{iftex} is now required.
 %       \item An error is thrown when |fraction| is set to an invalid value.
 %       \item In numerical questions, the tolerance can be set in exponent form.
@@ -1576,6 +1596,7 @@
 % \subsection{Packages, Options, and Utilities}
 %    \begin{macrocode}
 \newif\ifmoodle@draftmode
+\newif\ifmoodle@handout
 \newif\ifmoodle@stampmode
 \newif\ifmoodle@tikz
 \newif\ifmoodle@tikzloaded
@@ -1585,6 +1606,7 @@
 
 %%DECLARATION OF OPTIONS
 \DeclareOption{draft}{\moodle@draftmodetrue}
+\DeclareOption{handout}{\moodle@handouttrue}
 \DeclareOption{final}{\moodle@draftmodefalse}
 \DeclareOption{nostamp}{\moodle@stampmodefalse}
 \DeclareOption{tikz}{\moodle@tikztrue}
@@ -1594,6 +1616,7 @@
 \DeclareOption{subsection*}{\moodle@sectionfalse\moodle@numberedfalse}
 
 \moodle@draftmodefalse
+\moodle@handoutfalse
 \moodle@stampmodetrue
 \moodle@tikzfalse
 \moodle@tikzloadedfalse
@@ -1620,6 +1643,9 @@
 \RequirePackage{shellesc} %Luatex-compatible way of getting system access
 \RequirePackage{fancybox} %For fancy LaTeX tags
 \RequirePackage{getitems} %To gather the header and items
+\ifmoodle@handout
+  \RequirePackage[seed=42]{randomlist} %To randomize answers in matching questions
+\fi
 
 \let\xa=\expandafter
 \def\@star{*}%
@@ -2372,15 +2398,19 @@
       \let\moodle@questionheader=\gatheredheader
       %First, the LaTeX processing
       \item \textbf{\moodle@questionname}
-      \xa\xdef\xa\test@iii\xa{\moodle@tags}%
-      \ifx\test@iii\@moodle@empty\relax\else
-        \hfill tags: \texttt{\moodle@tags}
+      \ifmoodle@handout
+        \moodle@makelatextag@qtype{#1}
+      \else
+        \xa\xdef\xa\test@iii\xa{\moodle@tags}%
+        \ifx\test@iii\@moodle@empty\relax\else
+          \hfill tags: \texttt{\moodle@tags}
+        \fi
+        \par
+        \noindent
+        \moodle@makelatextag@qtype{#1}
+        \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
+        \moodle@makelatextag@value{penalty}{penalty}
       \fi
-      \par
-      \noindent
-      \moodle@makelatextag@qtype{#1}
-      \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
-      \moodle@makelatextag@value{penalty}{penalty}
       #2\par
       \noindent
       \moodle@questionheader
@@ -2422,18 +2452,22 @@
     \trim@spaces@in\moodle@questiontext
     \ifx\moodle@questiontext\@empty\relax\else%
       %First, the LaTeX processing.
-      \item \textbf{\moodle@questionname}%
-      \xa\xdef\xa\test@iii\xa{\moodle@tags}%
-      \ifx\test@iii\@moodle@empty\relax\else
-        \hfill tags: \texttt{\moodle@tags}%
+      \item \textbf{\moodle@questionname}
+      \ifmoodle@handout\else
+        \xa\xdef\xa\test@iii\xa{\moodle@tags}%
+        \ifx\test@iii\@moodle@empty\relax\else
+          \hfill tags: \texttt{\moodle@tags}%
+        \fi
+        \par
+        \noindent
       \fi
-      \par
-      \noindent
       \moodle@makelatextag@qtype{description}\par
       \noindent
-      \moodle@questiontext
-      \ifx\moodle@feedback\@empty\relax\else
-        \fbox{\parbox{\linewidth}{\emph{\moodle@feedback}}}%
+      \moodle@questiontext\par
+      \ifmoodle@handout\else
+        \ifx\moodle@feedback\@empty\relax\else
+          \fbox{\parbox{\linewidth}{\emph{\moodle@feedback}}}%
+        \fi
       \fi
       %Now, writing information to memory.
       \@moodle@ifgeneratexml{%
@@ -2473,20 +2507,27 @@
     \let\moodle@questionheader=\gatheredheader
     %First, the LaTeX processing.
       \item \textbf{\moodle@questionname}
-      \xa\xdef\xa\test@iii\xa{\moodle@tags}%
-      \ifx\test@iii\@moodle@empty\relax\else
-        \hfill tags: \texttt{\moodle@tags}
+      \ifmoodle@handout
+        \moodle@makelatextag@qtype{essay}
+      \else
+        \xa\xdef\xa\test@iii\xa{\moodle@tags}%
+        \ifx\test@iii\@moodle@empty\relax\else
+          \hfill tags: \texttt{\moodle@tags}
+        \fi
+        \par
+        \noindent
+        \moodle@makelatextag@qtype{essay}
+        \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
+        \moodle@makelatextag@value{penalty}{penalty}
+        \moodle@makelatextag@key{responseformat}
       \fi
       \par
       \noindent
-      \moodle@makelatextag@qtype{essay}
-      \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
-      \moodle@makelatextag@value{penalty}{penalty}
-      \moodle@makelatextag@key{responseformat}\par
-      \noindent
       \moodle@questionheader
       \edef\moodle@generalfeedback{\expandonce\moodle@feedback}
-      \csname moodle@essay@latexprocessing\endcsname
+      \ifmoodle@handout\else
+        \csname moodle@essay@latexprocessing\endcsname
+      \fi
     %Now, writing information to memory.
     \@moodle@ifgeneratexml{%
       \xa\questiontext\xa{\moodle@questionheader}% Save the question text.
@@ -2639,14 +2680,18 @@
   \fi
 }
 
-\def\moodle@shortanswer@latexprocessing{%
-  \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
-    \loopthroughitemswithcommand{\moodle@print@shortanswer@answer}%
-  \end{itemize}%
-  \ifx\moodle@generalfeedback\@empty\relax\else%
-    \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
-  \fi
-}
+\ifmoodle@handout
+  \let\moodle@shortanswer@latexprocessing\relax
+\else
+  \def\moodle@shortanswer@latexprocessing{%
+    \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
+      \loopthroughitemswithcommand{\moodle@print@shortanswer@answer}%
+    \end{itemize}%
+    \ifx\moodle@generalfeedback\@empty\relax\else%
+      \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+    \fi
+  }
+\fi
 
    \def\moodle@print@shortanswer@answer#1{%
        \let\moodle@feedback=\@empty
@@ -2714,14 +2759,18 @@
   \@ifpackageloaded{siunitx}{\def\moodle@printnum{\num[omit-uncertainty,copy-decimal-marker]}}{\let\moodle@printnum\trim@spaces}%
 }
 
-\def\moodle@numerical@latexprocessing{%
-      \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
-        \loopthroughitemswithcommand{\moodle@print@numerical@answer}%
-      \end{itemize}%
-      \ifx\moodle@generalfeedback\@empty\relax\else%
-        \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
-      \fi
-}
+\ifmoodle@handout
+  \let\moodle@numerical@latexprocessing\relax
+\else
+  \def\moodle@numerical@latexprocessing{%
+    \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
+      \loopthroughitemswithcommand{\moodle@print@numerical@answer}%
+    \end{itemize}%
+    \ifx\moodle@generalfeedback\@empty\relax\else%
+      \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+    \fi
+  }
+\fi
 
    \def\moodle@print@numerical@answer#1{%
        \let\moodle@feedback=\@empty
@@ -2806,26 +2855,39 @@
 % LATEX PROCESSING
 
 \def\moodle@makelatextag@multi{%
-  \csname ifmoodle@multiple\endcsname%
+  \ifmoodle@multiple
     \moodle@makelatextagbox{Multiple}\relax%
-  \else%
+  \else
     \moodle@makelatextagbox{Single}\relax%
-  \fi%
-  \csname ifmoodle@shuffle\endcsname%
-    \moodle@makelatextagbox{Shuffle}\relax%
-  \fi%
+  \fi
+  \ifmoodle@handout\else
+    \ifmoodle@shuffle
+      \moodle@makelatextagbox{Shuffle}\relax%
+    \fi
+  \fi
 }
 
 \def\moodle@multi@latexprocessing{%
   \moodle@countcorrectanswers%
+  \ifmoodle@handout\NewList{answerlist}\fi
   \begin{enumerate}\moodle@obeynumberingstyle%
     %\renewcommand{\theenumi}{\alph{enumi}}%
     \setlength\itemsep{0pt}\setlength\parskip{0pt}%
     \loopthroughitemswithcommand{\moodle@print@multichoice@answer}%
+    \ifmoodle@handout
+      \ifmoodle@shuffle
+        \let\moodle@multi@loop=\ForEachRandomItem
+      \else
+        \let\moodle@multi@loop=\ForEachFirstItem
+      \fi
+      \moodle@multi@loop{answerlist}{Answer}{\Answer}%
+    \fi
   \end{enumerate}%
-  \ifx\moodle@generalfeedback\@empty\relax\else%
-    \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
-  \fi%
+  \ifmoodle@handout\else
+    \ifx\moodle@generalfeedback\@empty\relax\else%
+      \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+    \fi
+  \fi
 }
   \def\moodle@print@multichoice@answer#1{%
     \let\moodle@feedback=\@empty%
@@ -2852,30 +2914,37 @@
     \fi
     \trim@spaces@in\moodle@answertext%
     \trim@spaces@in\moodle@answertext%
-    \ifmoodle@single%
-      \ifx\moodle@fraction\@empty\relax%
-        \setkeys{moodle}{fraction=0}%
-      \fi
-      \ifx\moodle@fraction\@hundred%
-        \trim@spaces@in\moodle@answertext%
-        \g@addto@macro\moodle@answertext{$~\checkmark$}%
-      \else
-        \moodle@checkfraction
-        \ifdim0pt=\moodle@fraction pt\relax\else%
-          \g@addto@macro\moodle@answertext{$~(\moodle@fraction\%)$}%
+    \ifmoodle@handout\else
+      \ifmoodle@single%
+        \ifx\moodle@fraction\@empty\relax%
+          \setkeys{moodle}{fraction=0}%
         \fi
+        \ifx\moodle@fraction\@hundred%
+          \trim@spaces@in\moodle@answertext%
+          \g@addto@macro\moodle@answertext{$~\checkmark$}%
+        \else
+          \moodle@checkfraction
+          \ifdim0pt=\moodle@fraction pt\relax\else%
+            \g@addto@macro\moodle@answertext{$~(\moodle@fraction\%)$}%
+          \fi
+        \fi
+      \else% multiple
+        \ifx\moodle@fraction\@empty\relax%
+          \setkeys{moodle}{fraction=\moodle@autosanctions}%
+        \fi
+        \moodle@checkfraction
+        \g@addto@macro\moodle@answertext{$~(\moodle@fraction\%)$}%
       \fi
-    \else% multiple
-      \ifx\moodle@fraction\@empty\relax%
-        \setkeys{moodle}{fraction=\moodle@autosanctions}%
-      \fi
-      \moodle@checkfraction
-      \g@addto@macro\moodle@answertext{$~(\moodle@fraction\%)$}%
     \fi
-    \moodle@answertext
-    \ifx\moodle@feedback\@empty\relax\else%
-      \hfill \emph{$\rightarrow$ \moodle@feedback}%
-    \fi%
+    \ifmoodle@handout
+      \def\temp{\InsertLastItem{answerlist}}%
+      \xa\temp\xa{\moodle@answertext}%
+    \else
+      \ifx\moodle@feedback\@empty\relax\else%
+        \g@addto@macro\moodle@answertext{\hfill \emph{$\rightarrow$ \moodle@feedback}}%
+      \fi
+      \moodle@answertext
+    \fi
   }%
 
 % COMMON UTILITY: COUNTING CORRECT ANSWERS (AND A BIT MORE...)
@@ -3075,14 +3144,18 @@
       \let\moodle@questionheader=\gatheredheader
       %First, the LaTeX processing
       \item \textbf{\moodle@questionname}
-      \xa\xdef\xa\test@iii\xa{\moodle@tags}%
-      \ifx\test@iii\@moodle@empty\relax\else
-        \hfill tags: \texttt{\moodle@tags}
+      \ifmoodle@handout
+        \moodle@makelatextag@qtype{truefalse}
+      \else
+        \xa\xdef\xa\test@iii\xa{\moodle@tags}%
+        \ifx\test@iii\@moodle@empty\relax\else
+          \hfill tags: \texttt{\moodle@tags}
+        \fi
+        \par
+        \noindent
+        \moodle@makelatextag@qtype{truefalse}
+        \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
       \fi
-      \par
-      \noindent
-      \moodle@makelatextag@qtype{truefalse}
-      \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
       \par
       \noindent
       \moodle@questionheader
@@ -3119,9 +3192,14 @@
   \setcounter{moodle@numcorrectanswers}{0}%
   \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
     \loopthroughitemswithcommand{\moodle@print@truefalse@answer}%
+    \ifnum\c@currentitemnumber=2%
+      \item \textbf{False}%
+    \fi
   \end{itemize}
-  \ifx\moodle@generalfeedback\@empty\relax\else%
-    \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+  \ifmoodle@handout\else
+    \ifx\moodle@generalfeedback\@empty\relax\else%
+      \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+    \fi
   \fi
   \ifnum\c@moodle@numcorrectanswers=0\relax%
     \PackageError{moodle}{No answer is explicitly marked as correct (*). Be sure one answer leads to points.}%
@@ -3155,8 +3233,11 @@
      \ifnum\c@currentitemnumber=2%
 	\def\moodle@answertext{False}%
      \fi
-     \ifx\moodle@feedback\@empty\relax\else
-       \item[\bf \moodle@answertext] ~\hfill \emph{$\rightarrow$ \moodle@feedback}%
+     \item \textbf{\moodle@answertext}%
+     \ifmoodle@handout\else
+       \ifx\moodle@feedback\@empty\relax\else
+         ~\hfill \emph{$\rightarrow$ \moodle@feedback}%
+       \fi
      \fi
    }%
    \def\moodle@print@truefalse@answer@int@int@int#1#2\@rdelim{%
@@ -3166,27 +3247,32 @@
      \ifnum\c@currentitemnumber=2%
 	\def\moodle@answertext{False}%
      \fi
+     \item \textbf{\moodle@answertext}%
      \ifnum\c@currentitemnumber<3%
        \def\test@i{#1}%
        %\trim@spaces@in\test@i
        \ifx\test@i\@star
-         \item[\bf \moodle@answertext] $\checkmark$%
+         \ifmoodle@handout\else
+           ~$\checkmark$%
+         \fi
          \stepcounter{moodle@numcorrectanswers}
        \else
-         \item[\bf \moodle@answertext] ~%
+         ~%
        \fi
-       \ifx\moodle@feedback\@empty\relax
-         \def\test@ii{#2}
-         \trim@spaces@in\test@ii
-         \ifx\test@ii\@empty\relax\else
-           \ifx\test@i\@star%
-             \hfill \emph{$\rightarrow$ #2}%
-           \else%
-             \hfill \emph{$\rightarrow$ #1#2}%
+       \ifmoodle@handout\else
+         \ifx\moodle@feedback\@empty\relax
+           \def\test@ii{#2}
+           \trim@spaces@in\test@ii
+           \ifx\test@ii\@empty\relax\else
+             \ifx\test@i\@star%
+               \hfill \emph{$\rightarrow$ #2}%
+             \else%
+               \hfill \emph{$\rightarrow$ #1#2}%
+             \fi
            \fi
+         \else
+           \hfill \emph{$\rightarrow$ \moodle@feedback}%
          \fi
-       \else
-         \hfill \emph{$\rightarrow$ \moodle@feedback}%
        \fi
      \fi
    }%
@@ -3282,49 +3368,94 @@
 % LATEX PROCESSING
 
 \def\moodle@makelatextag@matching{%
-  \csname ifmoodle@draganddrop\endcsname
-    \moodle@makelatextagbox{Drag and drop}\relax
-  \fi
-  \csname ifmoodle@shuffle\endcsname
-    \moodle@makelatextagbox{Shuffle}\relax
+  \ifmoodle@handout\else
+    \ifmoodle@draganddrop
+      \moodle@makelatextagbox{Drag and drop}\relax%
+    \fi
+    \ifmoodle@shuffle
+      \moodle@makelatextagbox{Shuffle}\relax%
+    \fi
   \fi
 }
 
 \def\moodle@matching@latexprocessing{%
   \bgroup
     \let\answer=\hfill
-    \begin{enumerate}\renewcommand{\theenumi}{\alph{enumi}}\setlength\itemsep{0pt}\setlength\parskip{0pt}%
-      \loopthroughitemswithcommand{\moodle@print@matching@answer}%
-    \end{enumerate}%
-    \ifx\moodle@generalfeedback\@empty\relax\else%
-      \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+    \par%\noindent
+    \ifmoodle@handout
+      \NewList{questionlist}
+      \NewList{answerlist}
+    \fi
+    \def\matching@table@text{}%
+    \loopthroughitemswithcommand{\moodle@print@matching@answer}%
+    \ifmoodle@handout
+      \ifmoodle@shuffle
+        \let\moodle@matching@loop=\ForEachRandomItem
+      \else
+        \let\moodle@matching@loop=\ForEachFirstItem
+      \fi
+      \moodle@matching@loop{questionlist}{Question}{
+        \xdef\test@i{\Question}%
+        \ExtractRandomItem{answerlist}{Answer}%
+        \ifx\test@i\@empty
+          \xdef\matching@table@text{\expandonce\matching@table@text & & $\bullet$~\expandonce\Answer\\}%
+        \else
+          \xdef\matching@table@text{\expandonce\matching@table@text\expandonce\Question~$\bullet$ & & $\bullet$~\expandonce\Answer\\}%
+        \fi
+      }%
+    \fi
+    \begin{tabular}{@{}>{\raggedleft}p{.45\linewidth}p{.1\linewidth}p{.45\linewidth}@{}}%
+      \matching@table@text
+    \end{tabular}%
+    \par
+    \ifmoodle@handout\else
+      \ifx\moodle@generalfeedback\@empty\relax\else%
+        \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+      \fi
     \fi
   \egroup
 }
 
 \long\def\moodle@print@matching@answer#1{%
-  \moodle@print@matching@answer@int#1\@rdelim
+  \moodle@print@matching@answer@int#1 \@rdelim
 }%
 \newcommand\moodle@print@matching@answer@int[1][]{%
-  \moodle@print@matching@answer@int@int\relax
+  \moodle@print@matching@answer@int@int
 }%
 \long\def\moodle@print@matching@answer@int@int#1\answer#2\@rdelim{%
-  \item #1\hfill #2%
+  %\typeout{\string#1 \answer \string#2}%
+  \def\test@i{#1}%
+  \trim@spaces@in\test@i
+  \ifmoodle@handout
+    \ifx\test@i\@empty
+      \InsertLastItem{questionlist}{\@empty}%
+    \else
+      \InsertLastItem{questionlist}{#1}%
+    \fi
+    \InsertLastItem{answerlist}{#2}%
+  \else
+    \ifx\test@i\@empty
+      \g@addto@macro\matching@table@text{&&$\bullet$~#2\\}%
+    \else
+      \xa\g@addto@macro\xa\matching@table@text\xa{\test@i~$\bullet$&\leavevmode\cleaders\hb@xt@.44em{\hss$\cdot$\hss}\hfill\kern\z@&$\bullet$~#2\\}%
+    \fi
+  \fi
 }%
 
 
 % SAVING ANSWERS TO MEMORY
 \long\def\savematchinganswer#1{%
   \bgroup
-    \savematchinganswer@int#1\moodle@answer@rdelim%
+    \savematchinganswer@int#1 \moodle@answer@rdelim%
     \passvalueaftergroup{\moodle@answers@xml}%
   \egroup
 }%
    \newcommand\savematchinganswer@int[1][]{%
      \setkeys{moodle}{#1}%
-     \xa\savematchinganswer@int@int\space%
+     \savematchinganswer@int@int%\space
    }%
    \long\def\savematchinganswer@int@int#1\answer#2\moodle@answer@rdelim{%
+     \typeout{\string#1 \answer \string#2}%
      % Note that #1 may simply be \relax.
      \def\moodle@subquestiontext{#1}%
      \def\moodle@subanswertext{#2}%
@@ -3364,9 +3495,9 @@
     \writetomoodle{<question type="matching">}%
   \fi
     \moodle@writecommondata%
-%    \moodle@writesingle% %unappropriate for the matching type
+%    \moodle@writesingle% %irrelevant for the matching type
     \moodle@writeshuffle%
-%    \moodle@writeanswernumbering% %unappropriate for the matching type
+%    \moodle@writeanswernumbering% %irrelevant for the matching type
 }%
 %    \end{macrocode}
 %
@@ -3399,21 +3530,27 @@
     \moodle@enableclozeenvironments
     %First, the LaTeX processing.
       \item \textbf{\moodle@questionname}
-      \xa\xdef\xa\test@iii\xa{\moodle@tags}%
-      \ifx\test@iii\@moodle@empty\relax\else
-        \hfill tags: \texttt{\moodle@tags}
+      \ifmoodle@handout
+        \moodle@makelatextag@qtype{cloze}
+      \else
+        \xa\xdef\xa\test@iii\xa{\moodle@tags}%
+        \ifx\test@iii\@moodle@empty\relax\else
+          \hfill tags: \texttt{\moodle@tags}
+        \fi
+        \par
+        \noindent
+        \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
+        \moodle@makelatextag@value{penalty}{penalty}
       \fi
       \par
-      \noindent
-      \moodle@makelatextag@qtype{cloze}
-      \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
-      \moodle@makelatextag@value{penalty}{penalty}\par
       \noindent
       \BODY
       \edef\moodle@generalfeedback{\expandonce\moodle@feedback}
       %\csname moodle@cloze@latexprocessing\endcsname
-      \ifx\moodle@generalfeedback\@empty\relax\else%
-        \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+      \ifmoodle@handout\else
+        \ifx\moodle@generalfeedback\@empty\relax\else%
+          \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+        \fi
       \fi
     %Now, writing information to memory.
     \@moodle@ifgeneratexml{%
@@ -3500,17 +3637,34 @@
       \par
       \noindent
       \moodle@makelatextag@qtype{multi}
-      \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
-      \moodle@makelatextag@multi
+      \ifmoodle@handout\else
+        \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
+        \moodle@makelatextag@multi
+      \fi
       \def\cloze@multichoice@table@text{}%
+      \ifmoodle@handout\NewList{answerlist}\fi
       %\let\moodle@feedback=\@empty
       \loopthroughitemswithcommand{\moodle@print@clozemultichoice@answer}%
+      \ifmoodle@handout
+        \ifmoodle@shuffle
+          \let\moodle@clozemult@loop=\ForEachRandomItem
+        \else
+          \let\moodle@clozemult@loop=\ForEachFirstItem
+        \fi
+        \moodle@clozemult@loop{answerlist}{Answer}{
+          \xdef\cloze@multichoice@table@text{\expandonce\cloze@multichoice@table@text\expandonce\Answer}%
+        }%
+      \fi
       \ifcase\moodle@multi@mode\relax
         %Case 0: dropdown box style
         \par\noindent
-        \begin{tabular}[t]{|p{.45\linewidth}|p{.45\linewidth}|}
-          \firsthline% (\firsthline is from the array package.)
+        \ifmoodle@handout
+          \begin{tabular}[t]{|p{.45\linewidth}|}
+        \else 
+          \begin{tabular}[t]{|p{.45\linewidth}|p{.45\linewidth}|}
 %          answer & feedback \\\hline\hline
+        \fi
+          \firsthline% (\firsthline is from the array package.)
           \cloze@multichoice@table@text%
         \end{tabular}%
         \par%
@@ -3542,46 +3696,61 @@
   \moodle@print@clozemultichoice@answer@int@int%
 }%
 \def\moodle@print@clozemultichoice@answer@int@int#1#2\@rdelim{%
+  \def\moodle@answertext{}%
   % Case 0: "(answer) \\ \hline"
   % Case 1: "\item (answer)"
   % Case 2: "$\bullet~$(answer)\hfill"
   \ifcase\moodle@multi@mode\relax
     \relax% Case 0
   \or
-    \g@addto@macro\cloze@multichoice@table@text{\item}% Case 1
+    \g@addto@macro\moodle@answertext{\item}% Case 1
   \else
-    \g@addto@macro\cloze@multichoice@table@text{$\bullet~$}% Case 2
+    \g@addto@macro\moodle@answertext{$\bullet~$}% Case 2
   \fi
   \def\test@i{#1}%
   \ifx\test@i\@star
     \setkeys{moodle}{fraction=100}%
-    \g@addto@macro\cloze@multichoice@table@text{#2}%
+    \g@addto@macro\moodle@answertext{#2}%
   \else
-    \g@addto@macro\cloze@multichoice@table@text{#1#2}%
+    \g@addto@macro\moodle@answertext{#1#2}%
   \fi
-  \trim@spaces@in\cloze@multichoice@table@text
-  \trim@spaces@in\cloze@multichoice@table@text
-  \ifx\moodle@fraction\@hundred
-    \g@addto@macro\cloze@multichoice@table@text{$~\checkmark$}%
-  \else
-    \moodle@checkfraction
-    \ifdim0pt=\moodle@fraction pt\relax\else
-      \xdef\cloze@multichoice@table@text{\expandonce\cloze@multichoice@table@text$~(\moodle@fraction\%)$}%
+  \trim@spaces@in\moodle@answertext
+  \trim@spaces@in\moodle@answertext
+  \ifmoodle@handout\else
+    \ifx\moodle@fraction\@hundred
+      \g@addto@macro\moodle@answertext{$~\checkmark$}%
+    \else
+      \moodle@checkfraction
+      \ifdim0pt=\moodle@fraction pt\relax\else
+        \xdef\moodle@answertext{\expandonce\moodle@answertext$~(\moodle@fraction\%)$}%
+      \fi
     \fi
   \fi
   \ifcase\moodle@multi@mode\relax
-    % Case 0
-      \xdef\cloze@multichoice@table@text{\expandonce\cloze@multichoice@table@text &\expandonce\emph{\expandonce\moodle@feedback}}%
-      \g@addto@macro{\cloze@multichoice@table@text}{\\\hline}
+  % Case 0
+    \ifmoodle@handout\else
+      \xdef\moodle@answertext{\expandonce\moodle@answertext &\expandonce\emph{\expandonce\moodle@feedback}}%
+    \fi
+    \g@addto@macro\moodle@answertext{\\\hline}
   \or % Case 1
-    \ifx\moodle@feedback\@empty\relax\else
-      \xdef\cloze@multichoice@table@text{\expandonce\cloze@multichoice@table@text \hfill \expandonce\emph{$\rightarrow$ \expandonce\moodle@feedback}}%
+    \ifmoodle@handout\else
+      \ifx\moodle@feedback\@empty\relax\else
+        \xdef\moodle@answertext{\expandonce\moodle@answertext \hfill \expandonce\emph{$\rightarrow$ \expandonce\moodle@feedback}}%
+      \fi
     \fi
   \else % otherwise
-    \ifx\moodle@feedback\@empty\relax\else
-      \xdef\cloze@multichoice@table@text{\expandonce\cloze@multichoice@table@text\,\expandonce\emph{$\rightarrow$ \expandonce\moodle@feedback}}%
+    \ifmoodle@handout\else
+      \ifx\moodle@feedback\@empty\relax\else
+        \xdef\moodle@answertext{\expandonce\moodle@answertext\,\expandonce\emph{$\rightarrow$ \expandonce\moodle@feedback}}%
+      \fi
     \fi
-    \g@addto@macro{\cloze@multichoice@table@text}{\hfill}% Case 2
+    \g@addto@macro\moodle@answertext{\hfill}% Case 2
+  \fi
+  \ifmoodle@handout
+    \def\temp{\InsertLastItem{answerlist}}%
+    \xa\temp\xa{\moodle@answertext}%
+  \else
+    \xdef\cloze@multichoice@table@text{\expandonce\cloze@multichoice@table@text\expandonce\moodle@answertext}%
   \fi
 }%
 
@@ -3651,18 +3820,20 @@
       \par
       \noindent
       \moodle@makelatextag@qtype{numerical}
-      \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
-      \moodle@makelatextag@numerical
-      \par
-      \noindent
-      \def\cloze@numerical@table@text{}%
-      \loopthroughitemswithcommand{\moodle@print@clozenumerical@answer}%
-      \begin{tabular}[t]{|p{.45\linewidth}|p{.45\linewidth}|}
-        \firsthline% (\firsthline is from the array package.)
-%       answer & feedback \\\hline\hline
-        \cloze@numerical@table@text%
-      \end{tabular}%
-      \par%
+      \ifmoodle@handout\else
+        \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
+        \moodle@makelatextag@numerical
+        \par
+        \noindent
+        \def\cloze@numerical@table@text{}%
+        \loopthroughitemswithcommand{\moodle@print@clozenumerical@answer}%
+        \begin{tabular}[t]{|p{.45\linewidth}|p{.45\linewidth}|}
+          \firsthline% (\firsthline is from the array package.)
+%         answer & feedback \\\hline\hline
+          \cloze@numerical@table@text%
+        \end{tabular}%
+        \par%
+      \fi
       \def\endclozenumerical@code{\relax}%
     \fi
     \passvalueaftergroup\endclozenumerical@code%
@@ -3778,18 +3949,20 @@
       \par
       \noindent
       \moodle@makelatextag@qtype{shortanswer}
-      \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
-      \moodle@makelatextag@shortanswer
-      \par
-      \noindent
-      \def\cloze@shortanswer@table@text{}%
-      \loopthroughitemswithcommand{\moodle@print@clozeshortanswer@answer}%
-      \begin{tabular}[t]{|p{.45\linewidth}|p{.45\linewidth}|}
-        \firsthline% (\firsthline is from the array package.)
-%       answer & feedback \\\hline\hline
-        \cloze@shortanswer@table@text%
-      \end{tabular}%
-      \par%
+      \ifmoodle@handout\else
+        \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
+        \moodle@makelatextag@shortanswer
+        \par
+        \noindent
+        \def\cloze@shortanswer@table@text{}%
+        \loopthroughitemswithcommand{\moodle@print@clozeshortanswer@answer}%
+        \begin{tabular}[t]{|p{.45\linewidth}|p{.45\linewidth}|}
+          \firsthline% (\firsthline is from the array package.)
+%         answer & feedback \\\hline\hline
+          \cloze@shortanswer@table@text%
+        \end{tabular}%
+        \par%
+      \fi
       \def\endclozeshortanswer@code{\relax}%
     \fi
     \passvalueaftergroup\endclozeshortanswer@code%
@@ -5282,15 +5455,15 @@
       }{}%
     }
     \ifmoodle@tikz
-      \tikzset{external/optimize=false} % due to redefinition, includegraphics must not be optimized away
+      \tikzset{external/optimize=false}% due to redefinition, includegraphics must not be optimized away
     \else
-      \tikzset{external/optimize=true}
-      \tikzset{external/optimize command away={\VerbatimInput}{1}}
+      \tikzset{external/optimize=true}%
+      \tikzset{external/optimize command away={\VerbatimInput}{1}}%
     \fi
     %
     % The HTMLizer version of the tikzpicture environment,
     % which writes an <IMG> tag to the XML file.
-    \htmlize@record@environment{tikzpicture}
+    \htmlize@record@environment{tikzpicture}%
     \g@addto@macro\htmlize@activate@environments{%
       \let\tikzpicture\relax\let\endtikzpicture\relax
       \NewEnviron{tikzpicture}[1][]{%
