@@ -342,10 +342,11 @@
 % \DescribeMacro{quiz}
 % A |.tex| document to generate Moodle quizzes contains one or more
 % |quiz| environments, within which various question environments are nested.
-% The required argument to the |quiz| environment names the ``question bank''
-% to which the questions inside will belong after being uploaded to Moodle.
+% The required argument to the |quiz| environment names a category for Moodles
+% ``question bank'': after import, the questions defined in this environment
+% will be gathered in this category.
 % \begin{center}
-% |\begin{quiz}|\oarg{options}\marg{question bank name}%
+% |\begin{quiz}|\oarg{options}\marg{category name}%
 % \end{center}
 % There are no |quiz|-specific options,
 % but any \meta{options} set with |\begin{quiz}|
@@ -354,6 +355,13 @@
 % \DescribeMacro{\moodleset}
 % Options may also be set at any time with |\moodleset|\marg{options};
 % these changes are local to \TeX-groups.
+%
+% \DescribeMacro{\setcategory}\DescribeMacro{\setsubcategory}
+% Although the |quiz| environment defines a category by its own, one can change
+% the current category at any time using the macro |\setcategory|\marg{category
+% name}. A subcategory can also be defined with |\setsubcategory|\marg{subcategory
+% name}. These macros, however, affect only the XML file. For the categories
+% to be reflected in the PDF file, one must define successive |quiz| environments.
 % \bigskip
 % 
 % The syntax for each question environment is
@@ -1493,6 +1501,7 @@
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version}[version=0.8,date=2020-11-30]
 %     \added
+%       \item Macro |\setsubcategory| to define subcategories.
 %       \item Package option |handout| for sharing PDF with students.
 %       \item Extensions can be omitted when including pictures.
 %       \item Description question type.
@@ -1788,11 +1797,9 @@
 % We now create the main |quiz| environment that will contain
 % the questions we write.  It outputs to XML as a |<question type="category">| tag.
 %    \begin{macrocode}
-\newenvironment{quiz}[2][]%
-{
+\newenvironment{quiz}[2][]{%
   \setkeys{moodle}{#1}%
   \@moodle@ifgeneratexml{%
-    %\openmoodleout%
     \setcategory{#2}%
   }{}%
    \ifmoodle@section
@@ -1809,21 +1816,34 @@
      \fi
    \fi
    \begin{enumerate}%
-}{
+}{%
   \end{enumerate}%
   %\@moodle@ifgeneratexml{\closemoodleout}{}
-}
+}%
 
-{\catcode`\$=12\catcode`\ =12%
+{\catcode`\$=12\catcode`\ =12% in this context we cannot indent with spaces...
 \gdef\setcategory#1{%
+\gdef\moodle@currentcategory{#1}%
 \writetomoodle{ }%
 \writetomoodle{<question type="category">}%
 \writetomoodle{  <category>}%
 \writetomoodle{    <text>$course$/top/#1</text>}%
 \writetomoodle{  </category>}%
 \writetomoodle{</question>}%
+\writetomoodle{ }}%
+\gdef\setsubcategory#1{%
+\@ifundefined{moodle@currentcategory}{%
+\PackageWarning{moodle}{No category was defined previously: setting a category instead of a subcategory.}%
+\setcategory{#1}%
+}{%
 \writetomoodle{ }%
-}}%
+\writetomoodle{<question type="category">}%
+\writetomoodle{  <category>}%
+\writetomoodle{    <text>$course$/top/\moodle@currentcategory/#1</text>}%
+\writetomoodle{  </category>}%
+\writetomoodle{</question>}%
+\writetomoodle{ }%
+}}}%
 %    \end{macrocode}                       
 % The next utility takes a single macro control sequence |#1|,
 % and allows that macro's current value to persist
