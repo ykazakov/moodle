@@ -358,11 +358,12 @@
 %
 % \DescribeMacro{\setcategory}\DescribeMacro{\setsubcategory}
 % Although the |quiz| environment defines a category by its own, one can change
-% the current category at any time using the macro |\setcategory|\marg{category
-% name}. A subcategory can also be defined with |\setsubcategory|\marg{subcategory
-% name}. These macros, however, affect only the XML file. For the categories
-% to be reflected in the PDF file, one must define successive |quiz| environments.
-% \bigskip
+% the current category inside the quiz environment and in between questions,
+% using the macro |\setcategory|\marg{category name}. A subcategory can also be
+% defined with |\setsubcategory|\marg{subcategory name}. The categories and
+% subcategories are reflected in the PDF file as sections, subsections, or
+% subsubsections, in accordance to the package setting |section|, |section*|,
+% |subsection|, or |subsection*|.
 % 
 % The syntax for each question environment is
 % \begin{quote}
@@ -1501,7 +1502,7 @@
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version}[version=0.8,date=2020-11-30]
 %     \added
-%       \item Macro |\setsubcategory| to define subcategories.
+%       \item New macro |\setsubcategory| to define subcategories, reflected in PDF and XML.
 %       \item Package option |handout| for sharing PDF with students.
 %       \item Extensions can be omitted when including pictures.
 %       \item Description question type.
@@ -1514,6 +1515,7 @@
 %       \item Support for |\_| and |\textbackslash|.
 %       \item Support for the wildcard character as an answer in numerical questions.
 %     \changed
+%       \item The macro |\setcategory| is reflected by a new section in PDF.
 %       \item In matching questions, warnings are raised if the number of items is insufficient.
 %       \item Improved display of matching questions in PDF.
 %       \item The package \textsf{iftex} is now required.
@@ -1797,53 +1799,71 @@
 % We now create the main |quiz| environment that will contain
 % the questions we write.  It outputs to XML as a |<question type="category">| tag.
 %    \begin{macrocode}
-\newenvironment{quiz}[2][]{%
-  \setkeys{moodle}{#1}%
-  \@moodle@ifgeneratexml{%
-    \setcategory{#2}%
-  }{}%
-   \ifmoodle@section
-     \ifmoodle@numbered
-       \section{#2}%
-     \else
-       \section*{#2}%
-     \fi
-   \else
-     \ifmoodle@numbered
-       \subsection{#2}%
-     \else
-       \subsection*{#2}%
-     \fi
-   \fi
-   \begin{enumerate}%
-}{%
-  \end{enumerate}%
-  %\@moodle@ifgeneratexml{\closemoodleout}{}
-}%
-
 {\catcode`\$=12\catcode`\ =12% in this context we cannot indent with spaces...
-\gdef\setcategory#1{%
-\gdef\moodle@currentcategory{#1}%
+\gdef\moodle@write@category@xml#1{%
+\@moodle@ifgeneratexml{%
 \writetomoodle{ }%
 \writetomoodle{<question type="category">}%
 \writetomoodle{  <category>}%
 \writetomoodle{    <text>$course$/top/#1</text>}%
 \writetomoodle{  </category>}%
 \writetomoodle{</question>}%
-\writetomoodle{ }}%
-\gdef\setsubcategory#1{%
-\@ifundefined{moodle@currentcategory}{%
-\PackageWarning{moodle}{No category was defined previously: setting a category instead of a subcategory.}%
-\setcategory{#1}%
+\writetomoodle{ }%
+}{}%
+}}%
+\newcommand*\@enumeratename{enumerate}%
+\newenvironment{quiz}[2][]{%
+  \setkeys{moodle}{#1}%
+  \gdef\setcategory##1{%
+    % At first call (end of \begin{quiz}) enumerate is not started yet
+    \ifx\@currenvir\@enumeratename
+      % In case no question is defined between two calls of \setcategory
+      \def\@noitemerr{\@latex@warning{Empty question list}}%
+      \end{enumerate}%
+    \fi
+    \gdef\moodle@currentcategory{##1}%
+    \moodle@write@category@xml{##1}%
+    \ifmoodle@section
+      \ifmoodle@numbered
+        \section{##1}%
+      \else
+        \section*{##1}%
+      \fi
+    \else
+      \ifmoodle@numbered
+        \subsection{##1}%
+      \else
+        \subsection*{##1}%
+      \fi
+    \fi
+    \begin{enumerate}%
+  }%
+  \gdef\setsubcategory##1{%
+    \def\@noitemerr{\@latex@warning{Empty question list}}%
+    \end{enumerate}%
+    \moodle@write@category@xml{\moodle@currentcategory/##1}%
+    \ifmoodle@section
+      \ifmoodle@numbered
+        \subsection{##1}%
+      \else
+        \subsection*{##1}%
+      \fi
+    \else
+      \ifmoodle@numbered
+        \subsubsection{##1}%
+      \else
+        \subsubsection*{##1}%
+      \fi
+    \fi
+    \begin{enumerate}%
+  }%
+  \setcategory{#2}%
 }{%
-\writetomoodle{ }%
-\writetomoodle{<question type="category">}%
-\writetomoodle{  <category>}%
-\writetomoodle{    <text>$course$/top/\moodle@currentcategory/#1</text>}%
-\writetomoodle{  </category>}%
-\writetomoodle{</question>}%
-\writetomoodle{ }%
-}}}%
+  \end{enumerate}%
+  \let\setcategory\relax
+  \let\setsubcategory\relax
+}%
+
 %    \end{macrocode}                       
 % The next utility takes a single macro control sequence |#1|,
 % and allows that macro's current value to persist
