@@ -337,6 +337,9 @@
 % \DescribeMacro{tikz} The package option \texttt{tikz} is described in section
 % \ref{subsec:tikz}.
 %
+% \DescribeMacro{svg} The package option \texttt{svg} is described in section
+% \ref{subsec:svg}.
+%
 % \subsection{Quiz and Question Environments}
 % 
 % \DescribeMacro{quiz}
@@ -1087,8 +1090,8 @@
 %^^A   \item Filenames should not contains spaces or, under windows, special characters like |_| or |\|.
 %   \item You must have Ghostscript and ImageMagick installed on your system
 %         to fully use the graphics-handling capabilities of \textsf{moodle}.
-%   \item If OptiPNG is not installed the corresponding system calls will fail with otherwise no
-%         impact on the compilation process.
+%   \item If OptiPNG is not installed, the corresponding system calls will fail with otherwise no
+%         impact on the compilation process: PNG files are passed unoptimized to the XML output.
 %   \item \LaTeX\ must be able to call system commands; that is, |\write18| must be enabled.
 %         For Mik\TeX, this means adding |--enable-write18| to the command line of |pdflatex|;
 %         for \TeX Live, this means adding |--shell-escape=true|.
@@ -1102,6 +1105,37 @@
 %         |tikzpicture| environment instead of |circuitikz|. That is required,
 %         as of \TikZ\ 2.1, by the |external| library.
 % \end{itemize}
+%
+% \subsection{Package Option \texttt{svg}}\label{subsec:svg}
+%
+% \paragraph{Important Notice} \emph{The \texttt{svg} option is an experimental feature
+% introduced in \textsf{moodle} v0.8. It has been tested exclusively under Linux, with
+% TeXLive 2020, Inkscape v1.0.1 and Scour 0.38.2.}
+% 
+% \DescribeMacro{svg} The \textsf{moodle} package admits an experimental \texttt{svg}
+% option which has the following effects:
+% \begin{itemize}
+% \item With pdf\LaTeX\ and \LuaTeX, |\includegraphics| can be used to import SVG
+% graphic files directly (extension |.svg| or |.SVG|). In this case, the SVG file is
+% passed as-is to the XML output and is converted using \href{https://inkscape.org/}
+% {Inkscape} (must be installed) for inclusion in the PDF output.
+% \item With pdf\LaTeX, \XeTeX\ and \LuaTeX, the graphic files in PDF format are
+% converted to the SVG format using \href{https://inkscape.org/}{Inkscape} (must
+% be installed), rather than beeing rasterized. Before inclusion to the XML output,
+% the SVG file is optimized using the \href{https://github.com/scour-project/scour}
+% {Scour} utility. This optimization step is optional in the sense that, if the
+% Scour call fails, the unoptimized SVG file will be passed to the XML output.
+% Two processes benefit from this PDF$\to$SVG conversion:
+%   \begin{itemize}
+%     \item inclusion of PDF graphics with |\includegraphics|, and
+%     \item Tikz pictures that are externalized.
+%   \end{itemize}
+% \end{itemize}
+%
+% \DescribeMacro{\PDFtoSVGcommand}\DescribeMacro{\SVGtoPDFcommand}
+% \DescribeMacro{\optiSVGcommand} The call of external tools can be changed using
+% the macros |\PDFtoSVGcommand| \marg{\dots}, |\SVGtoPDFcommand|\marg{\dots} and
+% |\optiSVGcommand|\marg{\dots}.
 %
 % \section{Verbatim Code}
 % Because, for HTML translation, \textsf{moodle} parses the body of questions, the use of 
@@ -1502,6 +1536,7 @@
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version}[version=0.8,date=2020-11-30]
 %     \added
+%       \item Added package option |svg| to avoid the rasterization of vector graphics.
 %       \item New macro |\setsubcategory| to define subcategories, reflected in PDF and XML.
 %       \item Package option |handout| for sharing PDF with students.
 %       \item Extensions can be omitted when including pictures.
@@ -1613,6 +1648,7 @@
 \newif\ifmoodle@stampmode
 \newif\ifmoodle@tikz
 \newif\ifmoodle@tikzloaded
+\newif\ifmoodle@svg
 \newif\ifmoodle@section
 \newif\ifmoodle@subsection
 \newif\ifmoodle@numbered
@@ -1623,6 +1659,7 @@
 \DeclareOption{final}{\moodle@draftmodefalse}
 \DeclareOption{nostamp}{\moodle@stampmodefalse}
 \DeclareOption{tikz}{\moodle@tikztrue}
+\DeclareOption{svg}{\moodle@svgtrue}
 \DeclareOption{section}{\moodle@sectiontrue\moodle@numberedtrue}
 \DeclareOption{section*}{\moodle@sectiontrue\moodle@numberedfalse}
 \DeclareOption{subsection}{\moodle@sectionfalse\moodle@numberedtrue}
@@ -1633,6 +1670,7 @@
 \moodle@stampmodetrue
 \moodle@tikzfalse
 \moodle@tikzloadedfalse
+\moodle@svgfalse
 \moodle@subsectiontrue
 \moodle@numberedfalse
 
@@ -1658,6 +1696,9 @@
 \RequirePackage{getitems} %To gather the header and items
 \ifmoodle@handout
   \RequirePackage[seed=42]{randomlist} %To randomize answers in matching questions
+\fi
+\ifmoodle@svg
+  \RequirePackage{graphicx} %To include graphics
 \fi
 
 \let\xa=\expandafter
@@ -5177,11 +5218,40 @@
           \Gin@extensions^^J\@ehc}%
     \else
       % begin modified part
-       \xdef\moodle@media@base{\Gin@base}%
-       \xdef\moodle@media@ext{\Gin@ext}%
+       \xdef\moodle@media@base{\detokenize\xa{\Gin@base}}%
+       \xdef\moodle@media@ext{\detokenize\xa{\Gin@ext}}%
       % end modfied part
     \fi
   \endgroup
+}
+%    \end{macrocode}
+%    \begin{macrocode}
+\def\moodle@media@image@formats{PNG,JPEG,SVG}%
+\def\moodle@media@image@PNGlist{.png,.PNG}%
+\def\moodle@media@image@JPEGlist{.jpg,.JPG,.jpeg,.JPEG}%
+\def\moodle@media@image@SVGlist{.svg,.SVG}%
+\def\moodle@media@PNGmime{image/png}%
+\def\moodle@media@JPEGmime{image/jpeg}%
+\def\moodle@media@SVGmime{image/svg+xml}%
+%    \end{macrocode}
+%    \begin{macrocode}
+\def\moodle@media@mime@identify#1{%
+  \edef\test@i{\detokenize\xa{#1}}%
+  \let\moodle@media@mime@current\relax
+  \edef\moodle@media@image@formats{\detokenize\xa{\moodle@media@image@formats}}%
+  \@for\@format:=\moodle@media@image@formats\do{%
+    \edef\@templist{\csname moodle@media@image@\@format list\endcsname}%
+    \@for\@ext:=\@templist\do{%
+      \ifx\moodle@media@mime@current\relax
+        \edef\@ext{\detokenize\xa{\@ext}}%
+        \ifx\test@i\@ext
+          \message{<<extension \@ext (\@format) identified>>^^J}%
+          \xdef\moodle@media@mime@current{\csname moodle@media@\@format mime\endcsname}%
+          \xdef\moodle@media@ext@current{#1}%
+        \fi
+      \fi
+    }%
+  }%
 }
 %    \end{macrocode}
 %
@@ -5199,21 +5269,30 @@
   \expandafter\def\htmlize@executable@macro{#1}%
 }
 
-\def\ghostscriptcommand{\htmlize@setexecutable\gs}
-\def\baselxivcommand{\htmlize@setexecutable\baselxiv}
-\def\imagemagickcommand{\htmlize@setexecutable\htmlize@imagemagick@convert}
-\def\optipngcommand{\htmlize@setexecutable\optipng}
+\def\ghostscriptcommand{\htmlize@setexecutable\gs}%
+\def\baselxivcommand{\htmlize@setexecutable\baselxiv}%
+\def\imagemagickcommand{\htmlize@setexecutable\htmlize@imagemagick@convert}%
+\def\optipngcommand{\htmlize@setexecutable\optipng}%
+\def\PDFtoSVGcommand{\htmlize@setexecutable\PDFtoSVG}%
+\def\SVGtoPDFcommand{\htmlize@setexecutable\SVGtoPDF}%
+\def\optiSVGcommand{\htmlize@setexecutable\optiSVG}%
+\def\DeleteFilecommand{\htmlize@setexecutable\DeleteFiles}%
 
 \ifwindows%
-  \ghostscriptcommand{gswin64c.exe}%
+  \ghostscriptcommand{gswin64c.exe -dBATCH -dNOPAUSE -sDEVICE=pngalpha}%
   \baselxivcommand{certutil}%
+  \DeleteFilecommand{del}%
 \else%
-  \ghostscriptcommand{gs}%
+  \ghostscriptcommand{gs -dBATCH -dNOPAUSE -sDEVICE=pngalpha}%
   \baselxivcommand{base64}%
+  \DeleteFilecommand{rm -f}%
 \fi%
 
-\imagemagickcommand{convert}%
-\optipngcommand{optipng}
+\imagemagickcommand{convert -colorspace RGB}%
+\optipngcommand{optipng -clobber -strip all -quiet}%
+\PDFtoSVGcommand{inkscape --pdf-poppler --export-area-drawing --export-type=svg --vacuum-defs}%
+\SVGtoPDFcommand{inkscape --export-area-drawing --export-type=pdf}%
+\optiSVGcommand{scour -q --enable-id-stripping --enable-comment-stripping --shorten-ids --indent=none --remove-descriptive-elements}%
 %    \end{macrocode}
 % 
 % \subsubsection{Graphics key-handling}
@@ -5249,6 +5328,24 @@
 % This allows externalization with regular options for |includegraphics|.
 % Otherwise, |includegraphics| is redefined with a limited set of options supported.
 %    \begin{macrocode}
+\ifmoodle@svg
+% Declaring SVG to PDF conversion rule for includegraphics
+  \ifXeTeX
+% The solution here https://tex.stackexchange.com/a/368848/228515
+% seems to be macOS only.
+  \else
+    %\AtEndPreamble{%
+      \edef\Gin@extensions{\Gin@extensions,.svg,.SVG}%
+      \DeclareGraphicsRule{.svg}{pdf}{.pdf}{%
+        `\SVGtoPDF\otherspace #1 -o \noexpand\Gin@base-svg-converted-to.pdf 2>/dev/null
+      }%
+      \DeclareGraphicsRule{.SVG}{pdf}{.pdf}{%
+        `\SVGtoPDF\otherspace #1 -o \noexpand\Gin@base-SVG-converted-to.pdf 2>/dev/null
+      }%
+    %}%
+  \fi
+\fi
+
 \ifmoodle@tikz
 \AfterEndPreamble{%
   %\htmlize@record@expand{\embedaspict}%
@@ -5263,7 +5360,7 @@
   \html@action@newcommand{includegraphics}[2][]{%
     \message{moodle.sty: Processing \string\includegraphics[#1]{#2} ^^J}
     \global\advance\numpicturesread by 1\relax
-    \edef\htmlize@imagetag{<IMG SRC="data:image/png;base64,\csname picbaselxiv@\the\numpicturesread\endcsname">}%
+    \edef\htmlize@imagetag{<IMG SRC="data:\TikzExportMIME;base64,\csname picbaselxiv@\the\numpicturesread\endcsname">}%
     \xa\g@addto@macro\xa\htmlize@output\xa{\htmlize@imagetag}%
   }%
 }%
@@ -5300,47 +5397,41 @@
         \edef\moodle@graphics@htmlgeometry{width=\number\moodle@graphics@width@pixels\otherspace height=\number\moodle@graphics@height@pixels}%
       \fi
     \fi
-    \edef\moodle@media@ext@png{\detokenize{.png}}%
-    \edef\moodle@media@ext@PNG{\detokenize{.PNG}}%
-    \edef\moodle@media@ext@jpg{\detokenize{.jpg}}%
-    \edef\moodle@media@ext@jpeg{\detokenize{.jpeg}}%
-    \edef\moodle@media@ext@JPG{\detokenize{.JPG}}%
-    \edef\moodle@media@ext@JPEG{\detokenize{.JPEG}}%
-    %If the file is not already PNG or JPEG, convert it to PNG first
-    \moodle@media@find{#2}
+    %Look for the file, even if no extension is provided
+    \moodle@media@find{#2}%
     %\message{<<\moodle@media@base>>^^J}
     %\message{<<\moodle@media@ext>>^^J}
-    \edef\moodle@media@ext@current{\moodle@media@ext@png}%
-    \ifx\moodle@media@ext\moodle@media@ext@png
-    \else% not .png
-      \ifx\moodle@media@ext\moodle@media@ext@PNG
-        \edef\moodle@media@ext@current{\moodle@media@ext@PNG}%
-      \else% not .PNG
-        \ifx\moodle@media@ext\moodle@media@ext@jpg
-          \edef\moodle@media@ext@current{\moodle@media@ext@jpg}%
-        \else% not .jpg
-          \ifx\moodle@media@ext\moodle@media@ext@jpeg
-            \edef\moodle@media@ext@current{\moodle@media@ext@jpeg}%
-          \else% not .jpeg
-            \ifx\moodle@media@ext\moodle@media@ext@JPG
-              \edef\moodle@media@ext@current{\moodle@media@ext@JPG}%
-            \else% not .JPG
-              \ifx\moodle@media@ext\moodle@media@ext@JPEG
-                \edef\moodle@media@ext@current{\moodle@media@ext@JPEG}%
-              \else% not .JPEG
-                \edef\cmdline{\htmlize@imagemagick@convert\otherspace "\moodle@media@base\moodle@media@ext"\otherspace -resize \moodle@graphics@geometry\otherspace -colorspace RGB "\moodle@media@base.png"}%
-                \message{moodle.sty:   Converting '#2' to PNG...^^J}%
-                \expandafter\ShellEscape\expandafter{\cmdline}%
-                %Next, optimize
-                \edef\cmdline{\optipng\otherspace -clobber -strip all -quiet "\moodle@media@base.png"}%
-                \message{moodle.sty:   Optimizing '\moodle@media@base.png'...^^J}%
-                \expandafter\ShellEscape\expandafter{\cmdline}%
-              \fi% other
-            \fi% JPEG
-          \fi% jpeg
-        \fi% jpg
-      \fi% PNG
-    \fi% png
+    %Try to identify corresponding MIME-type
+    \moodle@media@mime@identify{\moodle@media@ext}%
+    \ifx\moodle@media@mime@current\relax
+      % conversion needed
+      \edef\moodle@media@pdf{\detokenize{.pdf}}%
+      \edef\moodle@media@ext{\detokenize\xa{\moodle@media@ext}}%
+      \ifnum0\ifx\moodle@media@ext\moodle@media@pdf1\fi\ifmoodle@svg1\fi=11% PDF file and SVG option active
+        \def\moodle@media@ext@current{.svg}%
+        \edef\moodle@media@mime@current{\moodle@media@SVGmime}%
+        % remove the "--pdf-poppler" import option if you want to preserve text (avoid conversion to path)
+        \edef\cmdline{\PDFtoSVG\otherspace "\moodle@media@base\moodle@media@ext" -o "\moodle@media@base\moodle@media@ext@current" 2>/dev/null}%
+        \message{moodle.sty:   Converting '#2' to SVG...^^J}%
+        \xa\ShellEscape\xa{\cmdline}%
+        %Next, optimize inline
+        \ifwindows\else
+          \edef\cmdline{\optiSVG < "\moodle@media@base\moodle@media@ext@current" > tmp.svg && mv tmp.svg "\moodle@media@base\moodle@media@ext@current"}%
+          \message{moodle.sty:   Optimizing '\moodle@media@base\moodle@media@ext@current'...^^J}%
+          \xa\ShellEscape\xa{\cmdline}%
+        \fi
+      \else% call ImageMagick
+        \def\moodle@media@ext@current{.png}%
+        \def\moodle@media@mime@current{image/png}%
+        \edef\cmdline{\htmlize@imagemagick@convert\otherspace "\moodle@media@base\moodle@media@ext" -resize \moodle@graphics@geometry\otherspace "\moodle@media@base\moodle@media@ext@current"}%
+        \message{moodle.sty:   Converting '#2' to PNG...^^J}%
+        \xa\ShellEscape\xa{\cmdline}%
+        %Next, optimize inline
+        \edef\cmdline{\optipng\otherspace "\moodle@media@base\moodle@media@ext@current"}%
+        \message{moodle.sty:   Optimizing '\moodle@media@base\moodle@media@ext@current'...^^J}%
+        \xa\ShellEscape\xa{\cmdline}%
+      \fi
+    \fi
     %Next, convert the file to base64 encoding
     \ifwindows
       \def\cmdline{\baselxiv\otherspace -encode "\moodle@media@base\moodle@media@ext@current"\otherspace tmp.b64 && findstr /vbc:"---" tmp.b64 > "\moodle@media@base.enc" && del tmp.b64"}%
@@ -5354,7 +5445,7 @@
       % base64 is part of coreutils, add "-w 64" to get exactly the previous behavior  %
     \fi
     \message{moodle.sty:   Converting '\moodle@media@base\moodle@media@ext@current' to base64...^^J}%
-    \expandafter\ShellEscape\expandafter{\cmdline}%
+    \xa\ShellEscape\xa{\cmdline}%
     %Now, save that base64 encoding in a TeX macro
     \def\moodle@newpic@baselxiv{}%
     \message{moodle.sty:   Reading base64 file '\moodle@media@base.enc'...^^J}%
@@ -5363,28 +5454,12 @@
     \closein\baseLXIVdatafile
     %Clean up files
     \ifx\moodle@media@ext@current\moodle@media@ext
-      \ifwindows
-        \ShellEscape{del "\moodle@media@base.enc"}%
-      \else
-        \ShellEscape{rm -f "\moodle@media@base.enc"}%
-      \fi
+      \ShellEscape{\DeleteFiles\otherspace "\moodle@media@base.enc"}%
     \else
-      \ifwindows
-        \ShellEscape{del "\moodle@media@base.enc" "\moodle@media@base\moodle@media@ext@current"}%
-      \else
-        \ShellEscape{rm -f "\moodle@media@base.enc" "\moodle@media@base\moodle@media@ext@current"}%
-      \fi
+      \ShellEscape{\DeleteFiles\otherspace "\moodle@media@base.enc" "\moodle@media@base\moodle@media@ext@current"}%
     \fi
     \xa\global\xa\let\csname picbaselxiv@graphics@#2\endcsname=\moodle@newpic@baselxiv%
-    \ifx\moodle@media@ext@current\moodle@media@ext@png
-      \edef\htmlize@imagetag{<IMG \moodle@graphics@htmlgeometry\otherspace SRC="data:image/png;base64,\csname picbaselxiv@graphics@#2\endcsname">}%
-    \else
-      \ifx\moodle@media@ext@current\moodle@media@ext@PNG
-        \edef\htmlize@imagetag{<IMG \moodle@graphics@htmlgeometry\otherspace SRC="data:image/png;base64,\csname picbaselxiv@graphics@#2\endcsname">}%
-      \else
-        \edef\htmlize@imagetag{<IMG \moodle@graphics@htmlgeometry\otherspace SRC="data:image/jpeg;base64,\csname picbaselxiv@graphics@#2\endcsname">}%
-      \fi
-    \fi
+    \edef\htmlize@imagetag{<IMG \moodle@graphics@htmlgeometry\otherspace SRC="data:\moodle@media@mime@current;base64,\csname picbaselxiv@graphics@#2\endcsname">}%
     \xa\g@addto@macro\xa\htmlize@output\xa{\htmlize@imagetag}%
     \message{moodle.sty:   <IMG> tag inserted.^^J}%
   \egroup
@@ -5422,8 +5497,6 @@
 % \begin{macro}{TikZ}
 % \changes{v0.7}{2020/07/14}{Support \emph{tikz}\ command}
 %    \begin{macrocode}
-\newif\ifmoodle@tikzloaded
-\moodle@tikzloadedfalse
 \AtBeginDocument{
   \ifx\tikzpicture\@undefined
     \moodle@tikzloadedfalse
@@ -5437,27 +5510,54 @@
     \usetikzlibrary{external}%
     \tikzexternalize%
     \tikzset{external/force remake}%
-
-    \ifpdfoutput% tex engines defaulting to PDF output (pdflatex, xelatex, lualatex)
-      \def\pdftopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf}%
-                    \expandafter\ShellEscape\expandafter{\gscmdline}}%
-    \else % latex
-      \def\pstopng{\edef\gscmdline{\gs\otherspace -dBATCH -dNOPAUSE -sDEVICE=pngalpha -sOutputFile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -r150 \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.ps}%
-                    \expandafter\ShellEscape\expandafter{\gscmdline}}%
+    \def\moodle@basename{\tikzexternalrealjob-tikztemp-\the\numconvertedpictures}%
+    \ifmoodle@svg
+      \def\TikzExportExtension{.svg}%
+      \def\TikzExportMIME{image/svg+xml}%
+      \ifpdfoutput% tex engines defaulting to PDF output (pdflatex, xelatex, lualatex)
+        % remove the "--pdf-poppler" import option if you want to preserve text (avoid conversion to path)
+        \def\ExportTikz{ \message{moodle.sty: Converting picture '\moodle@basename.pdf' to SVG...^^J}%
+                         \edef\cmdline{\PDFtoSVG\otherspace "\moodle@basename.pdf" -o "\moodle@basename\TikzExportExtension" 2>/dev/null}%
+                         \xa\ShellEscape\xa{\cmdline}}%
+      \else % latex
+        \def\ExportTikz{ \message{moodle.sty: Converting picture '\moodle@basename.ps' to SVG...^^J}%
+                         \edef\cmdline{\PDFtoSVG\otherspace "\moodle@basename.ps" -o "\moodle@basename\TikzExportExtension" 2>/dev/null}%
+                         \xa\ShellEscape\xa{\cmdline}}%
+      \fi
+      \def\OptimizeExport{ \message{moodle.sty:   Optimizing '\moodle@basename.svg'...^^J}%
+                           \edef\cmdline{\optiSVG\otherspace < "\moodle@basename\TikzExportExtension" > tmp.svg && mv tmp.svg "\moodle@basename\TikzExportExtension" }%
+                           \xa\ShellEscape\xa{\cmdline}}%
+    \else
+      \def\TikzExportExtension{.png}%
+      \def\TikzExportMIME{image/png}%
+      \ifpdfoutput% tex engines defaulting to PDF output (pdflatex, xelatex, lualatex)
+        \def\ExportTikz{ \message{moodle.sty: Converting picture '\moodle@basename.pdf' to PNG...^^J}%
+                         \edef\gscmdline{\gs\otherspace -sOutputFile=\moodle@basename\TikzExportExtension\otherspace -r150 \moodle@basename.pdf}%
+                         \xa\ShellEscape\xa{\gscmdline}}%
+      \else % latex
+        \def\ExportTikz{ \message{moodle.sty: Converting picture '\moodle@basename.ps' to PNG...^^J}%
+                         \edef\gscmdline{\gs\otherspace -sOutputFile=\moodle@basename\TikzExportExtension\otherspace -r150 \\moodle@basename.ps}%
+                         \xa\ShellEscape\xa{\gscmdline}}%
+      \fi
+      \def\OptimizeExport{ \message{moodle.sty:   Optimizing '\moodle@basename.png'...^^J}%
+                           \edef\cmdline{\optipng\otherspace \moodle@basename\TikzExportExtension}%
+                           \xa\ShellEscape\xa{\cmdline}}%
     \fi
-    \def\pngoptim{\edef\cmdline{\optipng\otherspace -clobber -strip all -quiet \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png}%
-      \expandafter\ShellEscape\expandafter{\cmdline}}%
+    
     \ifwindows
-      \def\pngtobaselxiv{\edef\baselxivcmdline{\baselxiv\otherspace -encode \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png tmp.b64 && findstr /vbc:"---" tmp.b64 > \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc && del tmp.b64}%
-                       \expandafter\ShellEscape\expandafter{\baselxivcmdline}}
-      % Starting from Windows 7, CertUtils is included by default. There should be no windows XP still running in 2020
+      \def\ExportToBaselxiv{ \message{moodle.sty:   Converting '\moodle@basename\TikzExportExtension' to base64...^^J}%
+                             \edef\baselxivcmdline{\baselxiv\otherspace -encode \moodle@basename\TikzExportExtension\otherspace tmp.b64 && findstr /vbc:"---" tmp.b64 > \moodle@basename.enc && del tmp.b64}%
+                             \xa\ShellEscape\xa{\baselxivcmdline}}%
+        % Starting from Windows 7, CertUtils is included by default. There should be no windows XP still running in 2020
     \else
       \ifmacosx
-        \def\pngtobaselxiv{\edef\baselxivcmdline{\baselxiv\otherspace -b 64 -i \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png -o \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
-                       \expandafter\ShellEscape\expandafter{\baselxivcmdline}}
+        \def\ExportToBaselxiv{  \message{moodle.sty:   Converting '\moodle@basename' to base64...^^J}%
+                                \edef\baselxivcmdline{\baselxiv\otherspace -b 64 -i \moodle@basename\TikzExportExtension\otherspace -o \moodle@basename.enc}%
+                                \xa\ShellEscape\xa{\baselxivcmdline}}%
       \else % UNIX ?
-        \def\pngtobaselxiv{\edef\baselxivcmdline{\baselxiv\otherspace \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png > \tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc}%
-                       \expandafter\ShellEscape\expandafter{\baselxivcmdline}}
+        \def\ExportToBaselxiv{ \message{moodle.sty:   Converting '\moodle@basename\TikzExportExtension' to base64...^^J}%
+                               \edef\baselxivcmdline{\baselxiv\otherspace \moodle@basename\TikzExportExtension\otherspace > \moodle@basename.enc}%
+                               \xa\ShellEscape\xa{\baselxivcmdline}}%
       % base64 is part of coreutils, add "-w 64" to get exactly the previous behavior %
       \fi
     \fi
@@ -5491,17 +5591,9 @@
 %
     \def\moodle@endtikzpicture@hook{%
       \@moodle@ifgeneratexml{%
-        \ifpdfoutput % tex engines defaulting to PDF output (pdflatex, xelatex, lualatex)
-          \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.pdf' to PNG...^^J}%
-          \pdftopng
-        \else % latex? Does this actually work?
-          \message{moodle.sty: Converting picture '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.ps' to PNG...^^J}%
-          \pstopng
-        \fi
-        \message{moodle.sty:   Optimizing '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png'...^^J}%
-        \pngoptim
-        \message{moodle.sty:   Converting '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.png' to base64...^^J}%
-        \pngtobaselxiv
+        \ExportTikz
+        \OptimizeExport
+        \ExportToBaselxiv
         \message{moodle.sty:   Reading base64 file '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc'...^^J}%
         \savebaselxivdata
         \message{moodle.sty:   base64 data saved.^^J}%
@@ -5521,14 +5613,14 @@
       \let\tikzpicture\relax\let\endtikzpicture\relax
       \NewEnviron{tikzpicture}[1][]{%
         \global\advance\numpicturesread by 1\relax
-        \edef\htmlize@imagetag{<IMG SRC="data:image/png;base64,\csname picbaselxiv@\the\numpicturesread\endcsname">}%
+        \edef\htmlize@imagetag{<IMG SRC="data:\TikzExportMIME;base64,\csname picbaselxiv@\the\numpicturesread\endcsname">}%
         \xa\g@addto@macro\xa\htmlize@output\xa{\htmlize@imagetag}%
       }[\htmlize@patchendenvironment]%
     }%
     \html@action@newcommand{tikz}[2][]{%
 %      \message{>>> Processing \string\tikz[#1]{...} ^^J}
       \global\advance\numpicturesread by 1\relax
-      \edef\htmlize@imagetag{<IMG SRC="data:image/png;base64,\csname picbaselxiv@\the\numpicturesread\endcsname">}%
+      \edef\htmlize@imagetag{<IMG SRC="data:\TikzExportMIME;base64,\csname picbaselxiv@\the\numpicturesread\endcsname">}%
       \xa\g@addto@macro\xa\htmlize@output\xa{\htmlize@imagetag}%
     }%
   \else
@@ -5580,11 +5672,7 @@
           \ShellEscape{find . -type f -name "\tikzexternalrealjob-tikztemp-*.*" -not -name "*.pdf" -delete}%
         \fi
       \else
-        \ifwindows
-          \ShellEscape{del \tikzexternalrealjob-tikztemp-*.*}%
-        \else % UNIX?
-          \ShellEscape{rm -f \tikzexternalrealjob-tikztemp-*.*}%
-        \fi
+        \ShellEscape{\DeleteFiles\otherspace \tikzexternalrealjob-tikztemp-*.*}%
       \fi
     }{}%
   \fi
@@ -5709,6 +5797,7 @@
 %    \begin{macrocode}
 \AtEndPreamble{% this definition should prevail because `minted' gets loaded after `moodle'
 \@ifpackageloaded{minted}{%
+  \newcounter{moodle@pygmentizecounter}%
   \renewcommand{\minted@pygmentize}[2][\minted@outputdir\minted@jobname.pyg]{%
     \minted@checkstyle{\minted@get@opt{style}{default}}%
     \stepcounter{minted@pygmentizecounter}%
@@ -5863,7 +5952,6 @@
   }%
 }{}%
 }%
-\newcounter{moodle@pygmentizecounter}
 \html@action@newcommand{inputminted}[3][]{%
   \message{moodle.sty: Processing \string\inputminted[#1]{#2}{#3} for HTML ^^J}%
   % arguments #2 and #3 are thrown away: the job is done previously by minted when

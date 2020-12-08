@@ -1,7 +1,8 @@
 PREFIX=test
 SUFFIX=moodle
 LUATEX_ONLY_TEST_FILES=test_calculated_lua.tex
-GENERIC_TEST_FILES=$(filter-out $(LUATEX_ONLY_TEST_FILES),$(wildcard $(PREFIX)_*.tex))
+XETEX_EXCLUDED_TEST_FILES=test_includegraphics_via_tikz.tex test_includegraphics_via_tikz_and_svg.tex test_includegraphics_with_svg.tex test_includegraphics_with_svg.tex test_tikz_with_svg.tex
+GENERIC_TEST_FILES=$(filter-out $(LUATEX_ONLY_TEST_FILES) $(XETEX_EXCLUDED_TEST_FILES),$(wildcard $(PREFIX)_*.tex))
 TEX_ENGINES=pdflatex lualatex xelatex
 LATEXFLAGS=-interaction=nonstopmode -shell-escape
 DIFFTOOL=diff -abBwZ
@@ -13,17 +14,17 @@ endif
 .DEFAULT_GOAL := all
 
 .PHONY: all test clean distclean $(TEX_ENGINES)
-.SECONDARY: $(foreach engine,$(TEX_ENGINES),$(GENERIC_TEST_FILES:.tex=_$(engine)-$(SUFFIX).xml)) $(LUATEX_ONLY_TEST_FILES:.tex=_lualatex-$(SUFFIX).xml)
+.SECONDARY: $(foreach engine,$(TEX_ENGINES),$(GENERIC_TEST_FILES:.tex=_$(engine)-$(SUFFIX).xml)) $(LUATEX_ONLY_TEST_FILES:.tex=_lualatex-$(SUFFIX).xml) $(XETEX_EXCLUDED_TEST_FILES:.tex=_pdflatex-$(SUFFIX).xml) $(XETEX_EXCLUDED_TEST_FILES:.tex=_lualatex-$(SUFFIX).xml)
 
 all: test
 
 test: $(TEX_ENGINES)
 
-pdflatex: $(GENERIC_TEST_FILES:.tex=_pdflatex.diff)
+pdflatex: $(GENERIC_TEST_FILES:.tex=_pdflatex.diff) $(XETEX_EXCLUDED_TEST_FILES:.tex=_pdflatex.diff)
 
 xelatex: $(GENERIC_TEST_FILES:.tex=_xelatex.diff)
 
-lualatex: $(GENERIC_TEST_FILES:.tex=_lualatex.diff) $(LUATEX_ONLY_TEST_FILES:.tex=_lualatex.diff)
+lualatex: $(GENERIC_TEST_FILES:.tex=_lualatex.diff) $(LUATEX_ONLY_TEST_FILES:.tex=_lualatex.diff) $(XETEX_EXCLUDED_TEST_FILES:.tex=_lualatex.diff)
 
 clean:
 	rm -rf $(FILE_CLEAN)
