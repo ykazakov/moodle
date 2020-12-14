@@ -25,3 +25,4 @@ _minted-*/
 *.md5
 texmf/*
 *.tds.zip
+*-converted-to.*
