@@ -57,7 +57,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{7165} ^^A Comment \OnlyDescription above to adjust
+% \CheckSum{7417} ^^A Comment \OnlyDescription above to adjust
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -1030,6 +1030,16 @@
 % You can use |\graphicspath{{|\emph{path}|}}| to specify a directory where the
 % pictures to be included are located.
 %
+% A special rule was added for the inclusion of GIF pictures (|.gif| extension).
+% These files are passed as-is to the XML, preserving potential animations.
+% However, as pdf\TeX\ engines do not support the GIF format, the picture is
+% passed to the PDF output after a conversion to the PNG format. When the GIF
+% file is animated, only its first frame is passed to the PDF.
+%
+%^^A \DescribeMacro{\DeclareGraphicsAlien} Users may declare other graphic
+%^^A formats with the command |\DeclareGraphicsAlien|\marg{alien extension}
+%^^A \marg{native extension}\marg{command line for conversion}.
+%
 % \subsection{\TikZ\ Pictures}
 % When \TikZ\ is loaded and used to define pictures, \textsf{moodle} invokes
 % the |external| \TikZ\ library, so that each |tikzpicture| environment is compiled
@@ -1115,16 +1125,16 @@
 % \DescribeMacro{svg} The \textsf{moodle} package admits an experimental \texttt{svg}
 % option which has the following effects:
 % \begin{itemize}
-% \item With pdf\LaTeX\ and \LuaTeX, |\includegraphics| can be used to import SVG
-% graphic files directly (extension |.svg| or |.SVG|). In this case, the SVG file is
-% passed as-is to the XML output and is converted using \href{https://inkscape.org/}
+% \item |\includegraphics| can be used to import SVG graphic files directly
+% (extension |.svg| or |.SVG|). In this case, the SVG file is passed as-is to the
+% XML output and is converted using \href{https://inkscape.org/}
 % {Inkscape} (must be installed) for inclusion in the PDF output.
-% \item With pdf\LaTeX, \XeTeX\ and \LuaTeX, the graphic files in PDF format are
-% converted to the SVG format using \href{https://inkscape.org/}{Inkscape} (must
-% be installed), rather than beeing rasterized. Before inclusion to the XML output,
-% the SVG file is optimized using the \href{https://github.com/scour-project/scour}
-% {Scour} utility. This optimization step is optional in the sense that, if the
-% Scour call fails, the unoptimized SVG file will be passed to the XML output.
+% \item the graphic files in PDF format are converted to the SVG format using
+% \href{https://inkscape.org/}{Inkscape} (must be installed), rather than beeing
+% rasterized. Before inclusion to the XML output, the SVG file is optimized using
+% the \href{https://github.com/scour-project/scour}{Scour} utility. This
+% optimization step is optional in the sense that, if the Scour call fails,
+% the unoptimized SVG file will be passed to the XML output.
 % Two processes benefit from this PDF$\to$SVG conversion:
 %   \begin{itemize}
 %     \item inclusion of PDF graphics with |\includegraphics|, and
@@ -1536,6 +1546,7 @@
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version}[version=0.8,date=2020-11-30]
 %     \added
+%       \item Support for inclusion of GIF pictures.
 %       \item Added package option |svg| to avoid the rasterization of vector graphics.
 %       \item New macro |\setsubcategory| to define subcategories, reflected in PDF and XML.
 %       \item Package option |handout| for sharing PDF with students.
@@ -5226,13 +5237,15 @@
 }
 %    \end{macrocode}
 %    \begin{macrocode}
-\def\moodle@media@image@formats{PNG,JPEG,SVG}%
+\def\moodle@media@image@formats{PNG,JPEG,SVG,GIF}%
 \def\moodle@media@image@PNGlist{.png,.PNG}%
 \def\moodle@media@image@JPEGlist{.jpg,.JPG,.jpeg,.JPEG}%
 \def\moodle@media@image@SVGlist{.svg,.SVG}%
+\def\moodle@media@image@GIFlist{.gif}%
 \def\moodle@media@PNGmime{image/png}%
 \def\moodle@media@JPEGmime{image/jpeg}%
 \def\moodle@media@SVGmime{image/svg+xml}%
+\def\moodle@media@GIFmime{image/gif}%
 %    \end{macrocode}
 %    \begin{macrocode}
 \def\moodle@media@mime@identify#1{%
@@ -5290,11 +5303,44 @@
 
 \imagemagickcommand{convert -colorspace RGB}%
 \optipngcommand{optipng -clobber -strip all -quiet}%
-\PDFtoSVGcommand{inkscape --pdf-poppler --export-area-drawing --export-type=svg --vacuum-defs}%
-\SVGtoPDFcommand{inkscape --export-area-drawing --export-type=pdf}%
-\optiSVGcommand{scour -q --enable-id-stripping --enable-comment-stripping --shorten-ids --indent=none --remove-descriptive-elements}%
+\PDFtoSVGcommand{inkscape --export-type=svg --export-area-page --vacuum-defs}%--pdf-poppler
+% remove the "--pdf-poppler" import option if you want to preserve text (avoid conversion to path)
+\SVGtoPDFcommand{inkscape --export-type=pdf --export-area-page}%
+\optiSVGcommand{scour -q --enable-id-stripping --enable-comment-stripping
+                --shorten-ids --indent=none --remove-descriptive-elements}%
 %    \end{macrocode}
 % 
+% \subsubsection{Conversion and inclusion of non-native formats}
+%    \begin{macrocode}
+\AtEndPreamble{%
+  \@ifpackageloaded{graphicx}{%
+    \def\@firstofthree#1#2#3{#1}%
+    \def\@secondofthree#1#2#3{#2}%
+    \newcommand{\DeclareGraphicsAlien}[3]{%
+      \edef\Gin@extensions{#1,\Gin@extensions}%
+      \DeclareGraphicsRule{#1}{\@gobble#1}{#1}{}%
+      \csdef{Gread@\@gobble#1}##1{%
+        \edef\SourceFile{\Gin@base\Gin@ext}%
+        \edef\Gin@base{\Gin@base-\@gobble#1-converted-to}%
+        \edef\Gin@ext{#2}%
+        \edef\OutputFile{\Gin@base\Gin@ext}%
+        \edef\targetfmt{\expandafter\expandafter\expandafter
+                        \@firstofthree\csname Gin@rule@\Gin@ext\endcsname\relax}%
+        \edef\targetext{\expandafter\expandafter\expandafter
+                        \@secondofthree\csname Gin@rule@\Gin@ext\endcsname\relax}%
+        \IfFileExists{\SourceFile}{\ShellEscape{#3}}{}%
+        \csletcs{Ginclude@\@gobble#1}{Ginclude@\targetfmt}%
+        \csname Gread@\targetfmt\endcsname{\Gin@base\targetext}%
+      }%
+    }%
+% Support for GIF files: passed as-is in XML but converted in PNG for PDF output.
+% In case the GIF is animated, we pick up the first frame in this conversion.
+% While the picture will be animated after Moodle import, it will not be in the PDF
+% output, whatever the viewer is.
+    \DeclareGraphicsAlien{.gif}{.png}{\htmlize@imagemagick@convert\otherspace '\SourceFile[0]' \OutputFile}%
+  }{}%
+}%
+%    \end{macrocode}
 % \subsubsection{Graphics key-handling}
 % Next, we get ready to handle keys like |height=4cm| or |width=3cm| or |ppi=72|.
 %    \begin{macrocode}
@@ -5327,23 +5373,25 @@
 % Furthermore, |includegraphics| is packed into a TikZ node.
 % This allows externalization with regular options for |includegraphics|.
 % Otherwise, |includegraphics| is redefined with a limited set of options supported.
+%
+% Option SVG
 %    \begin{macrocode}
 \ifmoodle@svg
+  \AtEndPreamble{%
 % Declaring SVG to PDF conversion rule for includegraphics
-  \ifXeTeX
-% The solution here https://tex.stackexchange.com/a/368848/228515
-% seems to be macOS only.
-  \else
-    %\AtEndPreamble{%
-      \edef\Gin@extensions{\Gin@extensions,.svg,.SVG}%
+    \ifLuaTeX% TODO investigate why we need this special branch
+      \edef\Gin@extensions{.svg,.SVG,\Gin@extensions}%
       \DeclareGraphicsRule{.svg}{pdf}{.pdf}{%
-        `\SVGtoPDF\otherspace #1 -o \noexpand\Gin@base-svg-converted-to.pdf 2>/dev/null
-      }%
+        `\SVGtoPDF\otherspace '#1' \noexpand\Gin@base-svg-converted-to.pdf}%
       \DeclareGraphicsRule{.SVG}{pdf}{.pdf}{%
-        `\SVGtoPDF\otherspace #1 -o \noexpand\Gin@base-SVG-converted-to.pdf 2>/dev/null
-      }%
-    %}%
-  \fi
+        `\SVGtoPDF\otherspace '#1' \noexpand\Gin@base-SVG-converted-to.pdf}%
+    \else
+    \DeclareGraphicsAlien{.svg}{.pdf}{%
+      \SVGtoPDF\otherspace '\SourceFile' -o '\OutputFile' 2>/dev/null}%
+    \DeclareGraphicsAlien{.SVG}{.pdf}{%
+      \SVGtoPDF\otherspace '\SourceFile' -o '\OutputFile' 2>/dev/null}%
+    \fi
+  }%
 \fi
 
 \ifmoodle@tikz
@@ -5410,7 +5458,6 @@
       \ifnum0\ifx\moodle@media@ext\moodle@media@pdf1\fi\ifmoodle@svg1\fi=11% PDF file and SVG option active
         \def\moodle@media@ext@current{.svg}%
         \edef\moodle@media@mime@current{\moodle@media@SVGmime}%
-        % remove the "--pdf-poppler" import option if you want to preserve text (avoid conversion to path)
         \edef\cmdline{\PDFtoSVG\otherspace "\moodle@media@base\moodle@media@ext" -o "\moodle@media@base\moodle@media@ext@current" 2>/dev/null}%
         \message{moodle.sty:   Converting '#2' to SVG...^^J}%
         \xa\ShellEscape\xa{\cmdline}%
@@ -5515,7 +5562,6 @@
       \def\TikzExportExtension{.svg}%
       \def\TikzExportMIME{image/svg+xml}%
       \ifpdfoutput% tex engines defaulting to PDF output (pdflatex, xelatex, lualatex)
-        % remove the "--pdf-poppler" import option if you want to preserve text (avoid conversion to path)
         \def\ExportTikz{ \message{moodle.sty: Converting picture '\moodle@basename.pdf' to SVG...^^J}%
                          \edef\cmdline{\PDFtoSVG\otherspace "\moodle@basename.pdf" -o "\moodle@basename\TikzExportExtension" 2>/dev/null}%
                          \xa\ShellEscape\xa{\cmdline}}%
