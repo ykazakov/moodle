@@ -12,6 +12,7 @@ ifndef DEBUG
 endif
 
 .DEFAULT_GOAL := all
+.NOTPARALLEL := test
 
 .PHONY: all test clean distclean $(TEX_ENGINES)
 .SECONDARY: $(foreach engine,$(TEX_ENGINES),$(GENERIC_TEST_FILES:.tex=_$(engine)-$(SUFFIX).xml)) $(LUATEX_ONLY_TEST_FILES:.tex=_lualatex-$(SUFFIX).xml) $(XETEX_EXCLUDED_TEST_FILES:.tex=_pdflatex-$(SUFFIX).xml) $(XETEX_EXCLUDED_TEST_FILES:.tex=_lualatex-$(SUFFIX).xml)

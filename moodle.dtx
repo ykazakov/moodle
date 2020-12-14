@@ -5317,7 +5317,7 @@
     \def\@firstofthree#1#2#3{#1}%
     \def\@secondofthree#1#2#3{#2}%
     \newcommand{\DeclareGraphicsAlien}[3]{%
-      \edef\Gin@extensions{#1,\Gin@extensions}%
+      \edef\Gin@extensions{\Gin@extensions,#1}%
       \DeclareGraphicsRule{#1}{\@gobble#1}{#1}{}%
       \csdef{Gread@\@gobble#1}##1{%
         \edef\SourceFile{\Gin@base\Gin@ext}%
@@ -5380,7 +5380,7 @@
   \AtEndPreamble{%
 % Declaring SVG to PDF conversion rule for includegraphics
     \ifLuaTeX% TODO investigate why we need this special branch
-      \edef\Gin@extensions{.svg,.SVG,\Gin@extensions}%
+      \edef\Gin@extensions{\Gin@extensions,.svg,.SVG}%
       \DeclareGraphicsRule{.svg}{pdf}{.pdf}{%
         `\SVGtoPDF\otherspace '#1' \noexpand\Gin@base-svg-converted-to.pdf}%
       \DeclareGraphicsRule{.SVG}{pdf}{.pdf}{%
@@ -5463,7 +5463,9 @@
         \xa\ShellEscape\xa{\cmdline}%
         %Next, optimize inline
         \ifwindows\else
-          \edef\cmdline{\optiSVG < "\moodle@media@base\moodle@media@ext@current" > tmp.svg && mv tmp.svg "\moodle@media@base\moodle@media@ext@current"}%
+          \edef\cmdline{\optiSVG < "\moodle@media@base\moodle@media@ext@current" >
+           "\moodle@media@base.tmp.svg" && mv "\moodle@media@base.tmp.svg"
+           "\moodle@media@base\moodle@media@ext@current"}%
           \message{moodle.sty:   Optimizing '\moodle@media@base\moodle@media@ext@current'...^^J}%
           \xa\ShellEscape\xa{\cmdline}%
         \fi
@@ -5571,7 +5573,9 @@
                          \xa\ShellEscape\xa{\cmdline}}%
       \fi
       \def\OptimizeExport{ \message{moodle.sty:   Optimizing '\moodle@basename.svg'...^^J}%
-                           \edef\cmdline{\optiSVG\otherspace < "\moodle@basename\TikzExportExtension" > tmp.svg && mv tmp.svg "\moodle@basename\TikzExportExtension" }%
+                           \edef\cmdline{\optiSVG\otherspace < "\moodle@basename\TikzExportExtension" >
+                                         "\moodle@basename.tmp.svg" && mv "\moodle@basename.tmp.svg"
+                                         "\moodle@basename\TikzExportExtension" }%
                            \xa\ShellEscape\xa{\cmdline}}%
     \else
       \def\TikzExportExtension{.png}%
