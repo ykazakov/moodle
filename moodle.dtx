@@ -5328,7 +5328,7 @@
                         \@firstofthree\csname Gin@rule@\Gin@ext\endcsname\relax}%
         \edef\targetext{\expandafter\expandafter\expandafter
                         \@secondofthree\csname Gin@rule@\Gin@ext\endcsname\relax}%
-        \IfFileExists{\SourceFile}{\ShellEscape{#3}}{}%
+        \IfFileExists{\OutputFile}{}{\ShellEscape{#3}}%
         \csletcs{Ginclude@\@gobble#1}{Ginclude@\targetfmt}%
         \csname Gread@\targetfmt\endcsname{\Gin@base\targetext}%
       }%
@@ -5379,18 +5379,15 @@
 \ifmoodle@svg
   \AtEndPreamble{%
 % Declaring SVG to PDF conversion rule for includegraphics
-    \ifLuaTeX% TODO investigate why we need this special branch
-      \edef\Gin@extensions{\Gin@extensions,.svg,.SVG}%
-      \DeclareGraphicsRule{.svg}{pdf}{.pdf}{%
-        `\SVGtoPDF\otherspace '#1' \noexpand\Gin@base-svg-converted-to.pdf}%
-      \DeclareGraphicsRule{.SVG}{pdf}{.pdf}{%
-        `\SVGtoPDF\otherspace '#1' \noexpand\Gin@base-SVG-converted-to.pdf}%
-    \else
+%      \edef\Gin@extensions{\Gin@extensions,.svg,.SVG}%
+%      \DeclareGraphicsRule{.svg}{pdf}{.pdf}{%
+%        `\SVGtoPDF\otherspace '#1' \noexpand\Gin@base-svg-converted-to.pdf}%
+%      \DeclareGraphicsRule{.SVG}{pdf}{.pdf}{%
+%        `\SVGtoPDF\otherspace '#1' \noexpand\Gin@base-SVG-converted-to.pdf}%
     \DeclareGraphicsAlien{.svg}{.pdf}{%
       \SVGtoPDF\otherspace '\SourceFile' -o '\OutputFile' 2>/dev/null}%
     \DeclareGraphicsAlien{.SVG}{.pdf}{%
       \SVGtoPDF\otherspace '\SourceFile' -o '\OutputFile' 2>/dev/null}%
-    \fi
   }%
 \fi
 

@@ -6,7 +6,7 @@ GENERIC_TEST_FILES=$(filter-out $(LUATEX_ONLY_TEST_FILES) $(XETEX_EXCLUDED_TEST_
 TEX_ENGINES=pdflatex lualatex xelatex
 LATEXFLAGS=-interaction=nonstopmode -shell-escape
 DIFFTOOL=diff -abBwZ
-FILE_CLEAN=*.log *.aux *.auxlock *.out *.blg *.bbl *.toc *.xml *.bcf *.synctex.gz *~ *.nav *.snm *.idx *.ilg *.ind _minted-* *.glo *.gls *.dpth *-tikztemp-*.pdf
+FILE_CLEAN=*.log *.aux *.auxlock *.out *.blg *.bbl *.toc *.xml *.bcf *.synctex.gz *~ *.nav *.snm *.idx *.ilg *.ind _minted-* *.glo *.gls *.dpth *-tikztemp-*.pdf fig/*-converted-to.*
 ifndef DEBUG
 	DEBUG=> /dev/null
 endif
