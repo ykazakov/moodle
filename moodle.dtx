@@ -4412,7 +4412,7 @@
           \htmlize@displaymathshift@replace#1#2#3\htmlize@rdelim@iii%
         \else
           % Single dollar sign, so we're entering inline math mode.
-          % We grab everything between $$...$$, sanitize it, and add it verbatim to
+          % We grab everything between $...$, sanitize it, and add it verbatim to
           % our output.
           \htmlize@inlinemathshift@replace#1#2#3\htmlize@rdelim@iii%
         \fi% \ifx\test@ii\@otherdollar
@@ -5119,8 +5119,8 @@
 \html@def\textbf#1{<B>#1</B>}%
 \html@def\texttt#1{<CODE>#1</CODE>}%
 \html@def\textsc#1{<SPAN STYLE=\&\#34;font-variant: small-caps;\&\#34;>#1</SPAN>}
-\html@def\url#1{<A href=\&\#34;#1\&\#34;>#1</A>}%
-\html@def\href#1#2{<A href=\&\#34;#1\&\#34;>#2</A>}%
+%\html@def\url#1{<A href=\&\#34;#1\&\#34;>#1</A>}%
+%\html@def\href#1#2{<A href=\&\#34;#1\&\#34;>#2</A>}%
 \html@def\textsuperscript#1{<SUP>#1</SUP>}%
 \html@def\up#1{<SUP>#1</SUP>}%
 \html@def\fup#1{<SUP>#1</SUP>}%
@@ -5237,23 +5237,37 @@
 }
 %    \end{macrocode}
 %    \begin{macrocode}
-\def\moodle@media@image@formats{PNG,JPEG,SVG,GIF}%
-\def\moodle@media@image@PNGlist{.png,.PNG}%
-\def\moodle@media@image@JPEGlist{.jpg,.JPG,.jpeg,.JPEG}%
-\def\moodle@media@image@SVGlist{.svg,.SVG}%
-\def\moodle@media@image@GIFlist{.gif}%
-\def\moodle@media@PNGmime{image/png}%
-\def\moodle@media@JPEGmime{image/jpeg}%
-\def\moodle@media@SVGmime{image/svg+xml}%
-\def\moodle@media@GIFmime{image/gif}%
+%See
+% * https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
+% * https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Containers
+\def\moodle@media@formats{}
+\newcommand{\DeclareMediaFormat}[3]{%
+  \xdef\moodle@media@formats{\ifx\moodle@media@formats\empty\else\moodle@media@formats,\fi#1}%
+  \csgdef{moodle@media@#1list}{#2}%
+  \csgdef{moodle@media@#1mime}{#3}%
+}%
+% Image Formats
+\DeclareMediaFormat{PNG}{.png,.PNG}{image/png}%
+\DeclareMediaFormat{JPEG}{.jpg,.JPG,.jpeg,.JPEG}{image/jpeg}%
+\DeclareMediaFormat{SVG}{.svg,.SVG}{image/svg+xml}%
+\DeclareMediaFormat{GIF}{.gif}{image/gif}%
+% Audio Formats
+\DeclareMediaFormat{WAV}{.wav,.WAV}{audio/wave}%
+\DeclareMediaFormat{MP3}{.mp3,.MP3}{audio/mpeg}%
+\DeclareMediaFormat{OGG}{.ogg,.opus,.og&}{audio/ogg}%
+%\DeclareMediaFormat{FLAC}{.flac,.FLAC}{audio/flac}%
+% Video Formats
+\DeclareMediaFormat{WEBM}{.webm,.webm}{video/webm}%
+\DeclareMediaFormat{MP4}{.mp4,.MP4,.m4v,.M4V}{video/mp4}%
+\DeclareMediaFormat{OGV}{.ogv,.OGV}{video/ogg}%
 %    \end{macrocode}
 %    \begin{macrocode}
 \def\moodle@media@mime@identify#1{%
   \edef\test@i{\detokenize\xa{#1}}%
   \let\moodle@media@mime@current\relax
-  \edef\moodle@media@image@formats{\detokenize\xa{\moodle@media@image@formats}}%
-  \@for\@format:=\moodle@media@image@formats\do{%
-    \edef\@templist{\csname moodle@media@image@\@format list\endcsname}%
+  \edef\moodle@media@formats{\detokenize\xa{\moodle@media@formats}}%
+  \@for\@format:=\moodle@media@formats\do{%
+    \edef\@templist{\csname moodle@media@\@format list\endcsname}%
     \@for\@ext:=\@templist\do{%
       \ifx\moodle@media@mime@current\relax
         \edef\@ext{\detokenize\xa{\@ext}}%
@@ -5479,19 +5493,7 @@
       \fi
     \fi
     %Next, convert the file to base64 encoding
-    \ifwindows
-      \def\cmdline{\baselxiv\otherspace -encode "\moodle@media@base\moodle@media@ext@current"\otherspace tmp.b64 && findstr /vbc:"---" tmp.b64 > "\moodle@media@base.enc" && del tmp.b64"}%
-      % Starting from Windows 7, CertUtil is included by default. There should be no windows XP still running
-    \else
-      \ifmacosx
-        \def\cmdline{\baselxiv\otherspace -b 64 -i "\moodle@media@base\moodle@media@ext@current"\otherspace -o "\moodle@media@base.enc"}
-      \else % Linux, Cygwin
-        \def\cmdline{\baselxiv\otherspace "\moodle@media@base\moodle@media@ext@current"\otherspace > "\moodle@media@base.enc"}
-      \fi
-      % base64 is part of coreutils, add "-w 64" to get exactly the previous behavior  %
-    \fi
-    \message{moodle.sty:   Converting '\moodle@media@base\moodle@media@ext@current' to base64...^^J}%
-    \xa\ShellEscape\xa{\cmdline}%
+    \ConvertToBaseLXIV{\moodle@media@base}{\moodle@media@ext@current}%
     %Now, save that base64 encoding in a TeX macro
     \def\moodle@newpic@baselxiv{}%
     \message{moodle.sty:   Reading base64 file '\moodle@media@base.enc'...^^J}%
@@ -5510,6 +5512,32 @@
     \message{moodle.sty:   <IMG> tag inserted.^^J}%
   \egroup
 }%
+\fi
+%    \end{macrocode}
+% This macro is in charge of throwing a system call to convert local files to base64.
+%    \begin{macrocode}
+\ifwindows
+  \def\ConvertToBaseLXIV#1#2{%
+    \def\cmdline{\baselxiv\otherspace -encode "#1#2"\otherspace tmp.b64 && findstr /vbc:"---" tmp.b64 > "#1" && del tmp.b64"}%
+    \message{moodle.sty:   Converting '#1#2' to base64...^^J}%
+    \xa\ShellEscape\xa{\cmdline}%
+  % Starting from Windows 7, CertUtil is included by default. There should be no windows XP still running
+  }%  
+\else
+  \ifmacosx
+    \def\ConvertToBaseLXIV#1#2{%
+      \def\cmdline{\baselxiv\otherspace -b 64 -i "#1#2"\otherspace -o "#1.enc"}%
+      \message{moodle.sty:   Converting '#1#2' to base64...^^J}%
+      \xa\ShellEscape\xa{\cmdline}%
+    }%
+  \else % Linux, Cygwin
+    \def\ConvertToBaseLXIV#1#2{%
+      \def\cmdline{\baselxiv\otherspace "#1#2"\otherspace > "#1.enc"}%
+      \message{moodle.sty:   Converting '#1#2' to base64...^^J}%
+      \xa\ShellEscape\xa{\cmdline}%
+    }%
+    % base64 is part of coreutils, add "-w 64" to get exactly the previous behavior  %
+  \fi
 \fi
 %    \end{macrocode}
 % The following code accomplishes the reading of an |.enc| file into memory.
@@ -5590,27 +5618,7 @@
                            \edef\cmdline{\optipng\otherspace \moodle@basename\TikzExportExtension}%
                            \xa\ShellEscape\xa{\cmdline}}%
     \fi
-    
-    \ifwindows
-      \def\ExportToBaselxiv{ \message{moodle.sty:   Converting '\moodle@basename\TikzExportExtension' to base64...^^J}%
-                             \edef\baselxivcmdline{\baselxiv\otherspace -encode \moodle@basename\TikzExportExtension\otherspace tmp.b64 && findstr /vbc:"---" tmp.b64 > \moodle@basename.enc && del tmp.b64}%
-                             \xa\ShellEscape\xa{\baselxivcmdline}}%
-        % Starting from Windows 7, CertUtils is included by default. There should be no windows XP still running in 2020
-    \else
-      \ifmacosx
-        \def\ExportToBaselxiv{  \message{moodle.sty:   Converting '\moodle@basename' to base64...^^J}%
-                                \edef\baselxivcmdline{\baselxiv\otherspace -b 64 -i \moodle@basename\TikzExportExtension\otherspace -o \moodle@basename.enc}%
-                                \xa\ShellEscape\xa{\baselxivcmdline}}%
-      \else % UNIX ?
-        \def\ExportToBaselxiv{ \message{moodle.sty:   Converting '\moodle@basename\TikzExportExtension' to base64...^^J}%
-                               \edef\baselxivcmdline{\baselxiv\otherspace \moodle@basename\TikzExportExtension\otherspace > \moodle@basename.enc}%
-                               \xa\ShellEscape\xa{\baselxivcmdline}}%
-      % base64 is part of coreutils, add "-w 64" to get exactly the previous behavior %
-      \fi
-    \fi
-    
     \let\moodle@oldtikzpicture=\tikzpicture
-
     %The following code lets us run things *before* the normal \begin{tikzpicture}.
     \renewenvironment{tikzpicture}{%
       \global\advance\numconvertedpictures by 1\relax
@@ -5622,7 +5630,6 @@
     % However, the tikz externalize library does *not* run \end{tikzpicture}.
     % In order to run commands after the tikz picture is done compiling, we need to 
     % use a hook into \tikzexternal@closeenvironments.
-
     \g@addto@macro{\tikzexternal@closeenvironments}{%
       \moodle@endtikzpicture@hook
     }
@@ -5640,7 +5647,7 @@
       \@moodle@ifgeneratexml{%
         \ExportTikz
         \OptimizeExport
-        \ExportToBaselxiv
+        \ConvertToBaseLXIV{\moodle@basename}{\TikzExportExtension}%
         \message{moodle.sty:   Reading base64 file '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc'...^^J}%
         \savebaselxivdata
         \message{moodle.sty:   base64 data saved.^^J}%
@@ -5728,6 +5735,134 @@
 % TODO:
 % * sizing options for TikZ pictures?
 %\end{macro}
+%
+% \subsection{Other Media}
+% Support for other media comes through the |\url|\marg{link} and |\href|\marg{link}\marg{text}
+% commands.
+\AtEndPreamble{%
+  \@ifpackageloaded{hyperref}{%
+    \let\oldhref\href
+    \let\oldurl\url
+    \def\moodle@hyper@readexternallink#1#2#3#4:#5:#6\\#7{%
+% 1) The link type (the string "link" in the cases I observed)
+% 2) The URL fragment (i.e. what comes after # in the end),
+% 3) the text replacement,
+% 4) the URL scheme (http, https, mailto, file, run etc),
+% 5) the URL details (in general, that is whole authority + path + query).
+%    If the URL contains a column (specification of a password in userinfo or a
+%    port in authority), we get here whatever comes before the first column (:)
+% 6) empty is URL contains no column. Otherwise, filled with whatever follows
+%    a first column (:) after the scheme,
+% 7) the whole URL again (fragment removed).
+      \def\filename@ext{}%
+      \def\filename@area{}%
+      \def\filename@base{}%
+      \ifx\\#6\\% if ##6 is empty (the URL contains no column -> no scheme -> local)
+        %\@hyper@linkfile file:#7\\{#3}{#2}{#7}% local file
+        %Local file (##1|##2|##3|##4|##5|##6): ##7\par
+        \filename@parse{#4}%
+        \ConvertToBaseLXIV{\filename@area\filename@base}{.\filename@ext}%
+      \else
+        \ifx\\#4\\%if ##4 is empty (no scheme was specified -> local file)
+%          %\@hyper@linkfile file:#7\\{#3}{#2}{#7}% Mac filename ?
+%          Local file (Mac? ##1|##2|##3|##4|##5|##6): ##7\par
+          \filename@parse{#4}%
+          \ConvertToBaseLXIV{\filename@area\filename@base}{.\filename@ext}%
+        \else
+          \def\@pdftempa{#4}%
+          \ifx\@pdftempa\@pdftempwordfile% scheme is "file:"
+%            %\@hyper@linkfile#7\\{#3}{#2}{#7}% file
+%            Local file (no column ##1|##2|##3|##4|##5|##6): ##7\par
+            \filename@parse{#5}%
+            \ConvertToBaseLXIV{\filename@area\filename@base}{.\filename@ext}%
+          \else
+            \ifx\@pdftempa\@pdftempwordrun% scheme is "run:"
+              \ifHy@pdfa
+                \Hy@Error{%
+                  PDF/A: Launch action is prohibited%
+                }\@ehc
+                \begingroup
+                  \leavevmode
+%                  ##2%
+                \endgroup
+              \else% not in PDF/A mode -> run is allowed
+                %\@hyper@launch#7\\{#3}{#2}% run local file
+%                Run local file (##1|##2|##3|##4|##5|##6): ##7\par
+                \filename@parse{#5}%
+                \ConvertToBaseLXIV{\filename@area\filename@base}{.\filename@ext}%
+              \fi
+            \else% scheme is neither "file" nor "run", assuming it is a web protocol
+              %\hyper@linkurl{#3}{#7\ifx\\#2\\\else\hyper@hash#2\fi}% URL
+%              URL (##1|##2|##3|##4|##5|##6): ##7\par
+              \filename@parse{#7}%
+            \fi
+          \fi
+        \fi
+      \fi
+      \xdef\moodle@media@ext{.\filename@ext}%
+      \xdef\moodle@media@base{\filename@area\filename@base}%
+    }%
+    \html@action@newcommand{href}[3][]{%
+      \bgroup% The grouping is to localize the changes caused by \setkeys.
+        \message{moodle.sty: Processing \string\href[#1]{#2}{#3} for HTML...^^J}%
+% the following macro is a modified version of hyperref's |\hyper@readexternallink|
+        \let\@hyper@readexternallink\moodle@hyper@readexternallink
+        \oldhref[#1]{#2}{#3}%
+        %\message{<<\moodle@media@base>>^^J}
+        %\message{<<\moodle@media@ext>>^^J}
+        %Try to identify corresponding MIME-type
+        \moodle@media@mime@identify{\moodle@media@ext}%
+        %\edef\moodle@media@mime@current{\detokenize\xa{\moodle@media@mime@current}}%
+        \xa\message\xa{moodle.sty: \moodle@media@mime@current^^J}%
+        \ifx\moodle@media@mime@current\relax
+          \xa\g@addto@macro\xa\htmlize@output\xa{<A href=\otherampersand\otherhash34;\moodle@media@base\moodle@media@ext\otherampersand\otherhash34;>#3</A>}%
+          \message{moodle.sty:   <A> tag inserted.^^J}%
+        \else
+          \filename@parse{\moodle@media@mime@current}%
+          \def\@tmp{audio/}
+          \ifx\filename@area\@tmp
+            \IfFileExists{\moodle@media@base.enc}{%
+              \def\moodle@newpic@baselxiv{}%
+              \openin\baseLXIVdatafile=\moodle@media@base.enc\relax
+                \savebaselxivdata@recursive
+              \closein\baseLXIVdatafile
+              \xa\g@addto@macro\xa\htmlize@output\xa{<audio controls src="data:\moodle@media@mime@current;base64,\moodle@newpic@baselxiv">#3</audio>}%
+            }{%
+              \xa\g@addto@macro\xa\htmlize@output\xa{<audio controls src="\moodle@media@base\moodle@media@ext">#3</audio>}%
+            }%
+            \message{moodle.sty:   <audio> tag inserted.^^J}%
+          \else
+            \def\@tmp{video/}
+            \ifx\filename@area\@tmp
+              \IfFileExists{\moodle@media@base.enc}{%
+                \def\moodle@newpic@baselxiv{}%
+                \openin\baseLXIVdatafile=\moodle@media@base.enc\relax
+                  \savebaselxivdata@recursive
+                \closein\baseLXIVdatafile
+                \xa\g@addto@macro\xa\htmlize@output\xa{<video controls src="data:\moodle@media@mime@current;base64,\moodle@newpic@baselxiv">#3</video>}%
+              }{%
+                \xa\g@addto@macro\xa\htmlize@output\xa{<video controls src="\moodle@media@base\moodle@media@ext">#3</video>}%
+              }%
+              \message{moodle.sty:   <video> tag inserted.^^J}%
+            \else
+              \PackageWarning{moodle}{cannot recognize MIME type of #2. Ignoring it.}%
+            \fi
+          \fi
+        \fi
+      \egroup
+    }%
+    \html@action@def\url#1{%
+      \bgroup% The grouping is to localize the changes caused by \setkeys.
+        \message{moodle.sty: Processing \string\url{#1} for HTML...^^J}%
+% the following macro is a modified version of hyperref's |\hyper@readexternallink|
+        \let\@hyper@readexternallink\moodle@hyper@readexternallink
+        \oldhref{#1}{#1}%
+        \xa\g@addto@macro\xa\htmlize@output\xa{<A href=\otherampersand\otherhash34;\moodle@media@base\moodle@media@ext\otherampersand\otherhash34;>#1</A>}%
+        \message{moodle.sty:   <A> tag inserted.^^J}%
+      \egroup
+    }%
+  }{}%
+}%
 %
 % \subsection{Verbatim Code}
 % 
