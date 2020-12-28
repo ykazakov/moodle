@@ -2583,8 +2583,9 @@
 \def\moodle@essay@latexprocessing{%
   % Moodle cannot automatically grade an essay, 
   % but if the user puts \item's in, we can list them in an itemize as notes.
+  \par\noindent \emph{Notes for grader:}
+  \moodle@questionheader
   \ifnum\c@numgathereditems>0\relax
-    \par\noindent \emph{Notes for grader:}
     \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
       \loopthroughitemswithcommand{\moodle@print@essay@answer}%
     \end{itemize}%
@@ -2617,7 +2618,10 @@
       \fi
       \par
       \noindent
-      \moodle@questionheader
+      \ifx\moodle@responsetemplate\@empty\relax\else%
+        \par\noindent \emph{Template:}
+        \par\fbox{\parbox{\linewidth}{\moodle@responsetemplate}}\par
+      \fi
       \edef\moodle@generalfeedback{\expandonce\moodle@feedback}
       \ifmoodle@handout\else
         \csname moodle@essay@latexprocessing\endcsname
