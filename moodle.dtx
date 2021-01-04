@@ -57,7 +57,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{7417} ^^A Comment \OnlyDescription above to adjust
+% \CheckSum{7442} ^^A Comment \OnlyDescription above to adjust
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -1538,13 +1538,13 @@
 % but turn ``MathJax'' \emph{on}.  This forces \TeX\ code to be rendered by MathJax
 % instead of Moodle, producing much higher-quality results.
 % 
-% \newpage
+% ^^A\clearpage
 % \changes{v0.5}{2016/01/05}{Initial version}
 % \changes{v0.6}{2019/02/18}{Bux-fixing release}
 % \changes{v0.7}{2020/07/09}{Feature extensions}
-% \changes{v0.8}{2020/11/30}{Bug fixes and feature extensions}
+% \changes{v0.8}{2021/01/04}{Bug fixes and feature extensions}
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
-%   \begin{version}[version=0.8,date=2020-11-30]
+%   \begin{version}[version=0.8,date=2021-01-04]
 %     \added
 %       \item Support for inclusion of GIF pictures.
 %       \item Added package option |svg| to avoid the rasterization of vector graphics.
@@ -1571,6 +1571,7 @@
 %       \item Nicer PDF rendering of numbers in numerical questions if \textsf{siunitx} is loaded.
 %       \item Included PNG and JPEG files are now directly converted to base64.
 %     \fixed
+%       \item TeX's inline math (|$...$|) can now contain escaped dollar signs (|\$|).
 %       \item Closing braces escaped in cloze subquestions outside math environment.
 %       \item The scope of the |tolerance| key is now respected.
 %   \end{version}
