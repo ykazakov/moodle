@@ -25,14 +25,24 @@ clean: $(TESTDIR)/clean
 distclean: clean
 
 distclean: $(TESTDIR)/distclean
-	rm -rf *.pdf *.xml *.tds.zip
-	rm -rf texmf/
+	rm -rf *.pdf *.xml *.zip
+	rm -rf texmf/ ./$(PROJECT_NAME)/
 
 test: $(TESTDIR)/test
 
-dist: test $(PROJECT_NAME).tds.zip
+dist: test $(PROJECT_NAME).zip
+	@mv $(PROJECT_NAME).zip $(PROJECT_NAME)_$(shell date +"%Y-%m-%d").zip
 	@mv $(PROJECT_NAME).tds.zip $(PROJECT_NAME)_$(shell date +"%Y-%m-%d").tds.zip
 	@cp $(PROJECT_NAME).pdf $(PROJECT_NAME)_$(shell date +"%Y-%m-%d").pdf
+	@$(MAKE) clean -C .
+
+$(PROJECT_NAME).zip: $(PROJECT_NAME).tds.zip $(PROJECT_NAME).pdf
+	@mkdir -p ./$(PROJECT_NAME)/
+	@cp $(PROJECT_NAME).dtx ./$(PROJECT_NAME)/
+	@cp $(PROJECT_NAME).ins ./$(PROJECT_NAME)/
+	@cp $(PROJECT_NAME).pdf ./$(PROJECT_NAME)/
+	@cp README.ctan ./$(PROJECT_NAME)/README.md
+	zip -r9 $(PROJECT_NAME).zip $(PROJECT_NAME).tds.zip $(PROJECT_NAME)
 
 $(PROJECT_NAME).tds.zip : $(PROJECT_NAME).pdf $(PROJECT_NAME).sty
 	@mkdir -p ./texmf/tex/latex/$(PROJECT_NAME)/
@@ -43,12 +53,11 @@ $(PROJECT_NAME).tds.zip : $(PROJECT_NAME).pdf $(PROJECT_NAME).sty
 	@cp $(PROJECT_NAME).ins ./texmf/source/latex/$(PROJECT_NAME)/
 	@cp makefile ./texmf/source/latex/$(PROJECT_NAME)/
 	@cp $(PROJECT_NAME).pdf ./texmf/doc/latex/$(PROJECT_NAME)/
-	@cp README.md ./texmf/doc/latex/$(PROJECT_NAME)/
+	@cp README.ctan ./texmf/doc/latex/$(PROJECT_NAME)/README.md
 	@cp LICENSE ./texmf/doc/latex/$(PROJECT_NAME)/
 	@$(MAKE) distclean -C $(TESTDIR)
-	@rsync -avq --exclude='$(TESTDIR)/extra/' $(TESTDIR) ./texmf/doc/latex/$(PROJECT_NAME)
+	@rsync -avq --exclude='$(TESTDIR)/extra' --exclude='$(TESTDIR)/media' --exclude='$(TESTDIR)/dev_*.tex' $(TESTDIR) ./texmf/doc/latex/$(PROJECT_NAME)
 	@cd texmf/ ; zip -r9 ../$(PROJECT_NAME).tds.zip tex source doc
-	@$(MAKE) clean -C .
 	
 install: $(PROJECT_NAME).tds.zip
 	@unzip -d ~/texmf ./$(PROJECT_NAME).tds.zip 
