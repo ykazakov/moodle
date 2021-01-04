@@ -4396,7 +4396,7 @@
         \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\htmlize@blockinbraces}}%
         \g@addto@macro\htmlize@scrap{\g@addto@macro\htmlize@output}%
         \ifmoodle@clozemode
-          \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\otherbackslash\otherrbrace}}
+          \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\otherbackslash\otherrbrace}}%
 %          \moodle@ifmathmode{\xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\otherbackslash}}}%
 %                            {}%
         \else
@@ -4620,16 +4620,38 @@
 \edef\inlinemathleftdelim{\otherbackslash(}%
 \def\inlinemathrightdelim#1{\advancemathmodecounter{-1}%
                             \g@addto@macro\htmlize@output{\otherbackslash)}}%
-\edef\displaymathleftdelim{<CENTER>\otherbackslash[}%
+\edef\displaymathleftdelim{\otherbackslash[}%
 \def\displaymathrightdelim#1{\advancemathmodecounter{-1}%
-                             \g@addto@macro\htmlize@output{\otherbackslash]</CENTER>}}%
+                             \g@addto@macro\htmlize@output{\otherbackslash]}}%
+\long\def\htmlize@inlinemath@recursive@i#1#2#3\htmlize@rdelim@i{%
+  % inspired by \htmlize@recursive@i
+  \def\test@i{#1}%
+  \ifx\test@i\@@htmlize@stop
+    \let\htmlize@next@i=\relax
+  \else
+    \ifx\test@i\@otherbackslash
+        \g@addto@macro\mathtext{#1#2}%
+        \def\htmlize@next@i{\xa\htmlize@inlinemath@recursive@i#3\htmlize@rdelim@i}%
+    \else
+      \ifx\test@i\@otherdollar
+        \let\htmlize@next@i=\relax
+        \g@addto@macro\aftertext{#2#3}%
+      \else
+        \g@addto@macro\mathtext{#1}%
+        \def\htmlize@next@i{\xa\htmlize@inlinemath@recursive@i#2#3\htmlize@rdelim@i}%
+      \fi
+    \fi
+  \fi
+  \htmlize@next@i
+}
 {\catcode`\$=12\relax%
-  \gdef\htmlize@inlinemathshift@replace$#1$#2\htmlize@rdelim@iii{%
+  \gdef\htmlize@inlinemathshift@replace#1#2\htmlize@rdelim@iii{%
     %\def\ds{inline math shift has '#1' and '#2'}\show\ds
     \xa\g@addto@macro\xa\htmlize@output\xa{\inlinemathleftdelim}%
     \advancemathmodecounter{1}%
-    \def\mathtext{#1}%
-    \def\aftertext{#2}%
+    \gdef\mathtext{}%
+    \gdef\aftertext{}%
+    \htmlize@inlinemath@recursive@i#2\htmlize@rdelim@i%
     \xdef\htmlize@remaining@text{\expandonce\mathtext%
                                  \otherbackslash inlinemathrightdelim{}%
                                  \expandonce\aftertext}%
@@ -4918,10 +4940,10 @@
   }%
 \html@action@def\[{%
     \advancemathmodecounter{1}
-    \g@addto@macro\htmlize@output{<CENTER>\otherbackslash\otherlbracket}%
+    \g@addto@macro\htmlize@output{\otherbackslash\otherlbracket}%
   }%
 \html@action@def\]{%
-    \g@addto@macro\htmlize@output{\otherbackslash\otherrbracket</CENTER>}%
+    \g@addto@macro\htmlize@output{\otherbackslash\otherrbracket}%
     \advancemathmodecounter{-1}
   }%
 \html@action@def\({%

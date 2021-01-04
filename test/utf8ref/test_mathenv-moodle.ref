@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <quiz>
  
 <question type="category">
@@ -12,7 +13,7 @@
     <text><![CDATA[Multiple Choice]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p><CENTER>\[\begin {array}{c}1\\2\end {array}\]</CENTER> </P><P><CENTER>\[\begin {array}{c}1\\2\end {array}\]</CENTER> </P><P>\(\begin {array}{c}1\\2\end {array}\) </p>]]></text>
+    <text><![CDATA[<p>\[\begin {array}{c}$1\\2\end {array}\] </P><P>\[\begin {array}{c}$1\\2\end {array}\] </P><P>\(\begin {array}{c}$1\\2\end {array}\) </p>]]></text>
   </questiontext>
   <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
@@ -22,18 +23,30 @@
   <shuffleanswers>1</shuffleanswers>
   <answernumbering>abc</answernumbering>
   <answer fraction="100" format="html">
-    <text><![CDATA[<p>\(\sqrt {25}\)</p>]]></text>
+    <text><![CDATA[<p>\($\sqrt {25}\)</p>]]></text>
   </answer>
   <answer fraction="0" format="html">
     <text><![CDATA[<p>6</p>]]></text>
   </answer>
   <answer fraction="100" format="html">
     <text><![CDATA[<p>7</p>]]></text>
-    <feedback format="html"><text><![CDATA[<p><CENTER>\[\sqrt {25}\]</CENTER></p>]]></text></feedback>
+    <feedback format="html"><text><![CDATA[<p>\[$\sqrt {25}\]</p>]]></text></feedback>
   </answer>
   <answer fraction="10" format="html">
     <text><![CDATA[<p>8</p>]]></text>
   </answer>
+</question>
+<question type="cloze">
+  <name format="html">
+    <text><![CDATA[Cloze]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>\[\begin {array}{c}$1\\2\end {array}\] </P><P>\[\begin {array}{c}$1\\2\end {array}\] </P><P>\(\begin {array}{c}$1\\2\end {array}\) {1:MULTICHOICE_VS:=\($\sqrt {25\}\)~6~=7#\[$\sqrt {25\}\]~%10%8}</p>]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
 </question>
  
 </quiz>
