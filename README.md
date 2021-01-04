@@ -4,9 +4,9 @@ See the [LICENSE](LICENSE) file.
 
 # Authors
 
-Original contents (2016): Anders O.F. Hendrickson (anders.hendrickson@snc.edu)
+Original contents (2016): Anders O.F. Hendrickson (anders.o.f.hendrickson AT gmail.com)
 
-2019-2020: Matthieu Guerquin-Kern (guerquin-kern@crans.org)
+2019-2021: Matthieu Guerquin-Kern (guerquin-kern AT crans.org)
 
 # Contents
 
