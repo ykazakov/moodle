@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<quiz>
+ 
+<question type="category">
+  <category>
+    <text>$course$/top/Math Notations</text>
+  </category>
+</question>
+ 
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Derivative]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>\[\frac {\partial ^{3} f}{\partial ^{3} x}(x).\] </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>\(f&rsquo;(x)\)</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>\(f&rsquo;&rsquo;(x)\)</p>]]></text>
+  </answer>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>\(f&rsquo;&rsquo;&rsquo;(x)\)</p>]]></text>
+  </answer>
+</question>
+<question type="cloze">
+  <name format="html">
+    <text><![CDATA[Other derivatives]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>\[\frac {\partial ^{2} g}{\partial ^{2} t}(t).\] {1:MULTICHOICE_VS:\(g&rsquo;(t)\)~=\(g&rsquo;&rsquo;(t)\)~\(g&rsquo;&rsquo;&rsquo;(t)\)}</p>]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+</question>
+ 
+</quiz>
