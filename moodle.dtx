@@ -318,7 +318,7 @@
 % file. This stamp contains information gathered about the TeX engine,
 % the operating system used and the package version. For instance:
 % \begin{quote}\small
-% |<!-- This file was generated on 2020-11-30 by LuaLaTeX -->|\\
+% |<!-- This file was generated on 2021-01-07 by LuaLaTeX -->|\\
 % |<!-- running on Linux with the package moodle |\texttt{\fileversion}| -->|
 % \end{quote}
 % The package option
@@ -945,7 +945,7 @@
 % \toprule
 % \multicolumn{2}{l}{Macros} & Commands & Environnments \\
 % \cmidrule(lr){1-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}
-% |~| & |\#| &|\emph{}| & |\begin{center}|\\
+% |\%| & |\#| &|\emph{}| & |\begin{center}|\\
 % |\$| & |\&| &|\textbf{}| & |\begin{enumerate}|\\
 % |\\| & |\par| &|\textit{}| & |\begin{itemize}|\\
 % |\&| & |\S| & |\texttt{}| & |\begin{tikzpicture}|\\
@@ -956,7 +956,7 @@
 % |\euro| & |\texteuro| & |\fup{}| & \\
 % |\TeX| & |\LaTeX|& |\textsubscript{}| & \\
 % |\_| & |\textbackslash| & |\url{}| & \\
-% & & |\href{}{}| & \\
+% |~| & & |\href{}{}| & \\
 % & & |\tikz[]{}| & \\
 % & & |\includegraphics[]{}| & \\
 % & & |\verbatiminput{}| & \\
@@ -983,6 +983,23 @@
 % other \TeX\ or \LaTeX\ commands to HTML.}
 % If other sequences are used, they may be passed verbatim to the XML file
 % or may cause unpredicted results.
+% 
+% \DescribeMacro{\htmlonly}The |\htmlonly|\oarg{Content for traditional output}
+% \marg{HTML content} command is to be used inside question environments (text,
+% answers, or feedback). It lets you pass directly code to the XML file while being
+% ignored for the traditional output (PDF). The HTML content passed as an argument
+% is subject to no particular processing and users should not expect to be able to
+% pass dangerous characters like |\|, |%|, or |#|. An optional argument allows to
+% pass contents to be processed for the traditional output. This argument is
+% ignored for the XML output.
+% For instance, one can write code like this in a question environment
+% \begin{quote}
+%   |\htmlonly[\fbox{PDF contents}]|{\\
+%   |{<div style="border: 1px solid green; display: inline-block;">|\\
+%   \rule{10em}{0pt}|HTML contents</div>|\\
+%   |}|
+% \end{quote}
+%
 % \DescribeMacro{\htmlregister}The |\htmlregister| command lets you specify
 % the macros that must be expanded in the XML file. It works only when no
 % optional argument is used.
@@ -1547,6 +1564,8 @@
 % \changes{v0.9}{2021/xx/yy}{Bug fixes}
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version}[] ^^A version=0.9,date=
+%     \added
+%       \item Command |\htmlonly[]{}| to pass HTML contents directly to the XML file.
 %     \fixed
 %       \item Broken base64-encoding pipeline for images under Windows (thanks to Andreas Vohns).
 %       \item Repeated single right quotation marks no longer merged in math mode
@@ -4935,6 +4954,7 @@
 \htmlize@record@action{\endclozemode}%
 \htmlize@record@action{\relax}%
 
+\html@action@def\%{\g@addto@macro\htmlize@output{\otherpercent}}%
 \html@action@def\#{\g@addto@macro\htmlize@output{\otherhash}}%
 \html@action@def\&{\g@addto@macro\htmlize@output{\otherampersand}}%
 \html@action@def\\{\moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherbackslash\otherbackslash}}%
@@ -5199,7 +5219,21 @@
 \htmlize@record@action\displaymathrightdelim
 
 %    \end{macrocode}
-% 
+%
+% \subsubsection{Passing code to XML only}
+% Users may want to include pieces of HTML code to the XML file only.
+% When producing the traditional output, the optional argument, empty
+% by default, is used.
+%    \begin{macrocode}
+\newcommand\htmlonly[2][]{#1}%
+%    \end{macrocode}
+% When producing the XML file, the mandatory argument is passed as-is.
+%    \begin{macrocode}
+\html@action@newcommand{htmlonly}[2][]{%
+  \g@addto@macro\htmlize@output{#2}%
+}%
+%    \end{macrocode}
+%
 % \subsection{Graphics via {\ttfamily\string\includegraphics}}
 % 
 % \subsubsection{Finding Media Files}
