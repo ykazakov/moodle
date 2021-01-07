@@ -1237,7 +1237,7 @@
 % This would mimic the behavior of calculated questions while bringing the flexibility of your
 % favorite scripting language.
 % 
-% Here are two examples inspired from the work of A. Wohns. The first one relies on the
+% Here are two examples inspired from the work of A. Vohns. The first one relies on the
 % native Lua capabilities of \LuaLaTeX.
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   \begin{quiz}[tags={calculated}]{Example Quiz}
@@ -1548,6 +1548,7 @@
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version}[] ^^A version=0.9,date=
 %     \fixed
+%       \item Broken base64-encoding pipeline for images under Windows (thanks to Andreas Vohns).
 %       \item Repeated single right quotation marks no longer merged in math mode
 %             (thanks to Alberto Albano).
 %   \end{version}
@@ -5555,7 +5556,7 @@
 %    \begin{macrocode}
 \ifwindows
   \def\ConvertToBaseLXIV#1#2{%
-    \def\cmdline{\baselxiv\otherspace -encode "#1#2"\otherspace tmp.b64 && findstr /vbc:"---" tmp.b64 > "#1" && del tmp.b64"}%
+    \def\cmdline{\baselxiv\otherspace -encode "#1#2"\otherspace tmp.b64 && findstr /vbc:"---" tmp.b64 > "#1.enc" && del tmp.b64"}%
     \message{moodle.sty:   Converting '#1#2' to base64...^^J}%
     \xa\ShellEscape\xa{\cmdline}%
   % Starting from Windows 7, CertUtil is included by default. There should be no windows XP still running
