@@ -13,7 +13,7 @@
     <text><![CDATA[LaTeX Environments]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p><CENTER><SPAN STYLE=&#34;font-variant: small-caps;&#34;>This is a question</SPAN></CENTER> Select the numbered list </p>]]></text>
+    <text><![CDATA[<p><CENTER><SPAN STYLE="font-variant: small-caps;">This is a question</SPAN></CENTER> Select the numbered list </p>]]></text>
   </questiontext>
   <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>

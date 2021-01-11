@@ -13,7 +13,7 @@
     <text><![CDATA[Test french]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p> <SPAN STYLE=&#34;text-decoration: underline;&#34;>Pangramme</SPAN> conçu par Gilles <SPAN STYLE=&#34;font-variant: small-caps;&#34;>Esposito-Farèse</SPAN>:</p>]]></text>
+    <text><![CDATA[<p> <SPAN STYLE="text-decoration: underline;">Pangramme</SPAN> conçu par Gilles <SPAN STYLE="font-variant: small-caps;">Esposito-Farèse</SPAN>:</p>]]></text>
   </questiontext>
   <defaultgrade>1</defaultgrade>
   <generalfeedback format="html">
@@ -26,7 +26,7 @@
   <answernumbering>abc</answernumbering>
   <answer fraction="100" format="html">
     <text><![CDATA[<p>Dès Noël où un zéphyr haï me vêt de glaçons würmiens je dîne d’exquis rôtis de bœuf au kir à l’aÿ d’âge mûr & cætera&#8239;!</p>]]></text>
-    <feedback format="html"><text><![CDATA[<p>cité dans &laquo;&#8239;<A href=&#34;https://jacques-andre.fr/faqtypo/lessons.pdf&#34;>Petites leçons de typographie</A>&#8239;&raquo; de Jacques <SPAN STYLE=&#34;font-variant: small-caps;&#34;>André</SPAN>.</p>]]></text></feedback>
+    <feedback format="html"><text><![CDATA[<p>cité dans &laquo;&#8239;<A href="https://jacques-andre.fr/faqtypo/lessons.pdf">Petites leçons de typographie</A>&#8239;&raquo; de Jacques <SPAN STYLE="font-variant: small-caps;">André</SPAN>.</p>]]></text></feedback>
   </answer>
   <answer fraction="0" format="html">
     <text><![CDATA[<p>Portez ce vieux whisky au juge blond qui fume.</p>]]></text>

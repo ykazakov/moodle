@@ -13,7 +13,7 @@
     <text><![CDATA[All correct]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>100\% is distributed uniformly. </p>]]></text>
+    <text><![CDATA[<p>100% is distributed uniformly. </p>]]></text>
   </questiontext>
   <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
@@ -37,7 +37,7 @@
     <text><![CDATA[Auto sanction]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>Without the star, an error shall be issued because correct answers should sum up to 100\%. </p>]]></text>
+    <text><![CDATA[<p>Without the star, an error shall be issued because correct answers should sum up to 100%. </p>]]></text>
   </questiontext>
   <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
@@ -61,7 +61,7 @@
     <text><![CDATA[All correct but sum \(\geq 100\)]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>A warning shall be issued because correct answers must sum up to 100\%. </p>]]></text>
+    <text><![CDATA[<p>A warning shall be issued because correct answers must sum up to 100%. </p>]]></text>
   </questiontext>
   <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>

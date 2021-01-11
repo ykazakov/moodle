@@ -35,10 +35,10 @@
     <text><![CDATA[<p><CODE>typewriter</CODE></p>]]></text>
   </answer>
   <answer fraction="100" format="html">
-    <text><![CDATA[<p><SPAN STYLE=&#34;font-variant: small-caps;&#34;>Small Capitals</SPAN></p>]]></text>
+    <text><![CDATA[<p><SPAN STYLE="font-variant: small-caps;">Small Capitals</SPAN></p>]]></text>
   </answer>
   <answer fraction="0" format="html">
-    <text><![CDATA[<p><SPAN STYLE=&#34;text-decoration: underline;&#34;>underlined</SPAN></p>]]></text>
+    <text><![CDATA[<p><SPAN STYLE="text-decoration: underline;">underlined</SPAN></p>]]></text>
   </answer>
   <answer fraction="0" format="html">
     <text><![CDATA[<p>M<SUP>me</SUP></p>]]></text>
@@ -47,10 +47,10 @@
     <text><![CDATA[<p>H<SUB>2</SUB>O</p>]]></text>
   </answer>
   <answer fraction="0" format="html">
-    <text><![CDATA[<p><A href=&#34;http://192.0.0.256&#34;>http://192.0.0.256</A></p>]]></text>
+    <text><![CDATA[<p><A href="http://192.0.0.256">http://192.0.0.256</A></p>]]></text>
   </answer>
   <answer fraction="0" format="html">
-    <text><![CDATA[<p><A href=&#34;mailto:name@server.com&#34;>Contact me</A></p>]]></text>
+    <text><![CDATA[<p><A href="mailto:name@server.com">Contact me</A></p>]]></text>
   </answer>
 </question>
  

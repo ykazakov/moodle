@@ -967,8 +967,8 @@
 % \bottomrule
 % \end{tabular}
 % \end{table}
-% Single and double quotation marks, french quotation marks, inverted exclamation and
-% question marks, and the diacritical 
+% Single and double quotation marks (with german variants), french quotation marks,
+% inverted exclamation and question marks, and the diacritical 
 % commands  |\^|, |\'|, |\`|, |\"|, |\~|, |\c|, |\H|, |\u| and |\v| are also handled,
 % as are the characters |\aa|, |\ae|, |\l|, |\oe|, |\o|, |\ss|, and their 
 % capitalizations. See Tables~\ref{tab:diacritical}, \ref{tab:ligatures}, and
@@ -978,6 +978,7 @@
 % If they should be typed outside of math mode, they will be passed as typed to
 % the HTML, and probably interpreted by students' browsers as HTML tags
 % or other unpredicated results.
+% A doubled dash will be converted to en-dash |&ndash;| \emph{outside math mode}.
 % 
 % Be aware that \emph{\textsf{moodle} does not know how to convert any 
 % other \TeX\ or \LaTeX\ commands to HTML.}
@@ -1565,8 +1566,12 @@
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version}[] ^^A version=0.9,date=
 %     \added
+%       \item Support for en-dash (--) outside of math mode.
+%       \item Support for |\%| in conversion to HTML.
 %       \item Command |\htmlonly[]{}| to pass HTML contents directly to the XML file.
 %     \fixed
+%       \item Commands |\textsc|, |\underline|, |\url|, and |\href| yielded HTML code with
+%             inadequate double quotation marks.
 %       \item Broken base64-encoding pipeline for images under Windows (thanks to Andreas Vohns).
 %       \item Repeated single right quotation marks no longer merged in math mode
 %             (thanks to Alberto Albano).
@@ -4384,6 +4389,7 @@
 
 \def\@lt{<}%
 \def\@gt{>}%
+\def\@dash{-}%
 
 \long\def\htmlize@recursive@i#1#2#3\htmlize@rdelim@i{%
   % #1#2#3 is a sequence of tokens.  All should be categories 11 (letter) or 12 (other).
@@ -4597,7 +4603,7 @@
                 \ifx\test@ii\@rsinglequote% Double right quote
                   %AAedit 2021.01.06: in math mode, you should write 2 single right quotes, for second derivatives
                   \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherampersand rsquo;\otherampersand rsquo;}}%
-                                    {\g@addto@macro\htmlize@output{\otherampersand rdquo;}}
+                                    {\g@addto@macro\htmlize@output{\otherampersand rdquo;}}%
                   \def\htmlize@next@i{\htmlize@recursive@i#3\htmlize@rdelim@i}%
                 \else% Single right quote
                   \g@addto@macro\htmlize@output{\otherampersand rsquo;}%
@@ -4618,9 +4624,20 @@
                                         {\g@addto@macro\htmlize@output{>}}%
                       \def\htmlize@next@i{\htmlize@recursive@i#2#3\htmlize@rdelim@i}%
                     \else
-                      % Default case: write first token to output, call self on remaining tokens.
-                      \g@addto@macro\htmlize@output{#1}%
-                      \def\htmlize@next@i{\htmlize@recursive@i#2#3\htmlize@rdelim@i}%
+                      \ifx\test@i\@dash
+                        \ifx\test@ii\@dash% en-dash (--)
+                          \moodle@ifmathmode{\g@addto@macro\htmlize@output{--}}%
+                                    {\g@addto@macro\htmlize@output{\otherampersand ndash;}}%
+                          \def\htmlize@next@i{\htmlize@recursive@i#3\htmlize@rdelim@i}%
+                        \else
+                          \g@addto@macro\htmlize@output{-}%
+                          \def\htmlize@next@i{\htmlize@recursive@i#2#3\htmlize@rdelim@i}%
+                        \fi
+                      \else
+                        % Default case: write first token to output, call self on remaining tokens.
+                        \g@addto@macro\htmlize@output{#1}%
+                        \def\htmlize@next@i{\htmlize@recursive@i#2#3\htmlize@rdelim@i}%
+                      \fi% \ifx\test@i\@dash
                     \fi% \ifx\test@i\@gt
                   \fi% \ifx\test@i\@lt
                 \fi% \ifx\test@i\@doublequote
@@ -4999,6 +5016,9 @@
 \html@action@def\${%
      \g@addto@macro\htmlize@output{\otherdollar}%
   }%
+\html@action@def\@dquote{%
+     \g@addto@macro\htmlize@output{"}%
+  }%
 \html@action@def\clozetilde{%
     \xa\g@addto@macro\xa\htmlize@output\xa{\othertilde}%
   }%
@@ -5171,14 +5191,14 @@
 % \subsubsection{Command sequences for Expansion}
 % 
 %    \begin{macrocode}
-\html@def\underline#1{<SPAN STYLE=\&\#34;text-decoration: underline;\&\#34;>#1</SPAN>}
+\html@def\underline#1{<SPAN STYLE=\@dquote text-decoration: underline;\@dquote>#1</SPAN>}%
 \html@def\emph#1{<EM>#1</EM>}%
 \html@def\textit#1{<I>#1</I>}%
 \html@def\textbf#1{<B>#1</B>}%
 \html@def\texttt#1{<CODE>#1</CODE>}%
-\html@def\textsc#1{<SPAN STYLE=\&\#34;font-variant: small-caps;\&\#34;>#1</SPAN>}
-\html@def\url#1{<A href=\&\#34;#1\&\#34;>#1</A>}%
-\html@def\href#1#2{<A href=\&\#34;#1\&\#34;>#2</A>}%
+\html@def\textsc#1{<SPAN STYLE=\@dquote font-variant: small-caps;\@dquote>#1</SPAN>}%
+\html@def\url#1{<A href=\@dquote #1\@dquote>#1</A>}%
+\html@def\href#1#2{<A href=\@dquote #1\@dquote>#2</A>}%
 \html@def\textsuperscript#1{<SUP>#1</SUP>}%
 \html@def\up#1{<SUP>#1</SUP>}%
 \html@def\fup#1{<SUP>#1</SUP>}%
@@ -5204,6 +5224,15 @@
 \html@def\guillemotleft{\&laquo;\&\#8239;}%
 \html@def\fg{\&\#8239;\&raquo;}%
 \html@def\guillemotright{\&\#8239;\&raquo;}%
+\html@def\glqq{\&bdquo;}%
+\html@def\grqq{\&ldquo;}%
+\html@def\glq{\&sbquo;}%
+\html@def\grq{\&lsquo;}%
+\html@def\flqq{\&laquo;\&\#8239;}%
+\html@def\frqq{\&\#8239;\&raquo;}%
+\html@def\flq{\&lsaquo;}%
+\html@def\frq{\&rsaquo;}%
+\html@def\dq{\&quot;}%
 \html@def\,{\&\#8239;}%
 \html@def\thinspace{\&\#8239;}%
 \html@def\textbackslash{\&\#92;}%
@@ -5220,7 +5249,7 @@
 
 %    \end{macrocode}
 %
-% \subsubsection{Passing code to XML only}
+% \subsubsection{Passing Code to XML Only}
 % Users may want to include pieces of HTML code to the XML file only.
 % When producing the traditional output, the optional argument, empty
 % by default, is used.
