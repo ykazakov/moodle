@@ -1505,8 +1505,9 @@
 % \bottomrule
 % \end{tabular}
 % \begin{tablenotes}
-%   \item[1] the package |babel| loaded with option |french| defines |\og| and |\fg| for
-%            the same symbols. These are also supported by \textsf{moodle}.
+%   \item[1] for the same symbols the package |babel| defines |\flqq| and |\frqq|, and
+%            if loaded with option |french| defines |\og| and |\fg|. These commands
+%            are also supported by \textsf{moodle}.
 % \end{tablenotes}
 % \end{threeparttable}
 % \end{table}
@@ -1566,6 +1567,9 @@
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version}[] ^^A version=0.9,date=
 %     \added
+%       \item Warn user of the \texttt{babel} package set for a German-related language
+%             that using the character |"| will not play well with \textsf{moodle}.
+%       \item Support for \textsf{babel} commands related to German quotes.
 %       \item Support for en-dash (--) outside of math mode.
 %       \item Support for |\%| in conversion to HTML.
 %       \item Command |\htmlonly[]{}| to pass HTML contents directly to the XML file.
@@ -6253,6 +6257,19 @@
 % related to autospacing when using |pdfLaTeX|. We shall warn them.
 %    \begin{macrocode}
 \AtBeginDocument{%
+  \def\moodle@babel@german@warn{\PackageWarning{moodle}{Be careful when using moodle
+         and German-related babel package options. The symbol " is made active and your umlauts
+         will confuse moodle. You can either 1) compile with xelatex/lualatex with UTF-8 coded
+         characters or 2) avoid the babel option.}
+  }
+  \@ifpackagewith{babel}{german}{\moodle@babel@german@warn}{\relax}%
+  \@ifpackagewith{babel}{austrian}{\moodle@babel@german@warn}{\relax}%
+  \@ifpackagewith{babel}{swissgerman}{\moodle@babel@german@warn}{\relax}%
+  \@ifpackagewith{babel}{swissgerman.toss}{\moodle@babel@german@warn}{\relax}%
+  \@ifpackagewith{babel}{ngerman}{\moodle@babel@german@warn}{\relax}%
+  \@ifpackagewith{babel}{naustrian}{\moodle@babel@german@warn}{\relax}%
+  \@ifpackagewith{babel}{nswissgerman}{\moodle@babel@german@warn}{\relax}%
+  \@ifpackagewith{babel}{nswissgerman.toss}{\moodle@babel@german@warn}{\relax}%
   \ifPDFTeX % pdflatex or latex
     \@ifpackagewith{babel}{french}{%
       \PackageWarning{moodle}{Be careful when using LaTeX, moodle, and the babel package with option 'french'. Autospacing produces in undesired symbols in the XML. You can either 1) compile with xelatex/lualatex or 2) add '\NoAutoSpacing' after '\begin{quiz}'.}%
