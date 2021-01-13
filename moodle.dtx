@@ -737,6 +737,12 @@
 % 
 % \DescribeMacro{response field lines}
 % The key |response field lines| controls the height of the input box.
+% For Moodle, the admissible values are: 5, 10, 15, 20, 25, 30, 35, and 40.
+% If the value set is not admissible, \textsf{moodle} will approximate the value:
+% \begin{itemize}
+%   \item with either 5 or 40 if the value set was out of range, or
+%   \item with the next multiple of 5 otherwise.
+% \end{itemize}
 % The default is |response field lines=15|.
 % 
 % \DescribeMacro{attachments allowed}
@@ -995,8 +1001,8 @@
 % ignored for the XML output.
 % For instance, one can write code like this in a question environment
 % \begin{quote}
-%   |\htmlonly[\fbox{PDF contents}]|{\\
-%   |{<div style="border: 1px solid green; display: inline-block;">|\\
+%   |\htmlonly[\fbox{PDF contents}]{|\\
+%   |<div style="border: 1px solid green; display: inline-block;">|\\
 %   \rule{10em}{0pt}|HTML contents</div>|\\
 %   |}|
 % \end{quote}
@@ -2636,6 +2642,7 @@
 \NewEnviron{essay}[2][]{%
   \bgroup
     \setkeys{moodle}{#1,questionname={#2}}%
+    \moodle@checkresponsefieldlines
     \expandafter\gatheritems\expandafter{\BODY}%
     \let\moodle@questionheader=\gatheredheader
     %First, the LaTeX processing.
@@ -2695,6 +2702,31 @@
       \writetomoodle{</question>}%
     }{}%
   \egroup
+}%
+
+\def\moodle@checkresponsefieldlines{%
+  \newcount\a\a=\number\csname moodle@response field lines\endcsname
+  \newcount\b\b=5%
+  \ifnum\the\a>40% if the value was more than 40
+    \a=40%
+  \fi
+  \ifnum\the\a<5% if the value was less than 5
+    \a=5%
+  \fi
+  \divide\a by\b% integer division by 5
+  \multiply\a by\b% multiply by 5
+  \ifnum\a=\csname moodle@response field lines\endcsname% equality holds if we had 5, 10, 15, 20, 25, 30, or 40
+  \else
+    \ifnum\csname moodle@response field lines\endcsname>5%
+      \ifnum\csname moodle@response field lines\endcsname<40%
+        \advance\a by\b% approximate with the next multiple of 5
+      \fi
+    \fi
+    \PackageWarning{moodle}{"response field lines" admits only multiples of 5 between 5 and 40
+       (You tried to set \csname moodle@response field lines\endcsname). The value
+       \the\a\space will be used.}%
+    \setkeys{moodle}{response field lines=\the\a}%
+  \fi
 }%
 
 %%%% TODO
@@ -3531,10 +3563,10 @@
     \setcounter{moodle@numcorrectanswers}{0}% Here this counter is for "questions" (items on the left column)
     \loopthroughitemswithcommand{\moodle@print@matching@answer}%
     \ifnum\c@numgathereditems<3%
-      \PackageWarning{moodle}{Moodle expects at least three "answers" with matching type}
+      \PackageWarning{moodle}{Moodle expects at least three "answers" with matching type}%
     \fi
     \ifnum\c@moodle@numcorrectanswers<2%
-      \PackageWarning{moodle}{Moodle expects at least two "questions" with the matching type}
+      \PackageWarning{moodle}{Moodle expects at least two "questions" with the matching type}%
     \fi
     \ifmoodle@handout
       \ifmoodle@shuffle
