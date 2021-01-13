@@ -1574,6 +1574,7 @@
 %       \item Support for |\%| in conversion to HTML.
 %       \item Command |\htmlonly[]{}| to pass HTML contents directly to the XML file.
 %     \fixed
+%       \item Question text in Essays was not shown in PDF file.
 %       \item Commands |\textsc|, |\underline|, |\url|, and |\href| yielded HTML code with
 %             inadequate double quotation marks.
 %       \item Broken base64-encoding pipeline for images under Windows (thanks to Andreas Vohns).
@@ -2622,7 +2623,6 @@
   % Moodle cannot automatically grade an essay, 
   % but if the user puts \item's in, we can list them in an itemize as notes.
   \par\noindent \emph{Notes for grader:}
-  \moodle@questionheader
   \ifnum\c@numgathereditems>0\relax
     \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
       \loopthroughitemswithcommand{\moodle@print@essay@answer}%
@@ -2656,7 +2656,9 @@
       \fi
       \par
       \noindent
-      \ifx\moodle@responsetemplate\@empty\relax\else%
+      \moodle@questionheader
+      \long\def\@lempty{}%
+      \ifx\moodle@responsetemplate\@lempty\else
         \par\noindent \emph{Template:}
         \par\fbox{\parbox{\linewidth}{\moodle@responsetemplate}}\par
       \fi
