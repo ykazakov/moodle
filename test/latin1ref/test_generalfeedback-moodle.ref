@@ -103,11 +103,11 @@
   <shuffleanswers>1</shuffleanswers>
   <subquestion format="html">
     <text><![CDATA[<p>&aelig;</p>]]></text>
-    <answer><text>oui</text></answer>
+    <answer><text>oui </text></answer>
   </subquestion>
   <subquestion format="html">
     <text><![CDATA[<p>&oelig;</p>]]></text>
-    <answer><text>non</text></answer>
+    <answer><text>non </text></answer>
   </subquestion>
   <subquestion format="html">
     <text></text>
@@ -145,7 +145,7 @@
     <text><![CDATA[Cloze]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>&Aring;&OElig;{1:MULTICHOICE:=chip~%10%chop#yes~chap#no.}&#8239;&raquo;&Aring;{1:SHORTANSWER:=B#toc~=C#&laquo;&#8239;&#8239;&raquo;~*}&laquo;&#8239;&Aring;{1:NUMERICAL:=1:0~=2:0#&laquo;&#8239;&#8239;&raquo;~3:0}&OElig;{1:MULTICHOICE_V:=chip#yes~%10%chop~chap#no.}</P><P>&OElig;{1:MULTICHOICE_H:=chip#yes~%10%chop~chap#no.}</P><P></p>]]></text>
+    <text><![CDATA[<p>&Aring;&OElig;{1:MULTICHOICE:=chip~%10%chop#yes~chap#no.}&#8239;&raquo;&Aring;{1:SHORTANSWER:=B#toc~=C#&laquo;&#8239;&#8239;&raquo;~*}&laquo;&#8239;&Aring;{1:NUMERICAL:=1:0~=2:0#&laquo;&#8239;&#8239;&raquo;~3:0}&OElig;{1:MULTICHOICE_V:=chip#yes~%10%chop~chap#no.}<BR/>&OElig;{1:MULTICHOICE_H:=chip#yes~%10%chop~chap#no.}<BR/></p>]]></text>
   </questiontext>
   <defaultgrade>1</defaultgrade>
   <generalfeedback format="html">

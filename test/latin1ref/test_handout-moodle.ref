@@ -263,15 +263,15 @@
   <shuffleanswers>1</shuffleanswers>
   <subquestion format="html">
     <text><![CDATA[<p>A</p>]]></text>
-    <answer format="html"><text><![CDATA[<p>1</p>]]></text></answer>
+    <answer format="html"><text><![CDATA[<p>1 </p>]]></text></answer>
   </subquestion>
   <subquestion format="html">
     <text><![CDATA[<p>B</p>]]></text>
-    <answer format="html"><text><![CDATA[<p>2</p>]]></text></answer>
+    <answer format="html"><text><![CDATA[<p>2 </p>]]></text></answer>
   </subquestion>
   <subquestion format="html">
     <text><![CDATA[<p>C</p>]]></text>
-    <answer format="html"><text><![CDATA[<p>3</p>]]></text></answer>
+    <answer format="html"><text><![CDATA[<p>3 </p>]]></text></answer>
   </subquestion>
   <subquestion format="html">
     <text></text>
@@ -297,15 +297,15 @@
   <shuffleanswers>0</shuffleanswers>
   <subquestion format="html">
     <text><![CDATA[<p>A</p>]]></text>
-    <answer><text>1</text></answer>
+    <answer><text>1 </text></answer>
   </subquestion>
   <subquestion format="html">
     <text><![CDATA[<p>B</p>]]></text>
-    <answer><text>2</text></answer>
+    <answer><text>2 </text></answer>
   </subquestion>
   <subquestion format="html">
     <text><![CDATA[<p>C</p>]]></text>
-    <answer><text>3</text></answer>
+    <answer><text>3 </text></answer>
   </subquestion>
   <subquestion format="html">
     <text></text>
@@ -320,7 +320,7 @@
     <text><![CDATA[Cloze]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p></P><P>Question text {1:MULTICHOICE_H:=A#AAA~%10%B#BBB~C#CCC}</P><P>Question text {1:MULTICHOICE_V:=A#AAA~%10%B#BBB~C#CCC}</P><P>Question text {1:MULTICHOICE:=A#AAA~%10%B#BBB~C#CCC}</P><P>Question text {1:MULTICHOICE_HS:=A#AAA~%10%B#BBB~C#CCC}</P><P>Question text {1:MULTICHOICE_VS:=A#AAA~%10%B#BBB~C#CCC}</P><P>Question text {1:MULTICHOICE_S:=A#AAA~%10%B#BBB~C#CCC}</P><P>Question text {1:NUMERICAL:=1:1#1~3:1#3}</P><P>Question text {1:SHORTANSWER:=aaa#1~bbb#3}</P><P></p>]]></text>
+    <text><![CDATA[<p><BR/>Question text {1:MULTICHOICE_H:=A#AAA~%10%B#BBB~C#CCC}<BR/>Question text {1:MULTICHOICE_V:=A#AAA~%10%B#BBB~C#CCC}<BR/>Question text {1:MULTICHOICE:=A#AAA~%10%B#BBB~C#CCC}<BR/>Question text {1:MULTICHOICE_HS:=A#AAA~%10%B#BBB~C#CCC}<BR/>Question text {1:MULTICHOICE_VS:=A#AAA~%10%B#BBB~C#CCC}<BR/>Question text {1:MULTICHOICE_S:=A#AAA~%10%B#BBB~C#CCC}<BR/>Question text {1:NUMERICAL:=1:1#1~3:1#3}<BR/>Question text {1:SHORTANSWER:=aaa#1~bbb#3}<BR/></p>]]></text>
   </questiontext>
   <defaultgrade>1</defaultgrade>
   <generalfeedback format="html">

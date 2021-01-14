@@ -1580,6 +1580,7 @@
 %       \item Support for |\%| in conversion to HTML.
 %       \item Command |\htmlonly[]{}| to pass HTML contents directly to the XML file.
 %     \fixed
+%       \item Paragraph breaks in multi and essay items no longer break compilation.
 %       \item Question text in Essays was not shown in PDF file.
 %       \item Commands |\textsc|, |\underline|, |\url|, and |\href| yielded HTML code with
 %             inadequate double quotation marks.
@@ -2773,12 +2774,12 @@
     \moodle@writeattachmentsrequired%
 }%
 
-\def\moodle@print@essay@answer#1{%
+\long\def\moodle@print@essay@answer#1{%
     \item #1%
 }%
 
 
-\def\moodle@savegraderinfo#1{%
+\long\def\moodle@savegraderinfo#1{%
   %\def\ds{#1}\show\ds
   \bgroup
     \moodle@savegraderinfo@int#1\moodle@answer@rdelim
@@ -2789,7 +2790,7 @@
   \setkeys{moodle}{fraction=0,#1}%
   \moodle@savegraderinfo@int@int%
 }%
-\def\moodle@savegraderinfo@int@int#1\moodle@answer@rdelim{%
+\long\def\moodle@savegraderinfo@int@int#1\moodle@answer@rdelim{%
   \def\moodle@answertext{#1}
   \xa\converttohtmlmacro\xa\moodle@answertext@html\xa{\moodle@answertext}%
   %\trim@spaces@in\moodle@answertext
@@ -3059,7 +3060,7 @@
     \fi
   \fi
 }
-  \def\moodle@print@multichoice@answer#1{%
+  \long\def\moodle@print@multichoice@answer#1{%
     \let\moodle@feedback=\@empty%
     \moodle@print@multichoice@answer@int#1 \@rdelim%
   }%
@@ -3068,7 +3069,7 @@
     \setkeys{moodle}{#1}%
     \moodle@print@multichoice@answer@int@int%
   }%
-  \def\moodle@print@multichoice@answer@int@int#1#2\@rdelim{%
+  \long\def\moodle@print@multichoice@answer@int@int#1#2\@rdelim{%
     \def\test@i{#1}%
     \def\test@ii{#2}%
     \def\moodle@answertext{\item }%
@@ -3170,7 +3171,7 @@
      \fi
      \gdef\moodle@autosanctions{\strip@pt\moodle@pointsperincorrect}%
    }
-   \def\moodle@countcorrectanswers@a#1{%
+   \long\def\moodle@countcorrectanswers@a#1{%
      %The grouping is to keep key answer-specific key changes local.
      \bgroup
        \moodle@countcorrectanswers@b#1\moodle@answer@rdelim
@@ -3183,7 +3184,7 @@
        \moodle@countcorrectanswers@c%
      %\fi
    }%
-   \def\moodle@countcorrectanswers@c#1#2\moodle@answer@rdelim{%
+   \long\def\moodle@countcorrectanswers@c#1#2\moodle@answer@rdelim{%
      \def\test@i{#1}%
      \ifx\test@i\@star
        \stepcounter{moodle@numcorrectanswers}%
@@ -3241,7 +3242,7 @@
 % TODO: Put these macros in same order as other sections'.
 
 % SAVING ANSWERS TO MEMORY
-\def\savemultianswer#1{%
+\long\def\savemultianswer#1{%
   \bgroup
     \savemultianswer@int#1 \moodle@answer@rdelim
     \passvalueaftergroup{\moodle@answers@xml}%
@@ -3252,7 +3253,7 @@
     \setkeys{moodle}{#1}%
     \savemultianswer@int@int%
   }%
-  \def\savemultianswer@int@int#1#2\moodle@answer@rdelim{%
+  \long\def\savemultianswer@int@int#1#2\moodle@answer@rdelim{%
     \def\test@i{#1}%
     \ifx\test@i\@star
       \ifmoodle@single
@@ -3869,7 +3870,7 @@
 }[\endclozemulti@code]%
 
 
-\def\moodle@print@clozemultichoice@answer#1{%
+\long\def\moodle@print@clozemultichoice@answer#1{%
   \let\moodle@feedback=\@empty
   \moodle@print@clozemultichoice@answer@int#1 \@rdelim%
 }%
@@ -3877,7 +3878,7 @@
   \setkeys{moodle}{fraction=0,#1}%
   \moodle@print@clozemultichoice@answer@int@int%
 }%
-\def\moodle@print@clozemultichoice@answer@int@int#1#2\@rdelim{%
+\long\def\moodle@print@clozemultichoice@answer@int@int#1#2\@rdelim{%
   \def\moodle@answertext{}%
   % Case 0: "(answer) \\ \hline"
   % Case 1: "\item (answer)"
@@ -3936,7 +3937,7 @@
   \fi
 }%
 
-\def\saveclozemultichoiceanswer#1{%
+\long\def\saveclozemultichoiceanswer#1{%
   \bgroup
     \saveclozemultichoiceanswer@int#1 \moodle@answer@rdelim
   \egroup
@@ -3945,7 +3946,7 @@
   \setkeys{moodle}{fraction=0,#1}%
   \saveclozemultichoiceanswer@int@int%
 }%
-\def\saveclozemultichoiceanswer@int@int#1#2\moodle@answer@rdelim{%
+\long\def\saveclozemultichoiceanswer@int@int#1#2\moodle@answer@rdelim{%
   \def\test@i{#1}%
   \ifgatherbeginningofloop\else
     \xa\gdef\xa\clozemulti@coding\xa{\clozemulti@coding\clozetilde}% separator between answers
@@ -5242,7 +5243,7 @@
 \html@def\fup#1{<SUP>#1</SUP>}%
 \html@def\textsubscript#1{<SUB>#1</SUB>}%
 \html@def\blank{____________}%
-\html@def\par{</P><P>}%
+\html@def\par{<BR/>}%
 \html@def\aa{\&aring;}%
 \html@def\AA{\&Aring;}%
 \html@def\ae{\&aelig;}%

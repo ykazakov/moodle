@@ -13,7 +13,7 @@
     <text><![CDATA[LaTeX Macros]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>The following commands should not be placed in items: <BR/> and </P><P>Find the \(\rm\LaTeX\) logo </p>]]></text>
+    <text><![CDATA[<p>The following commands should not be placed in items: <BR/> and <BR/>Find the \(\rm\LaTeX\) logo </p>]]></text>
   </questiontext>
   <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
