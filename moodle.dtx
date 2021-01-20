@@ -1737,16 +1737,19 @@
 \RequirePackage{xkeyval} %For key-handling
 \RequirePackage{amssymb} %For \checkmark symbol
 %\RequirePackage{trimspaces} %To remove extra spaces from strings (loaded by environ)
-\RequirePackage{etex}    %Expansion control, detokenization, etc.
-\RequirePackage{etoolbox}%List management
-\RequirePackage{xpatch}  %To patch commands easily in HTML mode
-\RequirePackage{array}   %For formatting tables in the LaTeX mode of Clozes
-\RequirePackage{ifplatform} % To choose Ghostscript commands
 \@ifpackageloaded{iftex}{}{\RequirePackage{iftex}}
 % iftex already required by recent versions of ifplatform. Needed to know:
 %     1) whether we can convert output from PDF to PNG (ifpdf), 
 %     2) when output pdf is latin1-encoded (ifpdf)
 %     3) when output xml is utf8-encoded (if?tex)
+\ifeTeX\else
+  \RequirePackage{etex}}{} % Recent (2015+) TeX engines should be e-TeX.
+  %This is needed for expansion control, detokenization, etc.
+\fi
+\RequirePackage{etoolbox}%List management
+\RequirePackage{xpatch}  %To patch commands easily in HTML mode
+\RequirePackage{array}   %For formatting tables in the LaTeX mode of Clozes
+\RequirePackage{ifplatform} % To choose Ghostscript commands
 \@ifundefined{ifpdf}{\RequirePackage{ifpdf}}{}% old iftex would not define the conditional
 \RequirePackage{shellesc} %Luatex-compatible way of getting system access
 \RequirePackage{fancybox} %For fancy LaTeX tags
@@ -5316,6 +5319,14 @@
 % are set with the basename, including path, and extension, respectively.
 %
 %    \begin{macrocode}
+\AtEndPreamble{%
+  \@ifpackageloaded{graphics}{%
+    \@ifpackagelater{graphics}{2019/10/08}{}{%
+      \PackageError{moodle}{`moodle' is made to interact with the `graphics'
+                           package not older than 2019/10/08.}%
+    }%
+  }{}%
+}%
 \def\moodle@media@find#1{%
   \ifx\detokenize\@undefined\else
     \edef\Gin@extensions{\detokenize\expandafter{\Gin@extensions}}%
