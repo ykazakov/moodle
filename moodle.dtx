@@ -1580,6 +1580,7 @@
 %       \item Support for |\%| in conversion to HTML.
 %       \item Command |\htmlonly[]{}| to pass HTML contents directly to the XML file.
 %     \fixed
+%       \item Answer text of shortanswer questions is converted to HTML.
 %       \item Paragraph breaks in multi and essay items no longer break compilation.
 %       \item Question text in Essays was not shown in PDF file.
 %       \item Commands |\textsc|, |\underline|, |\url|, and |\href| yielded HTML code with
@@ -2903,7 +2904,8 @@
      \trim@spaces@in\moodle@answertext
      \moodle@checkfraction
      \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
-     \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext</text>}%
+     \xa\converttohtmlmacro\xa\moodle@answertext@html\xa{\moodle@answertext}%
+     \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext@html</text>}%
      \ifx\moodle@feedback\@empty\relax\else
        \trim@spaces@in\moodle@feedback
        \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
