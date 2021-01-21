@@ -33,7 +33,7 @@
     </ul>
   ]]></text></graderinfo>
   <responsetemplate format="html">
-    <text><![CDATA[Type you answer here]]></text>
+    <text><![CDATA[Type your answer here]]></text>
   </responsetemplate>
 </question>
  
