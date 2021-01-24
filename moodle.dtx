@@ -1233,6 +1233,53 @@
 % \textsf{filecontents} package or \LaTeX\ kernel itself since 2019) or |VerbatimOut|
 % (from the \textsf{fancyvrb} and \textsf{fvextra} packages).
 % 
+% Here is an example:
+% \begin{VerbatimOut}[gobble=2]{minted.doc.out}
+%   \documentclass[12pt,a4paper]{article}
+%   \usepackage[section]{moodle}
+%   \usepackage{minted}
+%   \begin{document}
+%   \begin{quiz}[tags={minted}]{LaTeX Quiz}
+%     \begin{filecontents*}{excerpt.tex}
+%   % !TeX encoding = UTF-8
+%   % !TeX spellcheck = en_US
+%   % !TEX TS-program = lualatex
+%   \documentclass{article}
+%   \usepackage[nostamp]{moodle}
+%   \ifPDFTeX % FOR LATEX and PDFLATEX
+%     \usepackage[utf8]{inputenc} % necessary
+%     \usepackage[T1]{fontenc} % necessary
+%   \else % assuming XELATEX or LUALATEX
+%     \usepackage{fontspec}
+%   \fi
+%     \end{filecontents*}
+%     \begin{numerical}[tolerance=0]{Loading a Class}
+%       Consider the following \LaTeX\ code excerpt.\\
+%       \inputminted[numbers=left]{latex}{excerpt.tex}
+%       On which line is the class loaded?
+%       \item[feedback={
+%            yes! \inputminted[highlightlines={4}]{latex}{excerpt.tex}
+%                      } ] 4
+%       \item[feedback={No. On line 3, there is only a comment.},
+%             fraction=0] 3
+%       \item[feedback={No. On line 5, the package \texttt{moodle} is loaded.},
+%             fraction=0] 5
+%     \end{numerical}
+%     \begin{multi}[single]{IDE}
+%       Consider the following \LaTeX\ code excerpt.\\
+%       \inputminted[numbers=left]{latex}{excerpt.tex}
+%       Which \TeX\ engine will be used by the IDE for compilation.
+%       \item[feedback={Have a closer look at line 3}] \texttt{tex}
+%       \item[feedback={Have a closer look at line 3}] \texttt{latex}
+%       \item[feedback={Have a closer look at line 3}] \texttt{pdflatex}
+%       \item[feedback={Have a closer look at line 3}] \texttt{xelatex}
+%       \item* \texttt{lualatex}
+%     \end{multi}
+%   \end{quiz}
+%   \end{document}
+% \end{VerbatimOut}
+% \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
+% 
 % When code decorated with left-side line numbers is placed in question items, the output PDF could
 % show a collision between numbers of the item and the first line. To avoid this, |\LVerbatimInput| or
 % |\BVerbatimInput| can be used. Instead, when \textsf{minted} is used, the ``left-right'' mode can be
@@ -1241,8 +1288,8 @@
 %   |\RecustomVerbatimEnvironment{Verbatim}{LVerbatim}{}|
 %  \end{quote}
 %
-% When using utilies from \textsf{fancyvrb}, \textsf{fvextra}, or \textsf{minted}, \textsf{moodle} sets
-% framing options for the display of code in the output PDF:
+% When using utilities from \textsf{fancyvrb}, \textsf{fvextra}, or \textsf{minted}, \textsf{moodle}
+% sets framing options for the display of code in the output PDF:
 % \begin{quote}
 %   |\fvset{frame=lines,label={[Beginning of code]End of code},|\\
 %   |       framesep=3mm,numbersep=9pt}|
