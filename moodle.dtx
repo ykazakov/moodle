@@ -238,11 +238,15 @@
 % \end{figure}
 %
 % \section{Usage}\label{sect:usage}
-% \subsection{Example Document}
-%
 % The following pages presume the reader already has some familiarity with creating
 % and editing Moodle quizzes through the web interface.
+% Users that are not familiar with Moodle quizzes can learn more in the Moodle
+% documentation. For instance, \url{https://docs.moodle.org/310/en/Question_types}.
+%
 % The |xkeyval| package is used to provide a key-value interface.
+%
+% \subsection{Example Document}
+%
 % Here is a simple example document:
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   \documentclass[12pt]{article}
@@ -470,12 +474,12 @@
 % Since only single tag is supported, the tag a the question-level overrides eventual tags
 % specified at the quiz-level.
 % 
-% \subsection{Question Types}
+% \subsection{\href{https://docs.moodle.org/en/Question_types}{Question Types}}
 % 
 % We next discuss the various question types supported by \textsf{moodle}
 % and the options that may be set.
 %
-%\subsubsection{True/False}
+%\subsubsection{\href{https://docs.moodle.org/en/True/False_question_type}{True/False}}
 % 
 % \DescribeMacro{truefalse}
 % The syntax for a True/False question is as follows:
@@ -502,7 +506,7 @@
 % 
 % With the True/False question type, the |penalty| key has no effect.
 %
-% \subsubsection{Multiple Choice}
+% \subsubsection{\href{https://docs.moodle.org/310/Multiple_Choice_question_type}{Multiple Choice}}
 % 
 % \DescribeMacro{multi}
 % The syntax for a classic multiple choice question,
@@ -593,7 +597,7 @@
 % Note that, in this example, negative fractions are set for wrong choices. This
 % prevents students selecting all options to obtain a good grade with no merit.
 % 
-% \subsubsection{Numerical}
+% \subsubsection{\href{https://docs.moodle.org/en/Numerical_question_type}{Numerical}}
 %
 % A numerical question in Moodle requires the student
 % to input a real number in decimal form.
@@ -647,7 +651,7 @@
 % 
 % Units, unit-handling and multipliers are currently unsupported.
 %
-% \subsubsection{Short Answer}
+% \subsubsection{\href{https://docs.moodle.org/en/Short-Answer_question_type}{Short Answer}}
 % A short answer question resembles a numerical question: the student is to fill
 % in a text box with a missing word or phrase.
 % \begin{quote}
@@ -694,7 +698,7 @@
 %   \item any non empty answer will match the pattern |*| (wildcard alone).
 % \end{itemize}
 % 
-% \subsubsection{Essay}\label{subsubsect:essay}
+% \subsubsection{\href{https://docs.moodle.org/en/Essay_question_type}{Essay}}\label{subsubsect:essay}
 % Instructors may ask essay questions on a Moodle quiz,
 % although Moodle's software is not up to the task of grading them!
 % Instead each essay question answer must be graded manually by the
@@ -758,7 +762,7 @@
 % will edit and/or type over, with the key |template=|\marg{template}.
 % The \meta{template} should be enclosed in braces.
 % 
-% \subsubsection{Matching}
+% \subsubsection{\href{https://docs.moodle.org/en/Matching_question_type}{Matching}}
 % 
 % A matching question offers a series of subquestions
 % and a set of possible answers from which to choose.
@@ -790,7 +794,8 @@
 % \DescribeMacro{drag and drop}\DescribeMacro{dd}
 % The standard matching question offered by Moodle corresponds to
 % a dropdown box for choosing the answer to each question.
-% There also exists a ``drag and drop matching'' plugin for Moodle that
+% There also exists a \href{https://docs.moodle.org/310/en/Drag_and_drop_matching_question_type}
+% {``drag and drop matching''} plugin for Moodle that
 % shows all questions in one column,
 % all answers in a second column, and allows students to drag the correct
 % answer to the question using a mouse.
@@ -799,7 +804,8 @@
 % If you choose the standard format, then due to the limitations of
 % dropdown boxes, no \LaTeX\ or HTML code can be used in the answers.
 % 
-% \subsubsection{Cloze Questions and Subquestions}
+% \subsubsection{\href{https://docs.moodle.org/en/Embedded_Answers_(Cloze)_question_type}
+% {Cloze Questions and Subquestions}}
 % 
 % A ``cloze question'' has one or more subquestions embedded within a passage of text.  
 % For example, you might ask students to fill in several missing words within
@@ -858,7 +864,7 @@
 % Within a cloze question, the short answer question can be made case sensitive.
 % This option, disabled by default, is selected with |case sensitive| or |usecase|.
 % 
-%\subsubsection{Description}
+%\subsubsection{\href{https://docs.moodle.org/en/Description_question_type}{Description}}
 % 	
 % The Moodle description type is not really a question. It is more like a label.
 % One can set a |feedback| that the student gets when reviewing the submission.
@@ -1066,6 +1072,10 @@
 %^^A \marg{native extension}\marg{command line for conversion}.
 %
 % \subsection{\TikZ\ Pictures}
+% \TikZ\ is a user-friendly syntax layer for PGF, the macro \LaTeX\ package for creating
+% graphics. Users that are not familiar with TikZ\ can learn more here:
+% \url{https://ctan.org/pkg/pgf}.
+% 
 % When \TikZ\ is loaded and used to define pictures, \textsf{moodle} invokes
 % the |external| \TikZ\ library, so that each |tikzpicture| environment is compiled
 % to a freestanding PDF file.
@@ -1136,9 +1146,10 @@
 %         environment or trust the files handled at the system-level, you may want to disable this
 %         over-zelous security policy. For example,
 %         \href{https://stackoverflow.com/a/52661288/14608059}{see this}.
-%   \item Users of the |circuitikz| package must enclose their circuits' \TikZ\ code in the
-%         |tikzpicture| environment instead of |circuitikz|. That is required,
-%         as of \TikZ\ 2.1, by the |external| library.
+%   \item Users of the |circuitikz| package (\url{https://www.ctan.org/pkg/circuitikz}) must
+%         enclose their circuits' \TikZ\ code in the |tikzpicture| environment instead of
+%         the historical |circuitikz| environment. That is required, as of \TikZ\ 2.1,
+%         by the |external| library.
 % \end{itemize}
 %
 % \subsection{Package Option \texttt{svg}}\label{subsec:svg}
