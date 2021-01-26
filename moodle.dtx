@@ -44,7 +44,8 @@
   \setmainfont[Mapping=tex-text]{Linux Libertine O}
 \fi
 %\usepackage{moodle}[2020/07/09]
-\usepackage{amssymb,metalogo,multirow,threeparttable,booktabs,hyperref,tikz,minted,changelog}
+\usepackage{amssymb,metalogo,multirow,threeparttable,booktabs}
+\usepackage{hyperref,tikz,minted,changelog}
 \usetikzlibrary{arrows,positioning,decorations.text}
 %\usemintedstyle{Wombat}
 \EnableCrossrefs         
@@ -981,10 +982,10 @@
 % \end{table}
 % Single and double quotation marks (with german variants), french quotation marks,
 % inverted exclamation and question marks, and the diacritical 
-% commands  |\^|, |\'|, |\`|, |\"|, |\~|, |\c|, |\H|, |\u| and |\v| are also handled,
-% as are the characters |\aa|, |\ae|, |\l|, |\oe|, |\o|, |\ss|, and their 
-% capitalizations. See Tables~\ref{tab:diacritical}, \ref{tab:ligatures}, and
-% \ref{tab:other} for more details.
+% commands  |\^|, |\'|, |\`|, |\"|, |\~|, |\c|, |\H|, |\k|, |\u| and |\v| are
+% also handled, as are the characters |\aa|, |\ae|, |\l|, |\oe|,
+% |\o|, |\ss|, and their capitalizations. See Tables~\ref{tab:diacritical},
+% \ref{tab:ligatures}, and \ref{tab:other} for more details.
 %   
 % In addition, |<| and |>| will be converted to |&lt;| and |&gt;| \emph{within math mode only}.
 % If they should be typed outside of math mode, they will be passed as typed to
@@ -1496,6 +1497,11 @@
 % \H{o} & \H{O} & \verb|\H{o}| & \verb|\H{O}| & Unicode and \LaTeX & \LaTeX\ only\\
 % \H{u} & \H{U} & \verb|\H{u}| & \verb|\H{U}| & Unicode and \LaTeX & \LaTeX\ only\\
 % \"y & \"Y & \verb|\"y| & \verb|\"Y| & Unicode and \LaTeX & \LaTeX only\\
+% \k{a} & \k{A} & \verb|\k{a}| & \verb|\k{A}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \k{e} & \k{E} & \verb|\k{e}| & \verb|\k{E}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \k{i} & \k{I} & \verb|\k{i}| & \verb|\k{I}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \k{o} & \k{O} & \verb|\k{o}| & \verb|\k{O}| & Unicode and \LaTeX & \LaTeX\ only\\
+% \k{u} & \k{U} & \verb|\k{u}| & \verb|\k{U}| & Unicode and \LaTeX & \LaTeX\ only\\
 % \u{a} & \u{A} & \verb|\u{a}| & \verb|\u{A}| & Unicode and \LaTeX & \LaTeX\ only\\
 % \u{e} & \u{E} & \verb|\u{e}| & \verb|\u{E}| & Unicode and \LaTeX & \LaTeX\ only\\
 % \u{g} & \u{G} & \verb|\u{g}| & \verb|\u{G}| & Unicode and \LaTeX & \LaTeX\ only\\
@@ -1513,10 +1519,11 @@
 % \bottomrule
 % \end{tabular}
 % \begin{tablenotes}
-%   \item[1] \XeLaTeX\ renders correctly |\u{i}|, that is, without a superscript dot.
-%            Instead, with (pdf)\LaTeX\ the rendering of |\u{i}| is flawed by the
-%            superposition of the superscript dot and the breve diacritical mark.
-%            Both engines render |\u{\i}| as expected.
+%   \item[1] The rendering of |\u{i}| is flawed in (pdf)\LaTeX's traditional output.
+% ^^A \XeLaTeX\ renders correctly |\u{i}|, that is, without a superscript dot.
+% ^^A        Instead, with (pdf)\LaTeX\ the rendering of |\u{i}| is flawed by the
+% ^^A        superposition of the superscript dot and the breve diacritical mark.
+% ^^A        Both engines render |\u{\i}| as expected.
 % \end{tablenotes}
 % \end{threeparttable}
 % \end{table}
@@ -1631,6 +1638,7 @@
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version}[] ^^A version=0.9,date=
 %     \added
+%       \item Support for the ogonek diacritical mark via |\k|\marg{\dots}.
 %       \item Warn user of the \texttt{babel} package set for a German-related language
 %             that using the character |"| will not play well with \textsf{moodle}.
 %       \item Support for \textsf{babel} commands related to German quotes.
@@ -1704,7 +1712,7 @@
 %       \item Enumerate or itemize environment can now be nested in question items.
 %       \item Several pictures can be included in a question without being mixed
 %             in the XML file.
-%       \item management and rendering of fraction in questions.
+%       \item Management and rendering of fraction in questions.
 %       \item Correctly handling a \LaTeX\ command starting the last item of a question.
 %       \item Closing braces escaped in cloze subquestions. This allows \LaTeX\
 %             equations or images to be included.
@@ -5287,6 +5295,29 @@
     \ifinlist{#1}{\htmlize@caron}%
       {\g@addto@macro\htmlize@output{\otherampersand#1caron\othersemicol}}%
       {\xa\g@addto@macro\htmlize@output\xa{\string\v#1}}%
+}%
+
+% Ogonek diacritics
+{\catcode`|=3\relax
+ \gdef\htmlize@ogonek{A|E|I|U|a|e|i|u|}}
+\html@action@def\k#1{%
+  \ifinlist{#1}{\htmlize@ogonek}%
+    {\g@addto@macro\htmlize@output{\otherampersand#1ogon\othersemicol}}%
+    {
+      \bgroup
+        \def\test@i{#1}%
+        \ifx\test@i\@O
+          \def\toadd{\otherampersand\otherhash490\othersemicol}%
+        \else
+          \ifx\test@i\@o
+            \def\toadd{\otherampersand\otherhash491\othersemicol}%
+          \else
+            \def\toadd{\otherbackslash\otherlbrace#1\otherrbrace}%
+          \fi
+        \fi
+        \xa\g@addto@macro\xa\htmlize@output\xa{\toadd}%
+      \egroup
+    }%
 }%
 %    \end{macrocode}
 % 

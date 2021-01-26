@@ -19,8 +19,10 @@
 \def\UTFotherUC{}
 \def\UFTextend{
   \newcommand\addtomacro[2]{\expandafter\def\expandafter##1\expandafter{##1##2}}%
-  \addtomacro{\UTFdiacriticLC}{ş ţ ő ű ÿ ă ĕ ğ ĭ ŏ ŭ č ď ě ľ ň ř š ť ž }%
-  \addtomacro{\UTFdiacriticUC}{Ş Ţ Ő Ű Ÿ Ă Ĕ Ğ Ĭ Ŏ Ŭ Č Ď Ě Ľ Ň Ř Š Ť Ž }%
+  \addtomacro{\UTFdiacriticLC}{ş ţ ő ű ÿ ą ę į ǫ ų ă ĕ ğ ĭ ŏ ŭ č ď ě ľ ň ř š ť 
+  ž }%
+  \addtomacro{\UTFdiacriticUC}{Ş Ţ Ő Ű Ÿ Ą Ę Į Ǫ Ų Ă Ĕ Ğ Ĭ Ŏ Ŭ Č Ď Ě Ľ Ň Ř Š Ť 
+  Ž }%
   \addtomacro{\UTFligaturesLC}{œ æ ß }%
   \addtomacro{\UTFligaturesUC}{Œ Æ ẞ }%
   \addtomacro{\UTFotherLC}{« ø ł » ¿ ¡ }%
@@ -31,12 +33,12 @@
 \fi
 \def\LaTeXdiacriticLC
 {\aa\ \`a \^a \~a \'e \`e \"e \^e \^i \"i \~n \~o \"o \^o \`u \"u \^u \c{c}
-\c{s} \c{t} \H{o} \H{u} \"y \u{a} \u{e} \u{g} \u{i} \u{\i} \u{o} \u{u} \v{c} 
-\v{d} \v{e} \v{l} \v{n} \v{r} \v{s} \v{t} \v{z} }
+\c{s} \c{t} \H{o} \H{u} \"y \k{a} \k{e} \k{i} \k{o} \k{u} \u{a} \u{e} \u{g} 
+\u{i} \u{\i} \u{o} \u{u} \v{c} \v{d} \v{e} \v{l} \v{n} \v{r} \v{s} \v{t} \v{z} }
 \def\LaTeXdiacriticUC
 {\AA\ \`A \^A \~A \'E \`E \"E \^E \^I \"I \~N \~O \"O \^O \`U \"U \^U \c{C}
-\c{S} \c{T} \H{O} \H{U} \"Y \u{A} \u{E} \u{G} \u{I} \u{O} \u{U} \v{C} \v{D} 
-\v{E} \v{L} \v{N} \v{R} \v{S} \v{T} \v{Z} }
+\c{S} \c{T} \H{O} \H{U} \"Y \k{A} \k{E} \k{I} \k{O} \k{U} \u{A} \u{E} \u{G} 
+\u{I} \u{O} \u{U} \v{C} \v{D} \v{E} \v{L} \v{N} \v{R} \v{S} \v{T} \v{Z} }
 \def\LaTeXligaturesLC{\oe\ \ae\ \ss\ }
 \def\LaTeXligaturesUC{\OE\ \AE\ \SS\ }
 \def\LaTeXotherLC{\guillemotleft\ \o\ \l\ \guillemotright\ \textquestiondown\ %
@@ -61,7 +63,7 @@
 \section*{Introduction}
 
 This document is intended to check the support of diacritical marks (accents) 
-and ligatures found in different languages written with the latin alphabet.
+and ligatures found in different languages written with the Latin alphabet.
 
 For most of them, two ways of encoding are tested: UTF8 et \LaTeX{} syntax.
 
