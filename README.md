@@ -20,23 +20,21 @@ MAKEFILES are distributed to automate the building process (see section
 
 # Origin
 
-The LaTeX package as of version 0.5 is hosted on CTAN:
+The LaTeX package from version 0.5 onwards is hosted on CTAN:
 <https://ctan.org/pkg/moodle>
 
-The development happens on a private server hosting a [GITLAB](https://gitlab.com)
+The development happens on a server hosting a [GITLAB](https://gitlab.com)
 instance.
-The project is located at <https://gitlab.mattgk.myds.me/mattguer/moodle>.
+The project is located at <https://framagit.org/mattgk/moodle>.
 There, among other things, you can see the activity of the project and you
 can download the latest version of the project files.
 
 You can use GIT to access the project files using the command:
 
-    $ git clone "https://gitlab.mattgk.myds.me/mattguer/moodle.git"
+    $ git clone "https://framagit.org/mattgk/moodle.git"
 
 To gain write access to the project and contribute, you must have an account on
-this server. To create an account, there are two ways:
-1. visit <https://gitlab.mattgk.myds.me> and register
-2. contact [Matthieu Guerquin-Kern](mailto:guerquin-kern@crans.org).
+this server. Visit <https://framagit.org> and register.
 
 # Requirements
 
