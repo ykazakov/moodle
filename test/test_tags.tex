@@ -9,41 +9,36 @@
 \else % assuming XELATEX or LUALATEX
 	\usepackage{fontspec}
 \fi
-\usepackage[french]{babel} % for french quotes
 \begin{document}
 
 \section*{Introduction}
 
-This document is intended to check the support of tags (i.e. keywords). The 
-definition of multiple tags per question is currently unsupported.
+This document is intended to check the support of tags (i.e. keywords).
 
-\begin{quiz}[points=1,tags={quizz-level}]{Moodle Tags}
-	
-	\begin{multi}[tags={multiéàî}]{Title}
-		%\og abc\fg%\ae%\oe%
+\begin{quiz}[points=1,tags={quizz-level,{ leading whitespace},{with,  
+comma}}]{Moodle Tags}
+
+	\begin{multi}[tags={multiéàî,\AA\ae\oe}]{Title}%
 		\AA
 		\item[feedback={tic}] \ae
 		\item[feedback={tac}]* \oe
 	\end{multi}
 	
 	\begin{shortanswer}[]{Title}
-		%	%\og abc\fg%\ae%\oe
 		\AA
 		\item[feedback={toc}] B
-		\item[feedback={\og\fg}] C
+		\item[feedback={\guillemotleft\guillemotright}] C
 		\item[fraction=0] *
 	\end{shortanswer}
 	
 	\begin{numerical}[tags={}]{Title}
-		%	%\og abc\fg%\ae%\oe
 		\AA
 		\item[feedback={toc}] 1
-		\item[feedback={\og\fg}] 2
+		\item[feedback={\guillemotleft\guillemotright}] 2
 		\item[fraction=0] 3
 	\end{numerical}
 	
 	\begin{matching}[tags={m\aa tch\"ing}]{Title}
-		%\og abc\fg%\ae%\oe%
 		\AA
 		\item \ae \answer oui
 		\item \oe \answer non
@@ -51,11 +46,21 @@ definition of multiple tags per question is currently unsupported.
 	\end{matching}
 	
 	\begin{essay}[tags={essay}]{Title}
-		%\og abc\fg%\ae%\oe%
 		\AA
 		\item \ae yo
 		\item \oe
 	\end{essay}
+	
+	\begin{description}[tags={desc}]{Title}%
+		Text
+	\end{description}
+	
+	
+	\begin{truefalse}[tags={TF}]{Title}
+		\AA
+		\item* \ae yo
+		\item \oe
+	\end{truefalse}
 	
 	\begin{cloze}[tags={cloze}]{Cloze}
 		\AA
@@ -65,18 +70,18 @@ definition of multiple tags per question is currently unsupported.
 			\item[feedback={yes},fraction=10] chop
 			\item[feedback={no.}] chap
 		\end{multi}
-		\fg
+		\guillemotright
 		\begin{shortanswer}
 			\AA
 			\item[feedback={toc}] B
-			\item[feedback={\og\fg}] C
+			\item[feedback={\guillemotleft\guillemotright}] C
 			\item[fraction=0] *
 		\end{shortanswer}
-		\og
+		\guillemotleft
 		\begin{numerical}
 			\AA
 			\item[] 1
-			\item[feedback={\og\fg}] 2
+			\item[feedback={\guillemotleft\guillemotright}] 2
 			\item[fraction=0] 3
 		\end{numerical}
 		\begin{multi}[shuffle=false,vertical]
@@ -94,7 +99,7 @@ definition of multiple tags per question is currently unsupported.
 		\end{multi}
 		
 	\end{cloze}
-	
+
 \end{quiz}
 
 \end{document}

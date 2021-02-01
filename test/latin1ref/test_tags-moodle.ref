@@ -32,6 +32,7 @@
   </answer>
   <tags>
     <tag><text><![CDATA[multiéàî]]></text></tag>
+    <tag><text><![CDATA[&Aring;&aelig;&oelig;]]></text></tag>
   </tags>
 </question>
 <question type="shortanswer">
@@ -59,6 +60,8 @@
   </answer>
   <tags>
     <tag><text><![CDATA[quizz-level]]></text></tag>
+    <tag><text><![CDATA[ leading whitespace]]></text></tag>
+    <tag><text><![CDATA[with, comma]]></text></tag>
   </tags>
 </question>
 <question type="numerical">
@@ -140,6 +143,43 @@
   <responsetemplate format="html"><text/></responsetemplate>
   <tags>
     <tag><text><![CDATA[essay]]></text></tag>
+  </tags>
+</question>
+<question type="description">
+  <name format="html">
+    <text><![CDATA[Title]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Text</p>]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <tags>
+    <tag><text><![CDATA[desc]]></text></tag>
+  </tags>
+</question>
+<question type="truefalse">
+  <name format="html">
+    <text><![CDATA[Title]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>&Aring;</p>]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>1</penalty>
+  <hidden>0</hidden>
+  <answer fraction="100" format="plain_text">
+    <text>true</text>
+    <feedback format="html"><text><![CDATA[<p> &aelig;yo </p>]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="plain_text">
+    <text>false</text>
+  </answer>
+  <tags>
+    <tag><text><![CDATA[TF]]></text></tag>
   </tags>
 </question>
 <question type="cloze">

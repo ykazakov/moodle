@@ -17,7 +17,7 @@
 % The Current Maintainer of this work is Matthieu Guerquin-Kern.
 %
 % This work consists of the files moodle.dtx and moodle.ins
-% and the derived files moodle.sty and getitems.sty.
+% and the derived file moodle.sty.
 %
 % \fi
 %
@@ -459,21 +459,27 @@
 % may also be given by setting the |feedback| key \emph{at the individual answer}.
 %
 % \DescribeMacro{tags}
-% The |tags| key sets a keyword for the question that will be taken into account by Moodle for
-% filtering purposes or classification of questions inside the question bank. It is possible
-% for instance to build a quiz with questions cherry-picked among the set of questions holding
-% a particular tag.
+% The |tags| key sets a list of keywords for the question that will be taken into account
+% by Moodle for filtering purposes or classification of questions inside the question bank.
+% It is possible for instance to build a quiz with questions cherry-picked among the set of
+% questions holding a particular tag.
 % For example, one might set 
 % \begin{center}
 %   |tags={easy}|
 % \end{center}
-% The desired tag should be included in braces.
+% The desired tag should be specified in between braces. Multiple tags can be set as a
+% comma-separated list:
+% \begin{center}
+%   |tags={tag1,tag2,{ leading whitespace},{including, comma}}|
+% \end{center}
 %
-% Tags can be assigned at two levels.  If the |tags| key is set at the quiz level,
-% then that tags will be assigned by default to each question of the quiz.
+% Tags can be assigned at two levels. If the |tags| key is set at the quiz level,
+% then that tag list will serve as a default for each question of the quiz.
 % Question-specific tags can be assigned by setting the |tags| key \emph{at the question level}.
-% Since only single tag is supported, the tag a the question-level overrides eventual tags
-% specified at the quiz-level.
+% The question-level |tags| key overrides eventual quiz-level tags.
+% 
+% Users willing to specify a same tag for all questions of the quiz could
+% also rely on Moodle's category mechanism.
 % 
 % \subsection{\href{https://docs.moodle.org/en/Question_types}{Question Types}}
 % 
@@ -930,11 +936,11 @@
 % & &$\bullet$ & & $\bullet$ & $\bullet$ & $\bullet$ \\
 % \hspace{1em}Short Answer & $\bullet$ & & & & & & 
 % & $\bullet$ & & & $\bullet$ & $\bullet$ \\
-% \hspace{1em}Multi (regular) & $\bullet$ & & & & $\bullet$ & & $\bullet$ 
+% \hspace{1em}Multi (inline) & $\bullet$ & & & & $\bullet$ & & 
 % & & & & $\bullet$ & $\bullet$ \\
 % \hspace{1em}Multi (horizontal)& $\bullet$ & & & & $\bullet$ & & $\bullet$ 
 % & & & & $\bullet$ & $\bullet$ \\
-% \hspace{1em}Multi (vertical)& $\bullet$ & & & & $\bullet$ & & 
+% \hspace{1em}Multi (vertical)& $\bullet$ & & & & $\bullet$ & & $\bullet$ 
 % & & & & $\bullet$ & $\bullet$ \\
 % \bottomrule
 % \end{tabular}
@@ -1430,7 +1436,7 @@
 %yes & $\varnothing$& $\varnothing$ \\\cmidrule(lr){1-1}
 %\hspace{1em}Numerical & yes & no\tnote{1} & yes \\
 %\hspace{1em}Short Answer & yes & no\tnote{1} & yes\tnote{7} \\
-%\hspace{1em}Multi (regular) & yes & no\tnote{2} & yes\tnote{7} \\
+%\hspace{1em}Multi (inline) & yes & no\tnote{2} & yes\tnote{7} \\
 %\hspace{1em}Multi (horizontal) & yes & yes & yes \\
 %\hspace{1em}Multi (vertical) & yes & yes & yes \\\bottomrule
 %\end{tabular}
@@ -1590,7 +1596,6 @@
 %^^A   \item Calculated questions; that is, automatically generated numerical questions 
 %^^A         using randomly chosen numbers.
 %   \item Hints
-%   \item Multiple keywords (tags) for questions
 % \end{itemize}
 % The authors have used this package together with a limited number of colleagues
 % for a few semesters of teaching. If other users adopt this package, we fully expect them
@@ -1645,6 +1650,8 @@
 %       \item Support for en-dash (--) outside of math mode.
 %       \item Support for |\%| in conversion to HTML.
 %       \item Command |\htmlonly[]{}| to pass HTML contents directly to the XML file.
+%     \changed
+%       \item The |tags| key can now be used to specify a comma-separated list of tags.
 %     \fixed
 %       \item Answer text of shortanswer questions is converted to HTML.
 %       \item Paragraph breaks in multi and essay items no longer break compilation.
@@ -2166,21 +2173,29 @@
   }%
 }%
 
-\def\generate@moodle@write@tags#1{%
-  % #1 = NAME for \moodle@writeNAME
-  % #3 = what, exactly, to write
-  \xa\gdef\csname moodle@writetags\endcsname{%
-    %\xa\xa\xdef\xa\xa\ds\xa\xa{Encountered '\string #1'}\show\ds
-    \xa\xdef\xa\test@iii\xa{\moodle@tags}%
-    \ifx\test@iii\@moodle@empty\relax\else
-      \xa\converttohtmlmacro\xa\moodle@htmltowrite\xa{\moodle@tags}%
-      \writetomoodle[2]{  <tags>}%
+\def\moodle@writetags{%
+  \xa\xdef\xa\test@iii\xa{\moodle@tags}%
+  \ifx\test@iii\@moodle@empty\relax\else
+    \writetomoodle[2]{  <tags>}%
+    \renewcommand*{\do}[1]{%
+      \def\moodle@tagtext{##1}%
+      \xa\converttohtmlmacro\xa\moodle@htmltowrite\xa{\moodle@tagtext}%
       \writetomoodle[4]{    <tag><text><![CDATA[\moodle@htmltowrite]]></text></tag>}%
-      \writetomoodle[2]{  </tags>}%
-    \fi
-  }%
+    }
+    \xa\docsvlist\xa{\moodle@tags}%
+    \writetomoodle[2]{  </tags>}%
+  \fi
 }%
-
+\newif\ifmoodle@firsttag
+\moodle@firsttagtrue
+\def\moodle@latex@writetags{%
+  \xa\xdef\xa\test@iii\xa{\moodle@tags}%
+  \ifx\test@iii\@moodle@empty\relax\else
+    \hfill tags: %
+    \renewcommand*{\do}[1]{\ifmoodle@firsttag\moodle@firsttagfalse\else, \fi\texttt{##1}}%
+    \xa\docsvlist\xa{\test@iii}%
+  \fi
+}%
 %    \end{macrocode}
 % \subsubsection{Keys for all question types}
 %    \begin{macrocode}
@@ -2255,9 +2270,7 @@
       %which defines a "tag" (i.e., keyword) for the question.
       %Key calls like [tags={random}] set \moodle@tags.
       \define@cmdkey{moodle}[moodle@]{tags}[]{}%
-      \generate@moodle@write@tags{\csname moodle@tags\endcsname}%
-      \moodleset{tags}%
-% TODO: handle multiple 'tags' for one question
+      \moodleset{tags={}}%
 
 %    \end{macrocode}
 % \subsubsection{Keys for all answers}
@@ -2611,10 +2624,7 @@
       \ifmoodle@handout
         \moodle@makelatextag@qtype{#1}
       \else
-        \xa\xdef\xa\test@iii\xa{\moodle@tags}%
-        \ifx\test@iii\@moodle@empty\relax\else
-          \hfill tags: \texttt{\moodle@tags}
-        \fi
+        \moodle@latex@writetags
         \par
         \noindent
         \moodle@makelatextag@qtype{#1}
@@ -2653,41 +2663,41 @@
 % Description blocks can be empty. In this case, nothing is done.
 %
 %    \begin{macrocode}
-\let\description\relax% remove the meaning of existing \description and \enddescription
-\let\enddescription\relax
-\NewEnviron{description}[2][]{%
-  \bgroup
-    \setkeys{moodle}{#1,questionname={#2}}%
-    \let\moodle@questiontext=\BODY
-    \trim@spaces@in\moodle@questiontext
-    \ifx\moodle@questiontext\@empty\relax\else%
-      %First, the LaTeX processing.
-      \item \textbf{\moodle@questionname}
-      \ifmoodle@handout\else
-        \xa\xdef\xa\test@iii\xa{\moodle@tags}%
-        \ifx\test@iii\@moodle@empty\relax\else
-          \hfill tags: \texttt{\moodle@tags}%
+\AfterEndPreamble{% in case something like \usepackage[french]{babel} is loaded
+  \let\description\relax% remove the meaning of existing \description and \enddescription
+  \let\enddescription\relax
+
+  \NewEnviron{description}[2][]{%
+    \bgroup
+      \setkeys{moodle}{#1,questionname={#2}}%
+      \let\moodle@questiontext=\BODY
+      \trim@spaces@in\moodle@questiontext
+      \ifx\moodle@questiontext\@empty\relax\else%
+        %First, the LaTeX processing.
+        \item \textbf{\moodle@questionname}
+        \ifmoodle@handout\else
+          \moodle@latex@writetags
+          \par
+          \noindent
         \fi
-        \par
+        \moodle@makelatextag@qtype{description}\par
         \noindent
-      \fi
-      \moodle@makelatextag@qtype{description}\par
-      \noindent
-      \moodle@questiontext\par
-      \ifmoodle@handout\else
-        \ifx\moodle@feedback\@empty\relax\else
-          \fbox{\parbox{\linewidth}{\emph{\moodle@feedback}}}%
+        \moodle@questiontext\par
+        \ifmoodle@handout\else
+          \ifx\moodle@feedback\@empty\relax\else
+            \fbox{\parbox{\linewidth}{\emph{\moodle@feedback}}}%
+          \fi
         \fi
+        %Now, writing information to memory.
+        \@moodle@ifgeneratexml{%
+          \writetomoodle{<question type="description">}%
+          \moodle@writecommondata
+          \moodle@writetags%
+          \writetomoodle{</question>}%
+        }{}%
       \fi
-      %Now, writing information to memory.
-      \@moodle@ifgeneratexml{%
-        \writetomoodle{<question type="description">}%
-        \moodle@writecommondata
-        \moodle@writetags%
-        \writetomoodle{</question>}%
-      }{}%
-    \fi
-  \egroup
+    \egroup
+  }%
 }%
 %    \end{macrocode}
 %
@@ -2721,10 +2731,7 @@
       \ifmoodle@handout
         \moodle@makelatextag@qtype{essay}
       \else
-        \xa\xdef\xa\test@iii\xa{\moodle@tags}%
-        \ifx\test@iii\@moodle@empty\relax\else
-          \hfill tags: \texttt{\moodle@tags}
-        \fi
+        \moodle@latex@writetags
         \par
         \noindent
         \moodle@makelatextag@qtype{essay}
@@ -3389,10 +3396,7 @@
       \ifmoodle@handout
         \moodle@makelatextag@qtype{truefalse}
       \else
-        \xa\xdef\xa\test@iii\xa{\moodle@tags}%
-        \ifx\test@iii\@moodle@empty\relax\else
-          \hfill tags: \texttt{\moodle@tags}
-        \fi
+        \moodle@latex@writetags
         \par
         \noindent
         \moodle@makelatextag@qtype{truefalse}
@@ -3786,10 +3790,7 @@
       \ifmoodle@handout
         \moodle@makelatextag@qtype{cloze}
       \else
-        \xa\xdef\xa\test@iii\xa{\moodle@tags}%
-        \ifx\test@iii\@moodle@empty\relax\else
-          \hfill tags: \texttt{\moodle@tags}
-        \fi
+        \moodle@latex@writetags
         \par
         \noindent
         \moodle@makelatextag@qtype{cloze}
