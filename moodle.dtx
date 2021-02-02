@@ -1033,9 +1033,8 @@
 % Again, this works only if the macros are defined \emph{without} optional
 % argument.
 % 
-% If you think of another \LaTeX\ command that should be changed to an HTML equivalent, 
-% please contact the maintainer at \url{guerquin-kern AT crans.org}
-% so that it may be added to a future revision of the package.
+% If you think of another \LaTeX\ command that should be changed to an HTML
+% equivalent, please have a look at Section~\ref{sec:dev}.
 % 
 % \section{Graphics}
 % The \textsf{moodle} package can handle two kinds of graphics seamlessly.
@@ -1322,7 +1321,7 @@
 % the same prototype.
 % 
 % We suggest to apply a specific tag to these questions. After import in Moodle, when creating
-% a quizz, this tag can be selected to narrow down a random selection of question.
+% a quizz, this tag can be selected to narrow down a random selection of questions.
 % This would mimic the behavior of calculated questions while bringing the flexibility of your
 % favorite scripting language.
 % 
@@ -1402,9 +1401,8 @@
 % These two codes yield the same XML content.
 % 
 % \section{Known Limitations and Call for Bug Reports}
-% Table~\ref{tab:support-limitations} lists some different features supported, limitations, and
+% Table~\ref{tab:support-limitations} lists some features supported, limitations, and
 % bugs.
-%
 %\begin{table}[tbp]
 %\centering
 %\begin{threeparttable}[b]
@@ -1462,10 +1460,8 @@
 %\end{tablenotes}
 %\end{threeparttable}
 %\end{table}
-%
 % Tables~\ref{tab:diacritical}, \ref{tab:ligatures}, and \ref{tab:other} describe the current
-% support for some special characters, accents and other diacritical marks.
-%
+% state of support special characters, accents and other diacritical marks.
 %\begin{table}[tbp]
 % \centering
 % \caption{Support for diacritical marks 
@@ -1588,6 +1584,7 @@
 % \end{tablenotes}
 % \end{threeparttable}
 % \end{table}
+%
 % Some features of Moodle quizzes have not yet been implemented in \textsf{moodle}.
 % Here is a non-exhaustive list.
 % \begin{itemize}
@@ -1596,11 +1593,11 @@
 %^^A   \item Calculated questions; that is, automatically generated numerical questions 
 %^^A         using randomly chosen numbers.
 %   \item Hints
+%   \item Units handling in numerical questions
 % \end{itemize}
 % The authors have used this package together with a limited number of colleagues
 % for a few semesters of teaching. If other users adopt this package, we fully expect them
-% to find bugs. \emph{Please} send all bugs you find to \href{mailto:guerquin-kernATcrans.org}
-% {guerquin-kern AT crans.org}, so that we can fix them for subsequent versions.
+% to find bugs. If you run into a problem, please have a look at Section~\ref{sec:dev}.
 % 
 % \section{Compatibility}
 % This package has been originally written for and tested with the implementation of 
@@ -1611,8 +1608,8 @@
 % 
 % As the ultimate purpose of this package is the generation of XML files,
 % future versions of \textsf{moodle} will attempt to maintain backwards 
-% compatability with earlier versions regarding the XML output, apart from
-% bug fixes.  
+% compatibility with earlier versions regarding the XML output, apart from
+% bug fixes.
 % Backwards compatibility of the PDF output is not yet guaranteed, however,
 % in case the author or users discover better ways for the PDF to display 
 % the underlying XML data to be proofread.
@@ -1634,12 +1631,44 @@
 % but turn ``MathJax'' \emph{on}.  This forces \TeX\ code to be rendered by MathJax
 % instead of Moodle, producing much higher-quality results.
 % 
+% \clearpage
+% \section{Package Development}\label{sec:dev}
+% This package is developed as a collaborative project, currently hosted
+% on the Gitlab server instance \url{https://framagit.org/mattgk/moodle}.
+% The project's activity can be monitored there: reported issues, last
+% modifications, \dots
+%
+% Contributions, either bug reports or fixes, are welcome. Users willing to
+% help can either sign-in with an existing \textsf{GitHub}, \textsf{Gitlab.com}, or
+% \textsf{Bitbucket} account or register a new account.
+%
+% Of course, getting in touch with the package maintainer by
+% \href{mailto:guerquin-kernATcrans.org}{email} works as well.
+%
+% When experiencing a problem and before reporting it, please check whether
+% or not something similar has already been filed as an issue
+% \href{https://framagit.org/mattgk/moodle/-/issues?scope=all&state=all}{here}.
+% If the problem appears to be new, please report it by following these steps:
+% \begin{enumerate}
+% \item Prepare a \emph{minimal} working example, i.e. a |.tex| file shunk down
+% to the strict minimum (loaded packages, code, \dots) while still showing the
+% faulty behavior upon compilation.
+% \item Gather and send the |*.tex|, |*.log| and |*-moodle.xml| files together
+% with an explanation about
+%   \begin{itemize}
+%     \item your working environment (\TeX\ engine and distribution, operating
+%        system, \dots),
+%     \item the faulty behavior, and
+%     \item what you expected instead.
+%   \end{itemize}
+% \end{enumerate}
+% 
 % ^^A\clearpage
 % \changes{v0.5}{2016/01/05}{Initial version}
 % \changes{v0.6}{2019/02/18}{Bux-fixing release}
 % \changes{v0.7}{2020/07/09}{Feature extensions}
 % \changes{v0.8}{2021/01/04}{Bug fixes and feature extensions}
-% \changes{v0.9}{2021/xx/yy}{Bug fixes}
+% \changes{v0.9}{2021/xx/yy}{Bug fixes and feature extensions}
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version}[] ^^A version=0.9,date=
 %     \added
