@@ -5790,7 +5790,7 @@
 %    \begin{macrocode}
 \ifwindows
   \def\ConvertToBaseLXIV#1#2{%
-    \def\cmdline{\baselxiv\otherspace -encode "#1#2"\otherspace tmp.b64 && findstr /vbc:"---" tmp.b64 > "#1.enc" && del tmp.b64"}%
+    \def\cmdline{\baselxiv\otherspace -encode "#1#2"\otherspace tmp.b64 && findstr /vbc:"---" tmp.b64 > "#1.enc" && del tmp.b64}%
     \message{moodle.sty:   Converting '#1#2' to base64...^^J}%
     \xa\ShellEscape\xa{\cmdline}%
   % Starting from Windows 7, CertUtil is included by default. There should be no windows XP still running
