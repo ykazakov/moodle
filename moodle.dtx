@@ -604,6 +604,21 @@
 % Note that, in this example, negative fractions are set for wrong choices. This
 % prevents students selecting all options to obtain a good grade with no merit.
 % 
+% \DescribeMacro{allornothing}
+% There also exists a \href{https://moodle.org/plugins/qtype_multichoiceset}
+% {``All-or-Nothing Multiple Choice''} plugin for Moodle that introduces a
+% question type similar to a multiple choice with multiple correct answers,
+% with the specificity that the points are given if and only if the student
+% selects all correct answers. This kind of question is set up using the
+% |allornothing| key.
+% The recommended way for designating correct answers is with |\item*|. If instead
+% the |fraction| is used, \textsf{moodle} moodle will consider that non-negative
+% fractions ($>0$) designate correct answers and negative fractions ($\leq 0$)
+% designate incorrect choices.
+% The option |allornothing| supersedes the options |multiple| and |single|.
+% To the best of our knowledge, Moodle does not offer the all-or-nothing behavior
+% for multiple choice questions embedded inside a cloze question.
+% 
 % \subsubsection{\href{https://docs.moodle.org/en/Numerical_question_type}{Numerical}}
 %
 % A numerical question in Moodle requires the student
@@ -897,51 +912,51 @@
 % \caption{Options offered at the question and answer levels for each question type.}
 % \label{tab:key-options}
 % \small
-% \begin{tabular}{*{14}{l}}
+% \begin{tabular}{*{15}{l}}
 % \toprule
-% & \multicolumn{10}{l}{Question} & \multicolumn{3}{l}{Answer}\\
-% \cmidrule(lr){2-11}\cmidrule(lr){12-14}
+% & \multicolumn{11}{l}{Question} & \multicolumn{3}{l}{Answer}\\
+% \cmidrule(lr){2-12}\cmidrule(lr){13-15}
 % Question type & \rotatebox{90}{points} & 
 % \rotatebox{90}{penalty} & \rotatebox{90}{feedback} & \rotatebox{90}{tags} & 
 % \rotatebox{90}{shuffle} & \rotatebox{90}{numbering} & \rotatebox{90}{multiple} &
-% \rotatebox{90}{usecase} & \rotatebox{90}{tolerance} &\rotatebox{90}{dd} &
-% \rotatebox{90}{fraction} & \rotatebox{90}{feedback} & 
+% \rotatebox{90}{allornothing} &\rotatebox{90}{usecase} & \rotatebox{90}{tolerance} &
+% \rotatebox{90}{dd} & \rotatebox{90}{fraction} & \rotatebox{90}{feedback} & 
 % \rotatebox{90}{tolerance}\\\cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}
 % \cmidrule(lr){4-4}\cmidrule(lr){5-5}\cmidrule(lr){6-6}\cmidrule(lr){7-7}
 % \cmidrule(lr){8-8}\cmidrule(lr){9-9}\cmidrule(lr){10-10}\cmidrule(lr){11-11}
-% \cmidrule(lr){12-12}\cmidrule(lr){13-13}\cmidrule(lr){14-14}
+% \cmidrule(lr){12-12}\cmidrule(lr){13-13}\cmidrule(lr){14-14}\cmidrule(lr){15-15}
 % \href{https://docs.moodle.org/35/en/Multiple_Choice_question_type} 
 % {Multichoice} & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & 
-% $\bullet$ & $\bullet$ & $\bullet$ & & & & $\bullet$ & $\bullet$ \\
+% $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & & $\bullet$ & $\bullet$ \\
 % \href{https://docs.moodle.org/35/en/Numerical_question_type}{Numerical}
-% & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & 
+% & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & &
 % & & $\bullet$ & & $\bullet$ & $\bullet$ & $\bullet$ \\
 % \href{https://docs.moodle.org/35/en/Short-Answer_question_type}{Short
-% Answer} & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & 
+% Answer} & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & &
 % & $\bullet$ & & & $\bullet$ & $\bullet$ \\
 % \href{https://docs.moodle.org/35/en/Matching_question_type}{Matching}
-% & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & 
+% & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & 
 % & & & $\bullet$ & $\bullet$ & \\
 % \href{https://docs.moodle.org/35/en/True/False_question_type}
-% {True/False} & $\bullet$ & & $\bullet$ & $\bullet$ & & & 
+% {True/False} & $\bullet$ & & $\bullet$ & $\bullet$ & & & &
 % & & & & & $\bullet$ \\
 % \href{https://docs.moodle.org/35/en/Description_question_type} 
-% {Description} & & & $\bullet$ & $\bullet$ & & & 
+% {Description} & & & $\bullet$ & $\bullet$ & & & &
 % & & & & & \\
 % ^^A\href{https://docs.moodle.org/35/en/Essay_question_type}{Essay} & \\\hline%
 % \href{https://docs.moodle.org/35/en/Embedded_Answers_(Cloze)_question_type}{Cloze}
-% & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & 
+% & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & &
 % & & & & & \\\cmidrule(lr){1-1}
-% \hspace{1em}Numerical & $\bullet$ & & & & & & 
+% \hspace{1em}Numerical & $\bullet$ & & & & & & &
 % & &$\bullet$ & & $\bullet$ & $\bullet$ & $\bullet$ \\
-% \hspace{1em}Short Answer & $\bullet$ & & & & & & 
+% \hspace{1em}Short Answer & $\bullet$ & & & & & & &
 % & $\bullet$ & & & $\bullet$ & $\bullet$ \\
-% \hspace{1em}Multi (inline) & $\bullet$ & & & & $\bullet$ & & 
+% \hspace{1em}Multi (inline) & $\bullet$ & & & & $\bullet$ & & &
 % & & & & $\bullet$ & $\bullet$ \\
 % \hspace{1em}Multi (horizontal)& $\bullet$ & & & & $\bullet$ & & $\bullet$ 
-% & & & & $\bullet$ & $\bullet$ \\
+% & & & & & $\bullet$ & $\bullet$ \\
 % \hspace{1em}Multi (vertical)& $\bullet$ & & & & $\bullet$ & & $\bullet$ 
-% & & & & $\bullet$ & $\bullet$ \\
+% & & & & & $\bullet$ & $\bullet$ \\
 % \bottomrule
 % \end{tabular}
 % \end{table}
@@ -1672,6 +1687,8 @@
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version}[] ^^A version=0.9,date=
 %     \added
+%       \item Support for \href{https://docs.moodle.org/310/en/All_or_nothing_multiple_choice_question_type}
+%             {all-or-nothing multiple choice} questions.
 %       \item Support for the ogonek diacritical mark via |\k|\marg{\dots}.
 %       \item Warn user of the \texttt{babel} package set for a German-related language
 %             that using the character |"| will not play well with \textsf{moodle}.
@@ -1845,10 +1862,14 @@
 %     1) whether we can convert output from PDF to PNG (ifpdf), 
 %     2) when output pdf is latin1-encoded (ifpdf)
 %     3) when output xml is utf8-encoded (if?tex)
-\ifeTeX\else
-  \RequirePackage{etex}}{} % Recent (2015+) TeX engines should be e-TeX.
-  %This is needed for expansion control, detokenization, etc.
-\fi
+\@ifundefined{ifeTeX}{% version of 'iftex' prior to November 2019.
+  \RequirePackage{etex}{}
+}{
+  \ifeTeX\else
+    \RequirePackage{etex}{} % Recent (2015+) TeX engines should be e-TeX.
+    %This is needed for expansion control, detokenization, etc.
+  \fi
+}
 \RequirePackage{etoolbox}%List management
 \RequirePackage{xpatch}  %To patch commands easily in HTML mode
 \RequirePackage{array}   %For formatting tables in the LaTeX mode of Clozes
@@ -2329,6 +2350,11 @@
       \define@boolkey{moodle}[moodle@]{shuffle}[true]{}%
       \generate@moodle@write@code*{shuffle}<shuffleanswers>{\ifmoodle@shuffle 1\else 0\fi}%
       \moodleset{shuffle=true}%
+
+%% ALLORNOTHING -- for multichoice with multiple answers where all the points are given
+%                  if and only if all the correct answers are selected.
+      \define@boolkey{moodle}[moodle@]{allornothing}[true]{}%
+      \moodleset{allornothing=false}%
 
 %% TODO: CORRECTFEEDBACK
 %% TODO: PARTIALLYCORRECTFEEDBACK
@@ -3133,10 +3159,19 @@
 % LATEX PROCESSING
 
 \def\moodle@makelatextag@multi{%
-  \ifmoodle@multiple
-    \moodle@makelatextagbox{Multiple}\relax%
+  \ifmoodle@allornothing
+    \ifx\endmulti\endclozemulti
+      \PackageError{moodle}{Unsupported option "allornothing" for a multichoice subquestion}
+      {Please set "allornothing=false"}%
+    \else
+      \moodle@makelatextagbox{All-or-nothing}%
+    \fi
   \else
-    \moodle@makelatextagbox{Single}\relax%
+    \ifmoodle@multiple
+      \moodle@makelatextagbox{Multiple}%
+    \else
+      \moodle@makelatextagbox{Single}%
+    \fi
   \fi
   \ifmoodle@handout\else
     \ifmoodle@shuffle
@@ -3146,6 +3181,9 @@
 }
 
 \def\moodle@multi@latexprocessing{%
+  \ifmoodle@allornothing
+    \moodle@singletrue
+  \fi
   \moodle@countcorrectanswers%
   \ifmoodle@handout\NewList{answerlist}\fi
   \begin{enumerate}\moodle@obeynumberingstyle%
@@ -3197,11 +3235,11 @@
         \ifx\moodle@fraction\@empty\relax%
           \setkeys{moodle}{fraction=0}%
         \fi
+        \moodle@checkfraction
         \ifx\moodle@fraction\@hundred%
           \trim@spaces@in\moodle@answertext%
           \g@addto@macro\moodle@answertext{$~\checkmark$}%
         \else
-          \moodle@checkfraction
           \ifdim0pt=\moodle@fraction pt\relax\else%
             \g@addto@macro\moodle@answertext{$~(\moodle@fraction\%)$}%
           \fi
@@ -3327,7 +3365,15 @@
        \fi
      \fi
    }
-   \def\moodle@checkfraction{%
+ \def\moodle@checkfraction{%
+   \ifmoodle@allornothing
+     \ifnum\moodle@fraction>0%
+       \setkeys{moodle}{fraction=100}%
+     \fi
+     \ifnum\moodle@fraction<0%
+       \setkeys{moodle}{fraction=0}%
+     \fi
+   \else
      %\def\test@i{#1}%
      \setlength{\test@fraction}{\moodle@fraction pt}%
      % take the absolute value
@@ -3345,7 +3391,8 @@
      \else
        \setkeys{moodle}{fraction=\test@fractionmatched}%
      \fi
-   }
+   \fi
+ }
 % TODO: Put these macros in same order as other sections'.
 
 % SAVING ANSWERS TO MEMORY
@@ -3358,6 +3405,9 @@
   \newcommand\savemultianswer@int[1][]{%
     \let\moodle@fraction\@empty%
     \setkeys{moodle}{#1}%
+    \ifmoodle@allornothing
+      \moodle@singletrue
+    \fi
     \savemultianswer@int@int%
   }%
   \long\def\savemultianswer@int@int#1#2\moodle@answer@rdelim{%
@@ -3395,9 +3445,12 @@
 
 % WRITING QUESTION TO XML FILE
 \gdef\writemultiquestion{%
-  \writetomoodle{<question type="multichoice">}%
+  
+    \writetomoodle{<question type="multichoice\ifmoodle@allornothing set\fi">}%
     \moodle@writecommondata%
-    \moodle@writesingle%
+    \ifmoodle@allornothing\else
+      \moodle@writesingle%
+    \fi
     \moodle@writeshuffle%
     \moodle@writeanswernumbering%
 }%
