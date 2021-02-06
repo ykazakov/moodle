@@ -1697,6 +1697,7 @@
 %       \item Support for |\%| in conversion to HTML.
 %       \item Command |\htmlonly[]{}| to pass HTML contents directly to the XML file.
 %     \changed
+%       \item The total number of marks is shown in the PDF at the end of each quiz.
 %       \item The |tags| key can now be used to specify a comma-separated list of tags.
 %     \fixed
 %       \item Answer text of shortanswer questions is converted to HTML.
@@ -2037,6 +2038,7 @@
 }{}%
 }}%
 \newcommand*\@enumeratename{enumerate}%
+\newdimen\moodle@totalmarks \moodle@totalmarks=0pt%
 \newenvironment{quiz}[2][]{%
   \setkeys{moodle}{#1}%
   \gdef\setcategory##1{%
@@ -2085,6 +2087,7 @@
   \setcategory{#2}%
 }{%
   \end{enumerate}%
+  \emph{Total of marks: \strip@pt\moodle@totalmarks}%
   \let\setcategory\relax
   \let\setsubcategory\relax
 }%
@@ -2672,6 +2675,7 @@
   \NewEnviron{#1}[2][]{%
     \bgroup
       \setkeys{moodle}{##1,questionname={##2}}%
+      \global\advance\moodle@totalmarks by \csname moodle@default grade\endcsname pt
       \expandafter\gatheritems\xa{\BODY}%
       \let\moodle@questionheader=\gatheredheader
       %First, the LaTeX processing
@@ -2778,6 +2782,7 @@
 \NewEnviron{essay}[2][]{%
   \bgroup
     \setkeys{moodle}{#1,questionname={#2}}%
+    \global\advance\moodle@totalmarks by \csname moodle@default grade\endcsname pt
     \moodle@checkresponsefieldlines
     \expandafter\gatheritems\expandafter{\BODY}%
     \let\moodle@questionheader=\gatheredheader
@@ -3471,6 +3476,7 @@
 \NewEnviron{truefalse}[2][]{%
     \bgroup
       \setkeys{moodle}{#1,questionname={#2}}%
+      \global\advance\moodle@totalmarks by \csname moodle@default grade\endcsname pt
       \expandafter\gatheritems\xa{\BODY}%
       \let\moodle@questionheader=\gatheredheader
       %First, the LaTeX processing
@@ -3865,6 +3871,7 @@
   \bgroup
     \setkeys{moodle}{default grade=1}%
     \setkeys{moodle}{#1,questionname={#2}}%
+    \global\advance\moodle@totalmarks by \csname moodle@default grade\endcsname pt
     % A cloze question won't have any \item's in it, so we just use \BODY.
     \moodle@enableclozeenvironments
     %First, the LaTeX processing.
