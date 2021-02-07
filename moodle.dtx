@@ -28,7 +28,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\ProvidesPackage{moodle}
 %<*package>
-    [2021/01/04 v0.8 Moodle quiz XML generation]
+    [2021/02/07 v0.9 Moodle quiz XML generation]
 %</package>
 %
 %<*driver>
@@ -59,7 +59,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{7442} ^^A Comment \OnlyDescription above to adjust
+% \CheckSum{7729} ^^A Comment \OnlyDescription above to adjust
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -90,9 +90,9 @@
 % \author{Anders Hendrickson\footnote{original author of the package (\texttt{v0.5}), inactive.}\\	
 % \texttt{anders.o.f.hendrickson AT gmail.com} \and
 % Matthieu Guerquin-Kern\footnote{current maintainer, author of the updates (\texttt{v0.6}
-% to \texttt{v0.8}), partially funded by \href{https://www.ensea.fr/en/}{ENSEA Graduate School}, France.}\\
+% to \texttt{v0.9}), partially funded in 2019 by \href{https://www.ensea.fr/en/}{ENSEA Graduate School}, France.}\\
 % \href{mailto:guerquin-kern AT crans.org}{guerquin-kern AT crans.org}}
-% \date{January 4, 2021}
+% \date{February 7, 2021}
 % 
 % \maketitle
 %
@@ -1687,9 +1687,9 @@
 % \changes{v0.6}{2019/02/18}{Bux-fixing release}
 % \changes{v0.7}{2020/07/09}{Feature extensions}
 % \changes{v0.8}{2021/01/04}{Bug fixes and feature extensions}
-% \changes{v0.9}{2021/xx/yy}{Bug fixes and feature extensions}
+% \changes{v0.9}{2021/02/07}{Bug fixes and feature extensions}
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
-%   \begin{version}[] ^^A version=0.9,date=
+%   \begin{version}[version=0.9,date=2021-02-07]
 %     \added
 %       \item Support for \href{https://docs.moodle.org/310/en/All_or_nothing_multiple_choice_question_type}
 %             {all-or-nothing multiple choice} questions.
@@ -1979,7 +1979,7 @@
     \fi
     \writetomoodle{<!-- \moodle@stamp -->}%
     \def\moodle@stamp{running on \platformname}%
-    \g@addto@macro{\moodle@stamp}{ with the package moodle v0.8 }%
+    \g@addto@macro{\moodle@stamp}{ with the package moodle v0.9 }%
     \writetomoodle{<!-- \moodle@stamp -->}%
   \fi
   \immediate\write\moodle@outfile{}%
