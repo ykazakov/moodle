@@ -5694,7 +5694,10 @@
 % While the picture will be animated after Moodle import, it will not be in the PDF
 % output, whatever the viewer is.
     \DeclareGraphicsAlien{.gif}{.png}{\htmlize@imagemagick@convert\otherspace '\SourceFile[0]' \OutputFile}%
-  }{}%
+  }{
+    \newcommand\includegraphics[2][]{\PackageError{moodle}{"\string\includegraphics" is not defined}%
+                                          {Add "\string\usepackage{graphicx}" to you preamble.}}{}%}%
+  }%
 }%
 %    \end{macrocode}
 % \subsubsection{Graphics key-handling}
