@@ -1701,6 +1701,7 @@
 %       \item Support for |\%| in conversion to HTML.
 %       \item Command |\htmlonly[]{}| to pass HTML contents directly to the XML file.
 %     \changed
+%       \item An error is issued when a graphics conversion step fails.
 %       \item Irrelevant points are no longer written at the cloze question level in PDF and XML.
 %       \item The total number of marks is shown in the PDF at the end of each quiz.
 %       \item The |tags| key can now be used to specify a comma-separated list of tags.
@@ -5749,25 +5750,30 @@
       \SVGtoPDF\otherspace '\SourceFile' -o '\OutputFile' 2>/dev/null}%
   }%
 \fi
-
-\ifmoodle@tikz
-\AfterEndPreamble{%
-  %\htmlize@record@expand{\embedaspict}%
-  \let\oldincludegraphics=\includegraphics
-  % patching includegraphics to trigger externalization
-  \renewcommand{\includegraphics}[2][]{%
-    %\message{moodle.sty: Processing \string\includegraphics[#1]{#2} for HTML^^J}%
-    \tikz{\node[inner sep=0pt]{\oldincludegraphics[#1]{#2}};}%
-  }%
-  % externalized images must be included with the regular command
-  \pgfkeys{/pgf/images/include external/.code={\oldincludegraphics{#1}}}%
-  \html@action@newcommand{includegraphics}[2][]{%
-    \message{moodle.sty: Processing \string\includegraphics[#1]{#2} ^^J}
-    \global\advance\numpicturesread by 1\relax
-    \edef\htmlize@imagetag{<IMG SRC="data:\TikzExportMIME;base64,\csname picbaselxiv@\the\numpicturesread\endcsname">}%
-    \xa\g@addto@macro\xa\htmlize@output\xa{\htmlize@imagetag}%
+\def\moodle@checkconversionsuccess#1#2{%
+  \IfFileExists{#1}{}{%
+    \PackageError{moodle}{#2 failed}%
+    {If the XML file is not of importance to you: use package option "draft"}%
   }%
 }%
+\ifmoodle@tikz
+  \AfterEndPreamble{%
+    %\htmlize@record@expand{\embedaspict}%
+    \let\oldincludegraphics=\includegraphics
+    % patching includegraphics to trigger externalization
+    \renewcommand{\includegraphics}[2][]{%
+      %\message{moodle.sty: Processing \string\includegraphics[#1]{#2} for HTML^^J}%
+      \tikz{\node[inner sep=0pt]{\oldincludegraphics[#1]{#2}};}%
+    }%
+    % externalized images must be included with the regular command
+    \pgfkeys{/pgf/images/include external/.code={\oldincludegraphics{#1}}}%
+    \html@action@newcommand{includegraphics}[2][]{%
+      \message{moodle.sty: Processing \string\includegraphics[#1]{#2} ^^J}
+      \global\advance\numpicturesread by 1\relax
+      \edef\htmlize@imagetag{<IMG SRC="data:\TikzExportMIME;base64,\csname picbaselxiv@\the\numpicturesread\endcsname">}%
+      \xa\g@addto@macro\xa\htmlize@output\xa{\htmlize@imagetag}%
+    }%
+  }%
 \else
 \html@action@newcommand{includegraphics}[2][]{%
   \bgroup% The grouping is to localize the changes caused by \setkeys.
@@ -5817,6 +5823,7 @@
         \edef\cmdline{\PDFtoSVG\otherspace "\moodle@media@base\moodle@media@ext" -o "\moodle@media@base\moodle@media@ext@current" 2>/dev/null}%
         \message{moodle.sty:   Converting '#2' to SVG...^^J}%
         \xa\ShellEscape\xa{\cmdline}%
+        \moodle@checkconversionsuccess{\moodle@media@base\moodle@media@ext@current}{PDFtoSVG conversion}%
         %Next, optimize inline
         \ifwindows\else
           \edef\cmdline{\optiSVG < "\moodle@media@base\moodle@media@ext@current" >
@@ -5824,6 +5831,7 @@
            "\moodle@media@base\moodle@media@ext@current"}%
           \message{moodle.sty:   Optimizing '\moodle@media@base\moodle@media@ext@current'...^^J}%
           \xa\ShellEscape\xa{\cmdline}%
+          \moodle@checkconversionsuccess{\moodle@media@base\moodle@media@ext@current}{SVG optimization}%
         \fi
       \else% call ImageMagick
         \def\moodle@media@ext@current{.png}%
@@ -5831,10 +5839,12 @@
         \edef\cmdline{\htmlize@imagemagick@convert\otherspace "\moodle@media@base\moodle@media@ext" -resize \moodle@graphics@geometry\otherspace "\moodle@media@base\moodle@media@ext@current"}%
         \message{moodle.sty:   Converting '#2' to PNG...^^J}%
         \xa\ShellEscape\xa{\cmdline}%
+        \moodle@checkconversionsuccess{\moodle@media@base\moodle@media@ext@current}{ImageMagick conversion}%
         %Next, optimize inline
         \edef\cmdline{\optipng\otherspace "\moodle@media@base\moodle@media@ext@current"}%
         \message{moodle.sty:   Optimizing '\moodle@media@base\moodle@media@ext@current'...^^J}%
         \xa\ShellEscape\xa{\cmdline}%
+        \moodle@checkconversionsuccess{\moodle@media@base\moodle@media@ext@current}{PNG optimization}%
       \fi
     \fi
     %Next, convert the file to base64 encoding
@@ -5861,27 +5871,25 @@
 %    \end{macrocode}
 % This macro is in charge of throwing a system call to convert local files to base64.
 %    \begin{macrocode}
+\def\ConvertToBaseLXIV#1#2{%
+  \message{moodle.sty:   Converting '#1#2' to base64...^^J}%
+  \ConvertToBaseLXIV@int{#1}{#2}
+  \xa\ShellEscape\xa{\cmdline}%
+  \moodle@checkconversionsuccess{#1.enc}{Base64 conversion}%
+}%
 \ifwindows
-  \def\ConvertToBaseLXIV#1#2{%
-    \def\cmdline{\baselxiv\otherspace -encode "#1#2"\otherspace tmp.b64 && findstr /vbc:"---" tmp.b64 > "#1.enc" && del tmp.b64}%
-    \message{moodle.sty:   Converting '#1#2' to base64...^^J}%
-    \xa\ShellEscape\xa{\cmdline}%
-  % Starting from Windows 7, CertUtil is included by default. There should be no windows XP still running
-  }%  
+  \def\ConvertToBaseLXIV@int#1#2{%
+    \def\cmdline{\baselxiv\otherspace -encode "#1#2"\otherspace tmp.b64 && findstr /vbc:"---" tmp.b64 > "#1.enc" && del tmp.b64}%    
+  }% Starting from Windows 7, CertUtil is included by default. There should be no windows XP still running
 \else
   \ifmacosx
-    \def\ConvertToBaseLXIV#1#2{%
+    \def\ConvertToBaseLXIV@int#1#2{%
       \def\cmdline{\baselxiv\otherspace -b 64 -i "#1#2"\otherspace -o "#1.enc"}%
-      \message{moodle.sty:   Converting '#1#2' to base64...^^J}%
-      \xa\ShellEscape\xa{\cmdline}%
     }%
   \else % Linux, Cygwin
-    \def\ConvertToBaseLXIV#1#2{%
+    \def\ConvertToBaseLXIV@int#1#2{%
       \def\cmdline{\baselxiv\otherspace "#1#2"\otherspace > "#1.enc"}%
-      \message{moodle.sty:   Converting '#1#2' to base64...^^J}%
-      \xa\ShellEscape\xa{\cmdline}%
-    }%
-    % base64 is part of coreutils, add "-w 64" to get exactly the previous behavior  %
+    }% base64 is part of coreutils, add "-w 64" to get exactly the previous behavior  %
   \fi
 \fi
 %    \end{macrocode}
@@ -5936,32 +5944,44 @@
       \ifpdfoutput% tex engines defaulting to PDF output (pdflatex, xelatex, lualatex)
         \def\ExportTikz{ \message{moodle.sty: Converting picture '\moodle@basename.pdf' to SVG...^^J}%
                          \edef\cmdline{\PDFtoSVG\otherspace "\moodle@basename.pdf" -o "\moodle@basename\TikzExportExtension" 2>/dev/null}%
-                         \xa\ShellEscape\xa{\cmdline}}%
+                         \xa\ShellEscape\xa{\cmdline}%
+                         \moodle@checkconversionsuccess{\moodle@basename\TikzExportExtension}{PDFtoSVG conversion}%
+                       }%
       \else % latex
         \def\ExportTikz{ \message{moodle.sty: Converting picture '\moodle@basename.ps' to SVG...^^J}%
                          \edef\cmdline{\PDFtoSVG\otherspace "\moodle@basename.ps" -o "\moodle@basename\TikzExportExtension" 2>/dev/null}%
-                         \xa\ShellEscape\xa{\cmdline}}%
+                         \xa\ShellEscape\xa{\cmdline}%
+                         \moodle@checkconversionsuccess{\moodle@basename\TikzExportExtension}{PStoSVG conversion}%
+                       }%
       \fi
       \def\OptimizeExport{ \message{moodle.sty:   Optimizing '\moodle@basename.svg'...^^J}%
                            \edef\cmdline{\optiSVG\otherspace < "\moodle@basename\TikzExportExtension" >
                                          "\moodle@basename.tmp.svg" && mv "\moodle@basename.tmp.svg"
                                          "\moodle@basename\TikzExportExtension" }%
-                           \xa\ShellEscape\xa{\cmdline}}%
+                           \xa\ShellEscape\xa{\cmdline}%
+                           \moodle@checkconversionsuccess{\moodle@basename\TikzExportExtension}{SVG optimization}%
+                         }%
     \else
       \def\TikzExportExtension{.png}%
       \def\TikzExportMIME{image/png}%
       \ifpdfoutput% tex engines defaulting to PDF output (pdflatex, xelatex, lualatex)
         \def\ExportTikz{ \message{moodle.sty: Converting picture '\moodle@basename.pdf' to PNG...^^J}%
                          \edef\gscmdline{\gs\otherspace -sOutputFile=\moodle@basename\TikzExportExtension\otherspace -r150 \moodle@basename.pdf}%
-                         \xa\ShellEscape\xa{\gscmdline}}%
+                         \xa\ShellEscape\xa{\gscmdline}%
+                         \moodle@checkconversionsuccess{\moodle@basename\TikzExportExtension}{Ghostscript conversion}%
+                       }%
       \else % latex
         \def\ExportTikz{ \message{moodle.sty: Converting picture '\moodle@basename.ps' to PNG...^^J}%
                          \edef\gscmdline{\gs\otherspace -sOutputFile=\moodle@basename\TikzExportExtension\otherspace -r150 \\moodle@basename.ps}%
-                         \xa\ShellEscape\xa{\gscmdline}}%
+                         \xa\ShellEscape\xa{\gscmdline}%
+                         \moodle@checkconversionsuccess{\moodle@basename\TikzExportExtension}{Ghostscript conversion}%
+                       }%
       \fi
       \def\OptimizeExport{ \message{moodle.sty:   Optimizing '\moodle@basename.png'...^^J}%
                            \edef\cmdline{\optipng\otherspace \moodle@basename\TikzExportExtension}%
-                           \xa\ShellEscape\xa{\cmdline}}%
+                           \xa\ShellEscape\xa{\cmdline}%
+                           \moodle@checkconversionsuccess{\moodle@basename\TikzExportExtension}{PNG optimization}%
+                         }%
     \fi
     \let\moodle@oldtikzpicture=\tikzpicture
     %The following code lets us run things *before* the normal \begin{tikzpicture}.
@@ -5993,6 +6013,7 @@
         \ExportTikz
         \OptimizeExport
         \ConvertToBaseLXIV{\moodle@basename}{\TikzExportExtension}%
+        \IfFileExists{\moodle@basename.enc}{}{\PackageError{moodle}{Conversion failed}{Check your base64 conversion utiliy}}%
         \message{moodle.sty:   Reading base64 file '\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc'...^^J}%
         \savebaselxivdata
         \message{moodle.sty:   base64 data saved.^^J}%
