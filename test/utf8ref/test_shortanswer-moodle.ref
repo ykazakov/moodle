@@ -40,7 +40,6 @@
   <questiontext format="html">
     <text><![CDATA[<p>Enter the string <CODE>&rdquo;40%&rdquo;</CODE>. {1:SHORTANSWER:=40%#correct \((1+\sqrt {5\})/2\)~%50%40#incomplete \((1+\sqrt {5\})/2\)~%50%%#incomplete \((1+\sqrt {5\})/2\)}</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>

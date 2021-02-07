@@ -63,7 +63,6 @@
   <questiontext format="html">
     <text><![CDATA[<p>Give a number {1:NUMERICAL:=1:4~=0:3~*#nope}Give a number {1:NUMERICAL:=1:4~=0:2~*#nope}</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
@@ -75,7 +74,6 @@
   <questiontext format="html">
     <text><![CDATA[<p>Give a number {1:NUMERICAL:=1,45e-3:1,65E-4~=0:0~*#nope}</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>

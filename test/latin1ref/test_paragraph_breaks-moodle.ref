@@ -36,7 +36,6 @@
   <questiontext format="html">
     <text><![CDATA[<p>A {1:MULTICHOICE_VS:=B <BR/>C~D}</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>

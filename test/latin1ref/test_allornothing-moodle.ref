@@ -145,7 +145,6 @@
   <questiontext format="html">
     <text><![CDATA[<p>text {1:MULTICHOICE_S:=a~%20%b~%-30%c~d}</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>

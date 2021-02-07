@@ -39,7 +39,6 @@
   <questiontext format="html">
     <text><![CDATA[<p>\[\frac {\partial ^{2} g}{\partial ^{2} t}(t).\] {1:MULTICHOICE_VS:\(g&rsquo;(t)\)~=\(g&rsquo;&rsquo;(t)\)~\(g&rsquo;&rsquo;&rsquo;(t)\)}</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>

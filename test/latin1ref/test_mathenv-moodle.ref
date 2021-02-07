@@ -43,7 +43,6 @@
   <questiontext format="html">
     <text><![CDATA[<p>\[\begin {array}{c}$1\\2\end {array}\] <BR/>\[\begin {array}{c}$1\\2\end {array}\] <BR/>\(\begin {array}{c}$1\\2\end {array}\) {1:MULTICHOICE_VS:=\($\sqrt {25\}\)~6~=7#\[$\sqrt {25\}\]~%10%8}</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>

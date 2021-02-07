@@ -15,7 +15,6 @@
   <questiontext format="html">
     <text><![CDATA[<p>Enter an integer \(n\) such that \(0&lt; n\leq 2\). {1:NUMERICAL:%10%0:0.001#study difference between \(&lt;\) and \(\leq \)~=1:0.01#good!~=2:0.1#OK}</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>

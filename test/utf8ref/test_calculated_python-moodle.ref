@@ -15,7 +15,6 @@
   <questiontext format="html">
     <text><![CDATA[<p>Solve the following tasks!<BR/> \(3 + 2 =\){1:NUMERICAL:=5:0}\(3 - 2 =\){1:NUMERICAL:=1:0}\(3 * 2 =\){1:NUMERICAL:=6:0}</p>]]></text>
   </questiontext>
-  <defaultgrade>3</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
@@ -30,7 +29,6 @@
   <questiontext format="html">
     <text><![CDATA[<p>Solve the following tasks!<BR/> \(4 + 2 =\){1:NUMERICAL:=6:0}\(4 - 2 =\){1:NUMERICAL:=2:0}\(4 * 2 =\){1:NUMERICAL:=8:0}\(4 : 2 =\){1:NUMERICAL:=2:0}</p>]]></text>
   </questiontext>
-  <defaultgrade>4</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
@@ -45,7 +43,6 @@
   <questiontext format="html">
     <text><![CDATA[<p>Solve the following tasks!<BR/> \(4 + 3 =\){1:NUMERICAL:=7:0}\(4 - 3 =\){1:NUMERICAL:=1:0}\(4 * 3 =\){1:NUMERICAL:=12:0}</p>]]></text>
   </questiontext>
-  <defaultgrade>3</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>

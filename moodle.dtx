@@ -945,7 +945,7 @@
 % & & & & & \\
 % ^^A\href{https://docs.moodle.org/35/en/Essay_question_type}{Essay} & \\\hline%
 % \href{https://docs.moodle.org/35/en/Embedded_Answers_(Cloze)_question_type}{Cloze}
-% & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & &
+% & & $\bullet$ & $\bullet$ & $\bullet$ & & & &
 % & & & & & \\\cmidrule(lr){1-1}
 % \hspace{1em}Numerical & $\bullet$ & & & & & & &
 % & &$\bullet$ & & $\bullet$ & $\bullet$ & $\bullet$ \\
@@ -1701,6 +1701,7 @@
 %       \item Support for |\%| in conversion to HTML.
 %       \item Command |\htmlonly[]{}| to pass HTML contents directly to the XML file.
 %     \changed
+%       \item Irrelevant points are no longer written at the cloze question level in PDF and XML.
 %       \item The total number of marks is shown in the PDF at the end of each quiz.
 %       \item The |tags| key can now be used to specify a comma-separated list of tags.
 %     \fixed
@@ -3875,7 +3876,6 @@
   \bgroup
     \setkeys{moodle}{default grade=1}%
     \setkeys{moodle}{#1,questionname={#2}}%
-    \global\advance\moodle@totalmarks by \csname moodle@default grade\endcsname pt
     % A cloze question won't have any \item's in it, so we just use \BODY.
     \moodle@enableclozeenvironments
     %First, the LaTeX processing.
@@ -3887,7 +3887,6 @@
         \par
         \noindent
         \moodle@makelatextag@qtype{cloze}
-        \moodle@makelatextag@value{default grade}{\moodle@marks{\csname moodle@default grade\endcsname}}
         \moodle@makelatextag@value{penalty}{penalty}
       \fi
       \par
@@ -3920,7 +3919,11 @@
 % WRITING QUESTION TO XML FILE
 \gdef\writeclozequestion{%
   \writetomoodle{<question type="cloze">}%
-    \moodle@writecommondata%
+    \moodle@writequestionname%
+    \moodle@writequestiontext%
+    \moodle@writegeneralfeedback%
+    \moodle@writepenalty%
+    \moodle@writehidden%
     \moodle@writetags%
   \writetomoodle{</question>}%
 }%
@@ -3981,6 +3984,7 @@
       \def\endclozemulti@code{\htmlize@patchendenvironment}%
     \else
       %LaTeX version
+      \global\advance\moodle@totalmarks by \csname moodle@default grade\endcsname pt
       \moodle@questionheader% %Any introductory text just continues to be typeset.
       \par
       \noindent
@@ -4164,6 +4168,7 @@
       \def\endclozenumerical@code{\htmlize@patchendenvironment}%
     \else
       %LaTeX version
+      \global\advance\moodle@totalmarks by \csname moodle@default grade\endcsname pt
       \moodle@questionheader% %Any introductory text just continues to be typeset.
       \par
       \noindent
@@ -4293,6 +4298,7 @@
       \def\endclozeshortanswer@code{\htmlize@patchendenvironment}%
     \else
       %LaTeX version
+      \global\advance\moodle@totalmarks by \csname moodle@default grade\endcsname pt
       \moodle@questionheader% %Any introductory text just continues to be typeset.
       \par
       \noindent
