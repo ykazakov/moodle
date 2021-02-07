@@ -2050,7 +2050,7 @@
     % At first call (end of \begin{quiz}) enumerate is not started yet
     \ifx\@currenvir\@enumeratename
       % In case no question is defined between two calls of \setcategory
-      \def\@noitemerr{\@latex@warning{Empty question list}}%
+      \def\@noitemerr{}%\@latex@warning{Empty question list}
       \end{enumerate}%
     \fi
     \gdef\moodle@currentcategory{##1}%
@@ -2071,7 +2071,7 @@
     \begin{enumerate}%
   }%
   \gdef\setsubcategory##1{%
-    \def\@noitemerr{\@latex@warning{Empty question list}}%
+    \def\@noitemerr{}%\@latex@warning{Empty question list}
     \end{enumerate}%
     \moodle@write@category@xml{\moodle@currentcategory/##1}%
     \ifmoodle@section
