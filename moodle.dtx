@@ -1176,8 +1176,8 @@
 % \subsection{Package Option \texttt{svg}}\label{subsec:svg}
 %
 % \paragraph{Important Notice} \emph{The \texttt{svg} option is an experimental feature
-% introduced in \textsf{moodle} v0.8. It has been tested exclusively under Linux, with
-% TeXLive 2020, Inkscape v1.0.1 and Scour 0.38.2.}
+% introduced in \textsf{moodle} v0.8. It has been tested only under Linux and Windows, with
+% TeX Live 2020, Inkscape v1.0.1 and Scour 0.38.2.}
 % 
 % \DescribeMacro{svg} The \textsf{moodle} package admits an experimental \texttt{svg}
 % option which has the following effects:
@@ -1690,7 +1690,8 @@
 % \changes{v0.9}{2021/02/07}{Bug fixes and feature extensions}
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version}[version=1.0,]%date=]
-%     \addded
+%     \added
+%       \item SVG option support for Windows (courtesy of Wolf Müller)
 %     \changed
 %     \fixed
 %       \item Warning for users running a too old version of \textsf{graphics}
@@ -5653,15 +5654,28 @@
 \def\SVGtoPDFcommand{\htmlize@setexecutable\SVGtoPDF}%
 \def\optiSVGcommand{\htmlize@setexecutable\optiSVG}%
 \def\DeleteFilecommand{\htmlize@setexecutable\DeleteFiles}%
+\def\MoveFilecommand{\htmlize@setexecutable\MoveFiles}%
+\def\DevNullcommand{\htmlize@setexecutable\DevNull}%
 
 \ifwindows%
   \ghostscriptcommand{gswin64c.exe -dBATCH -dNOPAUSE -sDEVICE=pngalpha}%
   \baselxivcommand{certutil}%
+  % Uses scour from inkscape default installation
+  % The \Inkscape\bin  directory has to be in the users path and provides both:
+  % {inkscape,python}.exe the scour-Package which is found by python in Inkscape\lib\python3.x\site-packages\
+  \optiSVGcommand{python -m scour.scour -q --enable-id-stripping --enable-comment-stripping
+                --shorten-ids --indent=none --remove-descriptive-elements}%
   \DeleteFilecommand{del}%
+  \MoveFilecommand{move}%
+  \DevNullcommand{NUL}%
 \else%
   \ghostscriptcommand{gs -dBATCH -dNOPAUSE -sDEVICE=pngalpha}%
   \baselxivcommand{base64}%
+  \optiSVGcommand{scour -q --enable-id-stripping --enable-comment-stripping
+                --shorten-ids --indent=none --remove-descriptive-elements}%
   \DeleteFilecommand{rm -f}%
+  \MoveFilecommand{mv}%
+  \DevNullcommand{/dev/null}%
 \fi%
 
 \imagemagickcommand{convert -colorspace RGB}%
@@ -5669,8 +5683,6 @@
 \PDFtoSVGcommand{inkscape --export-type=svg --export-area-page --vacuum-defs}%--pdf-poppler
 % remove the "--pdf-poppler" import option if you want to preserve text (avoid conversion to path)
 \SVGtoPDFcommand{inkscape --export-type=pdf --export-area-page}%
-\optiSVGcommand{scour -q --enable-id-stripping --enable-comment-stripping
-                --shorten-ids --indent=none --remove-descriptive-elements}%
 %    \end{macrocode}
 % 
 % \subsubsection{Conversion and inclusion of non-native formats}
@@ -5751,9 +5763,9 @@
 %      \DeclareGraphicsRule{.SVG}{pdf}{.pdf}{%
 %        `\SVGtoPDF\otherspace '#1' \noexpand\Gin@base-SVG-converted-to.pdf}%
     \DeclareGraphicsAlien{.svg}{.pdf}{%
-      \SVGtoPDF\otherspace '\SourceFile' -o '\OutputFile' 2>/dev/null}%
+      \SVGtoPDF\otherspace '\SourceFile' -o '\OutputFile' 2>\DevNull}%
     \DeclareGraphicsAlien{.SVG}{.pdf}{%
-      \SVGtoPDF\otherspace '\SourceFile' -o '\OutputFile' 2>/dev/null}%
+      \SVGtoPDF\otherspace '\SourceFile' -o '\OutputFile' 2>\DevNull}%
   }%
 \fi
 \def\moodle@checkconversionsuccess#1#2{%
@@ -5826,14 +5838,14 @@
       \ifnum0\ifx\moodle@media@ext\moodle@media@pdf1\fi\ifmoodle@svg1\fi=11% PDF file and SVG option active
         \def\moodle@media@ext@current{.svg}%
         \edef\moodle@media@mime@current{\moodle@media@SVGmime}%
-        \edef\cmdline{\PDFtoSVG\otherspace "\moodle@media@base\moodle@media@ext" -o "\moodle@media@base\moodle@media@ext@current" 2>/dev/null}%
+        \edef\cmdline{\PDFtoSVG\otherspace "\moodle@media@base\moodle@media@ext" -o "\moodle@media@base\moodle@media@ext@current" 2>\DevNull}%
         \message{moodle.sty:   Converting '#2' to SVG...^^J}%
         \xa\ShellEscape\xa{\cmdline}%
         \moodle@checkconversionsuccess{\moodle@media@base\moodle@media@ext@current}{PDFtoSVG conversion}%
         %Next, optimize inline
         \ifwindows\else
           \edef\cmdline{\optiSVG < "\moodle@media@base\moodle@media@ext@current" >
-           "\moodle@media@base.tmp.svg" && mv "\moodle@media@base.tmp.svg"
+           "\moodle@media@base.tmp.svg" && \MoveFiles\otherspace "\moodle@media@base.tmp.svg"
            "\moodle@media@base\moodle@media@ext@current"}%
           \message{moodle.sty:   Optimizing '\moodle@media@base\moodle@media@ext@current'...^^J}%
           \xa\ShellEscape\xa{\cmdline}%
@@ -5949,21 +5961,24 @@
       \def\TikzExportMIME{image/svg+xml}%
       \ifpdfoutput% tex engines defaulting to PDF output (pdflatex, xelatex, lualatex)
         \def\ExportTikz{ \message{moodle.sty: Converting picture '\moodle@basename.pdf' to SVG...^^J}%
-                         \edef\cmdline{\PDFtoSVG\otherspace "\moodle@basename.pdf" -o "\moodle@basename\TikzExportExtension" 2>/dev/null}%
+                         \edef\cmdline{\PDFtoSVG\otherspace "\moodle@basename.pdf" -o "\moodle@basename\TikzExportExtension" 2>\DevNull}%
+\message{\cmdline}
                          \xa\ShellEscape\xa{\cmdline}%
                          \moodle@checkconversionsuccess{\moodle@basename\TikzExportExtension}{PDFtoSVG conversion}%
                        }%
       \else % latex
         \def\ExportTikz{ \message{moodle.sty: Converting picture '\moodle@basename.ps' to SVG...^^J}%
-                         \edef\cmdline{\PDFtoSVG\otherspace "\moodle@basename.ps" -o "\moodle@basename\TikzExportExtension" 2>/dev/null}%
-                         \xa\ShellEscape\xa{\cmdline}%
+                         \edef\cmdline{\PDFtoSVG\otherspace "\moodle@basename.ps" -o "\moodle@basename\TikzExportExtension" 2>\DevNull}%
+\message{\cmdline}
+                        \xa\ShellEscape\xa{\cmdline}%
                          \moodle@checkconversionsuccess{\moodle@basename\TikzExportExtension}{PStoSVG conversion}%
                        }%
       \fi
       \def\OptimizeExport{ \message{moodle.sty:   Optimizing '\moodle@basename.svg'...^^J}%
                            \edef\cmdline{\optiSVG\otherspace < "\moodle@basename\TikzExportExtension" >
-                                         "\moodle@basename.tmp.svg" && mv "\moodle@basename.tmp.svg"
+                                         "\moodle@basename.tmp.svg" && \MoveFiles\otherspace "\moodle@basename.tmp.svg"
                                          "\moodle@basename\TikzExportExtension" }%
+\message{\cmdline}
                            \xa\ShellEscape\xa{\cmdline}%
                            \moodle@checkconversionsuccess{\moodle@basename\TikzExportExtension}{SVG optimization}%
                          }%
