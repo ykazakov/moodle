@@ -4,7 +4,7 @@
  
 <question type="category">
   <category>
-    <text>$course$/top/Close Short Answer</text>
+    <text>$course$/top/Close Numerical</text>
   </category>
 </question>
  
@@ -13,7 +13,7 @@
     <text><![CDATA[Cloze]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>Enter an integer \(n\) such that \(0&lt; n\leq 2\). {1:NUMERICAL:%10%0:0.001#study difference between \(&lt;\) and \(\leq \)~=1:0.01#good!~=2:0.1#OK}</p>]]></text>
+    <text><![CDATA[<p>Enter an integer \(n\) such that \(0&lt; n\leq 2\). {1:NUMERICAL:%10%0:0.001#study difference between \(&lt;\) and \(\leq \)~=1:0.01#good!~=2:0.1#OK~3:0#No!}</p>]]></text>
   </questiontext>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>

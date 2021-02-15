@@ -1691,10 +1691,11 @@
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version}[version=1.0,]%date=]
 %     \added
-%       \item SVG option support for Windows (courtesy of Wolf Müller)
+%       \item SVG option support for Windows (courtesy of Wolf Müller).
 %     \changed
 %     \fixed
-%       \item Warning for users running a too old version of \textsf{graphics}
+%       \item Tolerances in Numerical answers now correctly displayed in PDF.
+%       \item Warning for users running a too old version of \textsf{graphics}.
 %   \end{version}
 %   \begin{version}[version=0.9,date=2021-02-07]
 %     \added
@@ -3110,7 +3111,7 @@
        \item \test@i
      \else
        \item \moodle@printnum{#1}%
-       \ifnum\z@=\moodle@tolerance\else
+       \ifdim\z@=\moodle@tolerance pt\else
          $\,\pm\,$\moodle@printnum{\moodle@tolerance}%
        \fi
      \fi
@@ -4219,7 +4220,7 @@
     \moodle@checkfraction
     \edef\moodle@clozenumericalprint@fraction{$(~\moodle@fraction\%)$}%
   \fi
-  \ifnum\z@=\moodle@tolerance
+  \ifdim\z@=\moodle@tolerance pt%
     \def\moodle@clozenumericalprint@tolerance{}%
   \else
     \edef\moodle@clozenumericalprint@tolerance{$\,\pm\,$\moodle@printnum{\moodle@tolerance}}%

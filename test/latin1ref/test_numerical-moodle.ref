@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<quiz>
+ 
+<question type="category">
+  <category>
+    <text>$course$/top/Numerical</text>
+  </category>
+</question>
+ 
+<question type="numerical">
+  <name format="html">
+    <text><![CDATA[Numerical]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Enter an integer \(n\) such that \(0&lt; n\leq 2\). </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <answer fraction="10" format="plain_text">
+    <text>0</text>
+    <tolerance>0.001</tolerance>
+    <feedback format="html"><text><![CDATA[<p>study difference between \(&lt;\) and \(\leq \)</p>]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="plain_text">
+    <text>1</text>
+    <tolerance>0.01</tolerance>
+    <feedback format="html"><text><![CDATA[<p>good!</p>]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="plain_text">
+    <text>2</text>
+    <tolerance>0.1</tolerance>
+    <feedback format="html"><text><![CDATA[<p>OK</p>]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="plain_text">
+    <text>3</text>
+    <tolerance>0</tolerance>
+    <feedback format="html"><text><![CDATA[<p>No!</p>]]></text></feedback>
+  </answer>
+</question>
+ 
+</quiz>
