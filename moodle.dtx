@@ -1693,6 +1693,8 @@
 %     \added
 %       \item SVG option support for Windows (courtesy of Wolf Müller).
 %     \changed
+%       \item The answers of matching questions are now converted to HTML
+%              (|\htmlonly| and accents in mind).
 %     \fixed
 %       \item Tolerances in Numerical answers now correctly displayed in PDF.
 %       \item Warning for users running a too old version of \textsf{graphics}.
@@ -3821,9 +3823,9 @@
      \trim@spaces@in\moodle@subquestiontext
      \xa\converttohtmlmacro\xa\moodle@subquestiontext@htmlized\xa{\moodle@subquestiontext}%
      \trim@spaces@in\moodle@subanswertext
-     \ifmoodle@draganddrop
+     %\ifmoodle@draganddrop
        \xa\converttohtmlmacro\xa\moodle@subanswertext@htmlized\xa{\moodle@subanswertext}%
-     \fi
+     %\fi
      \addto@xml[2]{\moodle@answers@xml}{<subquestion format="html">}%
      \ifx\moodle@subquestiontext\@empty
        \addto@xml[4]{\moodle@answers@xml}{  <text></text>}%
@@ -3834,8 +3836,8 @@
 %       \show\moodle@subanswertext@htmlized
        \addto@xml[4]{\moodle@answers@xml}{  <answer format="html"><text><![CDATA[<p>\moodle@subanswertext@htmlized</p>]]></text></answer>}%
      \else
-%       \show\moodle@subanswertext
-       \addto@xml[4]{\moodle@answers@xml}{  <answer><text>\moodle@subanswertext</text></answer>}%
+%       \show\moodle@subanswertext@htmlized
+       \addto@xml[4]{\moodle@answers@xml}{  <answer format="html"><text><![CDATA[\moodle@subanswertext@htmlized]]></text></answer>}%
      \fi
 %     \ifx\moodle@feedback\@empty\relax\else
 %       \trim@spaces@in\moodle@feedback
