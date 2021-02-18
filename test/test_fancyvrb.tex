@@ -57,7 +57,7 @@ set to define portions of code.
 
 % To avoid collision of line and item numbers in PDF, force `left-right' mode:
 \RecustomVerbatimCommand{\VerbatimInput}{LVerbatimInput}{}
-\begin{multi}{Multi}
+\begin{multi}{LaTeX}
 Pick up the code decorated with line numbering on both sides.
 \item[feedback={No. Here, line numbers lie on the left side.}] 
 \VerbatimInput{test.log}
@@ -65,6 +65,22 @@ Pick up the code decorated with line numbering on both sides.
 \VerbatimInput[numbers=right,firstnumber=last,numberblanklines=true]{test.log}
 \item[feedback={yes!}]* 
 \VerbatimInput[numbers=left,firstline=9,firstnumber=4,lastline=23]{test.log}
+\end{multi}
+
+\begin{filecontents*}[overwrite]{test.log}
+#include <stdio.h>
+int main() {
+    char c='\0', *pc=&c;
+    printf("Hello world!\n");
+    return *pc;
+}
+\end{filecontents*}
+\begin{multi}{C}
+\VerbatimInput[gobble=0,numbers=left,firstline=1,lastline=6]{test.log}
+
+\item[feedback={}]* "\&test"
+\item[feedback={}] 'toast'
+\item <$<a>$>
 \end{multi}
 
 \end{quiz}

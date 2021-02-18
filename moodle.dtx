@@ -1227,8 +1227,8 @@
 % The \textsf{moodle} package handles these three commands to pass the code in the output XML.
 % With |\inputminted|, an external Python tool, \textsc{pygmentize}, performs syntax analysis and
 % its HTML formatter is used to populate the XML. With the other commands, the contents of the
-% file is passed as-is to the XML. A drawback of this approach, is that characters |<|, |>|,
-% |&|, |'|, and |"| are likely to mislead the web browser rendering the question on Moodle.
+% file is passed almost as-is to the XML: in order to survive Moodle import and HTML rendering,
+% characters |<|, |>|, |&|, |'|, and |"| are converted to HTML equivalents.
 %
 % With |\VerbatimInput| and |\inputminted|, the options that are taken care of for XML
 % generation are listed in Table~\ref{tab:verbatim-options}. Using |\fvset|\marg{key=value,...},
@@ -1698,6 +1698,8 @@
 %     \fixed
 %       \item Tolerances in Numerical answers now correctly displayed in PDF.
 %       \item Warning for users running a too old version of \textsf{graphics}.
+%       \item In the code included with \textsf{verbatim}, \textsf{fancyvrb}, or
+%             \textsf{fvextra}, characters that matter for HTML are escaped.
 %   \end{version}
 %   \begin{version}[version=0.9,date=2021-02-07]
 %     \added
@@ -6260,6 +6262,28 @@
 %    \begin{macrocode}
 \def\xmlDisplayVerbatimBox{border-top: thin solid; border-bottom: thin solid}%
 %    \end{macrocode}
+% Then we set a macro to escape some characters that would not play well with HTML.
+%    \begin{macrocode}
+\begingroup
+\catcode`\<=\active\relax
+\catcode`\>=\active\relax
+\catcode`\"=\active\relax
+\catcode`\'=\active\relax
+\catcode`\&=\active\relax
+\gdef\moodle@HackTML{%
+  \catcode`\<=\active\relax
+  \catcode`\>=\active\relax
+  \catcode`\"=\active\relax
+  \catcode`\'=\active\relax
+  \catcode`\&=\active\relax
+  \gdef<{\otherampersand lt;}%
+  \gdef>{\otherampersand gt;}%
+  \gdef"{\otherampersand quot;}%
+  \gdef'{\otherampersand apos;}%
+  \gdef&{\otherampersand amp;}%
+}%
+\endgroup
+%    \end{macrocode}
 % First, let us handle |\verbatiminput| from the `verbatim' package
 %    \begin{macrocode}
 \html@action@def\verbatiminput#1{%
@@ -6269,6 +6293,7 @@
   \@bsphack
   \let\do\@makeother\dospecials
   \catcode`\^^M\active
+  \moodle@HackTML
   \def\verbatim@processline{\xa\g@addto@macro\xa\htmlize@output\xa{\the\verbatim@line<BR/>}}
   \verbatim@readfile{#1}%
   \@esphack
@@ -6353,7 +6378,16 @@
   \ifdefined\FV@HighlightLinesPrep
     \FV@HighlightLinesPrep% prepare highlighting if 'fvextra' is loaded
   \fi
-  \FV@Input{#1}%
+  %\FV@Input{#1}%
+  \immediate\openin\FV@InFile #1\relax
+  \ifeof\FV@InFile
+    \FV@Error{No verbatim file #1}\FV@eha
+    \immediate\closein\FV@InFile
+  \else
+    \FV@CatCodes
+    \moodle@HackTML
+    \expandafter\FV@@Input{#1}%
+  \fi
   %\endgroup
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \g@addto@macro\htmlize@output{</CODE></PRE>}%

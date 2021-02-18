@@ -37,10 +37,25 @@ can be set to define portions of code.
 \fi
 \end{filecontents*}
 
-\begin{multi}{Multi}
+\begin{multi}{LaTeX}
 \verbatiminput{test.log}
 \item[feedback={}]* test
 \item[feedback={}] toast
+\end{multi}
+
+\begin{filecontents*}[overwrite]{test.log}
+#include <stdio.h>
+int main() {
+    char c='\0', *pc=&c;
+    printf("Hello world!\n");
+    return *pc;
+}
+\end{filecontents*}
+\begin{multi}{C}
+\verbatiminput{test.log}
+\item[feedback={}]* "\&test"
+\item[feedback={}] 'toast'
+\item <$<a>$>
 \end{multi}
 
 \end{quiz}
