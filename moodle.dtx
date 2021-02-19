@@ -1915,12 +1915,12 @@
 % Taken from https://tex.stackexchange.com/questions/47576/combining-ifxetex-and-ifluatex-with-the-logical-or-operation
 \@ifundefined{ifTUTeX}{
   \newif\ifTUTeX % a new conditional starts as false
-  \ifnum 0\ifXeTeX 1\fi\ifLuaTeX 1\fi>0%
+  \ifnum 0\ifXeTeX 1\fi\ifLuaTeX 1\fi>0\relax
     \TUTeXtrue
   \fi
 }{}%
 \newif\ifpdfoutput % a new conditional starts as false
-\ifnum 0\ifTUTeX 1\fi\ifPDFTeX\ifpdf 1\fi\fi>0%
+\ifnum 0\ifTUTeX 1\fi\ifPDFTeX\ifpdf 1\fi\fi>0\relax
    \pdfoutputtrue
 \fi
 %    \end{macrocode}
@@ -2863,18 +2863,18 @@
 \def\moodle@checkresponsefieldlines{%
   \newcount\a\a=\number\csname moodle@response field lines\endcsname
   \newcount\b\b=5%
-  \ifnum\the\a>40% if the value was more than 40
+  \ifnum\the\a>40\relax% if the value was more than 40
     \a=40%
   \fi
-  \ifnum\the\a<5% if the value was less than 5
+  \ifnum\the\a<5\relax% if the value was less than 5
     \a=5%
   \fi
   \divide\a by\b% integer division by 5
   \multiply\a by\b% multiply by 5
-  \ifnum\a=\csname moodle@response field lines\endcsname% equality holds if we had 5, 10, 15, 20, 25, 30, or 40
+  \ifnum\a=\csname moodle@response field lines\endcsname\relax% equality holds if we had 5, 10, 15, 20, 25, 30, or 40
   \else
-    \ifnum\csname moodle@response field lines\endcsname>5%
-      \ifnum\csname moodle@response field lines\endcsname<40%
+    \ifnum\csname moodle@response field lines\endcsname>5\relax%
+      \ifnum\csname moodle@response field lines\endcsname<40\relax%
         \advance\a by\b% approximate with the next multiple of 5
       \fi
     \fi
@@ -3390,10 +3390,10 @@
    }
  \def\moodle@checkfraction{%
    \ifmoodle@allornothing
-     \ifnum\moodle@fraction>0%
+     \ifnum\moodle@fraction>0\relax
        \setkeys{moodle}{fraction=100}%
      \fi
-     \ifnum\moodle@fraction<0%
+     \ifnum\moodle@fraction<0\relax
        \setkeys{moodle}{fraction=0}%
      \fi
    \else
@@ -3522,7 +3522,7 @@
           \gdef\moodle@answers@xml{}%
           \setkeys{moodle}{feedback={}}%
           \xa\loopthroughitemswithcommand\xa{\xa\savetruefalseanswer}%
-          \ifnum\c@numgathereditems=1\relax%
+          \ifnum\c@numgathereditems=1\relax
             \setcounter{currentitemnumber}{2}%
             \savetruefalseanswer{}
           \fi
@@ -3544,7 +3544,7 @@
   \setcounter{moodle@numcorrectanswers}{0}%
   \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
     \loopthroughitemswithcommand{\moodle@print@truefalse@answer}%
-    \ifnum\c@currentitemnumber=2%
+    \ifnum\c@currentitemnumber=2\relax
       \item \textbf{False}%
     \fi
   \end{itemize}
@@ -3553,10 +3553,10 @@
       \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
     \fi
   \fi
-  \ifnum\c@moodle@numcorrectanswers=0\relax%
+  \ifnum\c@moodle@numcorrectanswers=0\relax
     \PackageError{moodle}{No answer is explicitly marked as correct (*). Be sure one answer leads to points.}%
   \fi
-  \ifnum\c@moodle@numcorrectanswers>1\relax%
+  \ifnum\c@moodle@numcorrectanswers>1\relax
     \PackageError{moodle}{Two answers are explicitly marked as correct (*). Be sure only one answer leads to points.}%
   \fi
 }
@@ -3579,10 +3579,10 @@
      \fi
    }%
    \def\moodle@print@truefalse@answer@int@int@empty{%
-     \ifnum\c@currentitemnumber=1%
+     \ifnum\c@currentitemnumber=1\relax
 	\def\moodle@answertext{True}%
      \fi
-     \ifnum\c@currentitemnumber=2%
+     \ifnum\c@currentitemnumber=2\relax
 	\def\moodle@answertext{False}%
      \fi
      \item \textbf{\moodle@answertext}%
@@ -3593,14 +3593,14 @@
      \fi
    }%
    \def\moodle@print@truefalse@answer@int@int@int#1#2\@rdelim{%
-     \ifnum\c@currentitemnumber=1%
+     \ifnum\c@currentitemnumber=1\relax
 	\def\moodle@answertext{True}%
      \fi
-     \ifnum\c@currentitemnumber=2%
+     \ifnum\c@currentitemnumber=2\relax
 	\def\moodle@answertext{False}%
      \fi
      \item \textbf{\moodle@answertext}%
-     \ifnum\c@currentitemnumber<3%
+     \ifnum\c@currentitemnumber<3\relax
        \def\test@i{#1}%
        %\trim@spaces@in\test@i
        \ifx\test@i\@star
@@ -3651,13 +3651,13 @@
    }%
    \def\savetruefalseanswer@int@int@empty{%
      \setkeys{moodle}{fraction=0}%
-     \ifnum\c@currentitemnumber=1%
+     \ifnum\c@currentitemnumber=1\relax
 	\def\moodle@answertext{true}%
      \fi
-     \ifnum\c@currentitemnumber=2%
+     \ifnum\c@currentitemnumber=2\relax
 	\def\moodle@answertext{false}%
      \fi
-     \ifnum\c@currentitemnumber<3%
+     \ifnum\c@currentitemnumber<3\relax
        \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
        \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext</text>}%
        \ifx\moodle@feedback\@empty\relax\else
@@ -3675,13 +3675,13 @@
      \else
        \setkeys{moodle}{fraction=0}%
      \fi
-     \ifnum\c@currentitemnumber=1%
+     \ifnum\c@currentitemnumber=1\relax
 	\def\moodle@answertext{true}%
      \fi
-     \ifnum\c@currentitemnumber=2%
+     \ifnum\c@currentitemnumber=2\relax
 	\def\moodle@answertext{false}%
      \fi
-     \ifnum\c@currentitemnumber<3%
+     \ifnum\c@currentitemnumber<3\relax
        \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
        \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext</text>}%
        \ifx\moodle@feedback\@empty\relax
@@ -3744,10 +3744,10 @@
 %  \fi
     \setcounter{moodle@numcorrectanswers}{0}% Here this counter is for "questions" (items on the left column)
     \loopthroughitemswithcommand{\moodle@print@matching@answer}%
-    \ifnum\c@numgathereditems<3%
+    \ifnum\c@numgathereditems<3\relax
       \PackageWarning{moodle}{Moodle expects at least three "answers" with matching type}%
     \fi
-    \ifnum\c@moodle@numcorrectanswers<2%
+    \ifnum\c@moodle@numcorrectanswers<2\relax
       \PackageWarning{moodle}{Moodle expects at least two "questions" with the matching type}%
     \fi
     \ifmoodle@handout
@@ -5141,13 +5141,13 @@
   \moodle@restoreitems{\thenumgathereditems}%
 }%
 \def\moodle@saveitems#1{%
-  \ifnum#1>0%
+  \ifnum#1>0\relax
     \global\csletcs{moodle@level@\the\moodle@listdepth @item@#1}{getitems@item@#1}%
     \xa\moodle@saveitems\xa{\number\numexpr#1-1\expandafter}%
   \fi
 }%
 \def\moodle@restoreitems#1{%
-  \ifnum#1>0%
+  \ifnum#1>0\relax
     \global\csletcs{getitems@item@#1}{moodle@level@\the\moodle@listdepth @item@#1}%
     \global\xa\let\csname moodle@level@\the\moodle@listdepth @item@#1\endcsname=\@undefined
     \xa\moodle@restoreitems\xa{\number\numexpr#1-1\expandafter}%
@@ -5840,7 +5840,7 @@
       % conversion needed
       \edef\moodle@media@pdf{\detokenize{.pdf}}%
       \edef\moodle@media@ext{\detokenize\xa{\moodle@media@ext}}%
-      \ifnum0\ifx\moodle@media@ext\moodle@media@pdf1\fi\ifmoodle@svg1\fi=11% PDF file and SVG option active
+      \ifnum0\ifx\moodle@media@ext\moodle@media@pdf1\fi\ifmoodle@svg1\fi=11\relax% PDF file and SVG option active
         \def\moodle@media@ext@current{.svg}%
         \edef\moodle@media@mime@current{\moodle@media@SVGmime}%
         \edef\cmdline{\PDFtoSVG\otherspace "\moodle@media@base\moodle@media@ext" -o "\moodle@media@base\moodle@media@ext@current" 2>\DevNull}%
