@@ -3115,7 +3115,7 @@
        \item \test@i
      \else
        \item \moodle@printnum{#1}%
-       \ifdim\z@=\moodle@tolerance pt\else
+       \ifx\moodle@tolerance\moodle@zero\else
          $\,\pm\,$\moodle@printnum{\moodle@tolerance}%
        \fi
      \fi
@@ -4217,6 +4217,7 @@
   \setkeys{moodle}{#1}%
   \moodle@print@clozenumerical@answer@int@int%
 }%
+\def\moodle@zero{0}%
 \def\moodle@print@clozenumerical@answer@int@int#1\@rdelim{%
   \ifx\moodle@fraction\@hundred
     \def\moodle@clozenumericalprint@fraction{$~\checkmark$}%
@@ -4224,7 +4225,7 @@
     \moodle@checkfraction
     \edef\moodle@clozenumericalprint@fraction{$(~\moodle@fraction\%)$}%
   \fi
-  \ifdim\z@=\moodle@tolerance pt%
+  \ifx\moodle@zero\moodle@tolerance%
     \def\moodle@clozenumericalprint@tolerance{}%
   \else
     \edef\moodle@clozenumericalprint@tolerance{$\,\pm\,$\moodle@printnum{\moodle@tolerance}}%
