@@ -34,7 +34,7 @@
     <text><![CDATA[C]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p><PRE style="border-top: thin solid; border-bottom: thin solid"><CODE>#include <stdio.h><BR/>int main() {<BR/>    char c='\0', *pc=&c;<BR/>    printf("Hello world!\n");<BR/>    return *pc;<BR/>}<BR/></CODE></PRE> </p>]]></text>
+    <text><![CDATA[<p><PRE style="border-top: thin solid; border-bottom: thin solid"><CODE>#include &lt;stdio.h&gt;<BR/>int main() {<BR/>    char c=&apos;\0&apos;, *pc=&amp;c;<BR/>    printf(&quot;Hello world!\n&quot;);<BR/>    return *pc;<BR/>}<BR/></CODE></PRE> </p>]]></text>
   </questiontext>
   <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>

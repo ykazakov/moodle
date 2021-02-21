@@ -103,15 +103,15 @@
   <shuffleanswers>1</shuffleanswers>
   <subquestion format="html">
     <text><![CDATA[<p>&aelig;</p>]]></text>
-    <answer><text>oui </text></answer>
+    <answer format="html"><text><![CDATA[oui ]]></text></answer>
   </subquestion>
   <subquestion format="html">
     <text><![CDATA[<p>&oelig;</p>]]></text>
-    <answer><text>non </text></answer>
+    <answer format="html"><text><![CDATA[non ]]></text></answer>
   </subquestion>
   <subquestion format="html">
     <text></text>
-    <answer><text>Å</text></answer>
+    <answer format="html"><text><![CDATA[&Aring;]]></text></answer>
   </subquestion>
 </question>
 <question type="essay">

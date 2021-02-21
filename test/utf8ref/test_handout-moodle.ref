@@ -297,19 +297,19 @@
   <shuffleanswers>0</shuffleanswers>
   <subquestion format="html">
     <text><![CDATA[<p>A</p>]]></text>
-    <answer><text>1 </text></answer>
+    <answer format="html"><text><![CDATA[1 ]]></text></answer>
   </subquestion>
   <subquestion format="html">
     <text><![CDATA[<p>B</p>]]></text>
-    <answer><text>2 </text></answer>
+    <answer format="html"><text><![CDATA[2 ]]></text></answer>
   </subquestion>
   <subquestion format="html">
     <text><![CDATA[<p>C</p>]]></text>
-    <answer><text>3 </text></answer>
+    <answer format="html"><text><![CDATA[3 ]]></text></answer>
   </subquestion>
   <subquestion format="html">
     <text></text>
-    <answer><text>4</text></answer>
+    <answer format="html"><text><![CDATA[4]]></text></answer>
   </subquestion>
   <tags>
     <tag><text><![CDATA[tag]]></text></tag>
