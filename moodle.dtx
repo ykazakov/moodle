@@ -6312,24 +6312,27 @@
 \@ifpackageloaded{fancyvrb}{\PackageError{moodle}{'moodle' should be loaded before 'fancyvrb'.}%
 {'moodle' loads 'fancybox' which, unfortunately, redefines verbatim commands.}}{\relax}%
 
-\html@action@newcommand{VerbatimInput}[2][]{%
-  \message{moodle.sty: Processing \string\VerbatimInput[#1]{#2} for HTML ^^J}%
-  \def\FV@KeyValues{#1}%
-  \FV@UseKeyValues% import options defined in #1
-  \moodle@VerbatimInput{#2}%
-}%
-\html@action@newcommand{LVerbatimInput}[2][]{%
-  \message{moodle.sty: Processing \string\LVerbatimInput[#1]{#2} for HTML ^^J}%
-  \def\FV@KeyValues{#1}%
-  \FV@UseKeyValues% import options defined in #1
-  \moodle@VerbatimInput{#2}%
-}%
-\html@action@newcommand{BVerbatimInput}[2][]{%
-  \message{moodle.sty: Processing \string\BVerbatimInput[#1]{#2} for HTML ^^J}%
-  \def\FV@KeyValues{#1}%
-  \FV@UseKeyValues% import options defined in #1
-  \moodle@VerbatimInput{#2}%
-}%
+\def\moodle@FV#1{%
+  \html@action@newcommand{#1}[2][]{%
+    \message{moodle.sty: Processing \@backslashchar#1[##1]{##2} for HTML ^^J}%
+    \def\FV@KeyValues{##1}%
+    \FV@UseKeyValues% import options defined in #1
+    \def\FV@Input####1{
+      \immediate\openin\FV@InFile ####1\relax
+      \ifeof\FV@InFile
+        \FV@Error{No verbatim file ####1}\FV@eha
+        \immediate\closein\FV@InFile
+      \else
+        \FV@CatCodes
+        \moodle@HackTML
+        \expandafter\FV@@Input
+      \fi}%
+    \moodle@VerbatimInput{##2}%
+  }%
+}
+\moodle@FV{VerbatimInput}%
+\moodle@FV{LVerbatimInput}%
+\moodle@FV{BVerbatimInput}%
 \def\moodle@VerbatimInput#1{%
   \g@addto@macro\htmlize@output{<PRE style="\xmlDisplayVerbatimBox"><CODE>}%
   %%%%%%%% using material from fancyvrb and fvextra  %%%%%%%%
@@ -6380,16 +6383,7 @@
   \ifdefined\FV@HighlightLinesPrep
     \FV@HighlightLinesPrep% prepare highlighting if 'fvextra' is loaded
   \fi
-  %\FV@Input{#1}%
-  \immediate\openin\FV@InFile #1\relax
-  \ifeof\FV@InFile
-    \FV@Error{No verbatim file #1}\FV@eha
-    \immediate\closein\FV@InFile
-  \else
-    \FV@CatCodes
-    \moodle@HackTML
-    \expandafter\FV@@Input{#1}%
-  \fi
+  \FV@Input{#1}%
   %\endgroup
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \g@addto@macro\htmlize@output{</CODE></PRE>}%
