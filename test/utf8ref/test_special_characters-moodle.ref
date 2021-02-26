@@ -13,7 +13,7 @@
     <text><![CDATA[Å À Â Ã É È Ë Ê Î Ï Ñ Õ Ô Ö Ù Ü Û Ç Ş Ţ Ő Ű Ÿ Ą Ę Į Ǫ Ų Ă Ĕ Ğ Ĭ Ŏ Ŭ Č Ď Ě Ľ Ň Ř Š Ť Ž ]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>å à â ã é è ë ê î ï ñ õ ô ö ù ü û ç ş ţ ő ű ÿ ą ę į ǫ ų ă ĕ ğ ĭ ŏ ŭ č ď ě ľ ň ř š ť ž <BR/> Å À Â Ã É È Ë Ê Î Ï Ñ Õ Ô Ö Ù Ü Û Ç Ş Ţ Ő Ű Ÿ Ą Ę Į Ǫ Ų Ă Ĕ Ğ Ĭ Ŏ Ŭ Č Ď Ě Ľ Ň Ř Š Ť Ž <BR/> œ æ ß Œ Æ ẞ Ø Ł « ø ł » ¿ ¡ </p>]]></text>
+    <text><![CDATA[<p>å à â ã é è ë ê î ï ñ õ ô ö ù ü û ç ş ţ ő ű ÿ ą ę į ǫ ų ă ĕ ğ ĭ ŏ ŭ č ď ě ľ ň ř š ť ž <BR/> Å À Â Ã É È Ë Ê Î Ï Ñ Õ Ô Ö Ù Ü Û Ç Ş Ţ Ő Ű Ÿ Ą Ę Į Ǫ Ų Ă Ĕ Ğ Ĭ Ŏ Ŭ Č Ď Ě Ľ Ň Ř Š Ť Ž <BR/> œ æ ß Œ Æ ẞ Ø Ł « ø ı ł » ¿ ¡ </p>]]></text>
   </questiontext>
   <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
@@ -36,7 +36,7 @@
     <text><![CDATA[&Aring; &Agrave; &Acirc; &Atilde; &Eacute; &Egrave; &Euml; &Ecirc; &Icirc; &Iuml; &Ntilde; &Otilde; &Ouml; &Ocirc; &Ugrave; &Uuml; &Ucirc; &Ccedil; &#350; &#354; &#336; &#368; &Yuml; &Aogon; &Eogon; &Iogon; &#490; &Uogon; &Abreve; &#276; &Gbreve; &#300; &#334; &Ubreve; &Ccaron; &Dcaron; &Ecaron; &Lcaron; &Ncaron; &Rcaron; &Scaron; &Tcaron; &Zcaron; ]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>&aring; &agrave; &acirc; &atilde; &eacute; &egrave; &euml; &ecirc; &icirc; &iuml; &ntilde; &otilde; &ouml; &ocirc; &ugrave; &uuml; &ucirc; &ccedil; &#351; &#355; &#337; &#369; &yuml; &aogon; &eogon; &iogon; &#491; &uogon; &abreve; &#277; &gbreve; &#301; &#301; &#335; &ubreve; &ccaron; &dcaron; &ecaron; &lcaron; &ncaron; &rcaron; &scaron; &tcaron; &zcaron; <BR/> &Aring; &Agrave; &Acirc; &Atilde; &Eacute; &Egrave; &Euml; &Ecirc; &Icirc; &Iuml; &Ntilde; &Otilde; &Ouml; &Ocirc; &Ugrave; &Uuml; &Ucirc; &Ccedil; &#350; &#354; &#336; &#368; &Yuml; &Aogon; &Eogon; &Iogon; &#490; &Uogon; &Abreve; &#276; &Gbreve; &#300; &#334; &Ubreve; &Ccaron; &Dcaron; &Ecaron; &Lcaron; &Ncaron; &Rcaron; &Scaron; &Tcaron; &Zcaron; <BR/> &oelig; &aelig; &szlig; &OElig; &AElig; &#7838; &Oslash; &Lstrok; &laquo;&#8239; &oslash; &lstrok; &#8239;&raquo; &iquest; &iexcl; </p>]]></text>
+    <text><![CDATA[<p>&aring; &agrave; &acirc; &atilde; &eacute; &egrave; &euml; &ecirc; &icirc; &iuml; &ntilde; &otilde; &ouml; &ocirc; &ugrave; &uuml; &ucirc; &ccedil; &#351; &#355; &#337; &#369; &yuml; &aogon; &eogon; &iogon; &#491; &uogon; &abreve; &#277; &gbreve; &#301; &#301; &#335; &ubreve; &ccaron; &dcaron; &ecaron; &lcaron; &ncaron; &rcaron; &scaron; &tcaron; &zcaron; <BR/> &Aring; &Agrave; &Acirc; &Atilde; &Eacute; &Egrave; &Euml; &Ecirc; &Icirc; &Iuml; &Ntilde; &Otilde; &Ouml; &Ocirc; &Ugrave; &Uuml; &Ucirc; &Ccedil; &#350; &#354; &#336; &#368; &Yuml; &Aogon; &Eogon; &Iogon; &#490; &Uogon; &Abreve; &#276; &Gbreve; &#300; &#334; &Ubreve; &Ccaron; &Dcaron; &Ecaron; &Lcaron; &Ncaron; &Rcaron; &Scaron; &Tcaron; &Zcaron; <BR/> &oelig; &aelig; &szlig; &OElig; &AElig; &#7838; &Oslash; &Lstrok; &laquo;&#8239; &oslash; &#305; &lstrok; &#8239;&raquo; &iquest; &iexcl; </p>]]></text>
   </questiontext>
   <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
