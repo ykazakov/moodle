@@ -46,7 +46,7 @@
 %\usepackage{moodle}[2020/07/09]
 \usepackage{amssymb,metalogo,multirow,threeparttable,booktabs}
 \usepackage{longtable,hyperref,tikz,minted,changelog}
-\usetikzlibrary{arrows,positioning,decorations.text}
+\usetikzlibrary{arrows,positioning,decorations.text,calc}
 %\usemintedstyle{Wombat}
 \EnableCrossrefs         
 \CodelineIndex
@@ -205,33 +205,40 @@
 % bigcmnt/.style={font=\normalsize,align=center},pre/.style={<-,>=stealth',thick},
 % post/.style={->,>=stealth',thick}, prepost/.style={<->,>=stealth',thick}]
 % \draw[white,fill=orange!20,rounded corners=10]
-% (-1.5,-.7)--++(0,1.4)--++(10.3,0)--++(0,-3.3)--++(-6.7,0)--++(-.25,1.725)--cycle;
-% \node[orange!80!black,above] (dev) at (7.5,-2.6) {\textit{Development}};
+% (-1.5,-.7)--++(0,1.4)--++(10.3,0)--++(0,-2.3)--++(-6.7,0)--++(-.25,.725)--cycle;
+% \node[orange!80!black,above] (dev) at (7.5,-1.6) {\textit{Development}};
 % \fill[green,fill opacity=.2,rounded corners=10]
-% (-1.5,.7)--++(3,0)--++(0.5,-3.4)--++(6.8,0)--++(0,-2)--++(-10.3,0)--cycle;
-% \node[green!80!black,below] (dev) at (7.5,-2.7) {\textit{Publishing}}; 
+% (-1.5,.7)--++(3,0)--++(0.5,-2.4)--++(6.8,0)--++(0,-3)--++(-10.3,0)--cycle;
+% \node[green!80!black,below] (dev) at (7.5,-1.7) {\textit{Publishing}}; 
 % \node[box,text width=2cm] (tex) {\texttt{.tex} source file};
 % \node[rectangle,fill=white,draw,align=center,text 
 % width=1.5cm,below=of tex] (compfinal) {\LaTeX{}\\ engine};
 % \node[rectangle,fill=white,draw,align=center,text width=1.5cm,right=of tex,xshift=4.5cm]
 % (compdraft) {\LaTeX{}\\ engine};
-% \node[box,right=of compfinal,xshift=.5cm] (pdf) {\texttt{.pdf} file for proofreading};
+% \draw ($(tex)!.5!(compdraft)+(0,-.7)$) node[box] (pdf) {\texttt{.pdf} file for proofreading};
+% \node[box,below=of pdf,yshift=.1cm] (pdfhandout) {\texttt{.pdf} file for students};
 % \node[rectangle,fill=white,draw,align=center,text width=2cm,below=of compfinal] (extern) 
 % {Picture\\processing};
 % \draw (pdf|-extern) node[box,anchor=center] (xml) {\texttt{.xml} file\\\footnotesize(pictures embedded)};
+% \draw (compdraft|-pdfhandout)
+% node[rectangle,fill=white,draw,align=center,text width=1.5cm,anchor=center] (students) 
+% {Students};
 % \draw (compdraft|-xml)
 % node[rectangle,fill=white,draw,align=center,text width=1.5cm,anchor=center] (moodle) 
 % {Moodle\\Server};
-% \draw (tex) edge [post,bend right=10] node[cmnt,pos=.5,left] {\texttt{final}} (compfinal);
+% \draw (tex) edge [post,bend right=10] node[cmnt,pos=.5,left] {\texttt{final}} 
+% node[cmnt,pos=.5,right] {\texttt{handout}} (compfinal);
 % \draw (tex) edge [post,bend left=10] node[cmnt,pos=.5,below] {\texttt{draft}} (compdraft);
 % \draw (compdraft) edge [post,bend left=10] (pdf);
-% \draw (compfinal) edge [post] (pdf);
-% \draw (compfinal) edge [post,bend left=10] (xml);
+% \draw (compfinal) edge [post] node[cmnt,pos=.5,above,sloped]
+% {\footnotesize(\texttt{handout})} (pdfhandout);
+% \draw (compfinal) edge [post,bend left=0] (xml);
 % \draw (compfinal) edge [post,bend right=30] node[cmnt,black!40,pos=.5,text width=1cm,left]
 % {\texttt{tikz}, \texttt{.png}, \texttt{.jpg}} (extern);
 % \draw (extern) edge [post,green,bend right=30] node[cmnt,black!40,pos=.5,below,right]
 % {\texttt{base64}} (compfinal);
-% \draw (pdf) edge [post,red,bend right=15] node[sloped,cmnt,pos=.5,above] {improve} (tex);
+% \draw (pdf) edge [post,red,bend left=15] node[sloped,cmnt,pos=.5,above] {improve} (tex);
+% \draw (pdfhandout) edge [post,red] node[cmnt,pos=.5,below] {distribute} (students);
 % \draw (xml) edge [post,red] node[cmnt,pos=.5,below] {import} (moodle);
 % \end{tikzpicture}
 % \caption{Block diagram describing a typical workflow using the \textsf{moodle} package.}
