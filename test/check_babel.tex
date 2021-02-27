@@ -11,12 +11,12 @@
 \fi
 \usepackage{babel}
 \babelprovide{foobar}
-\usepackage{translations} % overides "translator"
-\DeclareLanguage{foobar}
-%\AfterEndPreamble{
+%\usepackage{translations} % overides "translator"
+%\DeclareLanguage{foobar}
+\AfterEndPreamble{
   \DeclareTranslation{foobar}{True}{Foo}%
   \DeclareTranslation{foobar}{False}{Bar}%
-%}
+}
 \begin{document}
 \section*{Introduction}
 This document is intended to check the support of internationalization with 

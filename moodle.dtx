@@ -1004,8 +1004,8 @@
 % Single and double quotation marks (with german variants), french quotation marks,
 % inverted exclamation and question marks, and the diacritical 
 % commands  |\^|, |\'|, |\`|, |\"|, |\~|, |\c|, |\H|, |\k|, |\u| and |\v| are
-% also handled, as are the characters |\aa|, |\ae|, |\l|, |\oe|,
-% |\o|, |\ss|, and their capitalizations. See Tables~\ref{tab:diacritical},
+% also handled, as are the characters |\aa|, |\ae|, |\i|, |\l|, |\oe|,
+% |\o|, |\ss|, and their upper-case equivalents. See Tables~\ref{tab:diacritical},
 % \ref{tab:ligatures}, and \ref{tab:other} for more details.
 %   
 % In addition, |<| and |>| will be converted to |&lt;| and |&gt;| \emph{within math mode only}.
@@ -1652,8 +1652,8 @@
 %     |  \DeclareTranslation|\marg{babel language name}|{False}{Bar}%|\\
 %   |}|
 % \end{quote}
-% The |\AfterEndPreamble{| is to be removed when \textsf{translations}
-% has been loaded.
+% Note that, in this example, |\AfterEndPreamble{| must not be when the package
+% \textsf{translations} has been loaded.
 %
 % Contributions to improve or broaden the linguistic support are very welcome.
 %
@@ -1790,7 +1790,7 @@
 % 
 % ^^A\clearpage
 % \changes{v0.5}{2016/01/05}{Initial version}
-% \changes{v0.6}{2019/02/18}{Bux-fixing release}
+% \changes{v0.6}{2019/02/18}{Bug-fixing release}
 % \changes{v0.7}{2020/07/09}{Feature extensions}
 % \changes{v0.8}{2021/01/04}{Bug fixes and feature extensions}
 % \changes{v0.9}{2021/02/07}{Bug fixes and feature extensions}
@@ -1807,6 +1807,7 @@
 %       \item Support for |\i| in conversion to HTML.
 %       \item SVG option support for Windows (courtesy of Wolf Müller).
 %     \changed
+%       \item Rewording of some indications in the PDF, related to internationalization.
 %       \item The answers of matching questions are now converted to HTML
 %              (|\htmlonly| and accents in mind).
 %     \fixed
@@ -2173,6 +2174,7 @@
 }}%
 \newcommand*\@enumeratename{enumerate}%
 \newdimen\moodle@totalmarks
+\gdef\moodle@currentcategory{}%
 \newenvironment{quiz}[2][]{%
   \setkeys{moodle}{#1}%
   \gdef\setcategory##1{%
@@ -6706,20 +6708,19 @@
   }%
   \ifmoodle@international
     % By default, we load and rely on "translator".
-    % This because the package is simple and has very
-    % limited dependencies.
+    % The package is simple and has limited dependencies.
     % Since we borrow the syntax of "translations",
     % the switch is easy: just "\usepackage{translations}"
     % in the preamble.
     %\RequirePackage{translations}%
     \@ifpackageloaded{translations}{}{%
       \RequirePackage{translator}%
-      % Translate the syntax of 'translations'
+      % Borrow the syntax from 'translations'
       \newcommand\DeclareTranslation[3]{\deftranslation[to=#1]{#2}{#3}}%
-      \newcommand\DeclareTranslationFallback[2]{}%
+      \newcommand\DeclareTranslationFallback[2]{\deftranslation[to=fallback]{#1}{#2}}%
       \let\GetTranslation=\translate
-      % Set 'english' as a fall-back if a translation is not known
-      \languagepath{\languagename,english}%
+      % Set a fall-back if a translation is unknown (usually English, see below)
+      \languagepath{\languagename,fallback}%
       % Set aliases to have polyglossia yield the same results as babel
       \languagealias{norwegian}{norsk}% for 'norsk' polyglossia defines \languagename as 'norwegian'
     }%
@@ -7314,34 +7315,34 @@
     \def\GetTranslation#1{\csuse{moodle@fallback@#1}}% Use english keys by default
     \newcommand\DeclareTranslationFallback[2]{\csdef{moodle@fallback@#1}{#2}}% 
   \fi
-      \DeclareTranslationFallback{True}{True}%
-      \DeclareTranslationFallback{False}{False}%
-      \DeclareTranslationFallback{cloze}{Embedded answers}%
-      \DeclareTranslationFallback{description}{Description}%
-      \DeclareTranslationFallback{essay}{Essay}%
-      \DeclareTranslationFallback{matching}{Matching}%
-      \DeclareTranslationFallback{multi}{Multiple choice}%
-      \DeclareTranslationFallback{numerical}{Numerical}%
-      \DeclareTranslationFallback{shortanswer}{Short answer}%
-      \DeclareTranslationFallback{truefalse}{True/False}%
-      \DeclareTranslationFallback{Shuffle}{Shuffle}%
-      \DeclareTranslationFallback{Single}{One answer only}%
-      \DeclareTranslationFallback{Multiple}{Multiple answers allowed}%
-      \DeclareTranslationFallback{marked out of}{marked out of}%
-      \DeclareTranslationFallback{penalty}{penalty}%
-      \DeclareTranslationFallback{tags}{tags}%
-      \DeclareTranslationFallback{All-or-nothing}{All-or-nothing}%
-      \DeclareTranslationFallback{Case-Sensitive}{Case-Sensitive}%
-      \DeclareTranslationFallback{Case-Insensitive}{Case-Insensitive}%
-      \DeclareTranslationFallback{Drag and drop}{Drag and drop}% 
-      \DeclareTranslationFallback{Information for graders}{Information for graders}%
-      \DeclareTranslationFallback{Response template}{Response template}%
-      \DeclareTranslationFallback{editor}{HTML editor}%
-      \DeclareTranslationFallback{editorfilepicker}{HTML editor + file picker}%
-      \DeclareTranslationFallback{plain}{Plain text}%
-      \DeclareTranslationFallback{monospaced}{Plain text, monospaced font}%
-      \DeclareTranslationFallback{noinline}{File picker}%
-      \DeclareTranslationFallback{Total of marks}{Total of marks}%
+  \DeclareTranslationFallback{True}{True}%
+  \DeclareTranslationFallback{False}{False}%
+  \DeclareTranslationFallback{cloze}{Embedded answers}%
+  \DeclareTranslationFallback{description}{Description}%
+  \DeclareTranslationFallback{essay}{Essay}%
+  \DeclareTranslationFallback{matching}{Matching}%
+  \DeclareTranslationFallback{multi}{Multiple choice}%
+  \DeclareTranslationFallback{numerical}{Numerical}%
+  \DeclareTranslationFallback{shortanswer}{Short answer}%
+  \DeclareTranslationFallback{truefalse}{True/False}%
+  \DeclareTranslationFallback{Shuffle}{Shuffle}%
+  \DeclareTranslationFallback{Single}{One answer only}%
+  \DeclareTranslationFallback{Multiple}{Multiple answers allowed}%
+  \DeclareTranslationFallback{marked out of}{marked out of}%
+  \DeclareTranslationFallback{penalty}{penalty}%
+  \DeclareTranslationFallback{tags}{tags}%
+  \DeclareTranslationFallback{All-or-nothing}{All-or-nothing}%
+  \DeclareTranslationFallback{Case-Sensitive}{Case-Sensitive}%
+  \DeclareTranslationFallback{Case-Insensitive}{Case-Insensitive}%
+  \DeclareTranslationFallback{Drag and drop}{Drag and drop}% 
+  \DeclareTranslationFallback{Information for graders}{Information for graders}%
+  \DeclareTranslationFallback{Response template}{Response template}%
+  \DeclareTranslationFallback{editor}{HTML editor}%
+  \DeclareTranslationFallback{editorfilepicker}{HTML editor + file picker}%
+  \DeclareTranslationFallback{plain}{Plain text}%
+  \DeclareTranslationFallback{monospaced}{Plain text, monospaced font}%
+  \DeclareTranslationFallback{noinline}{File picker}%
+  \DeclareTranslationFallback{Total of marks}{Total of marks}%
 }%
 %    \end{macrocode}
 % 
