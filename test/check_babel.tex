@@ -1,6 +1,6 @@
 % !TeX encoding = UTF-8
 % !TeX spellcheck = en_US
-% !TEX TS-program = pdflatex
+% !TEX TS-program = lualatex
 \documentclass{article}
 \usepackage[nostamp,draft]{moodle}
 \ifPDFTeX % FOR LATEX and PDFLATEX
@@ -9,7 +9,13 @@
 \else % assuming XELATEX or LUALATEX
 	\usepackage{fontspec}
 \fi
-\usepackage{babel}
+\def\FullSupportList{british,french,ngerman,german,italian,spanish}
+\def\PartialSupportList{catalan,croatian,czech,danish,dutch,
+estonian,finnish,hungarian,icelandic,lithuanian,norsk,polish,portuguese,
+romanian,swedish,turkish}
+\def\ExtraList{}% the shortands of Turkish are particularly 
+%dangerous
+\usepackage[\PartialSupportList,\FullSupportList]{babel}
 \babelprovide{foobar}
 %\usepackage{translations} % overides "translator"
 %\DeclareLanguage{foobar}
@@ -18,15 +24,19 @@
   \DeclareTranslation{foobar}{False}{Bar}%
 }
 \begin{document}
+% Fix dangerous shorthands due to 'turkish' option of babel
+\shorthandoff{=:!}
 \section*{Introduction}
-This document is intended to check the support of internationalization with 
-\textsf{babel}. No language is set as option to \textsf{babel}.
+This document is intended to check the support of 
+internationalization with \textsf{babel}. No language is 
+set as option to \textsf{babel}.
 
-Internationalization only matters for the PDF typesetting. It has no impact on 
-the XML file generated.
+Internationalization only matters for the PDF typesetting. 
+It has no impact on the XML file generated.
 
 \def\do#1{
 \begin{otherlanguage}{#1}
+\begin{abstract}#1/\languagename\end{abstract}
 \begin{quiz}{#1}
 \begin{description}[tags={#1}]{Description}Text\end{description}
 \begin{cloze}{Cloze}
@@ -53,16 +63,16 @@ C\answer3\end{matching}
 \end{quiz}
 \end{otherlanguage}
 }
-\docsvlist{english,french,german,italian,spanish}% fully supported
+\expandafter\docsvlist\expandafter{\FullSupportList}
+
 \def\do#1{
 \begin{otherlanguage}{#1}
+\begin{abstract}#1/\languagename\end{abstract}
+\begin{quiz}{True/False in  #1}
 \begin{truefalse}{#1}?\item*\end{truefalse}
+\end{quiz}
 \end{otherlanguage}
 }
-\selectlanguage{english}
-\begin{quiz}{True/False} % partly supported
-\docsvlist{catalan,croatian,czech,danish,dutch,estonian,finnish,hungarian,
- icelandic,lithuanian,norsk,polish,portuguese,romanian,swedish,turkish}%foobar,
-\end{quiz}
+\expandafter\docsvlist\expandafter{\PartialSupportList,foobar}
 
 \end{document}

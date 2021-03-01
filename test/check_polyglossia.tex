@@ -3,33 +3,33 @@
 % !TEX TS-program = lualatex
 \documentclass{article}
 \usepackage[nostamp,draft]{moodle}
-\usepackage{fontspec}
-\usepackage{polyglossia} % polyglossia work only with XeTeX and LuaTeX
-\forcsvlist{\listadd\FullSupportList}{english,french,german,italian,spanish}
-\forcsvlist{\listadd\PartialSupportList}{catalan,croatian,czech,danish,dutch,
-estonian,finnish,hungarian,icelandic,lithuanian,norsk,polish,portuguese,
+\usepackage{fontspec}% works only with XeTeX and LuaTeX
+\usepackage{polyglossia}% works only with XeTeX and LuaTeX
+\def\FullSupportList{british,french,ngerman,german,italian,spanish}%
+\def\PartialSupportList{catalan,croatian,czech,danish,dutch,%
+estonian,finnish,hungarian,icelandic,lithuanian,norsk,polish,portuguese,%
 romanian,swedish,turkish}
-\newcounter{Lcount}
-\def\do#1{\stepcounter{Lcount}\ifnum\the\value{Lcount}=1\setmainlanguage{#1}  
-\else\setotherlanguage{#1}\fi}%
-\dolistloop{\FullSupportList}
-\dolistloop{\PartialSupportList}
+\def\do#1{\setmainlanguage{#1}\let\do=\setotherlanguage}
+\expandafter\docsvlist\expandafter{\FullSupportList}
+\expandafter\docsvlist\expandafter{\PartialSupportList}
 %\usepackage{translations} % overides "translator"
-\AfterEndPreamble{
-  \DeclareTranslation{foobar}{True}{Foo}%
-  \DeclareTranslation{foobar}{False}{Bar}%
-}
+%\AfterEndPreamble{
+%  \DeclareTranslation{foobar}{True}{Foo}%
+%  \DeclareTranslation{foobar}{False}{Bar}%
+%}
 \begin{document}
 \section*{Introduction}
-This document is intended to check the support of internationalization with 
-\textsf{polyglossia}. This package requires the languages to be specified in 
-the preamble.
+This document is intended to check the support of 
+internationalization with \textsf{polyglossia}. This 
+package requires the languages to be specified in the 
+preamble.
 
-Internationalization only matters for the PDF typesetting. It has no impact on 
-the XML file generated.
+Internationalization only matters for the PDF typesetting. 
+It has no impact on the XML file generated.
 
 \def\do#1{
 \begin{#1}
+\begin{abstract}#1/\languagename\end{abstract}
 \begin{quiz}{#1}
 \begin{description}[tags={#1}]{Description}Text\end{description}
 \begin{cloze}{Cloze}
@@ -56,14 +56,16 @@ C\answer3\end{matching}
 \end{quiz}
 \end{#1}
 }
-\dolistloop{\FullSupportList}% fully supported
+\expandafter\docsvlist\expandafter{\FullSupportList}
+
 \def\do#1{
 \begin{#1}
+\begin{abstract}#1/\languagename\end{abstract}
+\begin{quiz}{True/False in  #1}
 \begin{truefalse}{#1}?\item*\end{truefalse}
+\end{quiz}
 \end{#1}
 }
-\begin{quiz}{True/False} % partly supported
-\dolistloop{\PartialSupportList}
-\end{quiz}
+\expandafter\docsvlist\expandafter{\PartialSupportList}
 
 \end{document}
