@@ -251,7 +251,7 @@
 % The following pages presume the reader already has some familiarity with creating
 % and editing Moodle quizzes through the web interface.
 % Users that are not familiar with Moodle quizzes can learn more in the Moodle
-% documentation. For instance, \url{https://docs.moodle.org/310/en/Question_types}.
+% documentation. For instance, \url{https://docs.moodle.org/en/Question_types}.
 %
 % The |xkeyval| package is used to provide a key-value interface.
 %
@@ -522,7 +522,7 @@
 % 
 % With the True/False question type, the |penalty| key has no effect.
 %
-% \subsubsection{\href{https://docs.moodle.org/310/Multiple_Choice_question_type}{Multiple Choice}}
+% \subsubsection{\href{https://docs.moodle.org/en/Multiple_Choice_question_type}{Multiple Choice}}
 % 
 % \DescribeMacro{multi}
 % The syntax for a classic multiple choice question,
@@ -573,18 +573,29 @@
 % whereas a bare |\item| sets |fraction=0|.
 % 
 % \DescribeMacro{single}
-% By default, the |multi| environment produces
-% a multiple choice question with only one correct answer;
-% this is called |single| mode, and on Moodle it appears with radio buttons.
+% By default, the |multi| environment produces a multiple choice
+% question where only one answer can be selected. This is called
+% |single| mode.
+%^^A On Moodle, the choices are displayed with radio
+%^^A buttons and only one of them can be selected by the student.
+%
+% In |single| mode, the teacher can set negative fractions for
+% incorrect choices. This way, the expected grade of a student
+% picking up choices randomly across a quiz is lowered.
+% By default, incorrect answers that do not have a fraction
+% specified correspond to |fraction=0|.
+% \DescribeMacro{sanction} However, if the |sanction| key is set
+% to a positive value, such incorrect answers are sanctioned 
+% as if |fraction=-|\meta{sanction} was set for each of them.
 %
 % \DescribeMacro{multiple}
 % It is also possible to write questions with possibly more than one correct answer,
 % asking the user to check all correct answers. To do this, use the key |multiple|
 % or |single=false|.
-% The worth of each correct answers in |multiple| mode may be set by |fraction|,
+% The worth of each correct answer in |multiple| mode may be set by |fraction|,
 % but Moodle asks that all the fractions add up to \emph{exactly} 100.
 % If you simply designate each correct answer with |\item*|, then \textsf{moodle}
-% will divide equally among those answers the points lefts for a sum of 100\%.
+% will divide the points left for a total of 100\% equally among those answers.
 % Items that are not given a |fraction| are considered incorrect and selecting them
 % results in negative points such that the sum of all incorrect answers is -100\%.
 % For example, the following two examples are equivalent:
@@ -612,6 +623,10 @@
 % \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
 % Note that, in this example, negative fractions are set for wrong choices. This
 % prevents students selecting all options to obtain a good grade with no merit.
+% 
+% Contrarily to the |single| mode where questions with negative fractions may
+% lead to a overall negative grade, when multiple choices can be selected, the
+% lowest grade Moodle will take into account for the question is 0.
 % 
 % \DescribeMacro{allornothing}
 % There also exists a \href{https://moodle.org/plugins/qtype_multichoiceset}
@@ -827,7 +842,7 @@
 % \DescribeMacro{drag and drop}\DescribeMacro{dd}
 % The standard matching question offered by Moodle corresponds to
 % a dropdown box for choosing the answer to each question.
-% There also exists a \href{https://docs.moodle.org/310/en/Drag_and_drop_matching_question_type}
+% There also exists a \href{https://docs.moodle.org/en/Drag_and_drop_matching_question_type}
 % {``drag and drop matching''} plugin for Moodle that
 % shows all questions in one column,
 % all answers in a second column, and allows students to drag the correct
@@ -874,8 +889,8 @@
 % \DescribeMacro{single=true}\DescribeMacro{single=false}\DescribeMacro{multiple}
 % Before Moodle version 3.5, within a cloze question, a multiple choice question
 % was necessarily of type |single|, i.e. with a single good answer. If you intend
-% to export your quiz to Moodle 3.5+, the option |multiple| can be used, when
-% multiple good answers are to be found.
+% to export your quiz to Moodle 3.5+, the option |multiple| can be used for
+% questions where students must be able to select several answers.
 %
 % \DescribeMacro{vertical}\DescribeMacro{horizontal}\DescribeMacro{inline}
 % Within a cloze question, by default, a multiple choice question is implemented
@@ -964,9 +979,9 @@
 % & $\bullet$ & & & $\bullet$ & $\bullet$ \\
 % \hspace{1em}Multi (inline) & $\bullet$ & & & & $\bullet$ & & &
 % & & & & $\bullet$ & $\bullet$ \\
-% \hspace{1em}Multi (horizontal)& $\bullet$ & & & & $\bullet$ & & $\bullet$ 
+% \hspace{1em}Multi (horiz.) & $\bullet$ & & & & $\bullet$ & & $\bullet$ 
 % & & & & & $\bullet$ & $\bullet$ \\
-% \hspace{1em}Multi (vertical)& $\bullet$ & & & & $\bullet$ & & $\bullet$ 
+% \hspace{1em}Multi (vert.) & $\bullet$ & & & & $\bullet$ & & $\bullet$ 
 % & & & & & $\bullet$ & $\bullet$ \\
 % \bottomrule
 % \end{tabular}
@@ -1600,12 +1615,12 @@
 % \multicolumn{2}{l}{Unicode} & \multicolumn{2}{l}{\LaTeX} & \XeLaTeX\ or \LuaLaTeX & (pdf)\LaTeX \\
 % \cmidrule(lr){1-2}\cmidrule(lr){3-4}\cmidrule(lr){5-5}\cmidrule(lr){6-6}
 % \i & & \verb|\i| & & Unicode and \LaTeX & \LaTeX\ only\\
-% \l & \L & \verb|\l| & \verb|\L| & Unicode and \LaTeX & \LaTeX\ only\\
-% \o & \O & \verb|\o| & \verb|\O| & Unicode and \LaTeX & \LaTeX\ only\\
-% « & & \verb|\guillemotleft|\tnote{1} & & Unicode and \LaTeX & \LaTeX\ only\\
-% » & & \verb|\guillemotright|\tnote{1} & & Unicode and \LaTeX & \LaTeX\ only\\
-% ¿ & & \verb|\textquestiondown| & & Unicode and \LaTeX & \LaTeX\ only\\
-% ¡ &  & \verb|\textexclamdown| & & Unicode and \LaTeX & \LaTeX\ only\\
+% \l & \L & \verb|\l| & \multicolumn{1}{r}{\texttt{\textbackslash L}} & Unicode and \LaTeX & \LaTeX\ only\\
+% \o & \O & \verb|\o| & \multicolumn{1}{r}{\texttt{\textbackslash O}} & Unicode and \LaTeX & \LaTeX\ only\\
+% « & & \multicolumn{2}{l}{\texttt{\textbackslash guillemotleft}\tnote{1}} & Unicode and \LaTeX & \LaTeX\ only\\
+% » & & \multicolumn{2}{l}{\texttt{\textbackslash guillemotright}\tnote{1}} & Unicode and \LaTeX & \LaTeX\ only\\
+% ¿ & & \multicolumn{2}{l}{\texttt{\textbackslash textquestiondown}} & Unicode and \LaTeX & \LaTeX\ only\\
+% ¡ &  & \multicolumn{2}{l}{\texttt{\textbackslash extexclamdown}} & Unicode and \LaTeX & \LaTeX\ only\\
 % \bottomrule
 % \end{tabular}
 % \begin{tablenotes}
@@ -1830,7 +1845,7 @@
 %   \end{version}
 %   \begin{version}[version=0.9,date=2021-02-07]
 %     \added
-%       \item Support for \href{https://docs.moodle.org/310/en/All_or_nothing_multiple_choice_question_type}
+%       \item Support for \href{https://docs.moodle.org/en/All_or_nothing_multiple_choice_question_type}
 %             {all-or-nothing multiple choice} questions.
 %       \item Support for the ogonek diacritical mark via |\k|\marg{\dots}.
 %       \item Warn user of the \texttt{babel} package set for a German-related language
@@ -2506,6 +2521,10 @@
 %                  if and only if all the correct answers are selected.
       \define@boolkey{moodle}[moodle@]{allornothing}[true]{}%
       \moodleset{allornothing=false}%
+
+%% SANCTION -- how much shall incorrect choices by sanctioned in multichoice questions (single)
+      \define@cmdkey{moodle}[moodle@]{sanction}[]{}%
+      \moodleset{sanction=0} %This sets the default.
 
 %% TODO: CORRECTFEEDBACK
 %% TODO: PARTIALLYCORRECTFEEDBACK
@@ -3361,8 +3380,10 @@
   \fi
 }
   \long\def\moodle@print@multichoice@answer#1{%
-    \let\moodle@feedback=\@empty%
-    \moodle@print@multichoice@answer@int#1 \@rdelim%
+    \bgroup
+      \let\moodle@feedback=\@empty%
+      \moodle@print@multichoice@answer@int#1 \@rdelim%
+    \egroup
   }%
   \newcommand\moodle@print@multichoice@answer@int[1][]{%
     \let\moodle@fraction\@empty%
@@ -3388,7 +3409,11 @@
     \ifmoodle@handout\else
       \ifmoodle@single%
         \ifx\moodle@fraction\@empty\relax%
-          \setkeys{moodle}{fraction=0}%
+          \ifdim0pt<\moodle@sanction pt\relax
+            \setkeys{moodle}{fraction=-\moodle@sanction}%
+          \else
+            \setkeys{moodle}{fraction=0}%
+          \fi
         \fi
         \moodle@checkfraction
         \ifx\moodle@fraction\@hundred%
@@ -3579,7 +3604,11 @@
     \fi
     \ifx\moodle@fraction\@empty\relax%
       \ifmoodle@single\relax
-        \setkeys{moodle}{fraction=0}%
+        \ifdim0pt<\moodle@sanction pt\relax
+          \setkeys{moodle}{fraction=-\moodle@sanction}%
+        \else
+          \setkeys{moodle}{fraction=0}%
+        \fi
       \else% multiple
         \setkeys{moodle}{fraction=\moodle@autosanctions}%
       \fi

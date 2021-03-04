@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<quiz>
+ 
+<question type="category">
+  <category>
+    <text>$course$/top/Example Quiz</text>
+  </category>
+</question>
+ 
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Multiple Choice]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Text </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>A</p>]]></text>
+  </answer>
+  <answer fraction="-50" format="html">
+    <text><![CDATA[<p>B</p>]]></text>
+  </answer>
+  <answer fraction="-100" format="html">
+    <text><![CDATA[<p>C</p>]]></text>
+  </answer>
+</question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Multiple Choice]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Select the following numbers that are prime. </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html">
+    <text><![CDATA[<p>abc<BR/>def \(\sqrt {2}\)</p>]]></text>
+  </generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>false</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="70" format="html">
+    <text><![CDATA[<p>\(\sqrt {25}\)</p>]]></text>
+  </answer>
+  <answer fraction="-10" format="html">
+    <text><![CDATA[<p><B>68</B></p>]]></text>
+  </answer>
+  <answer fraction="30" format="html">
+    <text><![CDATA[<p>7</p>]]></text>
+    <feedback format="html"><text><![CDATA[<p>\(\sqrt {25}\)</p>]]></text></feedback>
+  </answer>
+  <answer fraction="-70" format="html">
+    <text><![CDATA[<p>8</p>]]></text>
+  </answer>
+  <answer fraction="-20" format="html">
+    <text><![CDATA[<p><CODE>nothing</CODE></p>]]></text>
+  </answer>
+</question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Multiple Choice]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Select the following numbers that are prime. </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html">
+    <text><![CDATA[<p>abc<BR/>def \(\sqrt {2}\)</p>]]></text>
+  </generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>\(\sqrt {25}\)</p>]]></text>
+  </answer>
+  <answer fraction="-40" format="html">
+    <text><![CDATA[<p>6</p>]]></text>
+  </answer>
+  <answer fraction="-30" format="html">
+    <text><![CDATA[<p>9</p>]]></text>
+    <feedback format="html"><text><![CDATA[<p>\(\sqrt {25}\)</p>]]></text></feedback>
+  </answer>
+  <answer fraction="-40" format="html">
+    <text><![CDATA[<p><OL><LI>False</LI><LI>Wrong</LI></OL></p>]]></text>
+  </answer>
+</question>
+<question type="cloze">
+  <name format="html">
+    <text><![CDATA[Cloze]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Regular, single, no shuffle {1:MULTICHOICE:=chip#yes~%10%<I>chop</I>~%-30%<B>chap</B>#no.}<BR/>Vertical, single, no shuffle {1:MULTICHOICE_V:=chip#yes~%10%chop~chap#no.}<BR/>Horizontal, single, no shuffle {1:MULTICHOICE_H:=chip#yes~%10%chop~chap#no.}<BR/>Regular, single, shuffle {1:MULTICHOICE_S:=chip~chop#yes~chap#no.}<BR/>Vertical, single, shuffle {1:MULTICHOICE_VS:=chip#yes~%10%chop~chap#no.}<BR/>Horizontal, single, shuffle {1:MULTICHOICE_HS:=chip#yes~chop~chap#no.}<BR/>Regular, multiple, no shuffle {1:MULTIRESPONSE:=chip~=chop#yes~chap#no.}<BR/><BR/>Horizontal, multiple, no shuffle {1:MULTIRESPONSE_H:=chip#yes~=chop~chap#no.}<BR/>Regular, multiple, shuffle {1:MULTIRESPONSE_S:=chip~=chop#yes~chap#no.}Horizontal, multiple, shuffle {1:MULTIRESPONSE_HS:=chip#yes~=chop~chap#no.}<BR/></p>]]></text>
+  </questiontext>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+</question>
+ 
+</quiz>
