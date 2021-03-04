@@ -13,7 +13,7 @@
     <text><![CDATA[Cloze]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>Who? {1:SHORTANSWER_C:=chip~%10%chop#yes~%-30%chap#no.}what? {1:SHORTANSWER:=chip~%10%chop#yes~%-30%chap#no.}</p>]]></text>
+    <text><![CDATA[<p>Who? {1:SHORTANSWER_C:=chip~%10%chop#yes~%-30%chap#no.}what? {1:SHORTANSWER:=chip~%11%chop#yes~%-31%chap#no.}</p>]]></text>
   </questiontext>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>

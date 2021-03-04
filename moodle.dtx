@@ -335,8 +335,8 @@
 % |<!-- This file was generated on 2021-01-07 by LuaLaTeX -->|\\
 % |<!-- running on Linux with the package moodle |\texttt{\fileversion}| -->|
 % \end{quote}
-% The package option
-% |nostamp| prevents this stamp to be written in the XML file.
+% The package option |nostamp| prevents this stamp from being
+% written in the XML file.
 %
 % \DescribeMacro{section}
 % \DescribeMacro{section*}
@@ -360,7 +360,7 @@
 % \DescribeMacro{quiz}
 % A |.tex| document to generate Moodle quizzes contains one or more
 % |quiz| environments, within which various question environments are nested.
-% The required argument to the |quiz| environment names a category for Moodles
+% The required argument to the |quiz| environment names a category for Moodle's
 % ``question bank'': after import, the questions defined in this environment
 % will be gathered in this category.
 % \begin{center}
@@ -416,7 +416,8 @@
 % 
 % \begin{table}[tbp]
 % \centering
-% \caption{\href{https://github.com/moodle/moodle/blob/MOODLE\_310\_STABLE/question/engine/bank.php\#L339}{Valid positive options} for the \texttt{fraction} key: $100\cdot(p/q)$.}
+% \caption{\href{https://github.com/moodle/moodle/blob/MOODLE\_310\_STABLE/question/engine/bank.php\#L339}
+%     {Valid positive options} for the \texttt{fraction} key outside cloze environments: $100\cdot(p/q)$.}
 % \label{tab:fraction}
 % \footnotesize
 % \begin{tabular}{l*{10}{l}}
@@ -585,8 +586,9 @@
 % By default, incorrect answers that do not have a fraction
 % specified correspond to |fraction=0|.
 % \DescribeMacro{sanction} However, if the |sanction| key is set
-% to a positive value, such incorrect answers are sanctioned 
-% as if |fraction=-|\meta{sanction} was set for each of them.
+% to a positive value, at quiz or question levels, such incorrect
+% answers are sanctioned as if |fraction=-|\meta{sanction} was
+% set for each of them.
 %
 % \DescribeMacro{multiple}
 % It is also possible to write questions with possibly more than one correct answer,
@@ -686,7 +688,7 @@
 % \end{itemize}
 %
 % When feedback is to be given for any non-specified answer, one can add a \emph{last} answer
-% item containing the wilcard character |*| only. In this case, the |tolerance| key is irrelevant.
+% item containing the wildcard character |*| only. In this case, the |tolerance| key is irrelevant.
 % 
 % Both answers and tolerance can be specified with the comma (|,|) as a decimal separator.
 % Exponent notation is accepted. After import, Moodle will recognize indifferently |0.000165|,
@@ -885,6 +887,12 @@
 % |\begin{multi}| is \emph{not} followed by name in braces;
 % the same is true for the |shortanswer| and |numerical|
 % environments.
+%
+% \DescribeMacro{fraction}
+% Inside cloze environments, the |fraction| key can be used to give
+% partial credit or sanction for certain answers. The values
+% specified must be integers and are not restricted to the
+% values found in Table~\ref{tab:fraction}.
 % 
 % \DescribeMacro{single=true}\DescribeMacro{single=false}\DescribeMacro{multiple}
 % Before Moodle version 3.5, within a cloze question, a multiple choice question
@@ -1003,7 +1011,7 @@
 % \label{tab:html}
 % \begin{tabular}{llll}
 % \toprule
-% \multicolumn{2}{l}{Macros} & Commands & Environnments \\
+% \multicolumn{2}{l}{Macros} & Commands & Environments \\
 % \cmidrule(lr){1-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}
 % |\%| & |\#| &|\emph{}| & |\begin{center}|\\
 % |\$| & |\&| &|\textbf{}| & |\begin{enumerate}|\\
@@ -1141,7 +1149,7 @@
 %   \end{itemize}
 % \item \DescribeMacro{\embedaspict} a macro |\embedaspict{...}| is provided for the
 % inclusion of inline \LaTeX\ material as images. This can serve as a workaround to
-% overcome limitations of this package---like the conversion of tabulars to HTML---
+% overcome limitations of this package---like the conversion of \emph{tabular}s to HTML---
 % or limitations of Moodle itself.
 % For the definition of this macro, the package \texttt{varwidth} is loaded.
 % \item optimizations of the \TikZ-external library are disabled. Compilation might get
@@ -1213,11 +1221,11 @@
 % XML output and is converted using \href{https://inkscape.org/}
 % {Inkscape} (must be installed) for inclusion in the PDF output.
 % \item the graphic files in PDF format are converted to the SVG format using
-% \href{https://inkscape.org/}{Inkscape} (must be installed), rather than beeing
+% \href{https://inkscape.org/}{Inkscape} (must be installed), rather than being
 % rasterized. Before inclusion to the XML output, the SVG file is optimized using
 % the \href{https://github.com/scour-project/scour}{Scour} utility. This
 % optimization step is optional in the sense that, if the Scour call fails,
-% the unoptimized SVG file will be passed to the XML output.
+% the un-optimized SVG file will be passed to the XML output.
 % Two processes benefit from this PDF$\to$SVG conversion:
 %   \begin{itemize}
 %     \item inclusion of PDF graphics with |\includegraphics|, and
@@ -1366,7 +1374,7 @@
 % the same prototype.
 % 
 % We suggest to apply a specific tag to these questions. After import in Moodle, when creating
-% a quizz, this tag can be selected to narrow down a random selection of questions.
+% a quiz, this tag can be selected to narrow down a random selection of questions.
 % This would mimic the behavior of calculated questions while bringing the flexibility of your
 % favorite scripting language.
 % 
@@ -1647,7 +1655,7 @@
 % 
 % \section{Internationalization}
 % 
-% This section is intended for authors of Moodle quizzes writting in one or several
+% This section is intended for authors of Moodle quizzes writing in one or several
 % languages other than English. It seems reasonable to assume that those users have heard
 % of the packages \textsf{babel} or \textsf{polyglossia} (\XeTeX\ or Lua\TeX\ only), that
 % both aim at enforcing language-related rules to \LaTeX\ documents.
@@ -1662,7 +1670,7 @@
 % the document or a part of it. If one of these packages is loaded in the preamble,
 % \textsf{moodle} will automatically load the package \textsf{translator} and rely on it
 % to provide translations of its keys (see Table~\ref{tab:language_keys}) in different
-% languages, with some knowledge on ali aases. The package \textsf{translations} does a
+% languages, with some knowledge on aliases. The package \textsf{translations} does a
 % very similar job and can be loaded in the preamble to serve, if desired, as a
 % replacement for \textsf{translator}.
 %
@@ -1801,7 +1809,7 @@
 % \href{https://framagit.org/mattgk/moodle/-/issues?scope=all&state=all}{here}.
 % If the problem appears to be new, please report it by following these steps:
 % \begin{enumerate}
-% \item Prepare a \emph{minimal} working example, i.e. a |.tex| file shunk down
+% \item Prepare a \emph{minimal} working example, i.e. a |.tex| file shrunk down
 % to the strict minimum (loaded packages, code, \dots) while still showing the
 % faulty behavior upon compilation.
 % \item Gather and send the |*.tex|, |*.log| and |*-moodle.xml| files together
@@ -1823,6 +1831,7 @@
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version}[version=1.0,]^^Adate=]
 %     \added
+%       \item |sanction| key to set default mark for incorrect answers.
 %       \item Started the internationalization of the package based on
 %             \textsf{translator} (optionally \textsf{translations}). English,
 %             French, German, Italian, and Spanish
@@ -1831,12 +1840,14 @@
 %       \item Warn user of the \texttt{babel} package set for Turkish
 %             that using the shortands will not play well with \textsf{moodle}.
 %       \item Support for |\i| in conversion to HTML.
-%       \item SVG option support for Windows (courtesy of Wolf Müller).
+%       \item SVG option support for Windows (courtesy of Wolf M\"uller).
 %     \changed
 %       \item Rewording of some indications in the PDF, related to internationalization.
 %       \item The answers of matching questions are now converted to HTML
 %              (|\htmlonly| and accents in mind).
 %     \fixed
+%       \item The \texttt{fraction} keys specified inside cloze questions are
+%             forced to integer values as required by Moodle's XML format.
 %       \item True/False no longer broken when \textsf{hyperref} is loaded.
 %       \item Tolerances in Numerical answers now correctly displayed in PDF.
 %       \item Warning for users running a too old version of \textsf{graphics}.
@@ -3380,10 +3391,8 @@
   \fi
 }
   \long\def\moodle@print@multichoice@answer#1{%
-    \bgroup
-      \let\moodle@feedback=\@empty%
-      \moodle@print@multichoice@answer@int#1 \@rdelim%
-    \egroup
+    \let\moodle@feedback=\@empty%
+    \moodle@print@multichoice@answer@int#1 \@rdelim%
   }%
   \newcommand\moodle@print@multichoice@answer@int[1][]{%
     \let\moodle@fraction\@empty%
@@ -4103,10 +4112,29 @@
 }%
 %    \end{macrocode}
 %
+% Utility to check the validity of fractions inside cloze subquestions.
+%    \begin{macrocode}
+\newdimen\moodle@tmpdim
+\def\moodle@checkclozefraction{%
+  \moodle@tmpdim=\moodle@fraction pt\relax
+  % Rounding is performed in three steps:
+  % 1) round(x)=floor(x+1/2)
+  \advance\moodle@tmpdim by .5pt\relax
+  % 2) floor(x)=trunc(x) if x>0, and floor(x)=trunc(x-1) if x<0
+  \ifdim\moodle@tmpdim<0pt\relax\advance\moodle@tmpdim by -1pt\fi
+  % 3) Truncation because the quantum of TeX dimensions is 1/65536-th of a point.
+  \divide\moodle@tmpdim by 65536\relax\multiply\moodle@tmpdim by 65536\relax
+  \def\moodle@tmpval{\strip@pt\moodle@tmpdim}%
+  \ifdim\moodle@tmpdim=\moodle@fraction pt\else
+    \PackageWarning{moodle}{in cloze questions, fractions must be integers. Rounding \moodle@fraction\space to \moodle@tmpval}%
+  \fi
+  \moodleset{fraction=\moodle@tmpval}% in any case, take eventual decimals out (e.g. change 10.0 for 10)
+}%
+%    \end{macrocode}
+%
 % \subsubsection{Cloze Multiple Choice Questions}
 % 
 %    \begin{macrocode}
-
 \NewEnviron{clozemulti}[1][]{%
   \bgroup
     \setkeys{moodle}{default grade=1}%
@@ -4246,7 +4274,7 @@
     \ifx\moodle@fraction\@hundred
       \g@addto@macro\moodle@answertext{$~\checkmark$}%
     \else
-      \moodle@checkfraction
+      \moodle@checkclozefraction
       \ifdim0pt=\moodle@fraction pt\relax\else
         \xdef\moodle@answertext{\expandonce\moodle@answertext$~(\moodle@fraction\%)$}%
       \fi
@@ -4305,7 +4333,7 @@
   \ifx\moodle@fraction\@hundred
     \g@addto@macro\clozemulti@coding{=}%
   \else
-    \moodle@checkfraction
+    \moodle@checkclozefraction
     \ifdim0pt=\moodle@fraction pt\relax\else
       \xdef\clozemulti@coding{\expandonce\clozemulti@coding\otherpercent\moodle@fraction\otherpercent}%
     \fi
@@ -4383,7 +4411,7 @@
   \ifx\moodle@fraction\@hundred
     \def\moodle@clozenumericalprint@fraction{$~\checkmark$}%
   \else
-    \moodle@checkfraction
+    \moodle@checkclozefraction
     \edef\moodle@clozenumericalprint@fraction{$(~\moodle@fraction\%)$}%
   \fi
   \ifx\moodle@zero\moodle@tolerance%
@@ -4420,7 +4448,7 @@
   \ifx\moodle@fraction\@hundred
     \g@addto@macro\clozenumerical@coding{=}%
   \else
-    \moodle@checkfraction
+    \moodle@checkclozefraction
     \ifdim0pt=\moodle@fraction pt\relax\else
       \xdef\clozenumerical@coding{\expandonce\clozenumerical@coding\otherpercent\moodle@fraction\otherpercent}%
     \fi
@@ -4513,7 +4541,7 @@
   \ifx\moodle@fraction\@hundred
     \def\moodle@clozeshortanswerprint@fraction{$~\checkmark$}%
   \else
-    \moodle@checkfraction
+    \moodle@checkclozefraction
     \edef\moodle@clozeshortanswerprint@fraction{$~(\moodle@fraction\%)$}%
   \fi
   \xdef\moodle@clozeshortanswerprint@line{#1~\moodle@clozeshortanswerprint@fraction & \expandonce\emph{\expandonce\moodle@feedback}}%
@@ -4540,7 +4568,7 @@
   \ifx\moodle@fraction\@hundred
     \g@addto@macro\clozeshortanswer@coding{=}%
   \else
-    \moodle@checkfraction
+    \moodle@checkclozefraction
     \ifdim0pt=\moodle@fraction pt\relax\else
       \xdef\clozeshortanswer@coding{\expandonce\clozeshortanswer@coding\otherpercent\moodle@fraction\otherpercent}%
     \fi

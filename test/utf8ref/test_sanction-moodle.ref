@@ -25,7 +25,7 @@
   <answer fraction="100" format="html">
     <text><![CDATA[<p>A</p>]]></text>
   </answer>
-  <answer fraction="-50" format="html">
+  <answer fraction="-100" format="html">
     <text><![CDATA[<p>B</p>]]></text>
   </answer>
   <answer fraction="-100" format="html">
