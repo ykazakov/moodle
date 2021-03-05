@@ -2002,6 +2002,7 @@
 \newif\ifmoodle@subsection
 \newif\ifmoodle@numbered
 \newif\ifmoodle@international
+\newif\ifmoodle@feedbackLeft% contribution of Juergen Vollmer, 2021-03-05
 
 %%DECLARATION OF OPTIONS
 \DeclareOption{draft}{\moodle@draftmodetrue}
@@ -2014,6 +2015,8 @@
 \DeclareOption{section*}{\moodle@sectiontrue\moodle@numberedfalse}
 \DeclareOption{subsection}{\moodle@sectionfalse\moodle@numberedtrue}
 \DeclareOption{subsection*}{\moodle@sectionfalse\moodle@numberedfalse}
+\DeclareOption{feedbackleft}{\moodle@feedbackLefttrue}% contribution of Juergen Vollmer, 2021-03-05
+\DeclareOption{feedbackright}{\moodle@feedbackLeftfalse}% default
 
 \moodle@draftmodefalse
 \moodle@handoutfalse
@@ -2023,6 +2026,7 @@
 \moodle@svgfalse
 \moodle@subsectiontrue
 \moodle@numberedfalse
+\moodle@feedbackLeftfalse% contribution of Juergen Vollmer, 2021-03-05
 
 \ProcessOptions
 
@@ -2374,21 +2378,21 @@
 }%
 
 \def\generate@moodle@write@html@noptag#1<#2>#3{%
-	% No <P>..</P> introduced
-	% #1 = NAME for \moodle@writeNAME
-	% #2 = HTML tag
-	% #3 = what, exactly, to write
-	\xa\gdef\csname moodle@write#1\endcsname{%
-		\xa\def\xa\test@iii\xa{#3}%
-		\ifx\test@iii\@moodle@empty
-		\writetomoodle[2]{  <#2 format="html"><text/></#2>}%
-		\else
-		\xa\converttohtmlmacro\xa\moodle@htmltowrite\xa{#3}%
-		\writetomoodle[2]{  <#2 format="html">}%
-		\writetomoodle[4]{    <text><![CDATA[\moodle@htmltowrite]]></text>}%
-		\writetomoodle[2]{  </#2>}%
-		\fi
-	}%
+  % No <P>..</P> introduced
+  % #1 = NAME for \moodle@writeNAME
+  % #2 = HTML tag
+  % #3 = what, exactly, to write
+  \xa\gdef\csname moodle@write#1\endcsname{%
+    \xa\def\xa\test@iii\xa{#3}%
+    \ifx\test@iii\@moodle@empty
+      \writetomoodle[2]{  <#2 format="html"><text/></#2>}%
+    \else
+      \xa\converttohtmlmacro\xa\moodle@htmltowrite\xa{#3}%
+      \writetomoodle[2]{  <#2 format="html">}%
+      \writetomoodle[4]{    <text><![CDATA[\moodle@htmltowrite]]></text>}%
+      \writetomoodle[2]{  </#2>}%
+    \fi
+  }%
 }%
 
 \def\generate@moodle@write@data*#1<#2>#3{%
@@ -2474,7 +2478,7 @@
       %Key calls like [default grade=7] set \moodle@defaultgrade.
       \define@cmdkey{moodle}[moodle@]{default grade}[1.0]{}%
       %Next, makes 'points' a synonym for 'default grade'
-      \define@key{moodle}{points}[1.0]{\xa\def\csname moodle@default grade\endcsname{#1}} 
+      \define@key{moodle}{points}[1.0]{\xa\def\csname moodle@default grade\endcsname{#1}}%
       \generate@moodle@write@code*{defaultgrade}<defaultgrade>{\csname moodle@default grade\endcsname}%
       \moodleset{default grade=1.0} %This sets the default.
 
@@ -2665,7 +2669,7 @@
                        {\def\test@i{#1}%
                         \ifx\test@i\@moodle@html
                           % HTML Editor
-                          \def\moodle@responseformat{editor}% 
+                          \def\moodle@responseformat{editor}%
                         \fi
                         \ifx\test@i\@moodle@htmlfile
                           % HTML Editor with File Picker
@@ -2693,7 +2697,7 @@
                         \fi
                        }%
       \generate@moodle@write@code*{responseformat}<responseformat>{\moodle@responseformat}%
-      \moodleset{response format=html}% 
+      \moodleset{response format=html}%
       %N.B. if we did not set a default, then \moodle@responseformat would be undefined, causing problems.
 
 %% RESPONSE REQUIRED
@@ -2795,7 +2799,18 @@
 % TODO: I don't think I really want to handle this.  Not now.
 
 %    \end{macrocode}
-
+%
+% \subsection{Typesetting options}
+% This section provides the tools to allow on to control how the quiz gets typeset
+% in the resulting PDF file.
+%    \begin{macrocode}
+\ifmoodle@feedbackLeft% contribution of Juergen Vollmer, 2021-03-05
+  \newcommand{\moodle@preFeedback}{\\}%
+\else%
+  \newcommand{\moodle@preFeedback}{\hfill}%
+\fi
+%    \end{macrocode}
+%
 % \subsection{Front Ends}
 % This section creates the user interface for the various question types.
 % First, we define a generic command to create 
@@ -2946,7 +2961,7 @@
 % 
 %    \begin{macrocode}
 \def\moodle@essay@latexprocessing{%
-  % Moodle cannot automatically grade an essay, 
+  % Moodle cannot automatically grade an essay,
   % but if the user puts \item's in, we can list them in an itemize as notes.
   \par\noindent \emph{\GetTranslation{Information for graders}:}
   \ifnum\c@numgathereditems>0\relax
@@ -3059,7 +3074,7 @@
 %%%%       1. if \c@numgathereditems=0, we don't do anything.
 %%%%       2. it calls a preamble and postamble around the \loopthroughitemswithcommand.
 %%%%          Like this:
-%%%%            
+%%%%
 %%%%      \@moodle@ifgeneratexml{%
 %%%%        \xa\questiontext\xa{\moodle@questionheader}% Save the question text.
 %%%%        \bgroup
@@ -3078,7 +3093,7 @@
 %%%%        \egroup
 %%%%        \csname write#1question\endcsname
 %%%%      }{}%
-%%%% The \@ifundefined lines should automatically define the 
+%%%% The \@ifundefined lines should automatically define the
 %%%% \...@preamble \...@postamble macros to be \relax if they don't exist already.
 
 \gdef\writeessayquestion{%
@@ -3094,7 +3109,6 @@
 \long\def\moodle@print@essay@answer#1{%
     \item #1%
 }%
-
 
 \long\def\moodle@savegraderinfo#1{%
   %\def\ds{#1}\show\ds
@@ -3197,7 +3211,7 @@
        \item #1$~(\moodle@fraction\%)$%
      \fi
      \ifx\moodle@feedback\@empty\relax\else
-       \hfill \emph{$\rightarrow$ \moodle@feedback}
+       \moodle@preFeedback \emph{$\rightarrow$ \moodle@feedback}
      \fi
    }%
 
@@ -3288,7 +3302,7 @@
        $~(\moodle@fraction\%)$%
      \fi
      \ifx\moodle@feedback\@empty\relax\else
-       \hfill \emph{$\rightarrow$ \moodle@feedback}%
+       \moodle@preFeedback \emph{$\rightarrow$ \moodle@feedback}%
      \fi
    }%
 
@@ -3446,7 +3460,7 @@
       \xa\temp\xa{\moodle@answertext}%
     \else
       \ifx\moodle@feedback\@empty\relax\else%
-        \g@addto@macro\moodle@answertext{\hfill \emph{$\rightarrow$ \moodle@feedback}}%
+        \g@addto@macro\moodle@answertext{\moodle@preFeedback \emph{$\rightarrow$ \moodle@feedback}}%
       \fi
       \moodle@answertext
     \fi
@@ -3638,7 +3652,6 @@
 
 % WRITING QUESTION TO XML FILE
 \gdef\writemultiquestion{%
-  
     \writetomoodle{<question type="multichoice\ifmoodle@allornothing set\fi">}%
     \moodle@writecommondata%
     \ifmoodle@allornothing\else
@@ -3750,24 +3763,24 @@
    }%
    \def\moodle@print@truefalse@answer@int@int@empty{%
      \ifnum\c@currentitemnumber=1\relax
-	\def\moodle@answertext{\GetTranslation{True}}%
+       \def\moodle@answertext{\GetTranslation{True}}%
      \fi
      \ifnum\c@currentitemnumber=2\relax
-	\def\moodle@answertext{\GetTranslation{False}}%
+       \def\moodle@answertext{\GetTranslation{False}}%
      \fi
      \item \textbf{\moodle@answertext}%
      \ifmoodle@handout\else
        \ifx\moodle@feedback\@empty\relax\else
-         ~\hfill \emph{$\rightarrow$ \moodle@feedback}%
+         ~\moodle@preFeedback \emph{$\rightarrow$ \moodle@feedback}%
        \fi
      \fi
    }%
    \def\moodle@print@truefalse@answer@int@int@int#1#2\@rdelim{%
      \ifnum\c@currentitemnumber=1\relax
-	\def\moodle@answertext{\GetTranslation{True}}%
+       \def\moodle@answertext{\GetTranslation{True}}%
      \fi
      \ifnum\c@currentitemnumber=2\relax
-	\def\moodle@answertext{\GetTranslation{False}}%
+       \def\moodle@answertext{\GetTranslation{False}}%
      \fi
      \item \textbf{\moodle@answertext}%
      \ifnum\c@currentitemnumber<3\relax
@@ -3787,13 +3800,13 @@
            \trim@spaces@in\test@ii
            \ifx\test@ii\@empty\relax\else
              \ifx\test@i\@star%
-               \hfill \emph{$\rightarrow$ #2}%
+               \moodle@preFeedback \emph{$\rightarrow$ #2}%
              \else%
-               \hfill \emph{$\rightarrow$ #1#2}%
+               \moodle@preFeedback \emph{$\rightarrow$ #1#2}%
              \fi
            \fi
          \else
-           \hfill \emph{$\rightarrow$ \moodle@feedback}%
+           \moodle@preFeedback \emph{$\rightarrow$ \moodle@feedback}%
          \fi
        \fi
      \fi
@@ -3822,10 +3835,10 @@
    \def\savetruefalseanswer@int@int@empty{%
      \setkeys{moodle}{fraction=0}%
      \ifnum\c@currentitemnumber=1\relax
-	\def\moodle@answertext{true}%
+       \def\moodle@answertext{true}%
      \fi
      \ifnum\c@currentitemnumber=2\relax
-	\def\moodle@answertext{false}%
+       \def\moodle@answertext{false}%
      \fi
      \ifnum\c@currentitemnumber<3\relax
        \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
@@ -3846,10 +3859,10 @@
        \setkeys{moodle}{fraction=0}%
      \fi
      \ifnum\c@currentitemnumber=1\relax
-	\def\moodle@answertext{true}%
+       \def\moodle@answertext{true}%
      \fi
      \ifnum\c@currentitemnumber=2\relax
-	\def\moodle@answertext{false}%
+       \def\moodle@answertext{false}%
      \fi
      \ifnum\c@currentitemnumber<3\relax
        \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
@@ -4214,7 +4227,7 @@
         \par\noindent
         \ifmoodle@handout
           \begin{tabular}[t]{|p{.45\linewidth}|}
-        \else 
+        \else
           \begin{tabular}[t]{|p{.45\linewidth}|p{.45\linewidth}|}
 %          answer & feedback \\\hline\hline
         \fi
@@ -4239,7 +4252,6 @@
     \passvalueaftergroup\htmlize@afteraction@hook%
   \egroup%
 }[\endclozemulti@code]%
-
 
 \long\def\moodle@print@clozemultichoice@answer#1{%
   \let\moodle@feedback=\@empty
@@ -4289,7 +4301,7 @@
   \or % Case 1
     \ifmoodle@handout\else
       \ifx\moodle@feedback\@empty\relax\else
-        \xdef\moodle@answertext{\expandonce\moodle@answertext \hfill \expandonce\emph{$\rightarrow$ \expandonce\moodle@feedback}}%
+        \xdef\moodle@answertext{\expandonce\moodle@answertext \moodle@preFeedback \expandonce\emph{$\rightarrow$ \expandonce\moodle@feedback}}%
       \fi
     \fi
   \else % otherwise
@@ -4428,8 +4440,6 @@
   \xa\g@addto@macro\xa\cloze@numerical@table@text\xa{\moodle@clozenumericalprint@line \\\hline}%
 }%
 
-
-
 \def\saveclozenumericalanswer#1{%
   \bgroup
     \saveclozenumericalanswer@int#1\moodle@answer@rdelim
@@ -4547,8 +4557,6 @@
   \xdef\moodle@clozeshortanswerprint@line{#1~\moodle@clozeshortanswerprint@fraction & \expandonce\emph{\expandonce\moodle@feedback}}%
   \xa\g@addto@macro\xa\cloze@shortanswer@table@text\xa{\moodle@clozeshortanswerprint@line \\\hline}%
 }%
-
-
 
 \def\saveclozeshortansweranswer#1{%
   \bgroup
@@ -4688,7 +4696,7 @@
       \catcode`\^^A=13\catcode`\^^B=1\catcode`\^^C=2\relax
       \xa\def\xa\arg\xa{\xa^^A\xa^^B\texttorescan^^C}%
       #2%
-      \catcode\endlinechar=9\relax% 
+      \catcode\endlinechar=9\relax%
       %\scantokens always sees an end-of-line character at its end and converts it to a space.
       %The catcode change sets \scantokens to ignore end-of-line chars.
       %In practice, we're always calling \scantokens on previously scanned text anyway,
@@ -4831,7 +4839,7 @@
         % Therefore we'll detokenize \htmlize@remainder here.
         \xa\ultradetokenize@to@macro\xa\htmlize@remainder@detokenized\xa{\htmlize@remainder}%
         \edef\htmlize@remainder@detokenized{\xa\htmlize@remove@stopcode\htmlize@remainder@detokenized}%
-        % 
+        %
         % Now build \htmlize@next@i.
         % When done, should look like
         %   \converttohtml@int{\htmlize@blockinbraces}%
@@ -4871,7 +4879,7 @@
         \fi% \ifx\test@ii\@otherdollar
         % Now we resume work.
         % The \htmlize@xxxxxxmathshift@replace macro stored the remaining text in \htmlize@remaining@text.
-        % Note that since we never detokenized and retokenized #1#2#3, 
+        % Note that since we never detokenized and retokenized #1#2#3,
         % \htmlize@remaining@text still includes the terminating \@htmlize@stop\@htmlize@stop\@htmlize@stop.
         \def\htmlize@next@i{\xa\htmlize@recursive@i\htmlize@remaining@text\htmlize@rdelim@i}%
       \else
@@ -4889,9 +4897,9 @@
           %    This may involve work in TeX's stomach (e.g., with counters)
           %    or with external files (e.g., image processing).
           %    The command may directly add material to \htmlize@output,
-          %    but it should not typeset anything and should vanish from the 
+          %    but it should not typeset anything and should vanish from the
           %    input stream when it is done.
-          %       When it's done, we somehow need to detokenize and resume 
+          %       When it's done, we somehow need to detokenize and resume
           %    processing the remainder of the input stream.
           %       Only commands explicitly crafted (or modified) to work
           %    with moodle.sty can possibly do all this!
@@ -4903,10 +4911,10 @@
           %    Environments: \begin{array}
           %
           % #2 is only for items on a specific list.
-          % #1 is anything that runs in TeX's mouth.  
+          % #1 is anything that runs in TeX's mouth.
           %    We could keep a list and give users a way to add to it.
           %    I could also try expanding macros, using \ifcsmacro from etoolbox.sty
-          % 
+          %
           % The first step is to figure out what control sequence we're dealing with.
           % First, let's get rid of the terminal \@htmlize@stop codes.
           {\def\@htmlize@stop{}\xdef\htmlize@scrap{#1#2#3}}%
@@ -4946,7 +4954,7 @@
                 %The \bgroup is to active the environments.
                 %The matching \egroup is found in \htmlize@do@actionenv.
               }{%An environment to pass to the HTML
-                %We just pass the backslash from "\begin" and move on. 
+                %We just pass the backslash from "\begin" and move on.
                 \g@addto@macro\htmlize@output{#1}%
                 \def\htmlize@next@i{\htmlize@recursive@i#2#3\htmlize@rdelim@i}%
               }%
@@ -5141,7 +5149,7 @@
 % \subsubsection{Engine for running action environments}
 %    \begin{macrocode}
 \long\def\htmlize@do@actionenv#1#2\@htmlize@stop\htmlize@actionsequence@rdelim{%
-  \bgroup %The corresponding \egroup is given in \htmlize@proceedwiththerest, 
+  \bgroup %The corresponding \egroup is given in \htmlize@proceedwiththerest,
           %to localize the changes to the environment definitions.
     \htmlize@activate@environments
     \gdef\htmlize@afteraction@hook{}%
@@ -5151,7 +5159,6 @@
 \def\htmlize@patchendenvironment{\swaptotrueendenvironment{\xa\htmlize@proceedwiththerest\htmlize@afteraction@hook}}%
 
 \def\swaptotrueendenvironment#1#2\if@ignore\@ignorefalse\ignorespaces\fi{#2\if@ignore\@ignorefalse\ignorespaces\fi#1}%
-
 
 \long\def\htmlize@record@environment#1{%
   \listadd{\htmlize@env@actionlist}{#1}%
@@ -5167,7 +5174,6 @@
   }%
 }
 
-
 \def\htmlize@activate@environments{}%
 %    \end{macrocode}
 % 
@@ -5182,7 +5188,7 @@
 
 \long\def\htmlize@do@actioncs#1#2\htmlize@actionsequence@rdelim{%
   % #1#2 contains the current string to be rendered into HTML;
-  %      N.B. it has been tokenized at this point, 
+  %      N.B. it has been tokenized at this point,
   %      so TeX can process it directly.
   % #1 = the command sequence we need to execute
   % #2 = the rest of the string
@@ -5214,7 +5220,7 @@
   %This will contain an extra \@htmlize@stop, so we remove it.
   \xa\xa\xa\def\xa\xa\xa\htmlize@remainder@detokenized\xa\xa\xa{\xa\htmlize@remove@stopcode\htmlize@remainder@detokenized}%
   %Now we get back to work transcribing the remainder.
-  \xa\htmlize@recursive@i\htmlize@remainder@detokenized\@htmlize@stop\@htmlize@stop\@htmlize@stop\htmlize@rdelim@i%  
+  \xa\htmlize@recursive@i\htmlize@remainder@detokenized\@htmlize@stop\@htmlize@stop\@htmlize@stop\htmlize@rdelim@i%
 }
 
 \long\def\htmlize@record@action#1{%
@@ -5234,7 +5240,7 @@
   \else
     \xa\html@action@def\csname #1\endcsname{\csname moodle@#1@int\endcsname}%
   \fi
-  % Note that \htmlize@do@actioncs will 'patch' this by putting 
+  % Note that \htmlize@do@actioncs will 'patch' this by putting
   % '\xa\htmlize@proceedwiththerest\htmlize@afteraction@hook'
   % at the end.  We want those 3 tokens to occur instead after
   % the graphics filename.
@@ -5275,7 +5281,7 @@
 % |\renewcommand|, |\providecommand| or their starred variants.
 %    \begin{macrocode}
 \def\moodleregisternewcommands{%
-  %% INSPIRED FROM 
+  %% INSPIRED FROM
   %https://tex.stackexchange.com/questions/73271/how-to-redefine-or-patch-the-newcommand-command
   \newcommand*{\saved@ifdefinable}{}
   \let\saved@ifdefinable\@ifdefinable
@@ -5509,35 +5515,35 @@
 %Cedilla
 \def\@c{c}\def\@C{C}\def\@s{s}\def\@S{S}\def\@t{t}\def\@T{T}%
 \html@action@def\c#1{%
-	\bgroup
-	  \def\test@i{#1}%
-	  \ifx\test@i\@c
-	    \def\toadd{\otherampersand ccedil\othersemicol}%
-	  \else
-	    \ifx\test@i\@C
-	      \def\toadd{\otherampersand Ccedil\othersemicol}%
-	    \else
-	      \ifx\test@i\@s
-	        \def\toadd{\otherampersand\otherhash351\othersemicol}%
-	      \else
-	        \ifx\test@i\@S
-	          \def\toadd{\otherampersand\otherhash350\othersemicol}%
-	        \else
-	          \ifx\test@i\@t
-	            \def\toadd{\otherampersand\otherhash355\othersemicol}%
-	          \else
-	            \ifx\test@i\@T
-	              \def\toadd{\otherampersand\otherhash354\othersemicol}%
-	            \else
-	              \def\toadd{\otherbackslash\otherlbrace#1\otherrbrace}%
-	            \fi
-	          \fi
-	        \fi
-	      \fi
-	    \fi
-	  \fi
-	  \xa\g@addto@macro\xa\htmlize@output\xa{\toadd}%
-	\egroup
+  \bgroup
+    \def\test@i{#1}%
+    \ifx\test@i\@c
+      \def\toadd{\otherampersand ccedil\othersemicol}%
+    \else
+      \ifx\test@i\@C
+        \def\toadd{\otherampersand Ccedil\othersemicol}%
+      \else
+        \ifx\test@i\@s
+          \def\toadd{\otherampersand\otherhash351\othersemicol}%
+        \else
+          \ifx\test@i\@S
+            \def\toadd{\otherampersand\otherhash350\othersemicol}%
+          \else
+            \ifx\test@i\@t
+              \def\toadd{\otherampersand\otherhash355\othersemicol}%
+            \else
+              \ifx\test@i\@T
+                \def\toadd{\otherampersand\otherhash354\othersemicol}%
+              \else
+                \def\toadd{\otherbackslash\otherlbrace#1\otherrbrace}%
+              \fi
+            \fi
+          \fi
+        \fi
+      \fi
+    \fi
+    \xa\g@addto@macro\xa\htmlize@output\xa{\toadd}%
+  \egroup
 }%
 
 %Tilde over a, n, o
@@ -5840,7 +5846,7 @@
   \htmlize@setexecutable@int
 }
 \def\htmlize@setexecutable@int#1{%
-  \egroup 
+  \egroup
   \expandafter\def\htmlize@executable@macro{#1}%
 }
 
@@ -5996,8 +6002,8 @@
     \message{moodle.sty: Processing \string\includegraphics[#1]{#2} for HTML...^^J}
     \setkeys*{moodle@includegraphics}{#1}%
     % Height or width should be given in TeX dimensions like cm or pt or in,
-    % and are converted to pixels for web use using the ppi key.  
-    % TODO: Can we modify \includegraphics to accept height or width in 
+    % and are converted to pixels for web use using the ppi key.
+    % TODO: Can we modify \includegraphics to accept height or width in
     %        pixels?
     % TODO: What about \includegraphics[scale=0.7] ?
     %        Other keys: keepaspectratio=true|false, angle (rotation), clip & trim
@@ -6095,7 +6101,7 @@
 }%
 \ifwindows
   \def\ConvertToBaseLXIV@int#1#2{%
-    \def\cmdline{\baselxiv\otherspace -encode "#1#2"\otherspace tmp.b64 && findstr /vbc:"---" tmp.b64 > "#1.enc" && del tmp.b64}%    
+    \def\cmdline{\baselxiv\otherspace -encode "#1#2"\otherspace tmp.b64 && findstr /vbc:"---" tmp.b64 > "#1.enc" && del tmp.b64}%
   }% Starting from Windows 7, CertUtil is included by default. There should be no windows XP still running
 \else
   \ifmacosx
@@ -6212,7 +6218,7 @@
       \moodle@oldtikzpicture%
     }{}%
     % However, the tikz externalize library does *not* run \end{tikzpicture}.
-    % In order to run commands after the tikz picture is done compiling, we need to 
+    % In order to run commands after the tikz picture is done compiling, we need to
     % use a hook into \tikzexternal@closeenvironments.
     \g@addto@macro{\tikzexternal@closeenvironments}{%
       \moodle@endtikzpicture@hook
@@ -6529,7 +6535,7 @@
   %%%%%%%% using material from fancyvrb and fvextra  %%%%%%%%
   %\begingroup
   \def\moodle@verbatim@addlinenumber##1{%
-    \g@addto@macro\htmlize@output{<span style="font-size: 80\otherpercent; 
+    \g@addto@macro\htmlize@output{<span style="font-size: 80\otherpercent;
          background-color: \otherhash f0f0f0; padding: 0 5px 0 5px; display:
          inline-block; width: 16pt; ##1">}%
     \if@FV@NumberBlankLines
@@ -6539,7 +6545,7 @@
         \xa\g@addto@macro\xa\htmlize@output\xa{\otherampersand nbsp;</span>}%
       \else
         \xa\g@addto@macro\xa\htmlize@output\xa{\the\c@FancyVerbLine</span>}%
-      \fi 
+      \fi
     \fi
   }
   % redefine the ProcessLine routine ('fancyvrb' and 'fvextra') for XML output
@@ -6554,7 +6560,7 @@
     \catcode`\`=12%
     \def\FV@Line{##1}%
     \ifx\FV@LeftListNumber\relax
-    
+
     \else% line numbers displayed on the left side
       \moodle@verbatim@addlinenumber{text-align: right}%
     \fi
@@ -6605,7 +6611,7 @@
     \def\minted@cmdtemplate##1##2{%
       \ifminted@kpsewhich
         \ifwindows
-          \detokenize{for /f "usebackq tokens=*"}\space\@percentchar\detokenize{a 
+          \detokenize{for /f "usebackq tokens=*"}\space\@percentchar\detokenize{a
           in (`kpsewhich}\space\minted@codefile\detokenize{`) do}\space
         \fi
       \fi
@@ -6641,8 +6647,8 @@
           \ifx\XeTeXinterchartoks\minted@undefined
             \ifthenelse{\equal{\minted@get@opt{autogobble}{false}}{true}}%
               {\edef\minted@hash{\pdf@filemdfivesum{#1}%
-                \pdf@mdfivesum{\minted@cmd autogobble(\ifx\FancyVerbStartNum\z@ 
-                0\else\FancyVerbStartNum\fi-\ifx\FancyVerbStopNum\z@ 
+                \pdf@mdfivesum{\minted@cmd autogobble(\ifx\FancyVerbStartNum\z@
+                0\else\FancyVerbStartNum\fi-\ifx\FancyVerbStopNum\z@
                 0\else\FancyVerbStopNum\fi)}}}%
               {\edef\minted@hash{\pdf@filemdfivesum{#1}%
                 \pdf@mdfivesum{\minted@cmd}}}%
@@ -6652,7 +6658,7 @@
               \immediate\write\minted@code{\minted@cmd}%
               \ifthenelse{\equal{\minted@get@opt{autogobble}{false}}{true}}%
                 {\immediate\write\minted@code{autogobble(\ifx\FancyVerbStartNum\z@
-                 0\else\FancyVerbStartNum\fi-\ifx\FancyVerbStopNum\z@ 
+                 0\else\FancyVerbStartNum\fi-\ifx\FancyVerbStopNum\z@
                 0\else\FancyVerbStopNum\fi)}}{}%
               \immediate\closeout\minted@code
               \edef\minted@argone@esc{#1}%
@@ -6689,8 +6695,8 @@
             \else
               \ifthenelse{\equal{\minted@get@opt{autogobble}{false}}{true}}%
                {\edef\minted@hash{\mdfivesum file {#1}%
-                  \mdfivesum{\minted@cmd autogobble(\ifx\FancyVerbStartNum\z@ 
-                  0\else\FancyVerbStartNum\fi-\ifx\FancyVerbStopNum\z@ 
+                  \mdfivesum{\minted@cmd autogobble(\ifx\FancyVerbStartNum\z@
+                  0\else\FancyVerbStartNum\fi-\ifx\FancyVerbStopNum\z@
                   0\else\FancyVerbStopNum\fi)}}}%
                {\edef\minted@hash{\mdfivesum file {#1}%
                   \mdfivesum{\minted@cmd}}}%
@@ -6752,7 +6758,7 @@
   % Since minted is based upon `fvextra' the macro |\moodle@VerbatimInput| works here.
   \minted@configlang{#2}% grab options set for this specific language
   \setkeys{minted@opt@cmd}{#1}% grab options in #1
-  \minted@fvset% import options 
+  \minted@fvset% import options
   \stepcounter{moodle@pygmentizecounter}
   \xa\moodle@VerbatimInput\xa{\csname minted@infileHTML\the\c@moodle@pygmentizecounter\endcsname}%
 }%
@@ -6776,7 +6782,7 @@
       % The following is commented because some languages of babel,
       % like lithuanian, are unknown to translator. Instead we
       % copied the aliases below.
-      %\PassOptionsToPackage{\bbl@loaded}{translator}% 
+      %\PassOptionsToPackage{\bbl@loaded}{translator}%
     }{}%
   }%
   \ifmoodle@international
@@ -6852,7 +6858,7 @@
     %\DeclareTranslation{Catalan}{All-or-nothing}{}%
     %\DeclareTranslation{Catalan}{Case-Sensitive}{}%
     %\DeclareTranslation{Catalan}{Case-Insensitive}{}%
-    %\DeclareTranslation{Catalan}{Drag and drop}{}% 
+    %\DeclareTranslation{Catalan}{Drag and drop}{}%
     %\DeclareTranslation{Catalan}{Information for graders}{}%
     %\DeclareTranslation{Catalan}{Response template}{}%
     %\DeclareTranslation{Catalan}{editor}{}%
@@ -6880,7 +6886,7 @@
     %\DeclareTranslation{Croatian}{All-or-nothing}{}%
     %\DeclareTranslation{Croatian}{Case-Sensitive}{}%
     %\DeclareTranslation{Croatian}{Case-Insensitive}{}%
-    %\DeclareTranslation{Croatian}{Drag and drop}{}% 
+    %\DeclareTranslation{Croatian}{Drag and drop}{}%
     %\DeclareTranslation{Croatian}{Information for graders}{}%
     %\DeclareTranslation{Croatian}{Response template}{}%
     %\DeclareTranslation{Croatian}{editor}{}%
@@ -6908,7 +6914,7 @@
     %\DeclareTranslation{Czech}{All-or-nothing}{}%
     %\DeclareTranslation{Czech}{Case-Sensitive}{}%
     %\DeclareTranslation{Czech}{Case-Insensitive}{}%
-    %\DeclareTranslation{Czech}{Drag and drop}{}% 
+    %\DeclareTranslation{Czech}{Drag and drop}{}%
     %\DeclareTranslation{Czech}{Information for graders}{}%
     %\DeclareTranslation{Czech}{Response template}{}%
     %\DeclareTranslation{Czech}{editor}{}%
@@ -6936,7 +6942,7 @@
     %\DeclareTranslation{Danish}{All-or-nothing}{}%
     %\DeclareTranslation{Danish}{Case-Sensitive}{}%
     %\DeclareTranslation{Danish}{Case-Insensitive}{}%
-    %\DeclareTranslation{Danish}{Drag and drop}{}% 
+    %\DeclareTranslation{Danish}{Drag and drop}{}%
     %\DeclareTranslation{Danish}{Information for graders}{}%
     %\DeclareTranslation{Danish}{Response template}{}%
     %\DeclareTranslation{Danish}{editor}{}%
@@ -6964,7 +6970,7 @@
     %\DeclareTranslation{Dutch}{All-or-nothing}{}%
     %\DeclareTranslation{Dutch}{Case-Sensitive}{}%
     %\DeclareTranslation{Dutch}{Case-Insensitive}{}%
-    %\DeclareTranslation{Dutch}{Drag and drop}{}% 
+    %\DeclareTranslation{Dutch}{Drag and drop}{}%
     %\DeclareTranslation{Dutch}{Information for graders}{}%
     %\DeclareTranslation{Dutch}{Response template}{}%
     %\DeclareTranslation{Dutch}{editor}{}%
@@ -6992,7 +6998,7 @@
     \DeclareTranslation{English}{All-or-nothing}{All-or-nothing}%
     \DeclareTranslation{English}{Case-Sensitive}{Case-Sensitive}%
     \DeclareTranslation{English}{Case-Insensitive}{Case-Insensitive}%
-    \DeclareTranslation{English}{Drag and drop}{Drag and drop}% 
+    \DeclareTranslation{English}{Drag and drop}{Drag and drop}%
     \DeclareTranslation{English}{Information for graders}{Information for graders}%
     \DeclareTranslation{English}{Response template}{Response template}%
     \DeclareTranslation{English}{editor}{HTML editor}%
@@ -7020,7 +7026,7 @@
     %\DeclareTranslation{Estonian}{All-or-nothing}{}%
     %\DeclareTranslation{Estonian}{Case-Sensitive}{}%
     %\DeclareTranslation{Estonian}{Case-Insensitive}{}%
-    %\DeclareTranslation{Estonian}{Drag and drop}{}% 
+    %\DeclareTranslation{Estonian}{Drag and drop}{}%
     %\DeclareTranslation{Estonian}{Information for graders}{}%
     %\DeclareTranslation{Estonian}{Response template}{}%
     %\DeclareTranslation{Estonian}{editor}{}%
@@ -7048,7 +7054,7 @@
     %\DeclareTranslation{Finnish}{All-or-nothing}{}%
     %\DeclareTranslation{Finnish}{Case-Sensitive}{}%
     %\DeclareTranslation{Finnish}{Case-Insensitive}{}%
-    %\DeclareTranslation{Finnish}{Drag and drop}{}% 
+    %\DeclareTranslation{Finnish}{Drag and drop}{}%
     %\DeclareTranslation{Finnish}{Information for graders}{}%
     %\DeclareTranslation{Finnish}{Response template}{}%
     %\DeclareTranslation{Finnish}{editor}{}%
@@ -7076,7 +7082,7 @@
     \DeclareTranslation{French}{All-or-nothing}{Tout ou rien}%
     \DeclareTranslation{French}{Case-Sensitive}{Sensible \`a la casse}%
     \DeclareTranslation{French}{Case-Insensitive}{Insensible \`a la casse}%
-    \DeclareTranslation{French}{Drag and drop}{Glisser-d\'eposer}% 
+    \DeclareTranslation{French}{Drag and drop}{Glisser-d\'eposer}%
     \DeclareTranslation{French}{Information for graders}{Information pour les évaluateurs}%
     \DeclareTranslation{French}{Response template}{Mod\`ele de r\'eponse}%
     \DeclareTranslation{French}{editor}{\'Editeur HTML}%
@@ -7104,7 +7110,7 @@
     \DeclareTranslation{German}{All-or-nothing}{Alles-oder-nichts}%
     \DeclareTranslation{German}{Case-Sensitive}{Gro\ss-/Kleinschreibung muss stimmen}%
     \DeclareTranslation{German}{Case-Insensitive}{Gro\ss-/Kleinschreibung unwichtig}%
-    \DeclareTranslation{German}{Drag and drop}{Drag-and-Drop}% 
+    \DeclareTranslation{German}{Drag and drop}{Drag-and-Drop}%
     \DeclareTranslation{German}{Information for graders}{Information zur Bewertung}%
     \DeclareTranslation{German}{Response template}{Antwortvorlage}%
     \DeclareTranslation{German}{editor}{HTML Editor}%
@@ -7132,7 +7138,7 @@
     %\DeclareTranslation{Hungarian}{All-or-nothing}{}%
     %\DeclareTranslation{Hungarian}{Case-Sensitive}{}%
     %\DeclareTranslation{Hungarian}{Case-Insensitive}{}%
-    %\DeclareTranslation{Hungarian}{Drag and drop}{}% 
+    %\DeclareTranslation{Hungarian}{Drag and drop}{}%
     %\DeclareTranslation{Hungarian}{Information for graders}{}%
     %\DeclareTranslation{Hungarian}{Response template}{}%
     %\DeclareTranslation{Hungarian}{editor}{}%
@@ -7160,7 +7166,7 @@
     %\DeclareTranslation{Icelandic}{All-or-nothing}{}%
     %\DeclareTranslation{Icelandic}{Case-Sensitive}{}%
     %\DeclareTranslation{Icelandic}{Case-Insensitive}{}%
-    %\DeclareTranslation{Icelandic}{Drag and drop}{}% 
+    %\DeclareTranslation{Icelandic}{Drag and drop}{}%
     %\DeclareTranslation{Icelandic}{Information for graders}{}%
     %\DeclareTranslation{Icelandic}{Response template}{}%
     %\DeclareTranslation{Icelandic}{editor}{}%
@@ -7188,7 +7194,7 @@
     \DeclareTranslation{Italian}{All-or-nothing}{Tutto o niente}%
     \DeclareTranslation{Italian}{Case-Sensitive}{Sensibile alle maiuscole}%
     \DeclareTranslation{Italian}{Case-Insensitive}{Maiuscolo/minuscolo indifferente}%
-    \DeclareTranslation{Italian}{Drag and drop}{Drag and drop}% 
+    \DeclareTranslation{Italian}{Drag and drop}{Drag and drop}%
     \DeclareTranslation{Italian}{Information for graders}{Informazioni per i valutatori}%
     \DeclareTranslation{Italian}{Response template}{Modello di risposta}%
     \DeclareTranslation{Italian}{editor}{Editor HTML}%
@@ -7216,7 +7222,7 @@
     %\DeclareTranslation{Lithuanian}{All-or-nothing}{}%
     %\DeclareTranslation{Lithuanian}{Case-Sensitive}{}%
     %\DeclareTranslation{Lithuanian}{Case-Insensitive}{}%
-    %\DeclareTranslation{Lithuanian}{Drag and drop}{}% 
+    %\DeclareTranslation{Lithuanian}{Drag and drop}{}%
     %\DeclareTranslation{Lithuanian}{Information for graders}{}%
     %\DeclareTranslation{Lithuanian}{Response template}{}%
     %\DeclareTranslation{Lithuanian}{editor}{}%
@@ -7244,7 +7250,7 @@
     %\DeclareTranslation{Norsk}{All-or-nothing}{}%
     %\DeclareTranslation{Norsk}{Case-Sensitive}{}%
     %\DeclareTranslation{Norsk}{Case-Insensitive}{}%
-    %\DeclareTranslation{Norsk}{Drag and drop}{}% 
+    %\DeclareTranslation{Norsk}{Drag and drop}{}%
     %\DeclareTranslation{Norsk}{Information for graders}{}%
     %\DeclareTranslation{Norsk}{Response template}{}%
     %\DeclareTranslation{Norsk}{editor}{}%
@@ -7272,7 +7278,7 @@
     %\DeclareTranslation{Polish}{All-or-nothing}{}%
     %\DeclareTranslation{Polish}{Case-Sensitive}{}%
     %\DeclareTranslation{Polish}{Case-Insensitive}{}%
-    %\DeclareTranslation{Polish}{Drag and drop}{}% 
+    %\DeclareTranslation{Polish}{Drag and drop}{}%
     %\DeclareTranslation{Polish}{Information for graders}{}%
     %\DeclareTranslation{Polish}{Response template}{}%
     %\DeclareTranslation{Polish}{editor}{}%
@@ -7300,7 +7306,7 @@
     %\DeclareTranslation{Portuguese}{All-or-nothing}{}%
     %\DeclareTranslation{Portuguese}{Case-Sensitive}{}%
     %\DeclareTranslation{Portuguese}{Case-Insensitive}{}%
-    %\DeclareTranslation{Portuguese}{Drag and drop}{}% 
+    %\DeclareTranslation{Portuguese}{Drag and drop}{}%
     %\DeclareTranslation{Portuguese}{Information for graders}{}%
     %\DeclareTranslation{Portuguese}{Response template}{}%
     %\DeclareTranslation{Portuguese}{editor}{}%
@@ -7328,7 +7334,7 @@
     %\DeclareTranslation{Romanian}{All-or-nothing}{}%
     %\DeclareTranslation{Romanian}{Case-Sensitive}{}%
     %\DeclareTranslation{Romanian}{Case-Insensitive}{}%
-    %\DeclareTranslation{Romanian}{Drag and drop}{}% 
+    %\DeclareTranslation{Romanian}{Drag and drop}{}%
     %\DeclareTranslation{Romanian}{Information for graders}{}%
     %\DeclareTranslation{Romanian}{Response template}{}%
     %\DeclareTranslation{Romanian}{editor}{}%
@@ -7356,7 +7362,7 @@
     \DeclareTranslation{Spanish}{All-or-nothing}{Todo o nada}%
     \DeclareTranslation{Spanish}{Case-Sensitive}{May\'usculas y min\'usculas deben coincidir}%
     \DeclareTranslation{Spanish}{Case-Insensitive}{Igual may\'usculas que min\'usculas}%
-    \DeclareTranslation{Spanish}{Drag and drop}{Arrastrar y soltar}% 
+    \DeclareTranslation{Spanish}{Drag and drop}{Arrastrar y soltar}%
     \DeclareTranslation{Spanish}{Information for graders}{Informaci\'on para evaluadores}%
     \DeclareTranslation{Spanish}{Response template}{Plantilla de respuesta}%
     \DeclareTranslation{Spanish}{editor}{Editor HTML}%
@@ -7384,7 +7390,7 @@
     %\DeclareTranslation{Swedish}{All-or-nothing}{}%
     %\DeclareTranslation{Swedish}{Case-Sensitive}{}%
     %\DeclareTranslation{Swedish}{Case-Insensitive}{}%
-    %\DeclareTranslation{Swedish}{Drag and drop}{}% 
+    %\DeclareTranslation{Swedish}{Drag and drop}{}%
     %\DeclareTranslation{Swedish}{Information for graders}{}%
     %\DeclareTranslation{Swedish}{Response template}{}%
     %\DeclareTranslation{Swedish}{editor}{}%
@@ -7412,7 +7418,7 @@
     %\DeclareTranslation{Turkish}{All-or-nothing}{}%
     %\DeclareTranslation{Turkish}{Case-Sensitive}{}%
     %\DeclareTranslation{Turkish}{Case-Insensitive}{}%
-    %\DeclareTranslation{Turkish}{Drag and drop}{}% 
+    %\DeclareTranslation{Turkish}{Drag and drop}{}%
     %\DeclareTranslation{Turkish}{Information for graders}{}%
     %\DeclareTranslation{Turkish}{Response template}{}%
     %\DeclareTranslation{Turkish}{editor}{}%
@@ -7444,7 +7450,7 @@
   \DeclareTranslationFallback{All-or-nothing}{All-or-nothing}%
   \DeclareTranslationFallback{Case-Sensitive}{Case-Sensitive}%
   \DeclareTranslationFallback{Case-Insensitive}{Case-Insensitive}%
-  \DeclareTranslationFallback{Drag and drop}{Drag and drop}% 
+  \DeclareTranslationFallback{Drag and drop}{Drag and drop}%
   \DeclareTranslationFallback{Information for graders}{Information for graders}%
   \DeclareTranslationFallback{Response template}{Response template}%
   \DeclareTranslationFallback{editor}{HTML editor}%
