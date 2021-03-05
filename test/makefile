@@ -4,7 +4,7 @@ LUATEX_ONLY_TEST_FILES=test_calculated_lua.tex
 XETEX_EXCLUDED_TEST_FILES=test_includegraphics_via_tikz.tex test_includegraphics_via_tikz_and_svg.tex test_tikz_with_svg.tex
 GENERIC_TEST_FILES=$(filter-out $(LUATEX_ONLY_TEST_FILES) $(XETEX_EXCLUDED_TEST_FILES),$(wildcard $(PREFIX)_*.tex))
 TEX_ENGINES=pdflatex lualatex xelatex
-LATEXFLAGS=-interaction=nonstopmode -shell-escape
+LATEXFLAGS=-halt-on-error -shell-escape
 DIFFTOOL=diff -abBwZ
 FILE_CLEAN=*.log *.aux *.auxlock *.out *.blg *.bbl *.toc *.xml *.bcf *.synctex.gz *~ *.nav *.snm *.idx *.ilg *.ind _minted-* *.glo *.gls *.dpth *-tikztemp-*.pdf fig/*-converted-to.*
 ifndef DEBUG
