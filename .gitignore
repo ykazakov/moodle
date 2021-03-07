@@ -23,6 +23,8 @@ _minted-*/
 *.py
 *.py.err
 *.md5
+*.swp
+*.csv
 texmf/*
 *.tds.zip
 *-converted-to.*
