@@ -26,3 +26,4 @@ _minted-*/
 texmf/*
 *.tds.zip
 *-converted-to.*
+*.swp

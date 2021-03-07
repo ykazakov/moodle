@@ -327,6 +327,15 @@
 % \texttt{randomlist}, loaded if the option is invoked.
 % The XML file is generated as usual.
 %
+% \DescribeMacro{samepage}
+% If the package option |samepage| is invoked, preferably used together with
+% |handout| (|\usepackage[handout, samepage]{moodle}|), the package will
+% try to keep every entry (question, quiz, etc.) on the same page. Very bad
+% spacing can result from this.
+% This option is \textbf{experimental} and it works, for now, with a limited set
+% of question types; at the moment it affects just |multi|, |shortanswer|,
+% |numerical| and |matching|.
+%
 % \DescribeMacro{nostamp}
 % By default, the package will output a stamp as a comment in the XML
 % file. This stamp contains information gathered about the TeX engine,
@@ -2003,6 +2012,7 @@
 \newif\ifmoodle@numbered
 \newif\ifmoodle@international
 \newif\ifmoodle@feedbackLeft% contribution of Juergen Vollmer, 2021-03-05
+\newif\ifmoodle@samepage% contribution of Romano Giannetti, 2021-03-07
 
 %%DECLARATION OF OPTIONS
 \DeclareOption{draft}{\moodle@draftmodetrue}
@@ -2017,6 +2027,7 @@
 \DeclareOption{subsection*}{\moodle@sectionfalse\moodle@numberedfalse}
 \DeclareOption{feedbackleft}{\moodle@feedbackLefttrue}% contribution of Juergen Vollmer, 2021-03-05
 \DeclareOption{feedbackright}{\moodle@feedbackLeftfalse}% default
+\DeclareOption{samepage}{\moodle@samepagetrue}
 
 \moodle@draftmodefalse
 \moodle@handoutfalse
@@ -2027,6 +2038,10 @@
 \moodle@subsectiontrue
 \moodle@numberedfalse
 \moodle@feedbackLeftfalse% contribution of Juergen Vollmer, 2021-03-05
+\moodle@samepagefalse
+\def\moodle@begin@samepage{\minipage[t]{\linewidth}}
+\def\moodle@end@samepage{\endminipage\vskip 0pt plus 50pt\relax}
+
 
 \ProcessOptions
 
@@ -2874,7 +2889,7 @@
       \expandafter\gatheritems\xa{\BODY}%
       \let\moodle@questionheader=\gatheredheader
       %First, the LaTeX processing
-      \item \textbf{\moodle@questionname}
+      \item \ifmoodle@samepage\moodle@begin@samepage\fi \textbf{\moodle@questionname}
       \ifmoodle@handout
         \moodle@makelatextag@qtype{#1}
       \else
@@ -2890,6 +2905,7 @@
       \moodle@questionheader
       \edef\moodle@generalfeedback{\expandonce\moodle@feedback}
       \csname moodle@#1@latexprocessing\endcsname
+      \ifmoodle@samepage \moodle@end@samepage \fi
       %Now, writing information to XML
       \@moodle@ifgeneratexml{%
         \xa\questiontext\xa{\moodle@questionheader}% Save the question text.
