@@ -1,6 +1,6 @@
 % !TeX encoding = UTF-8
 % !TeX spellcheck = en_US
-% !TEX TS-program = lualatex
+% !TEX TS-program = pdflatex
 \documentclass{article}
 \usepackage[nostamp,handout,samepage]{moodle}
 \ifPDFTeX % FOR LATEX and PDFLATEX
@@ -10,11 +10,11 @@
 	\usepackage{fontspec}
 \fi
 \moodleregisternewcommands
-\newcommand{\longtext}{Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit,
-vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida
-mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a,
-magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tris-
-tique senectus et netus et malesuada fames ac turpis egestas.}
+\newcommand{\longtext}{Lorem ipsum dolor sit amet, consectetuer adipiscing 
+elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. 
+Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer 
+id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant 
+morbi tristique senectus et netus et malesuada fames ac turpis egestas.}
 \newcommand{\longtexts}{\longtext\par\longtext\par\longtext}
 
 %\RLsetrandomseed{3}
@@ -31,16 +31,16 @@ to students for classroom work or even as a written form of the test.
 Notice that this is still experimental, works for a subset of question types,
 and it should be checked.
 
-In particular, as would Moodle do,
-answers in \texttt{matching} questions are shuffled and the option
-\texttt{shuffle} triggers the shuffling of choices offered (\texttt{multi} and
-\texttt{matching}). The XML file is generated as usual.
+In particular, as would Moodle do, answers in \texttt{matching} questions are 
+shuffled and the option \texttt{shuffle} triggers the shuffling of choices 
+offered (\texttt{multi} and \texttt{matching}). The XML file is generated as 
+usual.
 
-\begin{quiz}[points=1,tags={tag},feedback={General feedback},shuffle]{ Option
+\begin{quiz}[points=1,tags={tag},feedback={General feedback},shuffle]{Option
 Handout with Samepage}
 
 \begin{description}{Description}
-Description text
+\longtexts
 \end{description}
 
 \begin{essay}{Essay}
@@ -75,47 +75,47 @@ Question text
 \end{multi}
 
 \begin{truefalse}{True/False 1}
-Question text
+\longtexts
 \item[feedback={AAA}]
 \item[feedback={BBB}]*
 \end{truefalse}
 
 \begin{truefalse}{True/False 2}
-Question text
+\longtexts
 \item*
 \end{truefalse}
 
 \begin{truefalse}{True/False 3}
-Question text
+\longtexts
 \item
 \item*
 \end{truefalse}
 
 \begin{numerical}[tolerance=1]{Numerical}
-Question text
+\longtexts
 \item[feedback={1}] 1
 \item[feedback={3},fraction=0] 3
 \end{numerical}
 
 \begin{shortanswer}[tolerance=1]{Short Answer}
-Question text
+\longtexts
 \item[feedback={1}] aaa
 \item[feedback={3},fraction=0] bbb
 \end{shortanswer}
 
 \begin{matching}[dd]{Matching}
-Question text
-\item A \answer 1
-\item B \answer 2
-\item C \answer 3
+\longtexts
+\item A \longtext \answer 1
+\item B \longtext \answer 2
+\item C \longtext \answer 3
 \item   \answer 4
 \end{matching}
 
 \begin{matching}[shuffle=false]{Matching}
-Question text
-\item A \answer 1
-\item B \answer 2
-\item C \answer 3
+\longtexts
+\item A \longtext \answer 1
+\item B \longtext \answer 2
+\item C \longtext \answer 3
 \item   \answer 4
 \end{matching}
 
