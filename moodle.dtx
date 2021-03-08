@@ -327,6 +327,16 @@
 % \texttt{randomlist}, loaded if the option is invoked.
 % The XML file is generated as usual.
 %
+% \DescribeMacro{samepage}
+% If the package option |samepage| is invoked, preferably used together with
+% |handout| (|\usepackage[handout, samepage]{moodle}|), the package will
+% try to keep every entry on the same page. Notice that very bad
+% spacing can result from this.
+% This option is \textbf{experimental} and it works, for now, with a limited set
+% of question types; at the moment it affects just |multi|, |shortanswer|,
+% |numerical|, |matching|, |description|, |essay|, |truefalse|, and |cloze|.
+% In this last one, only questions are kept on the same page.
+%
 % \DescribeMacro{nostamp}
 % By default, the package will output a stamp as a comment in the XML
 % file. This stamp contains information gathered about the TeX engine,
@@ -1831,6 +1841,8 @@
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version}[version=1.0,]^^Adate=]
 %     \added
+%       \item |samepage| key to keep entries on the same page; the code is
+%             \emph{experimental} and works only with a subset of entries.
 %       \item |sanction| key to set default mark for incorrect answers.
 %       \item Started the internationalization of the package based on
 %             \textsf{translator} (optionally \textsf{translations}). English,
@@ -2003,6 +2015,7 @@
 \newif\ifmoodle@numbered
 \newif\ifmoodle@international
 \newif\ifmoodle@feedbackLeft% contribution of Juergen Vollmer, 2021-03-05
+\newif\ifmoodle@samepage% contribution of Romano Giannetti, 2021-03-07
 
 %%DECLARATION OF OPTIONS
 \DeclareOption{draft}{\moodle@draftmodetrue}
@@ -2017,6 +2030,7 @@
 \DeclareOption{subsection*}{\moodle@sectionfalse\moodle@numberedfalse}
 \DeclareOption{feedbackleft}{\moodle@feedbackLefttrue}% contribution of Juergen Vollmer, 2021-03-05
 \DeclareOption{feedbackright}{\moodle@feedbackLeftfalse}% default
+\DeclareOption{samepage}{\moodle@samepagetrue}% contribution of Romano Giannetti, 2021-03-07
 
 \moodle@draftmodefalse
 \moodle@handoutfalse
@@ -2027,8 +2041,18 @@
 \moodle@subsectiontrue
 \moodle@numberedfalse
 \moodle@feedbackLeftfalse% contribution of Juergen Vollmer, 2021-03-05
+\moodle@samepagefalse
 
 \ProcessOptions
+
+\ifmoodle@samepage
+    \def\moodle@begin@samepage{\minipage[t]{\linewidth}}
+    \def\moodle@end@samepage{\endminipage\vskip 0pt plus 50pt\relax}
+\else
+    % defining to relax is safer versus adding spurious spaces
+    \def\moodle@begin@samepage{\relax}
+    \def\moodle@end@samepage{\relax}
+\fi
 
 \RequirePackage{environ} %To be able to take environment body as a macro argument
 \RequirePackage{xkeyval} %For key-handling
@@ -2874,7 +2898,7 @@
       \expandafter\gatheritems\xa{\BODY}%
       \let\moodle@questionheader=\gatheredheader
       %First, the LaTeX processing
-      \item \textbf{\moodle@questionname}
+      \item \moodle@begin@samepage \textbf{\moodle@questionname}
       \ifmoodle@handout
         \moodle@makelatextag@qtype{#1}
       \else
@@ -2890,6 +2914,7 @@
       \moodle@questionheader
       \edef\moodle@generalfeedback{\expandonce\moodle@feedback}
       \csname moodle@#1@latexprocessing\endcsname
+      \moodle@end@samepage
       %Now, writing information to XML
       \@moodle@ifgeneratexml{%
         \xa\questiontext\xa{\moodle@questionheader}% Save the question text.
@@ -2928,7 +2953,7 @@
       \trim@spaces@in\moodle@questiontext
       \ifx\moodle@questiontext\@empty\relax\else%
         %First, the LaTeX processing.
-        \item \textbf{\moodle@questionname}
+        \item \moodle@begin@samepage\textbf{\moodle@questionname}
         \ifmoodle@handout\else
           \moodle@latex@writetags
           \par
@@ -2942,6 +2967,7 @@
             \fbox{\parbox{\linewidth}{\emph{\moodle@feedback}}}%
           \fi
         \fi
+        \moodle@end@samepage
         %Now, writing information to memory.
         \@moodle@ifgeneratexml{%
           \writetomoodle{<question type="description">}%
@@ -2982,7 +3008,7 @@
     \expandafter\gatheritems\expandafter{\BODY}%
     \let\moodle@questionheader=\gatheredheader
     %First, the LaTeX processing.
-      \item \textbf{\moodle@questionname}
+      \item \moodle@begin@samepage\textbf{\moodle@questionname}
       \ifmoodle@handout
         \moodle@makelatextag@qtype{essay}
       \else
@@ -3006,6 +3032,7 @@
       \ifmoodle@handout\else
         \csname moodle@essay@latexprocessing\endcsname
       \fi
+      \moodle@end@samepage
     %Now, writing information to memory.
     \@moodle@ifgeneratexml{%
       \xa\questiontext\xa{\moodle@questionheader}% Save the question text.
@@ -3681,7 +3708,7 @@
       \expandafter\gatheritems\xa{\BODY}%
       \let\moodle@questionheader=\gatheredheader
       %First, the LaTeX processing
-      \item \textbf{\moodle@questionname}
+      \item \moodle@begin@samepage\textbf{\moodle@questionname}
       \ifmoodle@handout
         \moodle@makelatextag@qtype{truefalse}
       \else
@@ -3696,6 +3723,7 @@
       \moodle@questionheader
       \edef\moodle@generalfeedback{\expandonce\moodle@feedback}
       \moodle@truefalse@latexprocessing
+      \moodle@end@samepage
       %Now, writing information to XML
       \@moodle@ifgeneratexml{%
         \setkeys{moodle}{penalty=1}%
@@ -4075,7 +4103,7 @@
     % A cloze question won't have any \item's in it, so we just use \BODY.
     \moodle@enableclozeenvironments
     %First, the LaTeX processing.
-      \item \textbf{\moodle@questionname}
+      \item \moodle@begin@samepage\textbf{\moodle@questionname}
       \ifmoodle@handout
         \moodle@makelatextag@qtype{cloze}
       \else
@@ -4095,6 +4123,7 @@
           \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
         \fi
       \fi
+      \moodle@end@samepage
     %Now, writing information to memory.
     \@moodle@ifgeneratexml{%
       \xa\questiontext\xa{\BODY}% Save the question text as HTML.
