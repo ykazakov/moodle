@@ -9,6 +9,7 @@
 \else % assuming XELATEX or LUALATEX
 	\usepackage{fontspec}
 \fi
+\moodleregisternewcommands
 \newcommand{\longtext}{Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit,
 vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida
 mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a,
@@ -21,16 +22,22 @@ tique senectus et netus et malesuada fames ac turpis egestas.}
 
 \section*{Introduction}
 
-This document is intended to check the support of the package option 
-\texttt{handout}. With this option, the PDF file is clean from teacher-only 
-information (answers, points, penalty, feedback, tags) and, hence, can be given 
-to students for classroom work. In particular, as would Moodle do, 
-answers in \texttt{matching} questions are shuffled and the option 
-\texttt{shuffle} triggers the shuffling of choices offered (\texttt{multi} and 
+This document is intended to check the support of the package option
+\texttt{samepage}; it is used in conjunction with the option \texttt{handout}.
+With these options, the PDF file is clean from teacher-only
+information (answers, points, penalty, feedback, tags) and in addition
+the questions are never split across pages.  Hence, it can be given
+to students for classroom work or even as a written form of the test.
+Notice that this is still experimental, works for a subset of question types,
+and it should be checked.
+
+In particular, as would Moodle do,
+answers in \texttt{matching} questions are shuffled and the option
+\texttt{shuffle} triggers the shuffling of choices offered (\texttt{multi} and
 \texttt{matching}). The XML file is generated as usual.
 
-\begin{quiz}[points=1,tags={tag},feedback={General feedback},shuffle]{ Option 
-Handout}
+\begin{quiz}[points=1,tags={tag},feedback={General feedback},shuffle]{ Option
+Handout with Samepage}
 
 \begin{description}{Description}
 Description text
@@ -38,6 +45,9 @@ Description text
 
 \begin{essay}{Essay}
 Question text
+
+\longtexts
+
 \item A
 \item B
 \item C
@@ -113,6 +123,9 @@ Question text
 
 \begin{multi}[horizontal,shuffle=false]
 Question text
+
+\longtexts
+
 \item[feedback={AAA}]* A
 \item[feedback={BBB},fraction=10] B
 \item[feedback={CCC}] C
