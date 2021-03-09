@@ -427,7 +427,7 @@
 % \begin{table}[tbp]
 % \centering
 % \caption{\href{https://github.com/moodle/moodle/blob/MOODLE\_310\_STABLE/question/engine/bank.php\#L339}
-%     {Valid positive options} for the \texttt{fraction} key outside cloze environments: $100\cdot(p/q)$.}
+%     {Admissible positive values} for the \texttt{fraction} key outside cloze environments: $100\cdot(p/q)$.}
 % \label{tab:fraction}
 % \footnotesize
 % \begin{tabular}{l*{10}{l}}
@@ -453,7 +453,7 @@
 % \end{tabular}
 % \end{table}
 % In questions where several choices can be selected (see |multi| with the option
-% |multiple|), positive fractions must sum up to exactly 100. It is also possible to set
+% |multiple|), positive fractions must add up to exactly 100. It is also possible to set
 % negative fractions (from -100 to 0) for wrong choices, in order to prevent the
 % selection of all choices from leading to a good grade.
 % In this case, the value ranging from -100 to 0 must be the opposite of one of the
@@ -534,6 +534,7 @@
 % With the True/False question type, the |penalty| key has no effect.
 %
 % \subsubsection{\href{https://docs.moodle.org/en/Multiple_Choice_question_type}{Multiple Choice}}
+% \label{subsec:multi}
 % 
 % \DescribeMacro{multi}
 % The syntax for a classic multiple choice question,
@@ -601,40 +602,53 @@
 % set for each of them.
 %
 % \DescribeMacro{multiple}
-% It is also possible to write questions with possibly more than one correct answer,
-% asking the user to check all correct answers. To do this, use the key |multiple|
-% or |single=false|.
-% The worth of each correct answer in |multiple| mode may be set by |fraction|,
-% but Moodle asks that all the fractions add up to \emph{exactly} 100.
-% If you simply designate each correct answer with |\item*|, then \textsf{moodle}
-% will divide the points left for a total of 100\% equally among those answers.
-% Items that are not given a |fraction| are considered incorrect and selecting them
-% results in negative points such that the sum of all incorrect answers is -100\%.
+% It is also possible to write questions with possibly more than
+% one correct answer, asking the user to check all correct answers.
+% To do this, use the key |multiple| or |single=false|.
+% For this kind of question, the student get a grade that
+% corresponds to the total of the weights of the answers selected.
+% Users may rely on two modalities to set the weights of the answers:
+% \begin{enumerate}
+% \item the \emph{advanced mode} applies whenever a |fraction| key
+% is set among the proposed answers. In this case, it is recommended
+% that the user sets manually everything. Answers that are left with
+% no fraction set are considered as neutral, selecting them will
+% not change the grade. If |\item*| is used to designate some correct
+% answers, \textsf{moodle} will distribute equally among those answers
+% the points that are left for a total of 100\% (only positive
+% fractions count here). Note that doing so will easily yield
+% situations where the weights are inadmissible (see
+% Table~\ref{tab:fraction}).
+% \item the \emph{automatic mode} applies when correct answers are
+% designated using |\item*| and no answer has a |fraction| key set.
+% In this case, each correct answer is weighted to bring the same
+% fraction of the maximum grade and each incorrect answer is
+% weighted to cancel the benefits of the selection of one correct
+% answer.
+% \end{enumerate}
 % For example, the following two examples are equivalent:
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
-%   \begin{multi}[multiple]{my question}
+%   \begin{multi}[multiple]{Automatic Mode}
 %     Which numbers are prime?
-%     \item[fraction=20] 2
+%     \item 2
 %     \item* 5
 %     \item* 7
-%     \item[fraction=-10] 1 
+%     \item 1 
 %     \item 6
-%     \item 8
 %   \end{multi}
-%   
-%   \begin{multi}[multiple]{my question}
+%   \begin{multi}[multiple]{Advanced Mode}
 %     Which numbers are prime?
-%     \item[fraction=20] 2
-%     \item[fraction=40] 5
-%     \item[fraction=40] 7
-%     \item[fraction=-10] 1
-%     \item[fraction=-45] 6
-%     \item[fraction=-45] 8
+%     \item[fraction=-50] 2
+%     \item[fraction=50] 5
+%     \item[fraction=50] 7
+%     \item[fraction=-50] 1
+%     \item[fraction=-50] 6
 %   \end{multi}
 % \end{VerbatimOut}
 % \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
-% Note that, in this example, negative fractions are set for wrong choices. This
-% prevents students selecting all options to obtain a good grade with no merit.
+% Note that, in this example, negative fractions are set for wrong
+% choices. This prevents students from obtaining a good grade with
+% no merit if they select all answers. 
 % 
 % Contrarily to the |single| mode where questions with negative fractions may
 % lead to a overall negative grade, when multiple choices can be selected, the
@@ -909,6 +923,12 @@
 % was necessarily of type |single|, i.e. with a single good answer. If you intend
 % to export your quiz to Moodle 3.5+, the option |multiple| can be used for
 % questions where students must be able to select several answers.
+% The modalities described in Section~\ref{subsec:multi} for setting the
+% weight of answers apply. The only difference is in \emph{advanced mode}
+% where the sum of positive fractions may not be 100\%. In this case, after
+% importing the XML file, Moodle will automatically scale the positive
+% fractions for a total of 100\% and leave intact the negative fractions.
+% ^^A\footnote{\url{https://tracker.moodle.org/browse/MDL-3782?focusedCommentId=421564\#comment-421564}}.
 %
 % \DescribeMacro{vertical}\DescribeMacro{horizontal}\DescribeMacro{inline}
 % Within a cloze question, by default, a multiple choice question is implemented
@@ -1854,6 +1874,9 @@
 %       \item Support for |\i| in conversion to HTML.
 %       \item SVG option support for Windows (courtesy of Wolf M\"uller).
 %     \changed
+%       \item Automatic sanction mechanism for incorrect choices in multi
+%             questions with multiple answers allowed.
+%       \item In cloze subquestions, non-integer fractions are rounded.
 %       \item Rewording of some indications in the PDF, related to internationalization.
 %       \item The answers of matching questions are now converted to HTML
 %              (|\htmlonly| and accents in mind).
@@ -1970,7 +1993,7 @@
 %       \item \TikZ\ externalization now works when using \XeLaTeX.
 %       \item It is now possible to set points manually among several correct
 %             answers in multichoice questions.
-%       \item General feedbacks can now contain backslashes.
+%       \item General feedback can now contain backslashes.
 %       \item Several quizzes can now be defined in a single source file, each
 %             specifying a category for Moodle's question bank.
 %       \item Correct encoding information is now written in XML depending on
@@ -3407,10 +3430,8 @@
 }
 
 \def\moodle@multi@latexprocessing{%
-  \ifmoodle@allornothing
-    \moodle@singletrue
-  \fi
-  \moodle@countcorrectanswers%
+  \ifmoodle@allornothing\moodle@singletrue\fi
+  \ifmoodle@multiple\moodle@InspectMultipleAnswers\fi
   \ifmoodle@handout\NewList{answerlist}\fi
   \begin{enumerate}\moodle@obeynumberingstyle%
     %\renewcommand{\theenumi}{\alph{enumi}}%
@@ -3449,7 +3470,7 @@
       \ifmoodle@single%
         \setkeys{moodle}{fraction=100}%
       \else
-        \setkeys{moodle}{fraction=\moodle@autopoints}%
+        \setkeys{moodle}{fraction=\moodle@AutoScore}%
       \fi
     \else
       \g@addto@macro\moodle@answertext{#1#2}%
@@ -3476,7 +3497,11 @@
         \fi
       \else% multiple
         \ifx\moodle@fraction\@empty\relax%
-          \setkeys{moodle}{fraction=\moodle@autosanctions}%
+          \ifmoodle@AdvancedScoreMode
+            \setkeys{moodle}{fraction=0}%
+          \else
+            \setkeys{moodle}{fraction=-\moodle@AutoScore}%
+          \fi
         \fi
         \moodle@checkfraction
         \g@addto@macro\moodle@answertext{$~(\moodle@fraction\%)$}%
@@ -3493,136 +3518,136 @@
     \fi
   }%
 
-% COMMON UTILITY: COUNTING CORRECT ANSWERS (AND A BIT MORE...)
-   \newcounter{moodle@numcorrectanswers}% count the stars
-   \newcounter{moodle@numincorrectanswers}% count the items without fraction key indicated
-   \newlength{\moodle@pointspercorrect}%
-   \newlength{\moodle@pointsperincorrect}%
-   \newlength{\moodle@sumofpositivefractions}% sums user-set positive fractions
-   \newlength{\moodle@sumofnegativefractions}% sums user-set negative fractions
-   \def\moodle@countcorrectanswers{%
-     \setcounter{moodle@numcorrectanswers}{0}%
-     \setcounter{moodle@numincorrectanswers}{0}%
-     \global\setlength{\moodle@pointspercorrect}{100pt}%
-     \global\setlength{\moodle@pointsperincorrect}{-100pt}%
-     \global\setlength{\moodle@sumofpositivefractions}{0pt}%
-     \global\setlength{\moodle@sumofnegativefractions}{0pt}%
-     \loopthroughitemswithcommand{\moodle@countcorrectanswers@a}%
-     \global\advance\moodle@pointspercorrect by-\moodle@sumofpositivefractions\relax%
-     \def\ds{\strip@pt\moodle@sumofpositivefractions}%
-     \ifnum0=\c@moodle@numcorrectanswers\relax%
-       % autopoints will never be used but we check if the sum of positive fractions is 100%
-       \ifdim\moodle@pointspercorrect<-\moodle@fractiontol pt\relax%
-         \PackageWarning{moodle}{Positive fractions sum up to more than 100 (here: \ds)}%
-       \else
-         \ifdim\moodle@pointspercorrect>\moodle@fractiontol pt\relax%
-           \PackageError{moodle}{Positive fractions sum up to less than 100 (here: \ds)}%
-         \fi
-       \fi
-     \else
-       \ifdim0pt<\moodle@pointspercorrect\relax\else%
-         % we have starred items so the sum of user-set positive fractions must be less than 100%
-         % otherwise, starred items would lead to penalties
-         \PackageError{moodle}{Positive fractions sum up to 100 or more (here: \ds):
-                                there is no positive points left to be given to starred items.}%
-       \fi
-       \global\divide\moodle@pointspercorrect by \c@moodle@numcorrectanswers\relax%
-     \fi
-     \gdef\moodle@autopoints{\strip@pt\moodle@pointspercorrect}%
-     \global\advance\moodle@pointsperincorrect by-\moodle@sumofnegativefractions\relax%
-     \def\ds{\strip@pt\moodle@sumofnegativefractions}%
-     \ifnum0=\c@moodle@numincorrectanswers\relax%
-       % autosanctions will never be used and
-       % we do not care about the sum of negative fractions (might be less than -100)
-     \else
-       \ifdim0pt<\moodle@pointsperincorrect\relax%
-         % we have items without fractions set: to prevent auto sanctions from becoming bonuses,
-         % such items are neutralized.
-         \PackageWarning{moodle}{Negative fractions sum up to -100 or less (here: \ds):
-                                  items with no fraction key set will be considered as neutral.}%
-         \global\setlength{\moodle@pointsperincorrect}{0pt}%
-       \fi
-       \global\divide\moodle@pointsperincorrect by \c@moodle@numincorrectanswers\relax%
-     \fi
-     \gdef\moodle@autosanctions{\strip@pt\moodle@pointsperincorrect}%
-   }
-   \long\def\moodle@countcorrectanswers@a#1{%
-     %The grouping is to keep key answer-specific key changes local.
-     \bgroup
-       \moodle@countcorrectanswers@b#1\moodle@answer@rdelim
-     \egroup
-   }%
-   \newcommand\moodle@countcorrectanswers@b[1][]{%
-     %\ifx&#1&%
-       \let\moodle@fraction\@empty%
-       \setkeys{moodle}{#1}%
-       \moodle@countcorrectanswers@c%
-     %\fi
-   }%
-   \long\def\moodle@countcorrectanswers@c#1#2\moodle@answer@rdelim{%
-     \def\test@i{#1}%
-     \ifx\test@i\@star
-       \stepcounter{moodle@numcorrectanswers}%
-     \else
-       \ifx\moodle@fraction\@empty\relax%
-         \stepcounter{moodle@numincorrectanswers}%
-       \else
-         \ifdim0pt<\moodle@fraction pt\relax%
-           \global\addtolength{\moodle@sumofpositivefractions}{\moodle@fraction pt}%
-         \else
-           \global\addtolength{\moodle@sumofnegativefractions}{\moodle@fraction pt}%
-         \fi
-       \fi
-     \fi
-   }%
-   \newlength{\test@fraction}%
-   \newlength{\test@lower}%
-   \newlength{\test@upper}%
-   \def\moodle@fractionerror{%
-     \def\ds{\moodle@fraction}%
-     \PackageError{moodle}{the current fraction is not a valid value (here: \ds)}%
-   }
-   {\catcode`|=3\relax
-   \gdef\moodle@validfractionlist{0|5|10|11.11111|12.5|14.28571|16.66667|20|25|30|33.33333|40|50|60|66.66667|70|75|80|83.33333|90|100}}%
-   \def\moodle@isfractionnear#1{%
-     \setlength{\test@lower}{#1 pt}%
-     \addtolength{\test@lower}{-\moodle@fractiontol pt}%
-     \setlength{\test@upper}{#1 pt}%
-     \addtolength{\test@upper}{\moodle@fractiontol pt}%
-     \ifdim\test@upper>\test@fraction\relax
-       \ifdim\test@lower<\test@fraction\relax
-         \gdef\test@fractionmatched{#1}%
-       \fi
-     \fi
-   }
- \def\moodle@checkfraction{%
-   \ifmoodle@allornothing
-     \ifnum\moodle@fraction>0\relax
-       \setkeys{moodle}{fraction=100}%
-     \fi
-     \ifnum\moodle@fraction<0\relax
-       \setkeys{moodle}{fraction=0}%
-     \fi
-   \else
-     %\def\test@i{#1}%
-     \setlength{\test@fraction}{\moodle@fraction pt}%
-     % take the absolute value
-     \ifdim0pt>\test@fraction\relax%
-       \setlength{\test@fraction}{-\moodle@fraction pt}%
-     \fi
-     % test if the fraction is an admissible value
-     \let\test@fractionmatched\@empty
-     \forlistloop{\moodle@isfractionnear}{\moodle@validfractionlist}%
-     \ifx\test@fractionmatched\@empty\relax
-       \moodle@fractionerror%
-     \fi
-     \ifdim\moodle@fraction pt<-\moodle@fractiontol pt\relax%
-       \setkeys{moodle}{fraction=-\test@fractionmatched}%
-     \else
-       \setkeys{moodle}{fraction=\test@fractionmatched}%
-     \fi
-   \fi
- }
+% COMMON UTILITY: Inspecting answers of multiple choice questions (for option 'multiple')
+\newcounter{moodle@NumStarredAnswers}% count the stars
+\newdimen\moodle@autoscore@tmp%
+\newdimen\moodle@TotalPositiveFractions% Total of user-set positive fractions
+\newdimen\moodle@PositiveScoreFactor% scaling factor to impose the fractions of
+%correct answers to add up to 100%
+\newif\ifmoodle@AdvancedScoreMode%
+
+\def\moodle@InspectMultipleAnswers{%
+  \setcounter{moodle@NumStarredAnswers}{0}%
+  \moodle@autoscore@tmp=100pt\relax% temporary variable
+  \moodle@TotalPositiveFractions=0pt\relax%
+  \moodle@PositiveScoreFactor=1pt\relax
+  \moodle@AdvancedScoreModefalse
+  \loopthroughitemswithcommand{\moodle@InspectMultipleAnswers@a}%
+  \ifmoodle@AdvancedScoreMode% advanced mode
+    \ifx\endmulti\endclozemulti% inside cloze
+      \divide\moodle@TotalPositiveFractions by 100\relax
+      \advance\moodle@TotalPositiveFractions by \c@moodle@NumStarredAnswers pt\relax
+      \moodle@PositiveScoreFactor=1 pt\relax
+      \moodle@PositiveScoreFactor=\dimexpr 1 pt * \moodle@PositiveScoreFactor / \moodle@TotalPositiveFractions\relax%
+      \global\def\moodle@OtherScore{% for multianswer questions in cloze, with advanced mode
+        \ifdim0pt<\moodle@fraction pt\relax
+          \moodle@fraction
+        \else
+          \moodle@autoscore@tmp=\moodle@PositiveScoreFactor\relax%
+          \multiply\moodle@autoscore@tmp by \moodle@fraction\relax%
+          \strip@pt\moodle@autoscore@tmp
+        \fi
+      }%
+    \else% outside cloze
+      \advance\moodle@autoscore@tmp by-\moodle@TotalPositiveFractions\relax%
+      \def\ds{\strip@pt\moodle@TotalPositiveFractions}%
+      \ifnum0=\c@moodle@NumStarredAnswers\relax%
+      % autopoints will never be used but we check if the sum of positive fractions is 100%
+        \ifdim\moodle@autoscore@tmp<-\moodle@fractiontol pt\relax%
+          \PackageWarning{moodle}{Positive fractions add up to more than 100 (here: \ds)}%
+          % Here we issue only a warning because Moodle accepts the XML without error.
+        \else
+          \ifdim\moodle@autoscore@tmp>\moodle@fractiontol pt\relax%
+            \PackageError{moodle}{Positive fractions add up to less than 100 (here: \ds)}%
+          \fi
+        \fi
+      \else% there are starred items
+        \ifdim0pt<\moodle@autoscore@tmp\relax\else%
+      % we have starred items so the sum of user-set positive fractions must be less than 100%
+      % otherwise, starred items would lead to penalties
+          \PackageError{moodle}{Positive fractions add up to 100 or more (here: \ds):
+                             there is no positive points left to be given to starred items.}%
+        \fi
+        \divide\moodle@autoscore@tmp by \c@moodle@NumStarredAnswers\relax%
+      \fi
+    \fi
+  \else% automatic score (not in advanced score mode)
+    \global\divide\moodle@autoscore@tmp by \c@moodle@NumStarredAnswers\relax%
+  \fi
+  \xdef\moodle@AutoScore{\strip@pt\moodle@autoscore@tmp}%  
+}
+\long\def\moodle@InspectMultipleAnswers@a#1{%
+  %The grouping is to keep key answer-specific key changes local.
+  \bgroup
+    \moodle@InspectMultipleAnswers@b#1\moodle@answer@rdelim
+  \egroup
+}%
+\newcommand\moodle@InspectMultipleAnswers@b[1][]{%
+  %\ifx&#1&%
+    \let\moodle@fraction\@empty%
+    \setkeys{moodle}{#1}%
+    \moodle@InspectMultipleAnswers@c%
+  %\fi
+}%
+\long\def\moodle@InspectMultipleAnswers@c#1#2\moodle@answer@rdelim{%
+  \def\test@i{#1}%
+  \ifx\test@i\@star
+    \stepcounter{moodle@NumStarredAnswers}%
+  \else
+    \ifx\moodle@fraction\@empty\else
+      \global\moodle@AdvancedScoreModetrue
+      \ifdim0pt<\moodle@fraction pt\relax%
+        \global\advance\moodle@TotalPositiveFractions by \moodle@fraction pt\relax%
+      \fi
+    \fi
+  \fi
+}%
+\newdimen\test@fraction%
+\newdimen\test@lower%
+\newdimen\test@upper%
+\def\moodle@fractionerror{%
+  \def\ds{\moodle@fraction}%
+  \PackageError{moodle}{the current fraction is not a valid value (here: \ds)}%
+}
+{\catcode`|=3\relax
+\gdef\moodle@validfractionlist{0|5|10|11.11111|12.5|14.28571|16.66667|20|25|30|33.33333|40|50|60|66.66667|70|75|80|83.33333|90|100}}%
+\def\moodle@isfractionnear#1{%
+  \test@lower=\dimexpr #1 pt - \moodle@fractiontol pt\relax%
+  \test@upper=\dimexpr #1 pt + \moodle@fractiontol pt\relax%
+  \ifdim\test@upper>\test@fraction\relax
+    \ifdim\test@lower<\test@fraction\relax
+      \gdef\test@fractionmatched{#1}%
+    \fi
+  \fi
+}
+\def\moodle@checkfraction{%
+  \ifmoodle@allornothing
+    \ifnum\moodle@fraction>0\relax
+      \setkeys{moodle}{fraction=100}%
+    \fi
+    \ifnum\moodle@fraction<0\relax
+      \setkeys{moodle}{fraction=0}%
+    \fi
+  \else
+    %\def\test@i{#1}%
+    \test@fraction=\moodle@fraction pt\relax%
+    % take the absolute value
+    \ifdim0pt>\test@fraction\relax%
+      \test@fraction=-\moodle@fraction pt\relax%
+    \fi
+    % test if the fraction is an admissible value
+    \let\test@fractionmatched\@empty
+    \forlistloop{\moodle@isfractionnear}{\moodle@validfractionlist}%
+    \ifx\test@fractionmatched\@empty\relax
+      \moodle@fractionerror%
+    \fi
+    \ifdim\moodle@fraction pt<-\moodle@fractiontol pt\relax%
+      \xdef\moodle@fraction{-\test@fractionmatched}%
+    \else
+      \xdef\moodle@fraction{\test@fractionmatched}%
+    \fi
+  \fi
+}
 % TODO: Put these macros in same order as other sections'.
 
 % SAVING ANSWERS TO MEMORY
@@ -3646,7 +3671,7 @@
       \ifmoodle@single
         \setkeys{moodle}{fraction=100}%
       \else
-        \setkeys{moodle}{fraction=\moodle@autopoints}%
+        \setkeys{moodle}{fraction=\moodle@AutoScore}%
       \fi
       \def\moodle@answertext{#2}%
     \else
@@ -3660,7 +3685,11 @@
           \setkeys{moodle}{fraction=0}%
         \fi
       \else% multiple
-        \setkeys{moodle}{fraction=\moodle@autosanctions}%
+        \ifmoodle@AdvancedScoreMode
+          \setkeys{moodle}{fraction=0}%
+        \else
+          \setkeys{moodle}{fraction=-\moodle@AutoScore}%
+        \fi
       \fi
     \fi
     \trim@spaces@in\moodle@answertext
@@ -3752,7 +3781,7 @@
 %  \ifnum\c@numgathereditems>2\relax%
 %    \PackageError{moodle}{Expecting at max two answers with truefalse type}
 %  \fi
-  \setcounter{moodle@numcorrectanswers}{0}%
+  \setcounter{moodle@NumStarredAnswers}{0}%
   \begin{itemize} \setlength\itemsep{0pt}\setlength\parskip{0pt}%
     \loopthroughitemswithcommand{\moodle@print@truefalse@answer}%
     \ifnum\c@currentitemnumber=2\relax
@@ -3764,10 +3793,10 @@
       \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
     \fi
   \fi
-  \ifnum\c@moodle@numcorrectanswers=0\relax
+  \ifnum\c@moodle@NumStarredAnswers=0\relax
     \PackageError{moodle}{No answer is explicitly marked as correct (*). Be sure one answer leads to points.}%
   \fi
-  \ifnum\c@moodle@numcorrectanswers>1\relax
+  \ifnum\c@moodle@NumStarredAnswers>1\relax
     \PackageError{moodle}{Two answers are explicitly marked as correct (*). Be sure only one answer leads to points.}%
   \fi
 }
@@ -3818,7 +3847,7 @@
          \ifmoodle@handout\else
            ~$\checkmark$%
          \fi
-         \stepcounter{moodle@numcorrectanswers}%
+         \stepcounter{moodle@NumStarredAnswers}%
        \else
          ~%
        \fi
@@ -3953,12 +3982,12 @@
     %  \ifnum\c@numgathereditems>2\relax%
 %    \PackageError{moodle}{Expecting at max two answers with truefalse type}
 %  \fi
-    \setcounter{moodle@numcorrectanswers}{0}% Here this counter is for "questions" (items on the left column)
+    \setcounter{moodle@NumStarredAnswers}{0}% Here this counter is for "questions" (items on the left column)
     \loopthroughitemswithcommand{\moodle@print@matching@answer}%
     \ifnum\c@numgathereditems<3\relax
       \PackageWarning{moodle}{Moodle expects at least three "answers" with matching type}%
     \fi
-    \ifnum\c@moodle@numcorrectanswers<2\relax
+    \ifnum\c@moodle@NumStarredAnswers<2\relax
       \PackageWarning{moodle}{Moodle expects at least two "questions" with the matching type}%
     \fi
     \ifmoodle@handout
@@ -4010,7 +4039,7 @@
     \ifx\test@i\@empty
       \g@addto@macro\matching@table@text{&&$\bullet$~#2\\}%
     \else
-      \stepcounter{moodle@numcorrectanswers}%
+      \stepcounter{moodle@NumStarredAnswers}%
       \xa\g@addto@macro\xa\matching@table@text\xa{\test@i~$\bullet$&\leavevmode\cleaders\hb@xt@.44em{\hss$\cdot$\hss}\hfill\kern\z@&$\bullet$~#2\\}%
     \fi
   \fi
@@ -4170,7 +4199,7 @@
   \ifdim\moodle@tmpdim=\moodle@fraction pt\else
     \PackageWarning{moodle}{in cloze questions, fractions must be integers. Rounding \moodle@fraction\space to \moodle@tmpval}%
   \fi
-  \moodleset{fraction=\moodle@tmpval}% in any case, take eventual decimals out (e.g. change 10.0 for 10)
+  \xdef\moodle@fraction{\moodle@tmpval}% in any case, take eventual decimals out (e.g. change 10.0 for 10)
 }%
 %    \end{macrocode}
 %
@@ -4238,6 +4267,7 @@
         \moodle@makelatextag@multi
       \fi
       \def\cloze@multichoice@table@text{}%
+      \ifmoodle@multiple\moodle@InspectMultipleAnswers\fi
       \ifmoodle@handout\NewList{answerlist}\fi
       %\let\moodle@feedback=\@empty
       \loopthroughitemswithcommand{\moodle@print@clozemultichoice@answer}%
@@ -4283,11 +4313,14 @@
 }[\endclozemulti@code]%
 
 \long\def\moodle@print@clozemultichoice@answer#1{%
+%\bgroup
   \let\moodle@feedback=\@empty
   \moodle@print@clozemultichoice@answer@int#1 \@rdelim%
+%\egroup
 }%
 \newcommand\moodle@print@clozemultichoice@answer@int[1][]{%
-  \setkeys{moodle}{fraction=0,#1}%
+  \let\moodle@fraction\@empty%
+  \setkeys{moodle}{#1}%
   \moodle@print@clozemultichoice@answer@int@int%
 }%
 \long\def\moodle@print@clozemultichoice@answer@int@int#1#2\@rdelim{%
@@ -4312,14 +4345,54 @@
   \trim@spaces@in\moodle@answertext
   \trim@spaces@in\moodle@answertext
   \ifmoodle@handout\else
-    \ifx\moodle@fraction\@hundred
-      \g@addto@macro\moodle@answertext{$~\checkmark$}%
-    \else
-      \moodle@checkclozefraction
-      \ifdim0pt=\moodle@fraction pt\relax\else
-        \xdef\moodle@answertext{\expandonce\moodle@answertext$~(\moodle@fraction\%)$}%
+  %%% BEGIN MODIF
+    \ifmoodle@single%
+      \ifx\moodle@fraction\@empty\relax%
+        \ifdim0pt<\moodle@sanction pt\relax
+          \setkeys{moodle}{fraction=-\moodle@sanction}%
+        \else
+          \setkeys{moodle}{fraction=0}%
+        \fi
       \fi
+      \moodle@checkclozefraction
+      \ifx\moodle@fraction\@hundred%
+        \trim@spaces@in\moodle@answertext%
+        \g@addto@macro\moodle@answertext{$~\checkmark$}%
+      \else
+        \ifdim0pt=\moodle@fraction pt\relax\else%
+          \xdef\moodle@answertext{\expandonce\moodle@answertext$~(\moodle@fraction\%)$}%
+        \fi
+      \fi
+    \else% multiple
+      \ifx\moodle@fraction\@empty\relax%
+        \ifmoodle@AdvancedScoreMode
+          \setkeys{moodle}{fraction=0}%
+        \else
+          \setkeys{moodle}{fraction=-\moodle@AutoScore}%
+        \fi
+      \else
+        \ifmoodle@AdvancedScoreMode
+          \moodle@checkclozefraction
+          \ifdim0pt<\moodle@fraction pt\relax
+            \moodle@autoscore@tmp=\moodle@PositiveScoreFactor\relax%
+            \multiply\moodle@autoscore@tmp by \moodle@fraction\relax%
+            \xdef\moodle@fraction{\strip@pt\moodle@autoscore@tmp}%
+          \fi
+        \else
+          \setkeys{moodle}{fraction=\moodle@AutoScore}%
+        \fi
+      \fi
+      \xdef\moodle@answertext{\expandonce\moodle@answertext$~(\moodle@fraction\%)$}%
     \fi
+  %%% END MODIF
+%    \ifx\moodle@fraction\@hundred
+%      \g@addto@macro\moodle@answertext{$~\checkmark$}%
+%    \else
+%      \moodle@checkclozefraction
+%      \ifdim0pt=\moodle@fraction pt\relax\else
+%        \xdef\moodle@answertext{\expandonce\moodle@answertext$~(\moodle@fraction\%)$}%
+%      \fi
+%    \fi
   \fi
   \ifcase\moodle@multi@mode\relax
   % Case 0

@@ -37,7 +37,7 @@
     <text><![CDATA[Auto sanction]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>Without the star, an error shall be issued because correct answers should sum up to 100%. </p>]]></text>
+    <text><![CDATA[<p>Without the star, an error shall be issued because correct answers should add up to 100%. </p>]]></text>
   </questiontext>
   <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
@@ -49,19 +49,19 @@
   <answer fraction="100" format="html">
     <text><![CDATA[<p>A</p>]]></text>
   </answer>
-  <answer fraction="-50" format="html">
+  <answer fraction="-100" format="html">
     <text><![CDATA[<p>B</p>]]></text>
   </answer>
-  <answer fraction="-50" format="html">
+  <answer fraction="-100" format="html">
     <text><![CDATA[<p>C</p>]]></text>
   </answer>
 </question>
 <question type="multichoice">
   <name format="html">
-    <text><![CDATA[All correct but sum \(\geq 100\)]]></text>
+    <text><![CDATA[All correct but total \(\geq 100\)]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>A warning shall be issued because correct answers must sum up to 100%. </p>]]></text>
+    <text><![CDATA[<p>A warning shall be issued because correct answers must add up to 100%. </p>]]></text>
   </questiontext>
   <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
@@ -106,12 +106,87 @@
   <answer fraction="-50" format="html">
     <text><![CDATA[<p>1</p>]]></text>
   </answer>
-  <answer fraction="-25" format="html">
+  <answer fraction="0" format="html">
     <text><![CDATA[<p>6</p>]]></text>
   </answer>
-  <answer fraction="-25" format="html">
+  <answer fraction="0" format="html">
     <text><![CDATA[<p>8</p>]]></text>
   </answer>
+</question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Fruits (automatic scores)]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Select the fruits </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>false</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="33.33333" format="html">
+    <text><![CDATA[<p>Apple</p>]]></text>
+  </answer>
+  <answer fraction="-33.33333" format="html">
+    <text><![CDATA[<p>Burger</p>]]></text>
+  </answer>
+  <answer fraction="-33.33333" format="html">
+    <text><![CDATA[<p>Hot dog</p>]]></text>
+  </answer>
+  <answer fraction="-33.33333" format="html">
+    <text><![CDATA[<p>Pizza</p>]]></text>
+  </answer>
+  <answer fraction="33.33333" format="html">
+    <text><![CDATA[<p>Orange</p>]]></text>
+  </answer>
+  <answer fraction="33.33333" format="html">
+    <text><![CDATA[<p>Banana</p>]]></text>
+  </answer>
+</question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Vegetables (advanced scores)]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Select the vegetables </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>false</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="10" format="html">
+    <text><![CDATA[<p>Radish</p>]]></text>
+    <feedback format="html"><text><![CDATA[<p>Good</p>]]></text></feedback>
+  </answer>
+  <answer fraction="-20" format="html">
+    <text><![CDATA[<p>Chocolate</p>]]></text>
+  </answer>
+  <answer fraction="-20" format="html">
+    <text><![CDATA[<p>Biscuit</p>]]></text>
+  </answer>
+  <answer fraction="-10" format="html">
+    <text><![CDATA[<p>Cheese</p>]]></text>
+  </answer>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>Carrot</p>]]></text>
+  </answer>
+</question>
+<question type="cloze">
+  <name format="html">
+    <text><![CDATA[Embedded questions]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Select the fruits {1:MULTIRESPONSE_S:=Apple~Burger~Hot dog~Pizza~=Orange~=Banana}Select the vegetables {1:MULTIRESPONSE_S:%10%Radish#Good~%-20%Chocolate~%-20%Biscuit~%-10%Cheese~=Carrot}</p>]]></text>
+  </questiontext>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
 </question>
  
 </quiz>

@@ -61,7 +61,7 @@
   <answer fraction="-70" format="html">
     <text><![CDATA[<p>8</p>]]></text>
   </answer>
-  <answer fraction="-20" format="html">
+  <answer fraction="0" format="html">
     <text><![CDATA[<p><CODE>nothing</CODE></p>]]></text>
   </answer>
 </question>
@@ -92,7 +92,7 @@
     <feedback format="html"><text><![CDATA[<p>\(\sqrt {25}\)</p>]]></text></feedback>
   </answer>
   <answer fraction="-70" format="html">
-    <text><![CDATA[<p><OL><LI>False </LI><LI>Wrong</LI></OL></p>]]></text>
+    <text><![CDATA[<p><OL><LI>False</LI><LI>Wrong</LI></OL></p>]]></text>
   </answer>
 </question>
  
