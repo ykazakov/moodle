@@ -28,7 +28,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\ProvidesPackage{moodle}
 %<*package>
-    [2021/02/07 v0.9 Moodle quiz XML generation]
+    [2021/03/10 v1.0dev Moodle quiz XML generation]
 %</package>
 %
 %<*driver>
@@ -79,7 +79,7 @@
 %
 %
 % \GetFileInfo{\jobname.dtx}
-%
+% 
 % \DoNotIndex{\newcommand,\newenvironment,\def}
 % 
 %
@@ -90,9 +90,9 @@
 % \author{Anders Hendrickson\footnote{original author of the package (\texttt{v0.5}), inactive.}\\	
 % \texttt{anders.o.f.hendrickson AT gmail.com} \and
 % Matthieu Guerquin-Kern\footnote{current maintainer, author of the updates (\texttt{v0.6}
-% to \texttt{v0.9}), partially funded in 2019 by \href{https://www.ensea.fr/en/}{ENSEA Graduate School}, France.}\\
+% to \texttt{\fileversion}), partially funded in 2019 by \href{https://www.ensea.fr/en/}{ENSEA Graduate School}, France.}\\
 % \href{mailto:guerquin-kern AT crans.org}{guerquin-kern AT crans.org}}
-% \date{February 7, 2021}
+% \date{\today}
 % 
 % \maketitle
 %
@@ -265,6 +265,10 @@
 %   \newcommand\monomial[1]{x^{#1}}
 %   \newcommand\sillyanswer{What!?}
 %   \begin{document}
+%   This quiz was generated using the \LaTeX\ package
+%   \textsf{moodle} (\moodleversion, \moodledate).
+%   The generated file \texttt{\jobname-moodle.xml}
+%   is to be imported on the Moodle LMS.
 %   \begin{quiz}{My first quiz}
 %     \begin{numerical}[points=2]{Basic addition}
 %       What is $8+3$?
@@ -343,7 +347,7 @@
 % the operating system used and the package version. For instance:
 % \begin{quote}\small
 % |<!-- This file was generated on 2021-01-07 by LuaLaTeX -->|\\
-% |<!-- running on Linux with the package moodle |\texttt{\fileversion}| -->|
+% |<!-- running on Linux with the package moodle |\texttt{\fileversion}| (|\texttt{\filedate}|) -->|
 % \end{quote}
 % The package option |nostamp| prevents this stamp from being
 % written in the XML file.
@@ -1859,8 +1863,9 @@
 % \changes{v0.8}{2021/01/04}{Bug fixes and feature extensions}
 % \changes{v0.9}{2021/02/07}{Bug fixes and feature extensions}
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
-%   \begin{version}[version=1.0,]^^Adate=]
+%   \begin{version}[version=\fileversion,]^^Adate=]
 %     \added
+%       \item Macros |\moodleversion| and |\moodledate| are defined.
 %       \item Experimental package option |samepage| to avoid splitting
 %             questions across multiple pages.
 %       \item |sanction| key to set default mark for incorrect answers.
@@ -1870,12 +1875,13 @@
 %             are fully supported (with help from J\"urgen Vollmer for German
 %             and Romano Giannetti for Italian and Spanish). Contributions are welcome.
 %       \item Warn user of the \texttt{babel} package set for Turkish
-%             that using the shortands will not play well with \textsf{moodle}.
+%             that using the shorthands will not play well with \textsf{moodle}.
 %       \item Support for |\i| in conversion to HTML.
 %       \item SVG option support for Windows (courtesy of Wolf M\"uller).
 %     \changed
 %       \item Automatic sanction mechanism for incorrect choices in multi
-%             questions with multiple answers allowed.
+%             questions with multiple answers allowed. Now applies also inside
+%             cloze questions.
 %       \item In cloze subquestions, non-integer fractions are rounded.
 %       \item Rewording of some indications in the PDF, related to internationalization.
 %       \item The answers of matching questions are now converted to HTML
@@ -2100,6 +2106,7 @@
 \RequirePackage{ifplatform} % To choose Ghostscript commands
 \@ifundefined{ifpdf}{\RequirePackage{ifpdf}}{}% old iftex would not define the conditional
 \RequirePackage{shellesc} %Luatex-compatible way of getting system access
+\RequirePackage{readprov} %To gather information on the package (version, date, ...)
 \RequirePackage{fancybox} %For fancy LaTeX tags
 \RequirePackage{getitems} %To gather the header and items
 \ifmoodle@handout
@@ -2108,6 +2115,10 @@
 \ifmoodle@svg
   \RequirePackage{graphicx} %To include graphics
 \fi
+
+\GetFileInfo{moodle.sty}%
+\edef\moodledate{\filedate}%
+\edef\moodleversion{\fileversion}%
 
 \let\xa=\expandafter
 \def\@star{*}%
@@ -2196,7 +2207,7 @@
     \fi
     \writetomoodle{<!-- \moodle@stamp -->}%
     \def\moodle@stamp{running on \platformname}%
-    \g@addto@macro{\moodle@stamp}{ with the package moodle v0.9 }%
+    \g@addto@macro{\moodle@stamp}{ with the package moodle \moodleversion\space (\moodledate) }%
     \writetomoodle{<!-- \moodle@stamp -->}%
   \fi
   \immediate\write\moodle@outfile{}%
