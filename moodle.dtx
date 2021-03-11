@@ -345,8 +345,9 @@
 % By default, the package will output a stamp as a comment in the XML
 % file. This stamp contains information gathered about the TeX engine,
 % the operating system used and the package version. For instance:
+% \makeatletter\def\today{\the\year-\two@digits\month-\two@digits\day}\makeatother
 % \begin{quote}\small
-% |<!-- This file was generated on 2021-01-07 by LuaLaTeX -->|\\
+% |<!-- This file was generated on |\texttt{\today}| by LuaLaTeX -->|\\
 % |<!-- running on Linux with the package moodle |\texttt{\fileversion}| (|\texttt{\filedate}|) -->|
 % \end{quote}
 % The package option |nostamp| prevents this stamp from being
@@ -1887,6 +1888,7 @@
 %       \item The answers of matching questions are now converted to HTML
 %              (|\htmlonly| and accents in mind).
 %     \fixed
+%       \item Symbols |\%| found inside math mode are escaped for HTML.
 %       \item The \texttt{fraction} keys specified inside cloze questions are
 %             forced to integer values as required by Moodle's XML format.
 %       \item True/False no longer broken when \textsf{hyperref} is loaded.
@@ -5503,7 +5505,10 @@
 \htmlize@record@action{\endclozemode}%
 \htmlize@record@action{\relax}%
 
-\html@action@def\%{\g@addto@macro\htmlize@output{\otherpercent}}%
+\html@action@def\%{%
+    \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherbackslash\otherpercent}}%
+                      {\g@addto@macro\htmlize@output{\otherpercent}}%
+  }%
 \html@action@def\#{\g@addto@macro\htmlize@output{\otherhash}}%
 \html@action@def\&{\g@addto@macro\htmlize@output{\otherampersand}}%
 \html@action@def\\{\moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherbackslash\otherbackslash}}%
