@@ -23,11 +23,11 @@
   <shuffleanswers>1</shuffleanswers>
   <answernumbering>abc</answernumbering>
   <answer fraction="100" format="html">
-    <text><![CDATA[<p>Pijamal&#305; hasta ya&gbreve;&#305;z &#351;of&ouml;re &ccedil;abucak g&uuml;vendi.</p>]]></text>
+    <text><![CDATA[<p>Pijamal&imath; hasta ya&gbreve;&imath;z &#351;of&ouml;re &ccedil;abucak g&uuml;vendi.</p>]]></text>
     <feedback format="html"><text><![CDATA[<p></p>]]></text></feedback>
   </answer>
   <answer fraction="0" format="html">
-    <text><![CDATA[<p>Saf ve haydut k&#305;z &ccedil;ocu&gbreve;u bin plaj g&ouml;rm&uuml;&#351;.</p>]]></text>
+    <text><![CDATA[<p>Saf ve haydut k&imath;z &ccedil;ocu&gbreve;u bin plaj g&ouml;rm&uuml;&#351;.</p>]]></text>
   </answer>
 </question>
  

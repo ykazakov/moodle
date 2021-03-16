@@ -44,7 +44,7 @@
   <shuffleanswers>1</shuffleanswers>
   <answernumbering>abc</answernumbering>
   <answer fraction="100" format="html">
-    <text><![CDATA[<p>&rdquo;&test&rdquo;</p>]]></text>
+    <text><![CDATA[<p>&quot;&test&quot;</p>]]></text>
   </answer>
   <answer fraction="0" format="html">
     <text><![CDATA[<p>&rsquo;toast&rsquo;</p>]]></text>

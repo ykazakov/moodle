@@ -32,20 +32,21 @@
 %</package>
 %
 %<*driver>
-\documentclass[a4paper]{ltxdoc}
+\documentclass[10pt,a4paper]{ltxdoc}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[utf8]{inputenc} % necessary
   \usepackage[T1]{fontenc} % necessary
   \usepackage[protrusion=true,expansion]{microtype}
-  \usepackage[ttscale=.875]{libertine}
+  \usepackage{libertine}
+  \usepackage[scaled=0.83]{beramono}
 \else % assuming LuaLaTeX or XeLaTeX
   \usepackage{fontspec}
-  \setmainfont[Mapping=tex-text]{Linux Libertine O}
+  \setmainfont[Mapping=TeX]{Linux Libertine O}
 \fi
-%\usepackage{moodle}[2020/07/09]
+\usepackage[main=english,french,german]{babel}
 \usepackage{amssymb,metalogo,multirow,threeparttable,booktabs}
-\usepackage{longtable,hyperref,tikz,minted,changelog}
+\usepackage{eurosym,longtable,hyperref,tikz,minted,changelog}
 \usetikzlibrary{arrows,positioning,decorations.text,calc}
 %\usemintedstyle{Wombat}
 \EnableCrossrefs         
@@ -90,7 +91,8 @@
 % \author{Anders Hendrickson\footnote{original author of the package (\texttt{v0.5}), inactive.}\\	
 % \texttt{anders.o.f.hendrickson AT gmail.com} \and
 % Matthieu Guerquin-Kern\footnote{current maintainer, author of the updates (\texttt{v0.6}
-% to \texttt{\fileversion}), partially funded in 2019 by \href{https://www.ensea.fr/en/}{ENSEA Graduate School}, France.}\\
+% to \texttt{\fileversion}), partially funded in 2019 by \href{https://www.ensea.fr/en/}
+% {ENSEA Graduate School}, France.}\\
 % \href{mailto:guerquin-kern AT crans.org}{guerquin-kern AT crans.org}}
 % \date{\today}
 % 
@@ -187,7 +189,8 @@
 % \begin{enumerate}
 %   \item Write a \LaTeX\ document using |\usepackage{moodle}| as described 
 % below.
-%   \item Compile the document to PDF using pdf\LaTeX\, \XeLaTeX\ or \LuaLaTeX.
+%   \item Compile the document to PDF using pdf\LaTeX\ (ASCII characters only),
+%         \XeLaTeX, or \LuaLaTeX.
 % This will also produce the file \meta{jobname}|-moodle.xml|.
 %   \item Open Moodle, navigate to the desired course,
 %         and under ``Question bank'' select ``Import.''
@@ -1032,61 +1035,291 @@
 % 
 % \section{Conversion to HTML}
 % 
-% Questions should be typed as usual for \LaTeX,
-% including |\$| to obtain dollar signs, |$|'s or |\(|...|\)| for math shifts,
-% |$$|'s or |\[|...|\]| for display math, et cetera.
-% The package \textsf{moodle.sty} automatically converts
-% this \LaTeX\ code into HTML for web display.
+% The package \textsf{moodle.sty} tries to automatically
+% convert the \LaTeX\ code included in the questions
+% into HTML for web display.
 % 
-% Table~\ref{tab:html} lists \LaTeX\ macros, commands, and environments that 
-% are specifically converted to HTML.
+% With this aim, a number of \TeX\ and \LaTeX\ macros,
+% commands, and environments undergo a tailored treatment
+% when \textsf{moodle} generates the XML file. A few tables
+% describe the current level of support:
+% \begin{enumerate}
+% \item text mode diacritic macros in Table~\ref{tab:diacritics},
+% \item text mode macros for ligatures and other glyphs in
+%       Table~\ref{tab:ligatures_and_glyphs},
+% \item horizontal spacing and line breaking macros in
+%       Table~\ref{tab:spacing},
+% \item text mode symbols and punctuation macros in
+%       Table~\ref{tab:symbols_and_punctuation}, and finally
+% \item other |\LaTeX| commands and environments
+%       in Table~\ref{tab:commands_and_environments}.
+% \end{enumerate}
+% 
+%^^A Inspired by https://tex.stackexchange.com/a/163717/228515
 % \begin{table}[tbp]
 % \centering
-% \caption{Conversion of \LaTeX\ material to HTML.}
-% \label{tab:html}
-% \begin{tabular}{llll}
+% \caption{Text mode diacritic macros undergoing a tailored conversion to HTML.}
+% \label{tab:diacritics}
+% \begin{threeparttable}
+% \begin{tabular}{clll}
+% \toprule 
+% Definition & Letter List\tnote{1} & Description & Samples\\
+% \cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}
+% |\"|\marg{letter} & a, e, i, o, u, y &
+% \href{https://en.wikipedia.org/wiki/Diaeresis_(diacritic)}{umlaut or diaeresis}
+% & \"{a} \"{A} \"{e} \"{E} \"{i} \"{I} \"{o} \"{O} \dots\ \"{Y}\\
+% |\'|\marg{letter} & a, e, i, o, u &
+% \href{https://en.wikipedia.org/wiki/Acute\_accent}{acute accent}
+% & \'{a} \'{A} \'{e} \'{E} \'{i} \'{I} \'{o} \'{O} \'{u} \'{U}\\
+% |\.|\marg{letter} & c, e, g, i, z &
+% \href{https://en.wikipedia.org/wiki/Dot_(diacritic)#Overdot}{overdot}
+% & \.{c} \.{C} \.{e} \.{E} \.{g} \.{G} \.{i} \.{I} \.{z} \.{Z}\\
+% |\=|\marg{letter} & a, e, g, i, o, u, y &
+% \href{https://en.wikipedia.org/wiki/Macron_(diacritic)}{macron}
+% & \={a} \={A} \={e} \={E} \={g} \={G} \={i} \={I} \dots\ \={Y}\\
+% |\^|\marg{letter} & a, e, i, o, u &
+% \href{https://en.wikipedia.org/wiki/Circumflex}{circumflex} &
+% \^{a} \^{A} \^{e} \^{E} \^{i} \^{I} \^{o} \^{O} \^{u} \^{U}\\
+% |\`|\marg{letter} & a, e, i, o, u &
+% \href{https://en.wikipedia.org/wiki/Grave\_accent}{grave accent}
+% & \`{a} \`{A} \`{e} \`{E} \`{i} \`{I} \`{o} \`{O} \`{u} \`{U}\\
+% |\~|\marg{letter} & a, n, o &
+% \href{https://en.wikipedia.org/wiki/Tilde}{tilde}
+% & \~{a} \~{A} \~{n} \~{N} \~{o} \~{O}\\
+% |\b|\marg{letter} & b, d, k, l, n, t, z & 
+% \href{https://en.wikipedia.org/wiki/Macron_below}{macron below}
+% & \b{b} \b{B} \b{d} \b{D} \b{k} \b{K} \b{l} \dots\ \b{Z}\\
+% |\c|\marg{letter} & c, s, t &
+% \href{https://en.wikipedia.org/wiki/Cedilla}{cedilla}
+% & \c{c} \c{C} \c{s} \c{S} \c{t} \c{T}\\
+% |\d|\marg{letter} & a, b &
+% \href{https://en.wikipedia.org/wiki/Dot_(diacritic)#Underdot}{underdot}
+% & \d{a} \d{A} \d{b} \d{B}\\
+% |\H|\marg{letter} & o, u &
+% \href{https://en.wikipedia.org/wiki/Double\_acute\_accent}{double acute accent} 
+% & \H{o} \H{O} \H{u} \H{U}\\
+% |\k|\marg{letter} & a, e, i, o, u &
+% \href{https://en.wikipedia.org/wiki/Ogonek}{ogonek}
+% & \k{a} \k{A} \k{e} \k{E} \k{i} \k{I} \k{o} \k{O} \k{u} \k{U}\\
+% |\r|\marg{letter} & a, u &
+% \href{https://en.wikipedia.org/wiki/Ring_(diacritic)#Overring}{overring}
+% & \r{a} \r{A} \r{u} \r{U} \\
+%^^A|\t|\marg{letter} & a, b, c & tie-after accent & \t{oo}\\ 
+% |\u|\marg{letter} & a, e, g, i\tnote{2}, \i, o, u &
+% \href{https://en.wikipedia.org/wiki/Breve}{breve}
+% & \u{a} \u{A} \u{e} \u{E} \u{i} \u{\i} \u{I} \u{o} \u{O} \u{u} \u{U}\\
+% |\v|\marg{letter} & c, d, e, l, n, r, s, t, z &
+% \href{https://en.wikipedia.org/wiki/Caron}{caron or há\v{c}ek}
+% & \v{c} \v{C} \v{d} \v{D} \v{e} \v{E} \v{l} \dots\ \v{Z}\\
+% \bottomrule
+% \end{tabular}
+% \begin{tablenotes}
+%  \item[1]  The lowercase letters listed also stand for their uppercase 
+%  equivalent.
+%  \item[2] pdf\TeX\ v3.14159265 typesets |\u{i}| with an objectionable tittle. 
+%  Use |\u{\i}|.
+% \end{tablenotes}
+% \end{threeparttable}
+% \end{table}
+%
+% \begin{table}[tbp]
+% \centering
+% \caption{Text mode ligature and glyph macros undergoing a tailored conversion 
+% to HTML.}
+% \label{tab:ligatures_and_glyphs}
+% \begin{threeparttable}
+% \begin{tabular}{cccc}
 % \toprule
-% \multicolumn{2}{l}{Macros} & Commands & Environments \\
-% \cmidrule(lr){1-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}
-% |\%| & |\#| &|\emph{}| & |\begin{center}|\\
-% |\$| & |\&| &|\textbf{}| & |\begin{enumerate}|\\
-% |\\| & |\par| &|\textit{}| & |\begin{itemize}|\\
-% |\&| & |\S| & |\texttt{}| & |\begin{tikzpicture}|\\
-% |\{| & |\}| & |\textsc{}| & \\
-% |\|\textvisiblespace & |\relax| & |\underline{}| &\\
-% |\,| & |\thinspace| & |\textsuperscript{}| & \\
-% |\dots| & |\ldots| & |\up{}| & \\
-% |\euro| & |\texteuro| & |\fup{}| & \\
-% |\TeX| & |\LaTeX|& |\textsubscript{}| & \\
-% |\_| & |\textbackslash| & |\url{}| & \\
-% |~| & & |\href{}{}| & \\
-% & & |\tikz[]{}| & \\
-% & & |\includegraphics[]{}| & \\
-% & & |\verbatiminput{}| & \\
-% & & |\VerbatimInput[]{}| & \\
-% & & |\LVerbatimInput[]{}| & \\
-% & & |\BVerbatimInput[]{}| & \\
-% & & |\inputminted[]{}{}| & \\
+% \multicolumn{2}{c}{Lowercase} & \multicolumn{2}{c}{Uppercase} \\
+% \cmidrule(lr){1-2}\cmidrule(lr){3-4}
+% Definition & Sample & Definition & Sample \\
+% \cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}
+% |\aa| & \aa & |\AA| & \AA \\
+% |\ae| & \ae & |\AE| & \AE \\
+% |\dh| & \dh & |\DH| & \DH \\
+% |\dj| & \dj & |\DJ| & \DJ \\
+% |\i| & \i &  &  \\
+% |\ij| & \ij & |\IJ| & \IJ \\
+% |\j| & \j &  &  \\
+% |\l| & \l & |\L| & \L \\
+% |\ng| & \ng & |\NG| & \NG \\
+% |\o| & \o & |\O| & \O \\
+% |\oe| & \oe & |\OE| & \OE \\
+% |\ss| & \ss & |\SS|\tnote{1} & \SS\tnote{2} \\
+% |\th| & \th & |\TH| & \TH \\
+% \bottomrule
+% \end{tabular}
+% \begin{tablenotes}
+%  \item[1] Contrarily to most fonts, Libertine, used in this documentation and 
+%  available for instance via the package \textsf{libertine}, defines the glyph 
+%  \SS.
+%  \item[2] \LaTeX\ defines the \verb|\SS| macro but pdf\TeX\ renders it as a 
+%  doubled capital S.
+% \end{tablenotes}
+% \end{threeparttable}
+% \end{table}
+%
+% \begin{table}[tbp]
+% \centering
+% \caption{Text mode horizontal spacing and line breaking macros undergoing a 
+% tailored conversion to HTML.}
+% \label{tab:spacing}
+%^^A Inspired by https://tex.stackexchange.com/a/74354/228515
+% \begin{threeparttable}
+% \begin{tabular}{ll}
+% \toprule 
+% Definition & Description \\
+% \cmidrule(lr){1-1}\cmidrule(lr){2-2}
+% |\,| or |\thinspace| & narrow non-breaking space \\
+% |~| or \texttt{\textbackslash\textvisiblespace} & non-breaking space \\
+% |\>|\tnote{1},{ } |\:|{}\tnote{2}{ } or |\medspace|\tnote{2} & mid space \\
+% |\;|\tnote{2}{ } or |\thickspace|\tnote{2} & thick space \\
+% |\enspace| & nut (1en wide space)\\
+% |\quad| & mutton (1em wide space)\\
+% |\qquad| & doubled mutton (2em wide space)\\
+% |\textvisiblespace| & sample: \textvisiblespace \\
+% |\\| or |\newline| & start a new line \\
+% |\par| or \meta{blank line} & start a new paragraph \\
+% \bottomrule
+% \end{tabular}
+% \begin{tablenotes}
+%  \item[1] |\>| is defined in math-mode only.
+%  \item[2] |\:|, |\medspace|, |\;|, and |\thickspace| require the package 
+%  \textsf{amsmath}.
+% \end{tablenotes}
+% \end{threeparttable}
+% \end{table}
+%
+% \begin{table}[tbp]
+% \centering
+% \caption{Text mode punctuation marks and symbol macros undergoing a tailored 
+% conversion to HTML. A baseline is represented in the samples of quotations 
+% marks, in order to draw attention to their vertical positioning.}
+% \label{tab:symbols_and_punctuation}
+% \newsavebox\textbox
+% \newcommand\showbaseline[1]{\leavevmode\sbox\textbox{#1}
+% \rlap{\rule{\wd\textbox}{.1pt}}\usebox\textbox}
+% \begin{threeparttable}
+% \begin{tabular}{llc}
+% \toprule 
+% Package & Definition & Sample \\
+% \cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}
+% \LaTeX\ base & |\%| & \% \\
+% & |\#| & \# \\
+% & |\_| & \_ \\
+% & |\textbackslash| & \textbackslash \\
+% & |\$| & \$ \\
+% & |\&| & \& \\
+% & |\S| & \S \\
+% & |\{| & \{ \\
+% & |\}| & \} \\
+% & |\texteuro| & \texteuro \\
+% & |\dots| or |\ldots| & \dots \\
+% & |\textexclamdown| & \textexclamdown \\
+% & |\textquestiondown| & \textquestiondown \\
+% & |--| & -- \\
+% & |`| and |'| & \showbaseline{` '} \\
+% & |\textquoteleft| and |\textquoteright|
+% & \showbaseline{\textquoteleft\ \textquoteright} \\
+% & |``| and |''| & \showbaseline{`` ''} \\
+% & |\textquotedblleft| and |\textquotedblright|
+% & \showbaseline{\textquotedblleft\ \textquotedblright} \\
+% & |\textquotesingle| & \showbaseline{\textquotesingle\ } \\
+% & |"| & \showbaseline{" }\tnote{1} \\
+% & |\textquotedbl| & \showbaseline{\textquotedbl\ }\\
+% & |\guilsinglleft| and |\guilsinglright|
+% & \showbaseline{\guilsinglleft\ \guilsinglright} \\
+% & |\guillemotleft| and |\guillemotright|
+% & \showbaseline{\guillemotleft\ \guillemotright}\\
+% & |\quotesinglbase| & \showbaseline{\quotesinglbase\ }\\
+% & |\quotedblbase| & \showbaseline{\quotedblbase\ } \\
+% \cmidrule(lr){1-1}
+% \textsf{eurosym} & |\euro| & \euro\\
+% \cmidrule(lr){1-1}
+% \textsf{babel} & |\flq| and |\frq| & \showbaseline{\flq\ \frq} \\
+% & |\flqq| and |\frqq| & \showbaseline{\flqq\ \frqq} \\
+% \cmidrule(lr){1-1}
+% \textsf{babel}, opt. \texttt{french} & |\og| and |\fg|\tnote{2}
+% & \showbaseline{\flqq\ \frqq} \\
+% \cmidrule(lr){1-1}
+% \textsf{babel}, opt. \texttt{german} & |\glq| and |\grq|
+% & \showbaseline{\glq\ \grq} \\
+% & |\dq| & \showbaseline{\dq\ }\tnote{1} \\
+% & |\glqq| and |\grqq| & \showbaseline{\glqq\ \grqq} \\
+% \bottomrule
+% \end{tabular}
+% \begin{tablenotes}
+%  \item[1] In roman type, Lua\LaTeX\ and \XeLaTeX\ typeset the double straight 
+%  quote symbol (\texttt{"}) and the command |\dq| as a double right quote 
+%  (\textquotedblright). Instead,  \textsf{moodle} follows pdf\LaTeX\ and, 
+%  whatever the \TeX\ engine used, passes the double straight quote symbol 
+%  (\texttt{"}) to the XML.
+%   \item[2] The way |\og| and |\fg| are typeset in the PDF depends on the 
+%   current babel language. Regardless, \textsf{moodle} passes the symbols 
+%   \texttt{\guillemotleft} and \texttt{\guillemotright} to the XML.
+% \end{tablenotes}
+% \end{threeparttable}
+% \end{table}
+%
+% \begin{table}[tbp]
+% \centering
+% \caption{\LaTeX\ commands and environments undergoing a tailored conversion
+% to HTML.}
+% \label{tab:commands_and_environments}
+% \begin{tabular}{lll}
+% \toprule
+% Package & Commands & Environments \\
+% \cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}
+% \LaTeX\ base & |{}|& |$|$\cdots$|$| (inline math) \\
+% & |\relax| & |\(|$\cdots$|\)| (inline math) \\
+% & |\LaTeX| &  |$$|$\cdots$|$$| (display math) \\
+% & |\TeX| & |\[|$\cdots$|\]| (display math) \\
+% & |\emph|\marg{\dots} & |{center}| \\
+% & |\textbf|\marg{\dots} & |{enumerate}| \\
+% & |\textit|\marg{\dots} & |{itemize}| \\
+% & |\textsc|\marg{\dots} &\\
+% & |\textsuperscript|\marg{\dots} &\\
+% & |\textsubscript|\marg{\dots} &\\
+% & |\texttt|\marg{\dots} &\\
+% & |\underline|\marg{\dots} &\\
+% \cmidrule(lr){1-1}
+% \textsf{hyperref} & |\href|\marg{\dots}\marg{\dots} &\\
+% \textsf{url} or \textsf{hyperref} & |\url|\marg{\dots} &\\
+% \cmidrule(lr){1-1}
+% \textsf{babel}, opt. \texttt{french} & |\fup|\marg{\dots} &\\
+% & |\up|\marg{\dots} &\\
+% \cmidrule(lr){1-1}
+% \textsf{graphics} or \textsf{graphicx} & 
+% |\includegraphics|\oarg{\dots}\marg{\dots} \\
+% \cmidrule(lr){1-1}
+% \textsf{tikz} & |\tikz|\oarg{\dots}\marg{\dots} & |{tikzpicture}|\oarg{\dots} \\
+% \cmidrule(lr){1-1}
+% \textsf{verbatim} & |\verbatiminput|\marg{\dots} &\\
+% \cmidrule(lr){1-1}
+% \textsf{fancyverb} or 
+% \textsf{fvextra}& |\VerbatimInput|\oarg{\dots}\marg{\dots} &\\
+% & |\LVerbatimInput|\oarg{\dots}\marg{\dots} &\\
+% & |\BVerbatimInput|\oarg{\dots}\marg{\dots}& \\
+% \cmidrule(lr){1-1}
+% \textsf{minted} & |\inputminted|\oarg{\dots}\marg{\dots}\marg{\dots} &\\
 % \bottomrule
 % \end{tabular}
 % \end{table}
-% Single and double quotation marks (with german variants), french quotation marks,
-% inverted exclamation and question marks, and the diacritical 
-% commands  |\^|, |\'|, |\`|, |\"|, |\~|, |\c|, |\H|, |\k|, |\u| and |\v| are
-% also handled, as are the characters |\aa|, |\ae|, |\i|, |\l|, |\oe|,
-% |\o|, |\ss|, and their upper-case equivalents. See Tables~\ref{tab:diacritical},
-% \ref{tab:ligatures}, and \ref{tab:other} for more details.
-%   
+% 
 % In addition, |<| and |>| will be converted to |&lt;| and |&gt;| \emph{within math mode only}.
 % If they should be typed outside of math mode, they will be passed as typed to
-% the HTML, and probably interpreted by students' browsers as HTML tags
-% or other unpredicted results.
+% the HTML, and probably be filtered by Moodle or interpreted by the web browser
+% as HTML tags.
+%
 % A doubled dash will be converted to en-dash |&ndash;| \emph{outside math mode}.
 % 
-% Be aware that \emph{\textsf{moodle} does not know how to convert any 
-% other \TeX\ or \LaTeX\ commands to HTML.}
+% Be aware that, apart what is describe previously, \emph{\textsf{moodle} does
+% not know how to convert any other \TeX\ or \LaTeX\ commands to HTML.}
 % If other sequences are used, they may be passed verbatim to the XML file
 % or may cause unpredicted results.
+%
+% If you think of another \LaTeX\ command that should be changed to an HTML
+% equivalent, please have a look at Section~\ref{sec:dev}. 
 % 
 % \DescribeMacro{\htmlonly}The |\htmlonly|\oarg{Content for traditional output}
 % \marg{HTML content} command is to be used inside question environments (text,
@@ -1116,9 +1349,6 @@
 % |\renewcommand|, |\providecommand|, or their starred variants.
 % Again, this works only if the macros are defined \emph{without} optional
 % argument.
-% 
-% If you think of another \LaTeX\ command that should be changed to an HTML
-% equivalent, please have a look at Section~\ref{sec:dev}.
 % 
 % \section{Graphics}
 % The \textsf{moodle} package can handle two kinds of graphics seamlessly.
@@ -1220,7 +1450,7 @@
 % Please note the following vital points to make the graphics handling work:
 % \begin{itemize}
 %   \item As of now, graphics are only supported when compiling directly to a PDF
-%         with |pdflatex|. Including PS graphics or using \TikZ\ with the DVI$\to$PS workflow is not
+%         with (|pdf|\mid|xe|\mid|lua|)|latex|. Including PS graphics or using \TikZ\ with the DVI$\to$PS workflow is not
 %         yet supported.
 %^^A   \item Filenames should not contains spaces or, under windows, special characters like |_| or |\|.
 %   \item You must have Ghostscript and ImageMagick installed on your system
@@ -1228,8 +1458,8 @@
 %   \item If OptiPNG is not installed, the corresponding system calls will fail with otherwise no
 %         impact on the compilation process: PNG files are passed unoptimized to the XML output.
 %   \item \LaTeX\ must be able to call system commands; that is, |\write18| must be enabled.
-%         For Mik\TeX, this means adding |--enable-write18| to the command line of |pdflatex|;
-%         for \TeX Live, this means adding |--shell-escape=true|.
+%         For Mik\TeX, this means adding |--enable-write18| to the command line of
+%         (|pdf|\mid|xe|\mid|lua|)|latex|; for \TeX Live, this means adding |--shell-escape=true|.
 %   \item Due to security issues with old versions of Ghostcript, some systems default to a
 %         policy that prevents the conversion of PDF and PS to PNG. Assuming that, as a user of
 %         \textsf{moodle} which requires shell escape capabilities, you either use a sandboxed
@@ -1489,6 +1719,15 @@
 % These two codes yield the same XML content.
 % 
 % \section{Known Limitations and Call for Bug Reports}
+% 
+% When using with pdf\TeX\ for compilation, \textsf{moodle} supports
+% question contents with ASCII characters only. The use of non-ASCII
+% characters may work in some cases but will most probably yield
+% compilation errors or undesired XML contents.
+%
+% Instead, \textsf{moodle} will work flawlessly when \XeTeX\ and
+% Lua\TeX\ are used to compile UTF-8 encoded documents.
+% 
 % Table~\ref{tab:support-limitations} lists some features supported, limitations, and
 % bugs.
 %\begin{table}[tbp]
@@ -1548,131 +1787,6 @@
 %\end{tablenotes}
 %\end{threeparttable}
 %\end{table}
-% Tables~\ref{tab:diacritical}, \ref{tab:ligatures}, and \ref{tab:other} describe the current
-% state of support special characters, accents and other diacritical marks.
-%\begin{table}[tbp]
-% \centering
-% \caption{Support for diacritical marks 
-% in a UTF8-coded \TeX~document compiled with (pdf)\LaTeX\ (packages 
-% \texttt{inputenc} with option \texttt{utf8} and \texttt{fontenc} with option \texttt{T1}),
-% \LuaLaTeX\ or \XeLaTeX\ (package \texttt{fontspec}).}
-% \label{tab:diacritical}
-% \begin{threeparttable}[t]
-% \begin{tabular}{*{6}{l}}
-% \toprule
-% \multicolumn{4}{l}{Input type} & \multicolumn{2}{l}{Engine support}\\
-% \cmidrule(lr){1-4}\cmidrule(lr){5-6}
-% \multicolumn{2}{l}{Unicode} & \multicolumn{2}{l}{\LaTeX} & \XeLaTeX\ or \LuaLaTeX & (pdf)\LaTeX \\
-% \cmidrule(lr){1-2}\cmidrule(lr){3-4}\cmidrule(lr){5-5}\cmidrule(lr){6-6}
-% \aa & \AA & \verb|\aa| & \verb|\AA| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \`a & \`A & \verb|\`a| & \verb|\`A| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \^a & \^A & \verb|\^a| & \verb|\^A| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \~a & \~A & \verb|\~a| & \verb|\~A| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \'e & \'E & \verb|\'e| & \verb|\'E| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \`e & \`E & \verb|\`e| & \verb|\`E| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \"e & \"E & \verb|\"e| & \verb|\"E| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \^e & \^E & \verb|\^e| & \verb|\^E| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \^i & \^I & \verb|\^i| & \verb|\^I| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \"i & \"I & \verb|\"i| & \verb|\"I| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \~n & \~N & \verb|\~n| & \verb|\~N| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \~o & \~O & \verb|\~o| & \verb|\~O| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \"o & \"O & \verb|\"o| & \verb|\"O| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \^o & \^O & \verb|\^o| & \verb|\^O| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \`u & \`U & \verb|\`u| & \verb|\`U| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \"u & \"U & \verb|\"u| & \verb|\"U| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \^u & \^U & \verb|\^u| & \verb|\^U| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \c{c} & \c{C} & \verb|\c{c}| & \verb|\c{C}| & Unicode and \LaTeX & Unicode and \LaTeX \\
-% \c{s} & \c{S} & \verb|\c{s}| & \verb|\c{S}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \c{t} & \c{T} & \verb|\c{t}| & \verb|\c{T}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \H{o} & \H{O} & \verb|\H{o}| & \verb|\H{O}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \H{u} & \H{U} & \verb|\H{u}| & \verb|\H{U}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \"y & \"Y & \verb|\"y| & \verb|\"Y| & Unicode and \LaTeX & \LaTeX only\\
-% \k{a} & \k{A} & \verb|\k{a}| & \verb|\k{A}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \k{e} & \k{E} & \verb|\k{e}| & \verb|\k{E}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \k{i} & \k{I} & \verb|\k{i}| & \verb|\k{I}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \k{o} & \k{O} & \verb|\k{o}| & \verb|\k{O}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \k{u} & \k{U} & \verb|\k{u}| & \verb|\k{U}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \u{a} & \u{A} & \verb|\u{a}| & \verb|\u{A}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \u{e} & \u{E} & \verb|\u{e}| & \verb|\u{E}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \u{g} & \u{G} & \verb|\u{g}| & \verb|\u{G}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \u{\i} & \u{I} & \verb|\u{\i}| & \verb|\u{I}| & Unicode and \LaTeX & \LaTeX\ only\tnote{1}\\
-% \u{o} & \u{O} & \verb|\u{o}| & \verb|\u{O}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \v{c} & \v{C} & \verb|\v{c}| & \verb|\v{C}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \v{d} & \v{D} & \verb|\v{d}| & \verb|\v{D}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \v{e} & \v{E} & \verb|\v{e}| & \verb|\v{E}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \v{l} & \v{L} & \verb|\v{l}| & \verb|\v{L}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \v{n} & \v{N} & \verb|\v{n}| & \verb|\v{N}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \v{r} & \v{R} & \verb|\v{r}| & \verb|\v{R}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \v{s} & \v{S} & \verb|\v{s}| & \verb|\v{S}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \v{t} & \v{T} & \verb|\v{t}| & \verb|\v{T}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \v{z} & \v{Z} & \verb|\v{z}| & \verb|\v{Z}| & Unicode and \LaTeX & \LaTeX\ only\\
-% \bottomrule
-% \end{tabular}
-% \begin{tablenotes}
-%   \item[1] The rendering of |\u{i}| is flawed in (pdf)\LaTeX's traditional output.
-% ^^A \XeLaTeX\ renders correctly |\u{i}|, that is, without a superscript dot.
-% ^^A        Instead, with (pdf)\LaTeX\ the rendering of |\u{i}| is flawed by the
-% ^^A        superposition of the superscript dot and the breve diacritical mark.
-% ^^A        Both engines render |\u{\i}| as expected.
-% \end{tablenotes}
-% \end{threeparttable}
-% \end{table}
-%
-%\begin{table}[tbp]
-% \centering
-% \begin{threeparttable}[t]
-% \caption{Support for ligatures in a UTF8-coded \TeX~document compiled with (pdf)\LaTeX\ (packages 
-% \texttt{inputenc} with option \texttt{utf8}, \texttt{fontenc} with option \texttt{T1}),
-% \LuaLaTeX\ or \XeLaTeX\ (package \texttt{fontspec}).}
-% \label{tab:ligatures}
-% \begin{tabular}{llllll}
-% \toprule
-% \multicolumn{4}{l}{Input type} & \multicolumn{2}{l}{Engine support}\\
-% \cmidrule(lr){1-4}\cmidrule(lr){5-6}
-% \multicolumn{2}{l}{Unicode} & \multicolumn{2}{l}{\LaTeX} & \XeLaTeX \ or \LuaLaTeX& (pdf)\LaTeX \\
-% \cmidrule(lr){1-2}\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){6-6}
-% \ae & \AE & \verb|\ae| & \verb|\AE| & Unicode and \LaTeX & \LaTeX\ only\\
-% \oe & \OE & \verb|\oe| & \verb|\OE| & Unicode and \LaTeX & \LaTeX\ only\\
-% \ss & \SS & \verb|\ss| & \verb|\SS| & Unicode and \LaTeX\tnote{1} & \LaTeX\ only\tnote{2}\\
-% \bottomrule
-% \end{tabular}
-% \begin{tablenotes}[b]
-%   \item[1] the Libertine font, used in this documentation and available for instance via the
-%            package |libertine|, defines the glyph \SS. Most fonts do not define this glyph.
-%   \item[2] \LaTeX\ defines the \verb|\SS| macro but (pdf)\LaTeX\ renders it as a doubled capital S.
-% \end{tablenotes}
-% \end{threeparttable}
-% \end{table}
-%
-%\begin{table}[tbp]
-% \centering
-% \begin{threeparttable}[b]
-% \caption{Support for other glyphs and punctuation marks in a UTF8-coded \TeX~document compiled
-% with (pdf)\LaTeX\ (packages \texttt{inputenc} with option \texttt{utf8}, \texttt{fontenc} with
-% option \texttt{T1}), \LuaLaTeX\ or \XeLaTeX\ (package \texttt{fontspec}).}
-% \label{tab:other}
-% \begin{tabular}{llllll}
-% \toprule
-% \multicolumn{4}{l}{Input type} & \multicolumn{2}{l}{Engine support}\\
-% \cmidrule(lr){1-4}\cmidrule(lr){5-6}
-% \multicolumn{2}{l}{Unicode} & \multicolumn{2}{l}{\LaTeX} & \XeLaTeX\ or \LuaLaTeX & (pdf)\LaTeX \\
-% \cmidrule(lr){1-2}\cmidrule(lr){3-4}\cmidrule(lr){5-5}\cmidrule(lr){6-6}
-% \i & & \verb|\i| & & Unicode and \LaTeX & \LaTeX\ only\\
-% \l & \L & \verb|\l| & \multicolumn{1}{r}{\texttt{\textbackslash L}} & Unicode and \LaTeX & \LaTeX\ only\\
-% \o & \O & \verb|\o| & \multicolumn{1}{r}{\texttt{\textbackslash O}} & Unicode and \LaTeX & \LaTeX\ only\\
-% « & & \multicolumn{2}{l}{\texttt{\textbackslash guillemotleft}\tnote{1}} & Unicode and \LaTeX & \LaTeX\ only\\
-% » & & \multicolumn{2}{l}{\texttt{\textbackslash guillemotright}\tnote{1}} & Unicode and \LaTeX & \LaTeX\ only\\
-% ¿ & & \multicolumn{2}{l}{\texttt{\textbackslash textquestiondown}} & Unicode and \LaTeX & \LaTeX\ only\\
-% ¡ &  & \multicolumn{2}{l}{\texttt{\textbackslash extexclamdown}} & Unicode and \LaTeX & \LaTeX\ only\\
-% \bottomrule
-% \end{tabular}
-% \begin{tablenotes}
-%   \item[1] for the same symbols the package |babel| defines |\flqq| and |\frqq|, and
-%            if loaded with option |french| defines |\og| and |\fg|. These commands
-%            are also supported by \textsf{moodle}.
-% \end{tablenotes}
-% \end{threeparttable}
-% \end{table}
 %
 % Some features of Moodle quizzes have not yet been implemented in \textsf{moodle}.
 % Here is a non-exhaustive list.
@@ -1866,6 +1980,8 @@
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version}[version=\fileversion,]^^Adate=]
 %     \added
+%       \item Support for more text mode diacritic and horizontal spacing
+%             commands.
 %       \item Macros |\moodleversion| and |\moodledate| are defined.
 %       \item Experimental package option |samepage| to avoid splitting
 %             questions across multiple pages.
@@ -1887,6 +2003,8 @@
 %       \item Rewording of some indications in the PDF, related to internationalization.
 %       \item The answers of matching questions are now converted to HTML
 %              (|\htmlonly| and accents in mind).
+%     \removed
+%       \item Support for non-ASCII characters when compiling with |pdflatex|.
 %     \fixed
 %       \item Symbols |\%| found inside math mode are escaped for HTML.
 %       \item The \texttt{fraction} keys specified inside cloze questions are
@@ -3199,10 +3317,6 @@
 % \subsubsection{Short Answer Question Front-End}
 % 
 %    \begin{macrocode}
-\def\blank{\rule{1in}{0.5pt}}%
-% TODO: Make an optional argument for width?  This wouldn't affect Moodle,
-%        only the appearance in the PDF.  It doesn't seem worth it.
-
 %\NewEnviron{shortanswer}[2][]{%
 %   \bgroup
 %     \setkeys{moodle}{#1,questionname={#2}}%
@@ -4358,7 +4472,6 @@
   \trim@spaces@in\moodle@answertext
   \trim@spaces@in\moodle@answertext
   \ifmoodle@handout\else
-  %%% BEGIN MODIF
     \ifmoodle@single%
       \ifx\moodle@fraction\@empty\relax%
         \ifdim0pt<\moodle@sanction pt\relax
@@ -4397,15 +4510,6 @@
       \fi
       \xdef\moodle@answertext{\expandonce\moodle@answertext$~(\moodle@fraction\%)$}%
     \fi
-  %%% END MODIF
-%    \ifx\moodle@fraction\@hundred
-%      \g@addto@macro\moodle@answertext{$~\checkmark$}%
-%    \else
-%      \moodle@checkclozefraction
-%      \ifdim0pt=\moodle@fraction pt\relax\else
-%        \xdef\moodle@answertext{\expandonce\moodle@answertext$~(\moodle@fraction\%)$}%
-%      \fi
-%    \fi
   \fi
   \ifcase\moodle@multi@mode\relax
   % Case 0
@@ -4937,23 +5041,26 @@
     \let\htmlize@next@i=\relax
   \else
     \ifx\test@i\@otherlbrace%
-      \xa\g@addto@macro\xa\htmlize@output\xa{\otherlbrace}%
-      \bgroup
-        \normalcatcodes
+      \ifx\test@ii\@otherrbrace%
+        \def\htmlize@next@i{\htmlize@recursive@i#3\htmlize@rdelim@i}%
+      \else
+        \xa\g@addto@macro\xa\htmlize@output\xa{\otherlbrace}%
+        \bgroup
+          \normalcatcodes
         %We need to rescan the input as TeX code,
         % so TeX can automatically pull off the first group in braces.
         % First, let's get rid of the terminal \@htmlize@stop codes.
-        {\def\@htmlize@stop{}\xdef\htmlize@scrap{#1#2#3}}%
-        \let\htmlize@text@to@rescan=\htmlize@scrap%
+          {\def\@htmlize@stop{}\xdef\htmlize@scrap{#1#2#3}}%
+          \let\htmlize@text@to@rescan=\htmlize@scrap%
         % Next, we retokenize the code.
-        \xa\retokenizenormal@to@macro\xa\htmlize@rescanned\xa{\htmlize@text@to@rescan}%
+          \xa\retokenizenormal@to@macro\xa\htmlize@rescanned\xa{\htmlize@text@to@rescan}%
         % Now break it up into two pieces.
-        \xa\htmlize@grabblock\htmlize@rescanned\@htmlize@stop\htmlize@rdelim@ii%
+          \xa\htmlize@grabblock\htmlize@rescanned\@htmlize@stop\htmlize@rdelim@ii%
         % The first piece, \htmlize@blockinbraces, will be passed as a unit to \converttohtml@int.
         % The second part, \htmlize@remainder, will continue at this depth of grouping.
         % Therefore we'll detokenize \htmlize@remainder here.
-        \xa\ultradetokenize@to@macro\xa\htmlize@remainder@detokenized\xa{\htmlize@remainder}%
-        \edef\htmlize@remainder@detokenized{\xa\htmlize@remove@stopcode\htmlize@remainder@detokenized}%
+          \xa\ultradetokenize@to@macro\xa\htmlize@remainder@detokenized\xa{\htmlize@remainder}%
+          \edef\htmlize@remainder@detokenized{\xa\htmlize@remove@stopcode\htmlize@remainder@detokenized}%
         %
         % Now build \htmlize@next@i.
         % When done, should look like
@@ -4962,22 +5069,23 @@
         %   \htmlize@recursive@i\htmlize@remainder@detokenized\@htmlize@stop\@htmlize@stop\@htmlize@stop\htmlize@rdelim@i%
         % but with all three arguments expanded.
         % Note that we are running
-        \gdef\htmlize@scrap{\converttohtml@int}%
-        \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\htmlize@blockinbraces}}%
-        \g@addto@macro\htmlize@scrap{\g@addto@macro\htmlize@output}%
-        \ifmoodle@clozemode
-          \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\otherbackslash\otherrbrace}}%
+          \gdef\htmlize@scrap{\converttohtml@int}%
+          \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\htmlize@blockinbraces}}%
+          \g@addto@macro\htmlize@scrap{\g@addto@macro\htmlize@output}%
+          \ifmoodle@clozemode
+            \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\otherbackslash\otherrbrace}}%
 %          \moodle@ifmathmode{\xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\otherbackslash}}}%
 %                            {}%
-        \else
-          \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\otherrbrace}}%
-        \fi
-        \g@addto@macro\htmlize@scrap{\htmlize@recursive@i}%
-        \xa\g@addto@macro\xa\htmlize@scrap\xa{\htmlize@remainder@detokenized\@htmlize@stop\@htmlize@stop\@htmlize@stop\htmlize@rdelim@i}%
+          \else
+            \xa\g@addto@macro\xa\htmlize@scrap\xa{\xa{\otherrbrace}}%
+          \fi
+          \g@addto@macro\htmlize@scrap{\htmlize@recursive@i}%
+          \xa\g@addto@macro\xa\htmlize@scrap\xa{\htmlize@remainder@detokenized\@htmlize@stop\@htmlize@stop\@htmlize@stop\htmlize@rdelim@i}%
         % Okay, that's done.  It's stored in a global macro.
         % Now we get it out of this group.
-      \egroup
-      \let\htmlize@next@i=\htmlize@scrap
+        \egroup
+        \let\htmlize@next@i=\htmlize@scrap
+      \fi
     \else
       \ifx\test@i\@otherdollar%
         % Math shift character.
@@ -5121,8 +5229,9 @@
           \fi% \ifx\@htmlize@cs\@@begin@cs
         \else%
           \ifx\test@i\@othertilde%
-            % The ~ becomes non-breaking space &nbsp;
-            \g@addto@macro\htmlize@output{\otherampersand nbsp;}%
+            % The ~ becomes non-breaking space &nbsp; outside of math mode
+            \moodle@ifmathmode{\g@addto@macro\htmlize@output{\@othertilde}}%
+                              {\g@addto@macro\htmlize@output{\otherampersand nbsp;}}%
             \def\htmlize@next@i{\htmlize@recursive@i#2#3\htmlize@rdelim@i}%
           \else
             \ifx\test@i\@lsinglequote%
@@ -5147,7 +5256,7 @@
                 \fi% \ifx\test@ii\@rsinglequote%
               \else
                 \ifx\test@i\@doublequote
-                  \g@addto@macro\htmlize@output{\otherampersand rdquo;}%
+                  \g@addto@macro\htmlize@output{\otherampersand quot;}%
                   \def\htmlize@next@i{\htmlize@recursive@i#2#3\htmlize@rdelim@i}%
                 \else
                   \ifx\test@i\@lt
@@ -5343,7 +5452,7 @@
 }
 
 \def\htmlize@activate@css{}%
-\def\html@action@def#1{%
+\long\def\html@action@def#1{%
   \htmlize@record@action{#1}%
   \xa\def\xa\htmlize@scrap\xa{\xa\let\xa#1\csname html@\string#1\endcsname}%
   \xa\g@addto@macro\xa\htmlize@activate@css\xa{\htmlize@scrap}%
@@ -5375,7 +5484,7 @@
 % Calling |\htmlize@redefine@expansionmacros| will redefine
 % the macros for us.  It starts out empty.
 %    \begin{macrocode}
-\def\htmlize@redefine@expansionmacros{}%
+\long\def\htmlize@redefine@expansionmacros{}%
 %    \end{macrocode}
 % If |\mymacro| needs no changes to be suited for expansion,
 % you can simply call |\htmlize@record@expand{\mymacro}|
@@ -5511,16 +5620,18 @@
   }%
 \html@action@def\#{\g@addto@macro\htmlize@output{\otherhash}}%
 \html@action@def\&{\g@addto@macro\htmlize@output{\otherampersand}}%
-\html@action@def\\{\moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherbackslash\otherbackslash}}%
-                                     {\g@addto@macro\htmlize@output{<BR/>}}}%
+\html@action@def\\{%
+    \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherbackslash\otherbackslash}}%
+                      {\g@addto@macro\htmlize@output{<BR/>}}
+  }%
 \html@action@def\{{%
     \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherbackslash\otherlbrace}}%
                       {\g@addto@macro\htmlize@output{\otherlbrace}}%
   }%
 \html@action@def\}{%
     \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherbackslash\otherrbrace}}%
-                      {\ifmoodle@clozemode\g@addto@macro\htmlize@output{\otherbackslash}\fi
-                       \g@addto@macro\htmlize@output{\otherrbrace}}%
+       {\ifmoodle@clozemode\g@addto@macro\htmlize@output{\otherbackslash\otherrbrace}%
+                           \else\g@addto@macro\htmlize@output{\otherrbrace}\fi}%
   }%
 \html@action@def\[{%
     \advancemathmodecounter{1}
@@ -5550,10 +5661,56 @@
     \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherbackslash\otherspace}}%
                       {\g@addto@macro\htmlize@output{\otherspace}}%
   }%
+\html@action@def\,{%
+    \moodle@ifmathmode{\g@addto@macro\htmlize@output{\string\,}}%
+                      {\g@addto@macro\htmlize@output{\otherampersand\otherhash 8239\othersemicol}}%
+  }%
+\html@action@def\thinspace{%
+    \moodle@ifmathmode{\g@addto@macro\htmlize@output{\string\thinspace\otherspace}}%
+                      {\g@addto@macro\htmlize@output{\otherampersand\otherhash 8239\othersemicol}}%
+  }%
+\html@action@def\>{%
+    \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherbackslash\otherampersand gt;}}%
+                      {\g@addto@macro\htmlize@output{\otherampersand emsp14\othersemicol}}%
+  }%
+\html@action@def\:{%
+    \moodle@ifmathmode{\g@addto@macro\htmlize@output{\string\:}}%
+                      {\g@addto@macro\htmlize@output{\otherampersand emsp14\othersemicol}}%
+  }%
+\html@action@def\medspace{%
+    \moodle@ifmathmode{\g@addto@macro\htmlize@output{\string\:}}%
+                      {\g@addto@macro\htmlize@output{\otherampersand emsp14\othersemicol}}%
+  }%
+\html@action@def\;{%
+    \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherbackslash\othersemicol}}%
+                      {\g@addto@macro\htmlize@output{\otherampersand emsp13\othersemicol}}%
+  }%
+\html@action@def\thickspace{%
+    \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherbackslash\othersemicol}}%
+                      {\g@addto@macro\htmlize@output{\otherampersand emsp13\othersemicol}}%
+  }%
+\html@action@def\enspace{%
+    \moodle@ifmathmode{\g@addto@macro\htmlize@output{\string\enspace\otherspace}}%
+                      {\g@addto@macro\htmlize@output{\otherampersand ensp\othersemicol}}%
+  }%
+\html@action@def\quad{%
+    \moodle@ifmathmode{\g@addto@macro\htmlize@output{\string\quad\otherspace}}%
+                      {\g@addto@macro\htmlize@output{\otherampersand emsp\othersemicol}}%
+  }%
+\html@action@def\qquad{%
+    \moodle@ifmathmode{\g@addto@macro\htmlize@output{\string\qquad\otherspace}}%
+                      {\g@addto@macro\htmlize@output{\otherampersand emsp\othersemicol\otherampersand emsp\othersemicol}}%
+  }%
 \html@action@def\${%
      \g@addto@macro\htmlize@output{\otherdollar}%
   }%
+\html@action@def\textquotesingle{%
+     \g@addto@macro\htmlize@output{'}%
+  }%
 \html@action@def\@dquote{%
+     \g@addto@macro\htmlize@output{"}%
+  }%
+\html@action@def\textquotedbl{%
      \g@addto@macro\htmlize@output{"}%
   }%
 \html@action@def\clozetilde{%
@@ -5573,14 +5730,12 @@
 \html@action@def\LaTeX{%
     \g@addto@macro\htmlize@output{\otherbackslash(\otherbackslash rm\otherbackslash LaTeX\otherbackslash)}%
   }%
-\html@action@def\i{\g@addto@macro\htmlize@output{\otherampersand\otherhash 305\othersemicol}%
-  }%
 
 {\catcode`;=12\relax\gdef\othersemicol{;}}
 
 %Diacritical marks over vowels
 {\catcode`|=3\relax
- \gdef\htmlize@vowels{a|e|i|o|u|A|E|I|O|U|}}
+ \gdef\htmlize@vowels{a|e|i|o|u|A|E|I|O|U|}}%
 \def\htmlize@define@diacritic#1#2{%
   \htmlize@record@action{#1}%
   \g@addto@macro\htmlize@activate@css{%
@@ -5597,7 +5752,7 @@
 
 %Diaeresis/Tréma/Umlaut
 {\catcode`|=3\relax
- \gdef\htmlize@diaeresis{a|e|i|o|u|y|A|E|I|O|U|Y|}}
+ \gdef\htmlize@diaeresis{a|e|i|o|u|y|A|E|I|O|U|Y|}}%
 \html@action@def\"#1{%
     \ifinlist{#1}{\htmlize@diaeresis}%
       {\g@addto@macro\htmlize@output{\otherampersand#1uml\othersemicol}}%
@@ -5621,7 +5776,7 @@
           \ifx\test@i\@u
             \def\toadd{\otherampersand\otherhash369\othersemicol}%
           \else
-            \def\toadd{\otherbackslash\otherlbrace#1\otherrbrace}%
+            \def\toadd{\otherbackslash H\otherlbrace#1\otherrbrace}%
           \fi
         \fi
       \fi
@@ -5653,7 +5808,7 @@
               \ifx\test@i\@T
                 \def\toadd{\otherampersand\otherhash354\othersemicol}%
               \else
-                \def\toadd{\otherbackslash\otherlbrace#1\otherrbrace}%
+                \def\toadd{\otherbackslash c\otherlbrace#1\otherrbrace}%
               \fi
             \fi
           \fi
@@ -5666,7 +5821,7 @@
 
 %Tilde over a, n, o
 {\catcode`|=3\relax
- \gdef\htmlize@tilde{A|N|O|a|n|o|}}
+ \gdef\htmlize@tilde{A|N|O|a|n|o|}}%
 \html@action@def\~#1{%
     \ifinlist{#1}{\htmlize@tilde}%
       {\g@addto@macro\htmlize@output{\otherampersand#1tilde\othersemicol}}%
@@ -5675,12 +5830,12 @@
 
 % breve diacritics
 {\catcode`|=3\relax
- \gdef\htmlize@breve{A|G|U|a|g|u|}}
+ \gdef\htmlize@breve{A|G|U|a|g|u|}}%
 \def\@e{e}\def\@E{E}\def\@i{i}\def\@ii{\i}\def\@I{I}\def\@o{o}\def\@O{O}%
 \html@action@def\u#1{%
   \ifinlist{#1}{\htmlize@breve}%
      {\g@addto@macro\htmlize@output{\otherampersand#1breve\othersemicol}}%
-     {
+     {%
       \bgroup
         \def\test@i{#1}%
         \ifx\test@i\@E
@@ -5704,7 +5859,7 @@
                     \ifx\test@i\@o
                       \def\toadd{\otherampersand\otherhash335\othersemicol}%
                     \else
-                      \def\toadd{\otherbackslash\otherlbrace#1\otherrbrace}%
+                      \def\toadd{\otherbackslash u\otherlbrace#1\otherrbrace}%
                     \fi
                   \fi
                 \fi
@@ -5719,7 +5874,7 @@
 
 % caron diacritics
 {\catcode`|=3\relax
- \gdef\htmlize@caron{C|D|E|L|N|R|S|T|Z|c|d|e|l|n|r|s|t|z|}}
+ \gdef\htmlize@caron{C|D|E|L|N|R|S|T|Z|c|d|e|l|n|r|s|t|z|}}%
 \html@action@def\v#1{%
     \ifinlist{#1}{\htmlize@caron}%
       {\g@addto@macro\htmlize@output{\otherampersand#1caron\othersemicol}}%
@@ -5728,11 +5883,11 @@
 
 % Ogonek diacritics
 {\catcode`|=3\relax
- \gdef\htmlize@ogonek{A|E|I|U|a|e|i|u|}}
+ \gdef\htmlize@ogonek{A|E|I|U|a|e|i|u|}}%
 \html@action@def\k#1{%
   \ifinlist{#1}{\htmlize@ogonek}%
     {\g@addto@macro\htmlize@output{\otherampersand#1ogon\othersemicol}}%
-    {
+    {%
       \bgroup
         \def\test@i{#1}%
         \ifx\test@i\@O
@@ -5741,75 +5896,279 @@
           \ifx\test@i\@o
             \def\toadd{\otherampersand\otherhash491\othersemicol}%
           \else
-            \def\toadd{\otherbackslash\otherlbrace#1\otherrbrace}%
+            \def\toadd{\otherbackslash k\otherlbrace#1\otherrbrace}%
           \fi
         \fi
         \xa\g@addto@macro\xa\htmlize@output\xa{\toadd}%
       \egroup
     }%
 }%
+
+% macron diacritics
+{\catcode`|=3\relax
+ \gdef\htmlize@macron{A|E|I|O|U|a|e|i|o|u|}}%
+\def\@g{g}\def\@G{G}\def\@y{y}\def\@Y{Y}%
+\html@action@def\=#1{%
+  \ifinlist{#1}{\htmlize@macron}%
+    {\g@addto@macro\htmlize@output{\otherampersand#1macr\othersemicol}}%
+    {%
+      \bgroup
+        \def\test@i{#1}%
+        \ifx\test@i\@g
+          \def\toadd{\otherampersand\otherhash7713\othersemicol}%
+        \else
+          \ifx\test@i\@G
+            \def\toadd{\otherampersand\otherhash7712\othersemicol}%
+          \else
+            \ifx\test@i\@y
+              \def\toadd{\otherampersand\otherhash563\othersemicol}%
+            \else
+              \ifx\test@i\@Y
+                \def\toadd{\otherampersand\otherhash562\othersemicol}%
+              \else
+                \def\toadd{\otherbackslash =\otherlbrace#1\otherrbrace}%
+              \fi
+            \fi
+          \fi
+        \fi
+        \xa\g@addto@macro\xa\htmlize@output\xa{\toadd}%
+      \egroup
+    }%
+}%
+
+% macron below diacritics
+\def\@b{b}\def\@B{B}\def\@d{d}\def\@D{D}\def\@k{k}\def\@K{K}\def\@l{l}%
+\def\@L{L}\def\@n{n}\def\@N{N}\def\@t{t}\def\@T{T}\def\@z{z}\def\@Z{Z}%
+\html@action@def\b#1{%
+  \bgroup
+    \def\test@i{#1}%
+    \ifx\test@i\@b
+      \def\toadd{\otherampersand\otherhash7687\othersemicol}%
+    \else
+      \ifx\test@i\@B
+        \def\toadd{\otherampersand\otherhash7686\othersemicol}%
+      \else
+        \ifx\test@i\@d
+          \def\toadd{\otherampersand\otherhash7695\othersemicol}%
+        \else
+          \ifx\test@i\@D
+            \def\toadd{\otherampersand\otherhash7694\othersemicol}%
+          \else
+            \ifx\test@i\@k
+              \def\toadd{\otherampersand\otherhash7733\othersemicol}%
+            \else
+              \ifx\test@i\@K
+                \def\toadd{\otherampersand\otherhash7732\othersemicol}%
+              \else
+                \ifx\test@i\@l
+                  \def\toadd{\otherampersand\otherhash7739\othersemicol}%
+                \else
+                  \ifx\test@i\@L
+                    \def\toadd{\otherampersand\otherhash7738\othersemicol}%
+                  \else
+                    \ifx\test@i\@n
+                      \def\toadd{\otherampersand\otherhash7753\othersemicol}%
+                    \else
+                      \ifx\test@i\@N
+                        \def\toadd{\otherampersand\otherhash7752\othersemicol}%
+                      \else
+                        \ifx\test@i\@r
+                          \def\toadd{\otherampersand\otherhash7775\othersemicol}%
+                        \else
+                          \ifx\test@i\@R
+                            \def\toadd{\otherampersand\otherhash7774\othersemicol}%
+                          \else
+                            \ifx\test@i\@t
+                              \def\toadd{\otherampersand\otherhash7791\othersemicol}%
+                            \else
+                              \ifx\test@i\@T
+                                \def\toadd{\otherampersand\otherhash7790\othersemicol}%
+                              \else
+                                \ifx\test@i\@z
+                                  \def\toadd{\otherampersand\otherhash7829\othersemicol}%
+                                \else
+                                  \ifx\test@i\@Z
+                                    \def\toadd{\otherampersand\otherhash7828\othersemicol}%
+                                  \else
+                                    \def\toadd{\otherbackslash b\otherlbrace#1\otherrbrace}%
+                                  \fi
+                                \fi
+                              \fi
+                            \fi
+                          \fi
+                        \fi
+                      \fi
+                    \fi
+                  \fi
+                \fi
+              \fi
+            \fi
+          \fi
+        \fi
+      \fi
+    \fi
+    \xa\g@addto@macro\xa\htmlize@output\xa{\toadd}%
+  \egroup
+}%
+
+% Overdot diacritics
+{\catcode`|=3\relax
+ \gdef\htmlize@dotabove{C|E|G|I|Z|c|e|g|z|}}%
+\def\@i{i}%
+\html@action@def\.#1{%
+  \ifinlist{#1}{\htmlize@dotabove}%
+    {\g@addto@macro\htmlize@output{\otherampersand#1dot\othersemicol}}%
+    {
+      \bgroup
+        \def\test@i{#1}%
+        \ifx\test@i\@i
+          \def\toadd{i}%
+        \else
+          \def\toadd{\otherbackslash .\otherlbrace#1\otherrbrace}%
+        \fi
+        \xa\g@addto@macro\xa\htmlize@output\xa{\toadd}%
+      \egroup
+    }%
+}%
+
+% Underdot diacritics
+\def\@A{A}\def\@a{a}\def\@B{B}\def\@b{b}%
+\html@action@def\d#1{%
+  \bgroup
+    \def\test@i{#1}%
+    \ifx\test@i\@a
+      \def\toadd{\otherampersand\otherhash7841\othersemicol}%
+    \else
+      \ifx\test@i\@A
+        \def\toadd{\otherampersand\otherhash7840\othersemicol}%
+      \else
+        \ifx\test@i\@b
+          \def\toadd{\otherampersand\otherhash7685\othersemicol}%
+        \else
+          \ifx\test@i\@B
+            \def\toadd{\otherampersand\otherhash7684\othersemicol}%
+          \else
+            \def\toadd{\otherbackslash d\otherlbrace#1\otherrbrace}%
+          \fi
+        \fi
+      \fi
+    \fi
+    \xa\g@addto@macro\xa\htmlize@output\xa{\toadd}%
+  \egroup
+}%
+
+% Overring
+{\catcode`|=3\relax
+ \gdef\htmlize@ring{A|U|a|u|}}%
+\html@action@def\r#1{%
+    \ifinlist{#1}{\htmlize@ring}%
+      {\g@addto@macro\htmlize@output{\otherampersand#1ring\othersemicol}}%
+      {\xa\g@addto@macro\htmlize@output\xa{\string\r#1}}%
+}%
 %    \end{macrocode}
 % 
 % \subsubsection{Command sequences for Expansion}
-% 
-%    \begin{macrocode}
-\html@def\underline#1{<SPAN STYLE=\@dquote text-decoration: underline;\@dquote>#1</SPAN>}%
-\html@def\emph#1{<EM>#1</EM>}%
-\html@def\textit#1{<I>#1</I>}%
-\html@def\textbf#1{<B>#1</B>}%
-\html@def\texttt#1{<CODE>#1</CODE>}%
-\html@def\textsc#1{<SPAN STYLE=\@dquote font-variant: small-caps;\@dquote>#1</SPAN>}%
-\html@def\url#1{<A href=\@dquote #1\@dquote>#1</A>}%
-\html@def\href#1#2{<A href=\@dquote #1\@dquote>#2</A>}%
-\html@def\textsuperscript#1{<SUP>#1</SUP>}%
-\html@def\up#1{<SUP>#1</SUP>}%
-\html@def\fup#1{<SUP>#1</SUP>}%
-\html@def\textsubscript#1{<SUB>#1</SUB>}%
+%
+% First, commands defined by this package.
+%   \begin{macrocode}
+\def\blank{\rule{1in}{0.5pt}}%
+% TODO: Make an optional argument for width?  This wouldn't affect Moodle,
+%        only the appearance in the PDF.  It doesn't seem worth it.
 \html@def\blank{____________}%
-\html@def\par{<BR/>}%
+\htmlize@record@action\inlinemathrightdelim
+\htmlize@record@action\displaymathrightdelim
+%    \end{macrocode}
+% Second, native \LaTeX\ commands.
+%    \begin{macrocode}
+\html@def\emph#1{<EM>#1</EM>}%
+\html@def\textbf#1{<B>#1</B>}%
+\html@def\textit#1{<I>#1</I>}%
+\html@def\textsc#1{<SPAN STYLE=\@dquote font-variant: small-caps;\@dquote>#1</SPAN>}%
+\html@def\textsuperscript#1{<SUP>#1</SUP>}%
+\html@def\textsubscript#1{<SUB>#1</SUB>}%
+\html@def\texttt#1{<CODE>#1</CODE>}%
+\html@def\underline#1{<SPAN STYLE=\@dquote text-decoration: underline;\@dquote>#1</SPAN>}%
+%    \end{macrocode}
+% Third, popular \LaTeX\ commands from packages.
+%    \begin{macrocode}
+\html@def\url#1{<A href=\@dquote #1\@dquote>#1</A>}% url or hyperref
+\html@def\href#1#2{<A href=\@dquote #1\@dquote>#2</A>}% hyperref
+\html@def\up#1{<SUP>#1</SUP>}% babel, option french
+\html@def\fup#1{<SUP>#1</SUP>}% babel, option french
+%    \end{macrocode}
+% Fourth, \LaTeX\ commands for ligature and other glyphs.
+%    \begin{macrocode}
 \html@def\aa{\&aring;}%
 \html@def\AA{\&Aring;}%
 \html@def\ae{\&aelig;}%
 \html@def\AE{\&AElig;}%
-\html@def\oe{\&oelig;}%
-\html@def\OE{\&OElig;}%
-\html@def\S{\&sect;}%
-\html@def\euro{\&euro;}%
-\html@def\texteuro{\&euro;}%
-\html@def\o{\&oslash;}%
-\html@def\O{\&Oslash;}%
-\html@def\ss{\&szlig;}%
-\html@def\SS{\&\#7838;}%
-%\html@def\i{\&\#305;}%
+\html@def\dh{\&eth;}%
+\html@def\DH{\&ETH;}%
+\html@def\dj{\&dstrok;}%
+\html@def\DJ{\&Dstrok;}%
+\html@def\i{\&imath;}%
+\html@def\ij{\&ijlig;}%
+\html@def\IJ{\&IJlig;}%
+\html@def\j{\&jmath;}%
 \html@def\l{\&lstrok;}%
 \html@def\L{\&Lstrok;}%
-\html@def\og{\&laquo;\&\#8239;}%
-\html@def\guillemotleft{\&laquo;\&\#8239;}%
-\html@def\fg{\&\#8239;\&raquo;}%
-\html@def\guillemotright{\&\#8239;\&raquo;}%
-\html@def\glqq{\&bdquo;}%
-\html@def\grqq{\&ldquo;}%
-\html@def\glq{\&sbquo;}%
-\html@def\grq{\&lsquo;}%
-\html@def\flqq{\&laquo;\&\#8239;}%
-\html@def\frqq{\&\#8239;\&raquo;}%
-\html@def\flq{\&lsaquo;}%
-\html@def\frq{\&rsaquo;}%
-\html@def\dq{\&quot;}%
-\html@def\,{\&\#8239;}%
-\html@def\thinspace{\&\#8239;}%
+\html@def\ng{\&eng;}%
+\html@def\NG{\&ENG;}%
+\html@def\o{\&oslash;}%
+\html@def\O{\&Oslash;}%
+\html@def\oe{\&oelig;}%
+\html@def\OE{\&OElig;}%
+\html@def\ss{\&szlig;}%
+\html@def\SS{\&\#7838;}%
+\html@def\th{\&thorn;}%
+\html@def\TH{\&THORN;}%
+%    \end{macrocode}
+% Fifth, \LaTeX\ commands for horizontal spacing and line breaks.
+% In a number of situations, paragraph breaks translated into
+% |</p><p>| would bring trouble in the HTML code. Examples:
+% \begin{itemize}
+% \item fields of cloze subquestions
+% \item inside environments like |center|, |itemize|, or |enumerate|.
+% \end{itemize}
+%    \begin{macrocode}
+\html@def\space{ }%
+\html@def\textvisiblespace{\&blank;}%
+\html@def\newline{<BR/>}%
+\html@def\par{<BR/>}%
+%    \end{macrocode}
+% Sixth, \LaTeX\ commands for various symbols.
+%    \begin{macrocode}
 \html@def\textbackslash{\&\#92;}%
 \html@def\_{\&\#95;}%
 \html@def\textquestiondown{\&iquest;}%
 \html@def\textexclamdown{\&iexcl;}%
-
-% AH CUSTOM MACROS TO EXPAND --- remove these before publishing!
-%\htmlize@record@expand{\inv}%
-%\htmlize@record@expand{\rec}%
-
-\htmlize@record@action\inlinemathrightdelim
-\htmlize@record@action\displaymathrightdelim
-
+\html@def\euro{\&euro;}%
+\html@def\texteuro{\&euro;}%
+\html@def\S{\&sect;}%
+%    \end{macrocode}
+% Seventh, \LaTeX\ commands for various quotation marks.
+%    \begin{macrocode}
+\html@def\textquoteleft{\&lsquo;}%
+\html@def\textquoteright{\&rsquo;}%
+\html@def\textquotedblleft{\&ldquo;}%
+\html@def\textquotedblright{\&rdquo;}%
+\html@def\guilsinglleft{\&lsaquo;}%
+\html@def\guilsinglright{\&rsaquo;}%
+\html@def\guillemotleft{\&laquo;}%
+\html@def\guillemotright{\&raquo;}%
+\html@def\quotesinglbase{\&sbquo;}%
+\html@def\quotedblbase{\&bdquo;}%
+\html@def\flq{\&lsaquo;}%
+\html@def\frq{\&rsaquo;}%
+\html@def\flqq{\&laquo;}%
+\html@def\frqq{\&raquo;}%
+\html@def\og{\&laquo;\&\#8239;}%
+\html@def\fg{\&\#8239;\&raquo;}%
+\html@def\glq{\&sbquo;}%
+\html@def\grq{\&lsquo;}%
+\html@def\glqq{\&bdquo;}%
+\html@def\grqq{\&ldquo;}%
+\html@def\dq{\&quot;}%
 %    \end{macrocode}
 %
 % \subsubsection{Passing Code to XML Only}

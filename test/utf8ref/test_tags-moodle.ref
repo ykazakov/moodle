@@ -53,7 +53,7 @@
   </answer>
   <answer fraction="100" format="plain_text">
     <text>C</text>
-    <feedback format="html"><text><![CDATA[<p>&laquo;&#8239;&#8239;&raquo;</p>]]></text></feedback>
+    <feedback format="html"><text><![CDATA[<p>&laquo;&raquo;</p>]]></text></feedback>
   </answer>
   <answer fraction="0" format="plain_text">
     <text>*</text>
@@ -83,7 +83,7 @@
   <answer fraction="100" format="plain_text">
     <text>2</text>
     <tolerance>0</tolerance>
-    <feedback format="html"><text><![CDATA[<p>&laquo;&#8239;&#8239;&raquo;</p>]]></text></feedback>
+    <feedback format="html"><text><![CDATA[<p>&laquo;&raquo;</p>]]></text></feedback>
   </answer>
   <answer fraction="0" format="plain_text">
     <text>3</text>
@@ -187,7 +187,7 @@
     <text><![CDATA[Cloze]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>&Aring;&OElig;{1:MULTICHOICE:=chip~%10%chop#yes~chap#no.}&#8239;&raquo;&Aring;{1:SHORTANSWER:=B#toc~=C#&laquo;&#8239;&#8239;&raquo;~*}&laquo;&#8239;&Aring;{1:NUMERICAL:=1:0~=2:0#&laquo;&#8239;&#8239;&raquo;~3:0}&OElig;{1:MULTICHOICE_V:=chip#yes~%10%chop~chap#no.}<BR/>&OElig;{1:MULTICHOICE_H:=chip#yes~%10%chop~chap#no.}<BR/></p>]]></text>
+    <text><![CDATA[<p>&Aring;&OElig;{1:MULTICHOICE:=chip~%10%chop#yes~chap#no.}&raquo;&Aring;{1:SHORTANSWER:=B#toc~=C#&laquo;&raquo;~*}&laquo;&Aring;{1:NUMERICAL:=1:0~=2:0#&laquo;&raquo;~3:0}&OElig;{1:MULTICHOICE_V:=chip#yes~%10%chop~chap#no.}<BR/>&OElig;{1:MULTICHOICE_H:=chip#yes~%10%chop~chap#no.}<BR/></p>]]></text>
   </questiontext>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>

@@ -34,7 +34,7 @@
     <text><![CDATA[Close-multi]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>A {1:MULTICHOICE_VS:=B <BR/>C~D}</p>]]></text>
+    <text><![CDATA[<p><CENTER>A <BR/>Z</CENTER> {1:MULTICHOICE_VS:=B <BR/>C~D}</p>]]></text>
   </questiontext>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
@@ -45,7 +45,7 @@
     <text><![CDATA[Essay]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>A </p>]]></text>
+    <text><![CDATA[<p><CENTER>A <BR/>Z</CENTER> </p>]]></text>
   </questiontext>
   <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>

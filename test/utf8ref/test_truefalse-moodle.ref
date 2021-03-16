@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <quiz>
  
 <question type="category">
@@ -22,11 +23,11 @@
   <hidden>0</hidden>
   <answer fraction="0" format="plain_text">
     <text>true</text>
-    <feedback format="html"><text><![CDATA[<p>Feedback for students choosing &rdquo;true&rdquo;</p>]]></text></feedback>
+    <feedback format="html"><text><![CDATA[<p>Feedback for students choosing &quot;true&quot;</p>]]></text></feedback>
   </answer>
   <answer fraction="100" format="plain_text">
     <text>false</text>
-    <feedback format="html"><text><![CDATA[<p> Feedback for students choosing &rdquo;false&rdquo; </p>]]></text></feedback>
+    <feedback format="html"><text><![CDATA[<p> Feedback for students choosing &quot;false&quot; </p>]]></text></feedback>
   </answer>
 </question>
 <question type="truefalse">
@@ -44,11 +45,11 @@
   <hidden>0</hidden>
   <answer fraction="0" format="plain_text">
     <text>true</text>
-    <feedback format="html"><text><![CDATA[<p>Feedback for students choosing &rdquo;true&rdquo; </p>]]></text></feedback>
+    <feedback format="html"><text><![CDATA[<p>Feedback for students choosing &quot;true&quot; </p>]]></text></feedback>
   </answer>
   <answer fraction="100" format="plain_text">
     <text>false</text>
-    <feedback format="html"><text><![CDATA[<p>Feedback for students choosing &rdquo;false&rdquo;</p>]]></text></feedback>
+    <feedback format="html"><text><![CDATA[<p>Feedback for students choosing &quot;false&quot;</p>]]></text></feedback>
   </answer>
 </question>
 <question type="truefalse">
@@ -56,7 +57,7 @@
     <text><![CDATA[Truefalse Test 3]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>Please answer &rdquo;True&rdquo;. </p>]]></text>
+    <text><![CDATA[<p>Please answer &quot;True&quot;. </p>]]></text>
   </questiontext>
   <defaultgrade>3</defaultgrade>
   <generalfeedback format="html">
@@ -76,7 +77,7 @@
     <text><![CDATA[Truefalse Test 4]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>Please answer &rdquo;False&rdquo;. </p>]]></text>
+    <text><![CDATA[<p>Please answer &quot;False&quot;. </p>]]></text>
   </questiontext>
   <defaultgrade>3</defaultgrade>
   <generalfeedback format="html">
