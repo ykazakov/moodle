@@ -2107,15 +2107,18 @@
 %       \item Support for \cmd{\i} in conversion to \HTML.
 %       \item \SVG\ option support for Windows (courtesy of Wolf M\"uller).
 %     \changed
-%       \item Automatic sanction mechanism for incorrect choices in multi
+%       \item Labels of proposed answers now following \Moodle's convention
+%             (\emph{1., 2., \dots}) in the \PDF\ typesetting of \env{multi} questions. 
+%       \item Automatic sanction mechanism for incorrect choices in \env{multi}
 %             questions with multiple answers allowed. Now applies also inside
 %             \env{cloze} questions.
 %       \item In \env{cloze} subquestions, non-integer fractions are rounded.
 %       \item Rewording of some indications in the \PDF, related to internationalization.
-%       \item The answers of \env{matching} questions are now converted to HTML
+%       \item The answers of \env{matching} questions are now converted to \HTML\ 
 %              (accents and \cmd{\htmlonly} in mind).
 %     \removed
-%       \item Support for non-\acro{ASCII} characters when compiling with \prog{pdflatex}.
+%       \item Support for non-\acro{ASCII} characters abandoned when compiling
+%             with \prog{pdflatex}.
 %     \fixed
 %       \item Symbols \cmd{\%} found inside math mode are escaped for \HTML.
 %       \item The \optn{fraction} keys specified inside \env{cloze} questions are
@@ -2252,7 +2255,7 @@
 %       \item In draft mode, \TikZ\ externalization is no longer triggered.
 %     \fixed
 %       \item In the different question types, the feedback fields are now converted
-%             for \HTML\ allowing \LaTeX\ equation and images.
+%             for \HTML\ allowing \LaTeX\ equations and images.
 %       \item Documentation improvements (limitations and previously undocumented
 %             features).
 %   \end{version}
