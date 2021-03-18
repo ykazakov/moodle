@@ -2535,7 +2535,7 @@
         \subsection*{##1}%
       \fi
     \fi
-    \begin{enumerate}%
+    \begin{enumerate}\renewcommand\labelenumi{(\theenumi)}%
   }%
   \gdef\setsubcategory##1{%
     \def\@noitemerr{}%\@latex@warning{Empty question list}
@@ -2554,7 +2554,7 @@
         \subsubsection*{##1}%
       \fi
     \fi
-    \begin{enumerate}%
+    \begin{enumerate}\renewcommand\labelenumi{(\theenumi)}%
   }%
   \setcategory{#2}%
    \moodle@totalmarks=0pt%
