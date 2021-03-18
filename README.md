@@ -74,7 +74,7 @@ In order to manipulate images, the package relies on:
 
 Instead, to compile the documentation, the following LaTeX packages are
 necessary: `amssymb`, `babel`, `booktabs`, `changelog`, `dtxdescribe`, `eurosym`,
-`hyperref`, `longtable`, `minted`, `microtype`, `tikz`, and `threeparttable`.
+`hyperref`, `longtable`, `minted`, `microtype`, `tikz`, `threeparttable`, and `varioref`.
 
 # Building
 

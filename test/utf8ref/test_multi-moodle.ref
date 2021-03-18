@@ -37,6 +37,222 @@
     <text><![CDATA[Multiple Choice]]></text>
   </name>
   <questiontext format="html">
+    <text><![CDATA[<p>Text </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>A</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>B</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>C</p>]]></text>
+  </answer>
+</question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Multiple Choice]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Text </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>ABCD</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>A</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>B</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>C</p>]]></text>
+  </answer>
+</question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Multiple Choice]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Text </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>ABCD</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>A</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>B</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>C</p>]]></text>
+  </answer>
+</question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Multiple Choice]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Text </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>123</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>A</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>B</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>C</p>]]></text>
+  </answer>
+</question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Multiple Choice]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Text </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>123</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>A</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>B</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>C</p>]]></text>
+  </answer>
+</question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Multiple Choice]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Text </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>iii</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>A</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>B</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>C</p>]]></text>
+  </answer>
+</question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Multiple Choice]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Text </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>iii</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>A</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>B</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>C</p>]]></text>
+  </answer>
+</question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Multiple Choice]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Text </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>IIII</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>A</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>B</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>C</p>]]></text>
+  </answer>
+</question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Multiple Choice]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Text </p>]]></text>
+  </questiontext>
+  <defaultgrade>1.0</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>1</shuffleanswers>
+  <answernumbering>IIII</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>A</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>B</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>C</p>]]></text>
+  </answer>
+</question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Multiple Choice]]></text>
+  </name>
+  <questiontext format="html">
     <text><![CDATA[<p>Select the following numbers that are prime. </p>]]></text>
   </questiontext>
   <defaultgrade>1.0</defaultgrade>
@@ -47,7 +263,7 @@
   <hidden>0</hidden>
   <single>false</single>
   <shuffleanswers>1</shuffleanswers>
-  <answernumbering>abc</answernumbering>
+  <answernumbering>none</answernumbering>
   <answer fraction="70" format="html">
     <text><![CDATA[<p>\(\sqrt {25}\)</p>]]></text>
   </answer>
@@ -80,7 +296,7 @@
   <hidden>0</hidden>
   <single>true</single>
   <shuffleanswers>1</shuffleanswers>
-  <answernumbering>abc</answernumbering>
+  <answernumbering>none</answernumbering>
   <answer fraction="100" format="html">
     <text><![CDATA[<p>\(\sqrt {25}\)</p>]]></text>
   </answer>

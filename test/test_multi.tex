@@ -20,18 +20,23 @@ following options are tested
 \begin{itemize}
 	\item Single or multiple correct answer
 	\item Shuffling or no shuffling
+	\item Numbering
 \end{itemize}
 
-\begin{quiz}{Example Quiz}
+\begin{quiz}[numbering=none]{Example Quiz}
 
-\begin{multi}{Multiple Choice}
+\renewcommand\do[1]{
+\begin{multi}[numbering=#1]{Multiple Choice}
 Text
 \item* A
 \item B
 \item C
 \end{multi}
+}
+\docsvlist{alph,abc,Alph,ABCD,arabic,123,roman,iii,Roman,IIII}
 
-\begin{multi}[multiple,feedback={abc\\def $\sqrt{2}$}]{Multiple Choice}
+\begin{multi}[multiple,feedback={abc\\def 
+$\sqrt{2}$}]{Multiple Choice}
 Select the following numbers that are prime.
 \item[fraction=70] $\sqrt{25}$
 \item[fraction=-10] \textbf{68}
@@ -40,7 +45,8 @@ Select the following numbers that are prime.
 \item \texttt{nothing}
 \end{multi}
 
-\begin{multi}[shuffle,feedback={abc\\def $\sqrt{2}$}]{Multiple Choice}
+\begin{multi}[shuffle,feedback={abc\\def $\sqrt{2}$}]{Multiple 
+Choice}
 Select the following numbers that are prime.
 \item* $\sqrt{25}$
 \item[fraction=-30] 6

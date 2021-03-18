@@ -64,8 +64,9 @@ necessary:
 - [`longtable`](pkg/longtable),
 - [`minted`](pkg/minted),
 - [`microtype`](pkg/microtype),
-- [`tikz`](pkg/tikz), and
-- [`threeparttable`](pkg/threeparttable).
+- [`tikz`](pkg/tikz),
+- [`threeparttable`](pkg/threeparttable), and
+- [`varioref`](pkg/varioref).
 
 # Building
 

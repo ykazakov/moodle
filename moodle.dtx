@@ -44,7 +44,7 @@
   \usepackage{fontspec}
   \setmainfont{Linux Libertine O}
 \fi
-\usepackage{dtxdescribe}
+\usepackage{dtxdescribe,varioref}
 \addtolength\marginparwidth{30pt}
 \addtolength\oddsidemargin{20pt}
 \addtolength\evensidemargin{20pt}
@@ -101,11 +101,11 @@
 %
 % \author{%
 %   Anders Hendrickson\footnote{original author of the package (\texttt{v0.5}), inactive.}\\	
-%  \texttt{anders.o.f.hendrickson AT gmail.com} \and
+%  \texttt{anders.o.f.hendrickson AT gmail DOT com} \and
 %  Matthieu Guerquin-Kern\footnote{current maintainer, %
 %  author of the updates (\texttt{v0.6} to \texttt{\fileversion}), %
 %  partially funded in 2019 by \href{https://www.ensea.fr/en/}{ENSEA Graduate School}, France.}\\
-%  \href{mailto:guerquin-kern AT crans.org}{guerquin-kern AT crans.org}%
+%  \href{mailto:guerquin-kernATcransDOTorg}{\texttt{guerquin-kern AT crans DOT org}}%
 % }%
 %
 % \date{\today}
@@ -202,26 +202,12 @@
 % categories and tags.
 %
 % In this documentation the \LMS\ is referred to as \Moodle\ 
-% (uppercase letters and roman font) while the \LaTeX\ package that is presently documented
-% is referred to as \pkg{moodle} (all lower case and sans serif font).
+% (uppercase letters and roman font) while the \LaTeX\ package
+% is referred to as \pkg{moodle} (lower case and sans serif font).
 % 
 % \subsection{Workflow}
-% The process of creating a quiz in \Moodle\ using this package is depicted in
-% Figure~\ref{fig:workflow} on page~\pageref{fig:workflow}. It follows a few
-% steps:
-% \begin{enumerate}
-%   \item Write a \LaTeX\ document using |\usepackage{moodle}| as described 
-% below.
-%   \item Compile the document to \PDF\ using pdf\LaTeX\ (\acro{ASCII} characters only),
-%         \XeLaTeX, or \LuaLaTeX.
-% This will also produce the file \meta{jobname}\filenm{-moodle.xml}.
-%   \item Open \Moodle, navigate to the desired course,
-%         and under ``Question bank'' select ``Import.''
-%   \item Select ``Moodle \XML\ format,'' choose the \XML\ file to upload, and press ``Import.''
-%   \item After \Moodle\ verifies that the questions have been imported correctly,
-%         you may add them to your quizzes.
-% \end{enumerate}
-% \begin{figure}[tbp]
+%
+%% \begin{figure}[bp]
 % \centering
 % \begin{tikzpicture}[node distance=1,auto,bend 
 % angle=45,box/.style={rectangle,draw=blue!50,rounded corners=3,top 
@@ -272,6 +258,21 @@
 % \caption{Block diagram describing a typical workflow using the \pkg{moodle} package.}
 % \label{fig:workflow}
 % \end{figure}
+%
+% The process of creating a quiz in \Moodle\ using this package is depicted in
+% Figure~\vref{fig:workflow}. It follows a few
+% steps:
+% \begin{enumerate}
+%   \item Write a \LaTeX\ document using |\usepackage{moodle}| as described 
+% below.
+%   \item Compile the document to \PDF\ using pdf\LaTeX\ (\acro{ASCII} characters only),
+%         \XeLaTeX, or \LuaLaTeX.
+% This will also produce the file \meta{jobname}\filenm{-moodle.xml}.
+%   \item navigate to your course on \Moodle\ and, under ``Question bank'', select ``Import.''
+%   \item Select ``Moodle \XML\ format,'' choose the \XML\ file to upload, and press ``Import.''
+%   \item After \Moodle\ verifies that the questions have been imported correctly,
+%         you may add them to your quizzes.
+% \end{enumerate}
 %
 % \section{Usage}\label{sect:usage}
 % The following pages presume the reader already has some familiarity with creating
@@ -386,12 +387,10 @@
 % to |\usepackage{moodle}| .
 %
 % \DescribeOption[moodle]{tikz}
-% The package option \optn{tikz} is described in Section~\ref{subsec:tikz}
-% on page~\pageref{subsec:tikz}.
+% The package option \optn{tikz} is described in Section~\vref{subsec:tikz}.
 %
 % \DescribeOption[moodle]{svg}^^A\watchout[experimental]
-% The package option \optn{svg} is described in Section~\ref{subsec:svg}
-% on page~\pageref{subsec:svg}
+% The package option \optn{svg} is described in Section~\vref{subsec:svg}.
 %
 % \subsection{Quiz and Question Environments}
 % 
@@ -451,8 +450,8 @@
 % \DescribeKey[answer]{fraction}^^A\DescribeDefault{0}
 % In most question types, it is possible to designate some answers as being
 % worth partial credit---that is, some fraction of a completely correct answer.
-% The \optn{fraction} key may be set to any of the values given in Table~\ref{tab:fraction}
-% on page~\pageref{tab:fraction}, from \texttt{0} (entirely wrong) to \texttt{100} (entirely correct).
+% The \optn{fraction} key may be set to any of the values given in Table~\vref{tab:fraction},
+% from \texttt{0} (entirely wrong) to \texttt{100} (entirely correct).
 % 
 % \begin{table}[tbp]
 % \centering
@@ -488,7 +487,7 @@
 % negative fractions (from -100 to 0) for wrong choices, in order to prevent the
 % selection of all choices from leading to a good grade.
 % In this case, the value ranging from -100 to 0 must be the opposite of one of the
-% values listed in Table~\ref{tab:fraction} on page~\pageref{tab:fraction}.
+% values listed in Table~\vref{tab:fraction}.
 % 
 % \DescribeKey[answer]{fractiontol}\DescribeDefault{0.01}
 % The package tries to match the \optn{fraction} key to one of the admissible values.
@@ -601,15 +600,22 @@
 % \DescribeKey[multi]{numbering}\DescribeDefault{abc}
 % \Moodle\ offers different options for numbering the possible answers.
 % You may set the \optn{numbering} key to any of the values listed in
-% the following table.
-% \begin{center}
+% Table~\vref{tab:numbering_options}.
+% \begin{table}[tbp]
+% \centering
+% \caption{Numbering modalities offered for \env{multi} questions.}
+% \label{tab:numbering_options}
 % \begin{tabular}{rllllll}
 % \toprule
+% Sample & a., b., \dots & A., B., \dots & 1., 2., \dots & i., ii., \dots &
+% I., II., \dots & $\bullet$ \\
+% \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}\cmidrule(lr){6-6}
+% \cmidrule(lr){7-7}
 % \LaTeX\ syntax & \optn{alph} & \optn{Alph} & \optn{arabic} & \optn{roman} & \optn{Roman} & \optn{none}\\
 % \Moodle\ syntax & \optn{abc} & \optn{ABCD} & \optn{123} & \optn{iii} & \optn{IIII} & \optn{none} \\
 % \bottomrule
 % \end{tabular}
-% \end{center}
+% \end{table}
 % \optn{numbering=none} produces an unnumbered list of answers.
 % Note the \emph{four} capital letters required by \Moodle's syntax
 % to obtain upper-case Roman or alphabetic numerals.
@@ -666,7 +672,7 @@
 % the points that are left for a total of 100\% (only positive
 % fractions count here). Note that doing so will easily yield
 % situations where the weights are inadmissible (see
-% Table~\ref{tab:fraction} on page~\pageref{tab:fraction}).
+% Table~\vref{tab:fraction}).
 % \item the \emph{automatic mode} applies when correct answers are
 % designated using \cmd{\item*} and no answer has a \optn{fraction} key set.
 % In this case, each correct answer is weighted to bring the same
@@ -811,16 +817,32 @@
 % You can make a question case-sensitive with the Boolean key
 % \optn{case sensitive} or its shorter synonym \optn{usecase}\DescribeBoolean[shortanswer]{usecase}.
 %
-% The wildcard character \texttt{*} can used to grab answers that match 
-% a specific pattern. For instance:
-% \begin{itemize}
-%   \item ``\emph{Sir Isaac Newton}'', ``\emph{Isaac Newton}'' and
-%         ``\emph{Newton}'' will match the pattern \texttt{*Newton},
-%   \item ``\emph{Gaston}'' and ``\emph{Wellington}'' will match the
-%          pattern \texttt{*ton},
-%   \item ``\emph{Isaac}'' and ``\emph{Isaac Newton}'' will match the
-%          pattern \texttt{Isaac*},
-%   \item any non empty answer will match the pattern \texttt{*} (wildcard alone).
+% The \href{https://docs.moodle.org/en/Short-Answer_question_type#Wildcard_usage}%
+% {wildcard character} \texttt{*} can used to grab answers that match
+% a specific pattern. Following the order of answers, the first match will lead
+% to the corresponding score and eventual feedback. As an example, take the
+% following question
+% \begin{VerbatimOut}[gobble=1]{minted.doc.out}
+%   \begin{shortanswer}[usecase]{Newton's name}
+%     What was Newton's first name?
+%     \item Isaac
+%     \item[fraction=0,feedback={Simply Isaac!}] Isaa*
+%     \item[fraction=0,feedback={This one is Leibniz!}] *Gottfried*
+%     \item[fraction=0,feedback={First name, not title!}] Sir*
+%     \item[fraction=0,feedback={No\dots}] *
+%   \end{shortanswer}
+% \end{VerbatimOut}
+% \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
+% \begin{itemize}\def\answ#1{\framebox{\texttt{#1}}}%
+%   \item the answer \answ{Isaac} is the only one that gets rewarded,
+%   \item answers \answ{Isaac Leibniz}, \answ{Isaac Newton}, and \answ{Isaak} yield
+%   the feedback \emph{Simply Isaac!},
+%   \item answers \answ{Sir Gottfried Wilhelm}, \answ{Sir Gottfried},
+%         \answ{Gottfried Wilhem}, and \answ{Gottfried} yield
+%          the feedback \emph{This one is Leibniz!},
+%   \item answers \answ{Sir Gottfried}, \answ{Sir Isaac}, and \answ{Sir} yield
+%          the feedback \emph{First name, not title!},
+%   \item any other answer yields the feedback \emph{No\dots}.
 % \end{itemize}
 % 
 % \subsubsection{\href{https://docs.moodle.org/en/Essay_question_type}{Essay}}\label{subsubsect:essay}
@@ -894,45 +916,43 @@
 % \subsubsection{\href{https://docs.moodle.org/en/Matching_question_type}{Matching}}
 % 
 % \DescribeEnv[quiz]{matching}\oarg{question options}\marg{question name}
-% is an environment that defines an \emph{Matching} question.
-%
-% A \env{matching} question offers a series of subquestions
-% and a set of possible answers from which to choose.
-% If there are $m$ questions and $n\geq m$ possible answers,
-% a \env{matching} question will look like this:
-% 
+% is an environment that defines an \emph{Matching} question. It typically
+% looks like this:
 % \begin{quote}
 %   |\begin{matching}|\oarg{question options}\marg{question name} \\
 %   \rule{2em}{0pt}\meta{question text} \\
-%   \rule{2em}{0pt}|\item| \meta{question 1} |\answer| \meta{answer 1}\\
-%   \rule{2em}{0pt}|\item| \meta{question 2} |\answer| \meta{answer 2}\\
+%   \rule{2em}{0pt}|\item| \meta{item 1} |\answer| \meta{match 1}\\
+%   \rule{2em}{0pt}|\item| \meta{item 2} |\answer| \meta{match 2}\\
 %   \rule{2em}{0pt}\quad$\vdots$ \\
-%   \rule{2em}{0pt}|\item| \meta{question $m$} |\answer| \meta{answer $m$}\\
-%   \rule{2em}{0pt}|\item| |\answer| \meta{answer $m+1$}\\
+%   \rule{2em}{0pt}|\item| \meta{item $m$} |\answer| \meta{match $m$}\\
+%   \rule{2em}{0pt}|\item| |\answer| \meta{no match $1$}\\
 %   \rule{2em}{0pt}\quad$\vdots$ \\
-%   \rule{2em}{0pt}|\item| |\answer| \meta{answer $n$}\\
+%   \rule{2em}{0pt}|\item| |\answer| \meta{no match $n$}\\
 %   |\end{matching}|
 % \end{quote}
-% Answers $1$ through $m$ correspond to questions $1$ through $m$;
-% answers $m+1$ through $n$ are ``decoy'' answers.
-% If multiple questions should have the same answer,
-% be sure your typed answers match exactly, so that \Moodle\ will not
-% create duplicate copies of the same answer!
+% \meta{match}es $1$ through $m$ are separated from their corresponding
+% \meta{item}s by the command \cmd{\answer}\DescribeMacro[matching]{\answer}.
+% Answers that match no item can be proposed at the end of the list,
+% preceded by an empty item.
+%
+% After import, \Moodle\ will recognize matches that are \emph{exact}
+% duplicates. If you intend multiple questions to have the same match,
+% make sure that they are entered identically.
 % 
 % \DescribeBoolean[matching]{shuffle}\DescribeDefault{true}
-% When students take a matching question, \Moodle\ automatically
-% presents the answers in random order. 
-% The \env{matching} question accepts the option |shuffle| to randomly
-% permute the questions.
+% When students take a matching question, \Moodle\ always displays
+% the proposed matches in random order. 
+% The \env{matching} question accepts the option |shuffle| to also
+% randomly permute the items.
 % 
 % \DescribeBoolean[matching]{drag and drop}\DescribeDefault{false}
 % The standard matching question offered by \Moodle\ corresponds to
-% a dropdown box for choosing the answer to each question.
+% a dropdown box for choosing the match for each item.
 % There also exists a \href{https://docs.moodle.org/en/Drag_and_drop_matching_question_type}
 % {``drag and drop matching''} plugin for \Moodle\ that
-% shows all questions in one column,
-% all answers in a second column, and allows students to drag the correct
-% answer to the question using a mouse.
+% shows all items in a column (left), all proposed matches in a second column
+% (right), and asks students to drag the correct
+% match to each item with the mouse.
 % In this package, to enable drag-and-drop matching, use the key
 % \optn{drag and drop} or \optn{dd}\DescribeKey[matching]{dd}\ for short.
 % Beware that, with the standard format (\optn{drag and drop=false}), due
@@ -988,7 +1008,7 @@
 % Inside \env{cloze} environments, the \optn{fraction} key can be used to give
 % partial credit or sanction for certain answers. The values
 % specified must be integers and are independent of the admissible
-% values listed in Table~\ref{tab:fraction}.
+% values listed in Table~\vref{tab:fraction}.
 % 
 % \DescribeBoolean[cloze]{single}\DescribeDefault{true}
 % \DescribeKey[cloze]{multiple}
@@ -996,7 +1016,7 @@
 % was necessarily of type \optn{single}, i.e. with a single good answer. If you intend
 % to export your quiz to \Moodle\ 3.5+, the option \optn{multiple} can be used for
 % questions where students must be able to select several answers.
-% The modalities described in Section~\ref{subsec:multi} for setting the
+% The modalities described in Section~\vref{subsec:multi} for setting the
 % weight of answers apply. The only difference occurs in \emph{advanced mode}:
 % the sum of positive fractions may not be 100\%. In this case, after
 % importing the \XML\ file, \Moodle\ will automatically scale the positive
@@ -1062,6 +1082,7 @@
 %   \directlua{
 % \end{VerbatimOut}
 % \inputminted[gobble=2,frame=topline]{latex}{minted.doc.out}
+% \vspace{-.7cm}
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   function clozenum_print(pair,op,result)
 %     tex.print("\\begin{numerical}$"..pair[1].." "..op.." "..pair[2].." 
@@ -1088,6 +1109,7 @@
 %   end
 % \end{VerbatimOut}
 % \inputminted[]{lua}{minted.doc.out}
+% \vspace{-.7cm}
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   }
 %   \end{quiz}
@@ -1099,6 +1121,7 @@
 %   \begin{python}
 % \end{VerbatimOut}
 % \inputminted[gobble=2,frame=topline]{latex}{minted.doc.out}
+% \vspace{-.7cm}
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   def clozenum_print(pair,op,result):
 %     print(rf"""\begin{{numerical}}
@@ -1123,6 +1146,7 @@
 %         cloze_print([x,y],points)
 % \end{VerbatimOut}
 % \inputminted[]{python}{minted.doc.out}
+% \vspace{-.7cm}
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   \end{python}
 %   \end{quiz}
@@ -1132,9 +1156,9 @@
 %
 % \subsection{Summary of the Key Options}
 % 
-% Table~\ref{tab:key-options}, found on page~\pageref{tab:key-options}, summarizes
+% Table~\vref{tab:key-options}, summarizes
 % the key options available at the question and answer levels depending on the
-% question type. For the essay questions, please refer to Section~\ref{subsubsect:essay}.
+% question type. For the essay questions, please refer to Section~\vref{subsubsect:essay}.
 % 
 % \begin{table}[tbp]
 % \centering
@@ -1203,18 +1227,15 @@
 % when \pkg{moodle} generates the \XML\ file. A few tables
 % describe the current level of support:
 % \begin{enumerate}
-% \item text mode diacritic macros (e.g.~|\"u|) in Table~\ref{tab:diacritics} on
-%       page~\pageref{tab:diacritics},
+% \item text mode diacritic macros (e.g.~|\"u|) in Table~\vref{tab:diacritics},
 % \item text mode macros for ligatures (e.g.~\cmd{\oe}) and other glyphs (e.g.~\cmd{\aa}) in
-%       Table~\ref{tab:ligatures_and_glyphs} on page~\pageref{tab:ligatures_and_glyphs},
+%       Table~\vref{tab:ligatures_and_glyphs},
 % \item horizontal spacing (e.g.~\cmd{\quad}) and line breaking (e.g.~\cmd{\\}) macros in
-%       Table~\ref{tab:spacing} on page~\pageref{tab:spacing},
+%       Table~\vref{tab:spacing},
 % \item text mode symbols (e.g.~\cmd{\$}) and punctuation (e.g.~\cmd{\textexclamdown}) macros in
-%       Table~\ref{tab:symbols_and_punctuation} on
-%       page~\pageref{tab:symbols_and_punctuation}, and finally
+%       Table~\vref{tab:symbols_and_punctuation}, and finally
 % \item other \LaTeX\ commands (e.g.~\cmd{\emph}) and environments (e.g.~\cmd{center})
-%       in Table~\ref{tab:commands_and_environments} on
-%       page~\pageref{tab:commands_and_environments}.
+%       in Table~\vref{tab:commands_and_environments}.
 % \end{enumerate}
 % 
 %^^A Inspired by https://tex.stackexchange.com/a/163717/228515
@@ -1481,16 +1502,17 @@
 % or may cause unpredicted results.
 %
 % If you think of another \LaTeX\ command that should be changed to an HTML
-% equivalent, please have a look at Section~\ref{sec:dev}. 
+% equivalent, please have a look at Section~\vref{sec:dev}. 
 % 
 % \DescribeMacro[question,answer,feedback]{\htmlonly}\oarg{Content for traditional output}
 % \marg{HTML content} is command to be used inside question environments (text,
 % answers, or feedback). It lets you pass directly code to the \XML\ file while being
-% ignored for the traditional output (PDF). The \HTML\ content passed as an argument
+% ignored for the traditional output (\PDF). The \HTML\ content passed as an argument
 % is subject to no particular processing and users should not expect to be able to
 % pass dangerous characters like |\|, |%|, or |#|. An optional argument allows to
 % pass contents to be processed for the traditional output. This argument is
 % ignored for the \XML\ output.
+%
 % For instance, one can write code like this in a question environment
 % \begin{quote}
 %   |\htmlonly[\fbox{PDF contents}]{|\\
@@ -1708,7 +1730,7 @@
 % characters |<|, |>|, |&|, |'|, and |"| are converted to \HTML\ equivalents.
 %
 % With \cmd{\VerbatimInput} and \cmd{\inputminted}, the options that are taken care of for XML
-% generation are listed in Table~\ref{tab:verbatim-options} on page~\pageref{tab:verbatim-options}.
+% generation are listed in Table~\vref{tab:verbatim-options}.
 % Using \cmd{\fvset}\marg{key=value,\dots}, options can be set globally. Equivalently, with \pkg{minted},
 % \cmd{setminted}\oarg{lang}\marg{key=value,\dots} is available.
 %
@@ -1822,10 +1844,10 @@
 % Both \pkg{babel} and \pkg{polyglossia} provide ways of specifiying a language for
 % the document or a part of it. If one of these packages is loaded in the preamble,
 % \pkg{moodle} will automatically load the package \pkg{translator} and rely on it
-% to provide translations of its keys (see Table~\ref{tab:language_keys} on
-% page~\pageref{tab:language_keys}) in different languages, with some knowledge on
-% aliases. The package \pkg{translations} does a very similar job and can be loaded
-% in the preamble to serve, if desired, as a replacement for \pkg{translator}.
+% to provide translations of its keys (see Table~\vref{tab:language_keys}) in
+% different languages, with some knowledge on aliases. The package
+% \pkg{translations} does a very similar job and can be loaded in the preamble
+% to serve, if desired, as a replacement for \pkg{translator}.
 %
 % Currently, full-support is provided for English, French, German, Italian, and
 % Spanish. Very limited support is provided for Catalan, Croatian, Czech, Danish, Dutch,
@@ -1958,7 +1980,7 @@
 % Instead, \pkg{moodle} will work flawlessly when \XeTeX\ and
 % \LuaTeX\ are used to compile \UTF-8 encoded documents.
 % 
-% Table~\ref{tab:support-limitations} on page~\pageref{tab:support-limitations} lists
+% Table~\vref{tab:support-limitations} lists
 % some features supported, limitations, and bugs.
 %\begin{table}[tbp]
 %\centering
@@ -2857,6 +2879,7 @@
       \def\@moodle@IIII{IIII}%
       \def\@moodle@none{none}%
       \def\moodle@obeynumberingstyle{%
+        \renewcommand\labelenumii{\theenumii.}% follow Moodle's labelling convention
         \ifx\moodle@numbering\@moodle@abc
           \renewcommand\theenumii{\alph{enumii}}%
         \fi
