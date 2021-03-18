@@ -23,7 +23,7 @@
   <shuffleanswers>1</shuffleanswers>
   <answernumbering>abc</answernumbering>
   <answer fraction="0" format="html">
-    <text><![CDATA[<p>\(\rm\TeX\){} and<BR/>\(\rm\LaTeX\)</p>]]></text>
+    <text><![CDATA[<p>\(\rm\TeX\) and<BR/>\(\rm\LaTeX\)</p>]]></text>
   </answer>
   <answer fraction="0" format="html">
     <text><![CDATA[<p>word with <EM>emphasis</EM> catches the eye</p>]]></text>
