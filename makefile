@@ -64,13 +64,16 @@ install: $(PROJECT_NAME).tds.zip
 
 $(PROJECT_NAME).sty: $(PROJECT_NAME).dtx
 
-$(PROJECT_NAME).pdf: $(PROJECT_NAME).dtx $(PROJECT_NAME).gls
+$(PROJECT_NAME).pdf: $(PROJECT_NAME).dtx $(PROJECT_NAME).gls $(PROJECT_NAME).ind
 
-%.glo: %.dtx
+%.glo %.idx: %.dtx
 	$(PDFLATEX) $(LATEXFLAGS) $< $(DEBUG)
 
 %.gls: %.glo
 	$(MAKEINDEX) -s gglo.ist -o $@ $< $(DEBUG)
+	
+%.ind: %.idx
+	$(MAKEINDEX) -s gind.ist -o $@ $< $(DEBUG)
 
 %.pdf: %.tex
 	$(PDFLATEX) $(LATEXFLAGS) $< $(DEBUG)
