@@ -21,20 +21,20 @@
   <hidden>0</hidden>
   <shuffleanswers>1</shuffleanswers>
   <subquestion format="html">
-    <text><![CDATA[<p>A</p>]]></text>
+    <text><![CDATA[<p>A<BR/>B</p>]]></text>
     <answer format="html"><text><![CDATA[<p>1 </p>]]></text></answer>
   </subquestion>
   <subquestion format="html">
     <text><![CDATA[<p>B</p>]]></text>
-    <answer format="html"><text><![CDATA[<p>2 </p>]]></text></answer>
+    <answer format="html"><text><![CDATA[<p>very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long text </p>]]></text></answer>
   </subquestion>
   <subquestion format="html">
-    <text><![CDATA[<p>C</p>]]></text>
-    <answer format="html"><text><![CDATA[<p>3 </p>]]></text></answer>
+    <text><![CDATA[<p>very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long text</p>]]></text>
+    <answer format="html"><text><![CDATA[<p>1 </p>]]></text></answer>
   </subquestion>
   <subquestion format="html">
     <text></text>
-    <answer format="html"><text><![CDATA[<p>4</p>]]></text></answer>
+    <answer format="html"><text><![CDATA[<p>3</p>]]></text></answer>
   </subquestion>
 </question>
 <question type="matching">
@@ -50,7 +50,7 @@
   <hidden>0</hidden>
   <shuffleanswers>0</shuffleanswers>
   <subquestion format="html">
-    <text><![CDATA[<p>A</p>]]></text>
+    <text><![CDATA[<p>A<BR/>B</p>]]></text>
     <answer format="html"><text><![CDATA[1 ]]></text></answer>
   </subquestion>
   <subquestion format="html">
@@ -59,7 +59,11 @@
   </subquestion>
   <subquestion format="html">
     <text><![CDATA[<p>C</p>]]></text>
-    <answer format="html"><text><![CDATA[3 ]]></text></answer>
+    <answer format="html"><text><![CDATA[2 ]]></text></answer>
+  </subquestion>
+  <subquestion format="html">
+    <text><![CDATA[<p>D</p>]]></text>
+    <answer format="html"><text><![CDATA[2 ]]></text></answer>
   </subquestion>
   <subquestion format="html">
     <text></text>

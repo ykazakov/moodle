@@ -2123,6 +2123,7 @@
 %       \item Support for non-\acro{ASCII} characters abandoned when compiling
 %             with \prog{pdflatex}.
 %     \fixed
+%       \item PDF typesetting of matching answers.
 %       \item Symbols \cmd{\%} found inside math mode are escaped for \HTML.
 %       \item The \optn{fraction} keys specified inside \env{cloze} questions are
 %             forced to integer values as required by \Moodle's \XML\ format.
@@ -4217,26 +4218,30 @@
     \fi
   \fi
 }
-
+\long\def\moodle@matching@left#1{%
+  \parbox[c]{.9\linewidth}{\raggedleft #1}\hfil\vrule width .5pt$\bullet$%
+}%
+\long\def\moodle@matching@right#1{%
+  $\bullet$\vrule width .5pt\hfil\parbox[c]{.9\linewidth}{#1}%
+}%
 \def\moodle@matching@latexprocessing{%
   \bgroup
     %\let\answer=\hfill
-    \par%\noindent
+    \par\noindent
     \ifmoodle@handout
-      \NewList{questionlist}
-      \NewList{answerlist}
+      \NewList{questionlist}%
+      \gdef\matcheslist{}%
+      \NewList{answerlist}%
+    \else
+      \long\def\matching@table@text{}%
     \fi
-    \def\matching@table@text{}%
-    %  \ifnum\c@numgathereditems>2\relax%
-%    \PackageError{moodle}{Expecting at max two answers with truefalse type}
-%  \fi
     \setcounter{moodle@NumStarredAnswers}{0}% Here this counter is for "questions" (items on the left column)
     \loopthroughitemswithcommand{\moodle@print@matching@answer}%
     \ifnum\c@numgathereditems<3\relax
-      \PackageWarning{moodle}{Moodle expects at least three "answers" with matching type}%
+      \PackageWarning{moodle}{Moodle expects at least three proposed matches in matching questions}%
     \fi
     \ifnum\c@moodle@NumStarredAnswers<2\relax
-      \PackageWarning{moodle}{Moodle expects at least two "questions" with the matching type}%
+      \PackageWarning{moodle}{Moodle expects at least two items in matching questions}%
     \fi
     \ifmoodle@handout
       \ifmoodle@shuffle
@@ -4244,21 +4249,23 @@
       \else
         \let\moodle@matching@loop=\ForEachFirstItem
       \fi
-      \moodle@matching@loop{questionlist}{Question}{
-        \xdef\test@i{\Question}%
-        \ExtractRandomItem{answerlist}{Answer}%
-        \ifx\test@i\@empty
-          \xdef\matching@table@text{\expandonce\matching@table@text & & $\bullet$~\expandonce\Answer\\}%
-        \else
-          \xdef\matching@table@text{\expandonce\matching@table@text\expandonce\Question~$\bullet$ & & $\bullet$~\expandonce\Answer\\}%
-        \fi
+      \begin{minipage}{.43\linewidth}%
+      \moodle@matching@loop{questionlist}{Question}{%
+        \moodle@matching@left{\Question}%
+        \vskip 4pt\relax
       }%
-    \fi
-    \begin{tabular}{@{}>{\raggedleft}p{.45\linewidth}p{.1\linewidth}p{.45\linewidth}@{}}%
-      \matching@table@text
-    \end{tabular}%
-    \par
-    \ifmoodle@handout\else
+      \end{minipage}%
+      \hfill
+      \begin{minipage}{.43\linewidth}%
+      \ForEachFirstItem{answerlist}{Answer}{%
+        \moodle@matching@right{\Answer}%
+        \vskip 4pt\relax
+      }%
+      \end{minipage}%
+    \else
+      \begin{tabular}{@{}p{.43\linewidth}@{}p{.1\linewidth}@{}p{.43\linewidth}@{}}%
+        \matching@table@text
+      \end{tabular}%
       \ifx\moodle@generalfeedback\@empty\relax\else%
         \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
       \fi
@@ -4277,18 +4284,27 @@
   \def\test@i{#1}%
   \trim@spaces@in\test@i
   \ifmoodle@handout
-    \ifx\test@i\@empty
-      \InsertLastItem{questionlist}{\@empty}%
-    \else
+    \ifx\test@i\@empty\else
+      \stepcounter{moodle@NumStarredAnswers}%
       \InsertLastItem{questionlist}{#1}%
     \fi
-    \InsertLastItem{answerlist}{#2}%
+    % add proposed match only if not already in the list
+    \xifinlist{\trim@spaces{#2}}{\matcheslist}{}{%
+      \listeadd\matcheslist{\trim@spaces{#2}}%
+      % matches are always proposed shuffled
+      \InsertRandomItem{answerlist}{#2}%
+    }%
   \else
     \ifx\test@i\@empty
-      \g@addto@macro\matching@table@text{&&$\bullet$~#2\\}%
+      \xa\g@addto@macro\xa\matching@table@text\xa{%
+        &&\moodle@matching@right{#2}\\\\\relax%
+      }%
     \else
       \stepcounter{moodle@NumStarredAnswers}%
-      \xa\g@addto@macro\xa\matching@table@text\xa{\test@i~$\bullet$&\leavevmode\cleaders\hb@xt@.44em{\hss$\cdot$\hss}\hfill\kern\z@&$\bullet$~#2\\}%
+      \xa\g@addto@macro\xa\matching@table@text\xa{%
+        \moodle@matching@left{#1}&\leavevmode\leaders\hb@xt@.44em{\hss$\cdot$\hss}\hfill\kern\z@%
+        &\moodle@matching@right{#2}\\\\\relax
+      }%
     \fi
   \fi
 }%

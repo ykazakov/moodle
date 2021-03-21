@@ -9,28 +9,34 @@
 \else % assuming XELATEX or LUALATEX
 	\usepackage{fontspec}
 \fi
-%\RLsetrandomseed{3}
+%\RLsetrandomseed{59}
 \begin{document}
 
 \section*{Introduction}
 
-This document is intended to check the support of the matching question type.
+This document is intended to check the support of the matching question 
+type.
 
 \begin{quiz}{Matching}
 
 \begin{matching}[dd]{Matching}
 Question text
-\item A \answer 1
-\item B \answer 2
-\item C \answer 3
-\item   \answer 4
+\item A\\B \answer 1
+\item B \answer very very very very very very very very very very very very 
+very very very very very very very very very very very very very very very very 
+very very long text 
+\item very very very very very very very very very very very very 
+very very very very very very very very very very very very very very very very 
+very very long text \answer 1
+\item   \answer 3
 \end{matching}
 
 \begin{matching}[shuffle=false]{Matching}
 Question text
-\item A \answer 1
+\item A\\B \answer 1
 \item B \answer 2
-\item C \answer 3
+\item C \answer 2
+\item D \answer 2
 \item   \answer 4
 \end{matching}
 
