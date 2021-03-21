@@ -395,6 +395,13 @@
 % \DescribeOption[moodle]{svg}^^A\watchout[experimental]
 % The package option \optn{svg} is described in Section~\vref{subsec:svg}.
 %
+% \DescribeOption[moodle]{LMS}\texttt{=}\meta{decimal number}
+% \DescribeDefault{warn only} lets you specify a version number (format
+% \texttt{X.Y}) for the target Moodle LMS instance.
+% When a version number is provided, the use of recent quiz features will
+% be secured by a compatibility check. When necessary, \pkg{moodle} raises an error.
+% By default, \pkg{moodle} will just issue warnings.
+%
 % \subsection{Quiz and Question Environments}
 % 
 % A \filenm{.tex} document to generate \Moodle\ quizzes contains one or more
@@ -2094,6 +2101,8 @@
 % \begin{changelog}[title={Version History},author={Matthieu Guerquin-Kern}]
 %   \begin{version}[version=\fileversion,]^^Adate=]
 %     \added
+%       \item Key-value package option \optn{LMS} to specify a version
+%             number for the target Moodle instance.
 %       \item Support for more text mode diacritic and horizontal spacing
 %             commands.
 %       \item Macros \cmd{\moodleversion} and \cmd{\moodledate} are defined.
@@ -2287,20 +2296,25 @@
 \newif\ifmoodle@feedbackLeft% contribution of Juergen Vollmer, 2021-03-05
 \newif\ifmoodle@samepage% contribution of Romano Giannetti, 2021-03-07
 
+%% Moodle version
+\RequirePackage{xkeyval} %For key-handling
+\newdimen\moodle@LMS% will carry the version number of the LMS used
+
 %%DECLARATION OF OPTIONS
-\DeclareOption{draft}{\moodle@draftmodetrue}
-\DeclareOption{handout}{\moodle@handouttrue}
-\DeclareOption{final}{\moodle@draftmodefalse}
-\DeclareOption{nostamp}{\moodle@stampmodefalse}
-\DeclareOption{tikz}{\moodle@tikztrue}
-\DeclareOption{svg}{\moodle@svgtrue}
-\DeclareOption{section}{\moodle@sectiontrue\moodle@numberedtrue}
-\DeclareOption{section*}{\moodle@sectiontrue\moodle@numberedfalse}
-\DeclareOption{subsection}{\moodle@sectionfalse\moodle@numberedtrue}
-\DeclareOption{subsection*}{\moodle@sectionfalse\moodle@numberedfalse}
-\DeclareOption{feedbackleft}{\moodle@feedbackLefttrue}% contribution of Juergen Vollmer, 2021-03-05
-\DeclareOption{feedbackright}{\moodle@feedbackLeftfalse}% default
-\DeclareOption{samepage}{\moodle@samepagetrue}% contribution of Romano Giannetti, 2021-03-07
+\DeclareOptionX{draft}{\moodle@draftmodetrue}
+\DeclareOptionX{handout}{\moodle@handouttrue}
+\DeclareOptionX{final}{\moodle@draftmodefalse}
+\DeclareOptionX{nostamp}{\moodle@stampmodefalse}
+\DeclareOptionX{tikz}{\moodle@tikztrue}
+\DeclareOptionX{svg}{\moodle@svgtrue}
+\DeclareOptionX{section}{\moodle@sectiontrue\moodle@numberedtrue}
+\DeclareOptionX{section*}{\moodle@sectiontrue\moodle@numberedfalse}
+\DeclareOptionX{subsection}{\moodle@sectionfalse\moodle@numberedtrue}
+\DeclareOptionX{subsection*}{\moodle@sectionfalse\moodle@numberedfalse}
+\DeclareOptionX{feedbackleft}{\moodle@feedbackLefttrue}% contribution of Juergen Vollmer, 2021-03-05
+\DeclareOptionX{feedbackright}{\moodle@feedbackLeftfalse}% default
+\DeclareOptionX{samepage}{\moodle@samepagetrue}% contribution of Romano Giannetti, 2021-03-07
+\DeclareOptionX{LMS}[0]{\moodle@LMS=#1pt}%
 
 \moodle@draftmodefalse
 \moodle@handoutfalse
@@ -2313,7 +2327,7 @@
 \moodle@feedbackLeftfalse% contribution of Juergen Vollmer, 2021-03-05
 \moodle@samepagefalse
 
-\ProcessOptions
+\ProcessOptionsX*
 
 \ifmoodle@samepage
     \def\moodle@begin@samepage{\minipage[t]{\linewidth}}
@@ -2325,7 +2339,6 @@
 \fi
 
 \RequirePackage{environ} %To be able to take environment body as a macro argument
-\RequirePackage{xkeyval} %For key-handling
 \RequirePackage{amssymb} %For \checkmark symbol
 %\RequirePackage{trimspaces} %To remove extra spaces from strings (loaded by environ)
 \@ifpackageloaded{iftex}{}{\RequirePackage{iftex}}
@@ -2886,7 +2899,7 @@
       \def\@moodle@IIII{IIII}%
       \def\@moodle@none{none}%
       \def\moodle@obeynumberingstyle{%
-        \renewcommand\labelenumii{\theenumii.}% follow Moodle's labelling convention
+        \renewcommand\labelenumii{\theenumii.}% follow Moodle's labeling convention
         \ifx\moodle@numbering\@moodle@abc
           \renewcommand\theenumii{\alph{enumii}}%
         \fi
@@ -4483,7 +4496,7 @@
       \def\clozemulti@coding{}%
       \edef\clozemulti@coding{\csname moodle@default grade\endcsname:}%
       \ifmoodle@multiple
-        \PackageWarning{moodle}{Cloze Multiresponse only supported by Moodle 3.5+}
+        \moodle@WarningOrError{3.5}{Cloze Multiresponse}%
         \g@addto@macro{\clozemulti@coding}{MULTIRESPONSE}%
       \else
         \g@addto@macro{\clozemulti@coding}{MULTICHOICE}%
@@ -4505,7 +4518,7 @@
         \g@addto@macro{\clozemulti@coding}{_H}%
       \fi
       \ifmoodle@shuffle
-        \PackageWarning{moodle}{Cloze Multi Shuffling only supported by Moodle 3.0+}
+        \moodle@WarningOrError{3.0}{Cloze Multi Shuffling}
         \g@addto@macro{\clozemulti@coding}{S:}%
       \else
         \g@addto@macro{\clozemulti@coding}{:}%
@@ -8122,5 +8135,18 @@
 }%
 %    \end{macrocode}
 % 
+% \subsection{Warning and Error Management}
+%
+%    \begin{macrocode}
+\def\moodle@WarningOrError#1#2{%
+  \ifdim\moodle@LMS=\z@\relax
+    \PackageWarning{moodle}{#2 is only supported by Moodle #1+}%
+  \else
+    \ifdim\moodle@LMS<#1pt\relax
+      \PackageError{moodle}{#2 is only supported by Moodle #1+ (you declared Moodle \strip@pt\moodle@LMS)}%
+    \fi
+  \fi
+}%
+%    \end{macrocode}
 % \Finale
 \endinput
