@@ -858,10 +858,11 @@
 %   the feedback \emph{Simply Isaac!},
 %   \item answers \answ{Sir Gottfried Wilhelm}, \answ{Sir Gottfried},
 %         \answ{Gottfried Wilhem}, and \answ{Gottfried} yield
-%          the feedback \emph{This one is Leibniz!},
-%   \item answers \answ{Sir Gottfried}, \answ{Sir Isaac}, and \answ{Sir} yield
-%          the feedback \emph{First name, not title!},
-%   \item any other answer yields the feedback \emph{No\dots}.
+%         the feedback \emph{This one is Leibniz!},
+%   \item answers \answ{Sir Isaac}, and \answ{Sir} yield
+%         the feedback \emph{First name, not title!},
+%   \item any answer that does not match the previous patterns 
+%         yields the feedback \emph{No\dots}.
 % \end{itemize}
 % 
 % \subsubsection{\href{https://docs.moodle.org/en/Essay_question_type}{Essay}}\label{subsubsect:essay}
@@ -935,7 +936,7 @@
 % \subsubsection{\href{https://docs.moodle.org/en/Matching_question_type}{Matching}}
 % 
 % \DescribeEnv[quiz]{matching}\oarg{question options}\marg{question name}
-% is an environment that defines an \emph{Matching} question. It typically
+% is an environment that defines a \emph{Matching} question. It typically
 % looks like this:
 % \begin{quote}
 %   |\begin{matching}|\oarg{question options}\marg{question name} \\
@@ -982,7 +983,7 @@
 % {Cloze Questions and Subquestions}}
 % 
 % \DescribeEnv[quiz]{cloze}\oarg{question options}\marg{question name}
-% is an environment that defines an \emph{Cloze} question.
+% is an environment that defines a \emph{Cloze} question.
 %
 % A ``cloze question'' has one or more subquestions embedded within a passage of text.  
 % For example, you might ask students to fill in several missing words within
@@ -1074,6 +1075,7 @@
 % Tags can be set as well.
 % 
 % For descriptions, \pkg{moodle} redefines \LaTeX's \env{description} environment.
+% The scope of this redefinition is limited to the \env{quiz} environment.
 %
 % The syntax for a Description question is as follows:
 % \begin{quote}
@@ -2112,8 +2114,8 @@
 %   \begin{version}[version=\fileversion,]^^Adate=]
 %     \added
 %       \item Answer box for Essay questions with \optn{handout}.
-%       \item Key-value package option \optn{LMS} to specify a version
-%             number for the target \Moodle\ instance.
+%       \item Key-value package option \optn{LMS} to target a specific version
+%             of \Moodle.
 %       \item Support for more text mode diacritic and horizontal spacing
 %             commands.
 %       \item Macros \cmd{\moodleversion} and \cmd{\moodledate} are defined.
@@ -2144,7 +2146,9 @@
 %       \item Support for non-\acro{ASCII} characters abandoned when compiling
 %             with \prog{pdflatex}.
 %     \fixed
-%       \item PDF typesetting of matching answers.
+%       \item The redefinition of the \env{description} environment is limited to
+%             the scope of the \env{quiz}.
+%       \item PDF typesetting of matching answers (line breaks, repeated matches).
 %       \item Symbols \cmd{\%} found inside math mode are escaped for \HTML.
 %       \item The \optn{fraction} keys specified inside \env{cloze} questions are
 %             forced to integer values as required by \Moodle's \XML\ format.
@@ -3260,10 +3264,9 @@
 % Description blocks can be empty. In this case, nothing is done.
 %
 %    \begin{macrocode}
-\AfterEndPreamble{% in case something like \usepackage[french]{babel} is loaded
+\AtBeginEnvironment{quiz}{% protect existing description outside of quiz
   \let\description\relax% remove the meaning of existing \description and \enddescription
   \let\enddescription\relax
-
   \NewEnviron{description}[2][]{%
     \bgroup
       \setkeys{moodle}{#1,questionname={#2}}%
