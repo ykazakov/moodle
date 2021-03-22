@@ -33,6 +33,7 @@
 %
 %<*driver>
 \documentclass[10pt,a4paper]{ltxdoc}
+%\usepackage[draft]{moodle}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[utf8]{inputenc} % necessary
@@ -1601,8 +1602,7 @@
 %
 % \subsubsection{\TikZ\ Pictures}
 % \TikZ\ is a user-friendly syntax layer for \acro{PGF}, the macro \LaTeX\ package for creating
-% graphics. Users that are not familiar with TikZ\ can learn more here:
-% \url{https://ctan.org/pkg/pgf}.
+% graphics. More information on \TikZ\ can be found at \url{https://ctan.org/pkg/pgf}.
 % 
 % When \TikZ\ is loaded and used to define pictures, \pkg{moodle} invokes
 % the \pkg{external} \TikZ\ library, so that each \env{tikzpicture} environment is compiled
@@ -1706,7 +1706,7 @@
 % Two processes benefit from this \PDF$\to$\SVG\ conversion:
 %   \begin{itemize}
 %     \item inclusion of \PDF\ graphics with \cmd{\includegraphics}, and
-%     \item Tikz pictures that are externalized.
+%     \item \TikZ\ pictures that are externalized.
 %   \end{itemize}
 % \end{itemize}
 %
@@ -2632,7 +2632,7 @@
 \long\def\@moodle@ifgeneratexml#1#2{%
   % If we are generating \XML, do #1; otherwise do #2.
   \tikzifexternalizing{%
-    % This run of LaTeX is currently ONLY generating a Tikz image
+    % This run of LaTeX is currently ONLY generating a TikZ image
     % to be saved in an external file.  We do NOT want to waste time
     % generating \XML, and moreover trying to do so would cause errors
     % because of file dependencies.
