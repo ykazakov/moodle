@@ -2111,6 +2111,7 @@
 % \begin{changelog}[title={Version History},sectioncmd=\section*,author={Matthieu Guerquin-Kern}]
 %   \begin{version}[version=\fileversion,]^^Adate=]
 %     \added
+%       \item Answer box for Essay questions with \optn{handout}.
 %       \item Key-value package option \optn{LMS} to specify a version
 %             number for the target \Moodle\ instance.
 %       \item Support for more text mode diacritic and horizontal spacing
@@ -3281,7 +3282,7 @@
         \moodle@questiontext\par
         \ifmoodle@handout\else
           \ifx\moodle@feedback\@empty\relax\else
-            \fbox{\parbox{\linewidth}{\emph{\moodle@feedback}}}%
+            \fbox{\parbox{.96\linewidth}{\emph{\moodle@feedback}}}%
           \fi
         \fi
         \moodle@end@samepage
@@ -3313,14 +3314,14 @@
     \end{itemize}%
   \fi
   \ifx\moodle@generalfeedback\@empty\relax\else%
-    \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+    \fbox{\parbox{.96\linewidth}{\emph{\moodle@generalfeedback}}}%
   \fi
 }
 
 \NewEnviron{essay}[2][]{%
   \bgroup
     \setkeys{moodle}{#1,questionname={#2}}%
-    \global\advance\moodle@totalmarks by \csname moodle@default grade\endcsname pt
+    \global\advance\moodle@totalmarks by \csname moodle@default grade\endcsname pt%
     \moodle@checkresponsefieldlines
     \expandafter\gatheritems\expandafter{\BODY}%
     \let\moodle@questionheader=\gatheredheader
@@ -3342,11 +3343,14 @@
       \moodle@questionheader
       \long\def\@lempty{}%
       \ifx\moodle@responsetemplate\@lempty\else
-        \par\noindent \emph{\GetTranslation{Response template}:}
-        \par\fbox{\parbox{\linewidth}{\moodle@responsetemplate}}\par
+        \par\noindent\emph{\GetTranslation{Response template}:}
+        \par\noindent\fbox{\parbox{.96\linewidth}{\moodle@responsetemplate}}\par
       \fi
       \edef\moodle@generalfeedback{\expandonce\moodle@feedback}
-      \ifmoodle@handout\else
+      \ifmoodle@handout
+        \par\noindent
+        \fbox{\parbox[t][\csname moodle@response field lines\endcsname\baselineskip]{.96\linewidth}{\phantom{Moodle}}}%
+      \else
         \csname moodle@essay@latexprocessing\endcsname
       \fi
       \moodle@end@samepage
@@ -3530,7 +3534,7 @@
       \loopthroughitemswithcommand{\moodle@print@shortanswer@answer}%
     \end{itemize}%
     \ifx\moodle@generalfeedback\@empty\relax\else%
-      \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+      \fbox{\parbox{.96\linewidth}{\emph{\moodle@generalfeedback}}}%
     \fi
   }
 \fi
@@ -3610,7 +3614,7 @@
       \loopthroughitemswithcommand{\moodle@print@numerical@answer}%
     \end{itemize}%
     \ifx\moodle@generalfeedback\@empty\relax\else%
-      \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+      \fbox{\parbox{.96\linewidth}{\emph{\moodle@generalfeedback}}}%
     \fi
   }
 \fi
@@ -3738,7 +3742,7 @@
   \end{enumerate}%
   \ifmoodle@handout\else
     \ifx\moodle@generalfeedback\@empty\relax\else%
-      \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+      \fbox{\parbox{.96\linewidth}{\emph{\moodle@generalfeedback}}}%
     \fi
   \fi
 }
@@ -4080,7 +4084,7 @@
   \end{itemize}
   \ifmoodle@handout\else
     \ifx\moodle@generalfeedback\@empty\relax\else%
-      \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+      \fbox{\parbox{.96\linewidth}{\emph{\moodle@generalfeedback}}}%
     \fi
   \fi
   \ifnum\c@moodle@NumStarredAnswers=0\relax
@@ -4308,7 +4312,7 @@
         \matching@table@text
       \end{tabular}%
       \ifx\moodle@generalfeedback\@empty\relax\else%
-        \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+        \fbox{\parbox{.96\linewidth}{\emph{\moodle@generalfeedback}}}%
       \fi
     \fi
   \egroup
@@ -4454,7 +4458,7 @@
       %\csname moodle@cloze@latexprocessing\endcsname
       \ifmoodle@handout\else
         \ifx\moodle@generalfeedback\@empty\relax\else%
-          \fbox{\parbox{\linewidth}{\emph{\moodle@generalfeedback}}}%
+          \fbox{\parbox{.96\linewidth}{\emph{\moodle@generalfeedback}}}%
         \fi
       \fi
       \moodle@end@samepage
@@ -4492,14 +4496,14 @@
 %    \begin{macrocode}
 \newdimen\moodle@tmpdim
 \def\moodle@checkclozefraction{%
-  \moodle@tmpdim=\moodle@fraction pt\relax
+  %\moodle@tmpdim=\moodle@fraction pt\relax
   % Rounding is performed in three steps:
   % 1) round(x)=floor(x+1/2)
-  \advance\moodle@tmpdim by .5pt\relax
+  %\advance\moodle@tmpdim by .5pt\relax
   % 2) floor(x)=trunc(x) if x>0, and floor(x)=trunc(x-1) if x<0
-  \ifdim\moodle@tmpdim<0pt\relax\advance\moodle@tmpdim by -1pt\fi
+  %\ifdim\moodle@tmpdim<0pt\relax\advance\moodle@tmpdim by -1pt\fi
   % 3) Truncation because the quantum of TeX dimensions is 1/65536-th of a point.
-  \divide\moodle@tmpdim by 65536\relax\multiply\moodle@tmpdim by 65536\relax
+  %\divide\moodle@tmpdim by 65536\relax\multiply\moodle@tmpdim by 65536\relax
   \def\moodle@tmpval{\strip@pt\moodle@tmpdim}%
   \ifdim\moodle@tmpdim=\moodle@fraction pt\else
     \PackageWarning{moodle}{in cloze questions, fractions must be integers. Rounding \moodle@fraction\space to \moodle@tmpval}%
