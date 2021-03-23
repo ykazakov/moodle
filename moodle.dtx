@@ -885,6 +885,8 @@
 % \end{quote}
 % Instead of containing answers, the \cmd{\item} entries included in the \env{essay}
 % question contain notes that will appear to whoever is grading the question manually.
+% Contrarily to other question types, \cmd{\item} in \env{essay} questions
+% do not take options.
 % 
 % \DescribeBoolean[essay]{response required}\DescribeDefault{false}
 % Although \Moodle\ cannot grade the content of an essay question,
@@ -1534,7 +1536,6 @@
 % pass dangerous characters like |\|, |%|, or |#|. An optional argument allows to
 % pass contents to be processed for the traditional output. This argument is
 % ignored for the \XML\ output.
-%
 % For instance, one can write code like this in a question environment
 % \begin{quote}
 %   |\htmlonly[\fbox{PDF contents}]{|\\
@@ -3462,17 +3463,6 @@
 }%
 
 \long\def\moodle@savegraderinfo#1{%
-  %\def\ds{#1}\show\ds
-  \bgroup
-    \moodle@savegraderinfo@int#1\moodle@answer@rdelim
-    \passvalueaftergroup{\moodle@answers@xml}%
-  \egroup
-}%
-\newcommand\moodle@savegraderinfo@int[1][]{%
-  \setkeys{moodle}{fraction=0,#1}%
-  \moodle@savegraderinfo@int@int%
-}%
-\long\def\moodle@savegraderinfo@int@int#1\moodle@answer@rdelim{%
   \def\moodle@answertext{#1}
   \xa\converttohtmlmacro\xa\moodle@answertext@html\xa{\moodle@answertext}%
   %\trim@spaces@in\moodle@answertext
