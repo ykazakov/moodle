@@ -4499,14 +4499,14 @@
 %    \begin{macrocode}
 \newdimen\moodle@tmpdim
 \def\moodle@checkclozefraction{%
-  %\moodle@tmpdim=\moodle@fraction pt\relax
+  \moodle@tmpdim=\moodle@fraction pt\relax
   % Rounding is performed in three steps:
   % 1) round(x)=floor(x+1/2)
-  %\advance\moodle@tmpdim by .5pt\relax
+  \advance\moodle@tmpdim by .5pt\relax
   % 2) floor(x)=trunc(x) if x>0, and floor(x)=trunc(x-1) if x<0
-  %\ifdim\moodle@tmpdim<0pt\relax\advance\moodle@tmpdim by -1pt\fi
+  \ifdim\moodle@tmpdim<0pt\relax\advance\moodle@tmpdim by -1pt\fi
   % 3) Truncation because the quantum of TeX dimensions is 1/65536-th of a point.
-  %\divide\moodle@tmpdim by 65536\relax\multiply\moodle@tmpdim by 65536\relax
+  \divide\moodle@tmpdim by 65536\relax\multiply\moodle@tmpdim by 65536\relax
   \def\moodle@tmpval{\strip@pt\moodle@tmpdim}%
   \ifdim\moodle@tmpdim=\moodle@fraction pt\else
     \PackageWarning{moodle}{in cloze questions, fractions must be integers. Rounding \moodle@fraction\space to \moodle@tmpval}%
