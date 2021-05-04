@@ -38,13 +38,13 @@
 \ifPDFTeX
   \usepackage[utf8]{inputenc} % necessary
   \usepackage[T1]{fontenc} % necessary
-  \usepackage[protrusion=true,expansion]{microtype}
   \usepackage{libertine}
   \usepackage[scaled=0.83]{beramono}
 \else % assuming LuaLaTeX or XeLaTeX
   \usepackage{fontspec}
   \setmainfont{Linux Libertine O}
 \fi
+\usepackage{microtype}
 \usepackage{dtxdescribe,varioref}
 \addtolength\marginparwidth{30pt}
 \addtolength\oddsidemargin{20pt}
@@ -2147,6 +2147,7 @@
 %       \item Support for non-\acro{ASCII} characters abandoned when compiling
 %             with \prog{pdflatex}.
 %     \fixed
+%       \item A pagebreak occuring inside cloze shortanswers would reset page numbers.
 %       \item The redefinition of the \env{description} environment is limited to
 %             the scope of the \env{quiz}.
 %       \item PDF typesetting of matching answers (line breaks, repeated matches).
@@ -2513,17 +2514,18 @@
 % The macro |\calculateindent|\marg{$n$} globally defines 
 % |\moodle@indent| to be a string of \meta{$n$} |\otherspace|'s.
 %    \begin{macrocode}
+\newcount\moodle@indentnum
 \def\calculateindent#1{%
   \bgroup
-    \count0=\number#1\relax
+    \moodle@indentnum=\number#1\relax
     \gdef\moodle@indent{}%
     \calculateindent@int
   \egroup
 }%
 \def\calculateindent@int{%
-  \ifnum\count0>0\relax
+  \ifnum\moodle@indentnum>0\relax
     \g@addto@macro{\moodle@indent}{\otherspace}%
-    \advance\count0 by -1\relax
+    \advance\moodle@indentnum by -1\relax
     \expandafter
     \calculateindent@int
   \fi
@@ -2979,11 +2981,11 @@
 % \subsubsection{Keys for short answer questions}
 %    \begin{macrocode}
 %% CASE SENSITIVE
-      \define@boolkey{moodle}[moodle@]{case sensitive}[true]{}%
-      \generate@moodle@write@code*{usecase}<usecase>{\csname ifmoodle@case sensitive\endcsname 1\else 0\fi}%
-      % We make 'usecase' a synonym for 'case sensitive'.
-      \define@boolkey{moodle}[moodle@]{usecase}[true]{\ifmoodle@usecase\csname moodle@case sensitivetrue\endcsname\else\csname moodle@case sensitivefalse\endcsname\fi}%
-      \moodleset{case sensitive=false}%
+      \define@boolkey{moodle}[moodle@]{usecase}[true]{}%
+      \generate@moodle@write@code*{usecase}<usecase>{\ifmoodle@usecase 1\else 0\fi}%
+      % We make 'case sensitive' a synonym for 'usecase'.
+      \define@boolkey{moodle}[moodle@]{case sensitive}[true]{\ifcsname moodle@case sensitive\endcsname \moodle@usecasetrue\else\moodle@usecasefalse\fi}%
+      \moodleset{usecase=false}%
 %    \end{macrocode}
 % \subsubsection{Keys for matching questions}
 %    \begin{macrocode}
@@ -3512,7 +3514,7 @@
 % LATEX PROCESSING
 
 \def\moodle@makelatextag@shortanswer{%
-  \csname ifmoodle@case sensitive\endcsname
+  \ifmoodle@usecase
     \moodle@makelatextag@other{Case-Sensitive}\relax
   \else
     \moodle@makelatextag@other{Case-Insensitive}\relax
@@ -4878,19 +4880,12 @@
     \let\moodle@questionheader=\gatheredheader
     \setkeys{moodle}{default grade=1}%
     \setkeys{moodle}{#1}%
-    %Because nesting conditionals built by \csname doesn't work well,
-    %we'll test '\ifmoodle@case sensitive' now and save the result in \count0.
-    \csname ifmoodle@case sensitive\endcsname
-      \count0=1\relax
-    \else
-      \count0=0\relax
-    \fi
     \ifhtmlizer@active
       %HTML version
       \def\moodle@clozeshortanswer@output{}%
       \xa\g@addto@macro\xa\moodle@clozeshortanswer@output\xa{\moodle@questionheader}%
       \def\clozeshortanswer@coding{}%
-      \ifnum\count0=1\relax
+      \ifmoodle@usecase
         \edef\clozeshortanswer@coding{\csname moodle@default grade\endcsname:SHORTANSWER_C:}%
       \else
         \edef\clozeshortanswer@coding{\csname moodle@default grade\endcsname:SHORTANSWER:}%
