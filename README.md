@@ -70,7 +70,7 @@ In order to manipulate images, the package relies on:
 - `graphics` (texlive-latex-base)
 - GhostScript (www.ghostscript.com),
 - ImageMagick (www.imagemagick.org), and
-- optipng [optipng.sourceforge.net](http://optipng.sourceforge.net/).
+- optipng ([optipng.sourceforge.net](http://optipng.sourceforge.net/)).
 
 Instead, to compile the documentation, the following LaTeX packages are
 necessary: `amssymb`, `babel`, `booktabs`, `changelog`, `dtxdescribe`, `eurosym`,
