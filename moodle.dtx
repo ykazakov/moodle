@@ -1027,6 +1027,12 @@
 %             Shortanswer question inside a Cloze question,
 % \end{description}
 %
+% \DescribeKey[cloze]{points}\DescribeDefault{1}
+% \DescribeKey[cloze]{default grade}
+% Inside \env{cloze} environments, the \optn{points} or \optn{default grade}
+% keys can be used to weight the worth of each subquestion. A specific
+% constraint applies: the values should be positive integers.
+%
 % \DescribeKey[cloze]{fraction}
 % Inside \env{cloze} environments, the \optn{fraction} key can be used to give
 % partial credit or sanction for certain answers. The values
@@ -1035,7 +1041,7 @@
 % 
 % \DescribeBoolean[cloze]{single}\DescribeDefault{true}
 % \DescribeKey[cloze]{multiple}
-% Before \Moodle\ version 3.5, within a \env{cloze} question, a multiple choice question
+% Prior to \Moodle\ version 3.5, within a \env{cloze} question, a multiple choice question
 % was necessarily of type \optn{single}, i.e. with a single good answer. If you intend
 % to export your quiz to \Moodle\ 3.5+, the option \optn{multiple} can be used for
 % questions where students must be able to select several answers.
@@ -2133,6 +2139,9 @@
 %       \item Support for \cmd{\i} in conversion to \HTML.
 %       \item \SVG\ option support for Windows (courtesy of Wolf M\"uller).
 %     \changed
+%       \item Inside \env{cloze} subquestions, \optn{points} are forced to the
+%             nearest positive integer. ^^AA warning is issued when the user setting
+%             ^^Ais modified.
 %       \item XML stamp exposes compilation time.
 %       \item Labels of proposed answers now following \Moodle's convention
 %             (\emph{1., 2., \dots}) in the \PDF\ typesetting of \env{multi} questions. 
@@ -4487,7 +4496,7 @@
 }%
 %    \end{macrocode}
 %
-% Utility to check the validity of fractions inside cloze subquestions.
+% Utility to check the validity of fractions and points inside cloze subquestions.
 %    \begin{macrocode}
 \newdimen\moodle@tmpdim
 \def\moodle@checkclozefraction{%
@@ -4505,6 +4514,26 @@
   \fi
   \xdef\moodle@fraction{\moodle@tmpval}% in any case, take eventual decimals out (e.g. change 10.0 for 10)
 }%
+
+\def\moodle@checkclozegrade{%
+  \moodle@tmpdim=\csname moodle@default grade\endcsname pt\relax
+  \ifdim\moodle@tmpdim<1 pt\relax
+    \PackageWarning{moodle}{for cloze questions, the default grade must be a positive integer. Changing the default grade from \csname moodle@default grade\endcsname\space to 1}%
+    \csgdef{moodle@default grade}{1}%
+  \else % Rounding is performed in three steps:
+    % 1) round(x)=floor(x+1/2)
+    \advance\moodle@tmpdim by .5pt\relax
+    % 2) floor(x)=trunc(x) if x>0, and floor(x)=trunc(x-1) if x<0
+    \ifdim\moodle@tmpdim<0pt\relax\advance\moodle@tmpdim by -1pt\fi
+    % 3) Truncation because the quantum of TeX dimensions is 1/65536-th of a point.
+    \divide\moodle@tmpdim by 65536\relax\multiply\moodle@tmpdim by 65536\relax
+    \def\moodle@tmpval{\strip@pt\moodle@tmpdim}%
+    \ifdim\moodle@tmpdim=\csname moodle@default grade\endcsname pt\else
+      \PackageWarning{moodle}{for cloze questions, the default grade must be a positive integer. Rounding \csname moodle@default grade\endcsname\space to \moodle@tmpval}%
+    \fi
+    \csxdef{moodle@default grade}{\moodle@tmpval}% in any case, take eventual decimals out (e.g. change 10.0 for 10)
+  \fi
+}%
 %    \end{macrocode}
 %
 % \subsubsection{Cloze Multiple Choice Questions}
@@ -4514,6 +4543,7 @@
   \bgroup
     \setkeys{moodle}{default grade=1}%
     \setkeys{moodle}{#1}%
+    \moodle@checkclozegrade
     \expandafter\gatheritems\xa{\BODY}%
     \let\moodle@questionheader=\gatheredheader
     \ifhtmlizer@active
@@ -4762,6 +4792,7 @@
     \let\moodle@questionheader=\gatheredheader
     \setkeys{moodle}{default grade=1}%
     \setkeys{moodle}{#1}%
+    \moodle@checkclozegrade
     \ifhtmlizer@active
       %HTML version
       \def\moodle@clozenumerical@output{}%
@@ -4880,6 +4911,7 @@
     \let\moodle@questionheader=\gatheredheader
     \setkeys{moodle}{default grade=1}%
     \setkeys{moodle}{#1}%
+    \moodle@checkclozegrade
     \ifhtmlizer@active
       %HTML version
       \def\moodle@clozeshortanswer@output{}%

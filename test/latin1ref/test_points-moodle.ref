@@ -65,5 +65,16 @@
     <text><![CDATA[<p>B</p>]]></text>
   </answer>
 </question>
+<question type="cloze">
+  <name format="html">
+    <text><![CDATA[The question]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>{3:SHORTANSWER:=abc}{1:SHORTANSWER:=abc}{1:NUMERICAL:=0:0}{2:MULTICHOICE_S:=A~B}</p>]]></text>
+  </questiontext>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+</question>
  
 </quiz>
