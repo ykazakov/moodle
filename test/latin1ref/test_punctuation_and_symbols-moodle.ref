@@ -70,6 +70,9 @@
   <answer fraction="0" format="html">
     <text><![CDATA[<p>&euro;</p>]]></text>
   </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>=</p>]]></text>
+  </answer>
 </question>
 <question type="multichoice">
   <name format="html">
@@ -146,6 +149,17 @@
     <text><![CDATA[<p>&bdquo;and&ldquo;</p>]]></text>
     <feedback format="html"><text><![CDATA[<p>these quotes are German!</p>]]></text></feedback>
   </answer>
+</question>
+<question type="cloze">
+  <name format="html">
+    <text><![CDATA[The question]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Find the symbol &ldquo;equal&rdquo;. {1:MULTICHOICE:<~>~=&#61;}{1:MULTICHOICE_V:\(&lt;\)~\(&gt;\)~=\(=\)}</p>]]></text>
+  </questiontext>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
 </question>
  
 </quiz>
