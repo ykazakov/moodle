@@ -5249,6 +5249,7 @@
   \else
     \ifx\test@i\@otherlbrace%
       \ifx\test@ii\@otherrbrace%
+        \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherlbrace\otherrbrace}}{}%
         \def\htmlize@next@i{\htmlize@recursive@i#3\htmlize@rdelim@i}%
       \else
         \xa\g@addto@macro\xa\htmlize@output\xa{\otherlbrace}%
@@ -5454,11 +5455,12 @@
               \ifx\test@i\@rsinglequote%
                 \ifx\test@ii\@rsinglequote% Double right quote
                   %AAedit 2021.01.06: in math mode, you should write 2 single right quotes, for second derivatives
-                  \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherampersand rsquo;\otherampersand rsquo;}}%
+                  \moodle@ifmathmode{\g@addto@macro\htmlize@output{''}}%
                                     {\g@addto@macro\htmlize@output{\otherampersand rdquo;}}%
                   \def\htmlize@next@i{\htmlize@recursive@i#3\htmlize@rdelim@i}%
                 \else% Single right quote
-                  \g@addto@macro\htmlize@output{\otherampersand rsquo;}%
+                  \moodle@ifmathmode{\g@addto@macro\htmlize@output{'}}%
+                                    {\g@addto@macro\htmlize@output{\otherampersand rsquo;}}%
                   \def\htmlize@next@i{\htmlize@recursive@i#2#3\htmlize@rdelim@i}%
                 \fi% \ifx\test@ii\@rsinglequote%
               \else
