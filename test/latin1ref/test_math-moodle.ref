@@ -23,13 +23,13 @@
   <shuffleanswers>1</shuffleanswers>
   <answernumbering>abc</answernumbering>
   <answer fraction="0" format="html">
-    <text><![CDATA[<p>\(f&rsquo;(x)\)</p>]]></text>
+    <text><![CDATA[<p>\(f'(x)\)</p>]]></text>
   </answer>
   <answer fraction="0" format="html">
-    <text><![CDATA[<p>\(f&rsquo;&rsquo;(x)\)</p>]]></text>
+    <text><![CDATA[<p>\(f''(x)\)</p>]]></text>
   </answer>
   <answer fraction="100" format="html">
-    <text><![CDATA[<p>\(f&rsquo;&rsquo;&rsquo;(x)\)</p>]]></text>
+    <text><![CDATA[<p>\(f'''(x)\)</p>]]></text>
   </answer>
 </question>
 <question type="cloze">
@@ -37,7 +37,7 @@
     <text><![CDATA[Other derivatives]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>\[\frac {\partial ^{2} g}{\partial ^{2} t}(t).\] {1:MULTICHOICE_VS:\(g&rsquo;(t)\)~=\(g&rsquo;&rsquo;(t)\)~\(g&rsquo;&rsquo;&rsquo;(t)\)}</p>]]></text>
+    <text><![CDATA[<p>\[\frac {\partial ^{2} g}{\partial ^{2} t}(t).\] {1:MULTICHOICE_VS:\(g'(t)\)~=\(g''(t)\)~\(g'''(t)\)}</p>]]></text>
   </questiontext>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>

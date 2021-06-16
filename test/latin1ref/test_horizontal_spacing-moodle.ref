@@ -83,5 +83,32 @@
     <text><![CDATA[<p>mn<BR/>nm</p>]]></text>
   </answer>
 </question>
+<question type="multichoice">
+  <name format="html">
+    <text><![CDATA[Math spacing]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Dummy text </p>]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>0</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>\(a+\)</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>\(a+b\)</p>]]></text>
+  </answer>
+  <answer fraction="100" format="html">
+    <text><![CDATA[<p>\(a+{}\)</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>\(a\ +\)</p>]]></text>
+  </answer>
+</question>
  
 </quiz>
