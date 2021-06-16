@@ -1432,14 +1432,14 @@
 % & \cmd{\textquestiondown} & \textquestiondown \\
 % & |--| & -- \\
 % & |=| & = \\
-% & |`| and |'| & \showbaseline{` '} \\
+% & |`| and |'|\tnote{1} & \showbaseline{` '} \\
 % & \cmd{\textquoteleft} and \cmd{\textquoteright}
 % & \showbaseline{\textquoteleft\ \textquoteright} \\
-% & |``| and |''| & \showbaseline{`` ''} \\
+% & |``| and |''|\tnote{1,2} & \showbaseline{`` ''} \\
 % & \cmd{\textquotedblleft} and \cmd{\textquotedblright}
 % & \showbaseline{\textquotedblleft\ \textquotedblright} \\
 % & \cmd{\textquotesingle} & \showbaseline{\textquotesingle\ } \\
-% & |"| & \showbaseline{" }\tnote{1} \\
+% & |"| & \showbaseline{" }\tnote{2} \\
 % & \cmd{\textquotedbl} & \showbaseline{\textquotedbl\ }\\
 % & \cmd{\guilsinglleft} and \cmd{\guilsinglright}
 % & \showbaseline{\guilsinglleft\ \guilsinglright} \\
@@ -1453,22 +1453,23 @@
 % \pkg{babel} & \cmd{\flq} and \cmd{\frq} & \showbaseline{\flq\ \frq} \\
 % & \cmd{\flqq} and \cmd{\frqq} & \showbaseline{\flqq\ \frqq} \\
 % \cmidrule(lr){1-1}
-% \pkg{babel}, opt. \optn{french} & \cmd{\og} and \cmd{\fg}\tnote{2}
+% \pkg{babel}, opt. \optn{french} & \cmd{\og} and \cmd{\fg}\tnote{3}
 % & \showbaseline{\flqq\ \frqq} \\
 % \cmidrule(lr){1-1}
 % \pkg{babel}, opt. \optn{german} & \cmd{\glq} and \cmd{\grq}
 % & \showbaseline{\glq\ \grq} \\
-% & \cmd{\dq} & \showbaseline{\dq\ }\tnote{1} \\
+% & \cmd{\dq} & \showbaseline{\dq\ }\tnote{2} \\
 % & \cmd{\glqq} and \cmd{\grqq} & \showbaseline{\glqq\ \grqq} \\
 % \bottomrule
 % \end{tabular}
 % \begin{tablenotes}
-%  \item[1] In roman type, \LuaLaTeX\ and \XeLaTeX\ typeset the double straight 
+%  \item[1] When placed in math mode, the single straight quote (\texttt{'}) is
+%           passed as-is to the XML, even when doubled (double prime symbol).
+%  \item[2] In roman type, \LuaLaTeX\ and \XeLaTeX\ typeset the double straight 
 %  quote symbol (\texttt{"}) and the command \cmd{\dq} as a double right quote 
-%  (\textquotedblright). Instead,  \pkg{moodle} follows pdf\LaTeX\ and, 
-%  whatever the \TeX\ engine used, passes the double straight quote symbol 
-%  (\texttt{"}) to the \XML.
-%   \item[2] The way \cmd{\og} and \cmd{\fg} are typeset in the \PDF\ depends on the 
+%  (\textquotedblright). Instead,  \pkg{moodle} follows pdf\LaTeX: whatever
+%  the \TeX\ engine used, the double straight quote (\texttt{"}) is passed to the \XML.
+%   \item[3] The way \cmd{\og} and \cmd{\fg} are typeset in the \PDF\ depends on the 
 %   current babel language. Regardless, \pkg{moodle} passes the symbols 
 %   \texttt{\guillemotleft} and \texttt{\guillemotright} to the \XML.
 % \end{tablenotes}
@@ -1526,8 +1527,9 @@
 % as \HTML\ tags.
 %
 % A doubled dash will be converted to en-dash |&ndash;| \emph{outside math mode}.
+% Empty groups |{}| will be passed to the XML only \emph{in math mode}.
 % 
-% Be aware that, apart what is describe previously, \pkg{moodle} \emph{does
+% Be aware that, apart what is described previously, \pkg{moodle} \emph{does
 % not know how to convert any other \TeX\ or \LaTeX\ commands to \HTML.}
 % If other sequences are used, they may be passed verbatim to the \XML\ file
 % or may cause unpredicted results.
@@ -2140,6 +2142,10 @@
 %       \item Support for \cmd{\i} in conversion to \HTML.
 %       \item \SVG\ option support for Windows (courtesy of Wolf M\"uller).
 %     \changed
+%       \item Single straight quotes (apostrophe) in math mode are passed as-is
+%             to the XML (with help from Keno Wehr).
+%       \item Empty groups |{}| in math-mode are passed as-is to the XML
+%             (with help from Keno Wehr).
 %       \item Inside \env{cloze} subquestions, \optn{points} are forced to the
 %             nearest positive integer. ^^AA warning is issued when the user setting
 %             ^^Ais modified.
