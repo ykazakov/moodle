@@ -13,7 +13,7 @@
     <text><![CDATA[Multiple Choice]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>\[\begin {array}{c}$1\\2\end {array}\] <BR/>\[\begin {array}{c}$1\\2\end {array}\] <BR/>\(\begin {array}{c}$1\\2\end {array}\) </p>]]></text>
+    <text><![CDATA[<p><CENTER>\[\begin {array}{c}$1\\2\end {array}\]</CENTER> <BR/><CENTER>\[\begin {array}{c}$1\\2\end {array}\]</CENTER> <BR/>\(\begin {array}{c}$1\\2\end {array}\) </p>]]></text>
   </questiontext>
   <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
@@ -30,7 +30,7 @@
   </answer>
   <answer fraction="100" format="html">
     <text><![CDATA[<p>7</p>]]></text>
-    <feedback format="html"><text><![CDATA[<p>\[$\sqrt {25}\]</p>]]></text></feedback>
+    <feedback format="html"><text><![CDATA[<p><CENTER>\[$\sqrt {25}\]</CENTER></p>]]></text></feedback>
   </answer>
   <answer fraction="10" format="html">
     <text><![CDATA[<p>8</p>]]></text>
@@ -41,7 +41,7 @@
     <text><![CDATA[Cloze]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>\[\begin {array}{c}$1\\2\end {array}\] <BR/>\[\begin {array}{c}$1\\2\end {array}\] <BR/>\(\begin {array}{c}$1\\2\end {array}\) {1:MULTICHOICE_VS:=\($\sqrt {25\}\)~6~=7#\[$\sqrt {25\}\]~%10%8}</p>]]></text>
+    <text><![CDATA[<p><CENTER>\[\begin {array}{c}$1\\2\end {array}\]</CENTER> <BR/><CENTER>\[\begin {array}{c}$1\\2\end {array}\]</CENTER> <BR/>\(\begin {array}{c}$1\\2\end {array}\) {1:MULTICHOICE_VS:=\($\sqrt {25\}\)~6~=7#<CENTER>\[$\sqrt {25\}\]</CENTER>~%10%8}</p>]]></text>
   </questiontext>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>

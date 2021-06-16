@@ -5536,9 +5536,9 @@
 \edef\inlinemathleftdelim{\otherbackslash(}%
 \def\inlinemathrightdelim#1{\advancemathmodecounter{-1}%
                             \g@addto@macro\htmlize@output{\otherbackslash)}}%
-\edef\displaymathleftdelim{\otherbackslash[}%
+\edef\displaymathleftdelim{<CENTER>\otherbackslash[}%
 \def\displaymathrightdelim#1{\advancemathmodecounter{-1}%
-                             \g@addto@macro\htmlize@output{\otherbackslash]}}%
+                             \g@addto@macro\htmlize@output{\otherbackslash]</CENTER>}}%
 \long\def\htmlize@inlinemath@recursive@i#1#2#3\htmlize@rdelim@i{%
   % inspired by \htmlize@recursive@i
   \def\test@i{#1}%
@@ -5860,10 +5860,10 @@
   }%
 \html@action@def\[{%
     \advancemathmodecounter{1}
-    \g@addto@macro\htmlize@output{\otherbackslash\otherlbracket}%
+    \g@addto@macro\htmlize@output{<CENTER>\otherbackslash\otherlbracket}%
   }%
 \html@action@def\]{%
-    \g@addto@macro\htmlize@output{\otherbackslash\otherrbracket}%
+    \g@addto@macro\htmlize@output{\otherbackslash\otherrbracket</CENTER>}%
     \advancemathmodecounter{-1}
   }%
 \html@action@def\({%
