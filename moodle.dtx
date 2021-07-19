@@ -8200,11 +8200,30 @@
           3) avoid the babel option.^^J}}%
       \def\do#1{%
         \ifstrequal{#1}{turkish}{\moodle@babel@turkish@warn}{
-          \ifPDFTeX
-            \ifinlist{#1}{\moodle@babel@french@list}{\moodle@babel@french@warn}{%
-              \ifinlist{#1}{\moodle@babel@german@list}{\moodle@babel@german@warn}{}%
+          \ifinlist{#1}{\moodle@babel@french@list}%
+            {\ifPDFTeX\moodle@babel@french@warn\fi}{%
+              \ifinlist{#1}{\moodle@babel@german@list}{%
+                \ifPDFTeX\moodle@babel@german@warn\else
+                  \gdef\moodle@babel@german@warn{%
+                    \PackageWarning{moodle}{Be careful when using moodle and
+            the babel package loaded with a German-related option that make the
+            symbol `"' active. We recommend typing umlauts with UTF-8
+            characters. By default, `\string\"a' is poorly translated in the XML
+            file. This is fixed if you define `\string\shorthandoff{"}' after
+            `\begin{quiz}'. But then `"a` will no longer work as expected.^^J}
+                  }
+                  \gdef\moodle@babel@german@warn@single{%
+                    \moodle@babel@german@warn
+                    \gdef\moodle@babel@german@warn@single{}%\relax
+                  }
+                  \pretocmd{\"}%
+                    {\moodle@babel@german@warn@single}%
+                    {\message{Umlaut patch succeeded}}%
+                    {\PackageWarning{moodle}{Umlaut patch failed}}%
+                \fi
+              }{}%
             }
-          \fi
+          
         }
       }
       \expandafter\docsvlist\expandafter{\bbl@loaded}%

@@ -24,11 +24,23 @@
   <answernumbering>abc</answernumbering>
   <answer fraction="100" format="html">
     <text><![CDATA[<p>„Fix, Schwyz!“, quäkt Jürgen blöd vom Paß.</p>]]></text>
-    <feedback format="html"><text><![CDATA[<p></p>]]></text></feedback>
+    <feedback format="html"><text><![CDATA[<p>Wie schon Carl-Friedrich Gau&szlig; sagte: &bdquo;Nicht alles &Uuml;ble in &Ouml;sterreich ist &ouml;sterreichischer Herkunft &ndash; aber manches, was als &sbquo;&uuml;bel&lsquo; empfunden wird, k&ouml;nnte durch entsprechende &Auml;nderungen zum Guten ver&auml;ndert werden&ldquo;.</p>]]></text></feedback>
   </answer>
   <answer fraction="0" format="html">
     <text><![CDATA[<p>Wie schon Carl-Friedrich Gauß sagte: „Nicht alles Üble in Österreich ist österreichischer Herkunft – aber manches, was als ‚übel‘ empfunden wird, könnte durch entsprechende Änderungen zum Guten verändert werden“.</p>]]></text>
   </answer>
+</question>
+<question type="description">
+  <name format="html">
+    <text><![CDATA[Additionnal test]]></text>
+  </name>
+  <questiontext format="html">
+    <text><![CDATA[<p>Wie schon Carl-Friedrich Gau&szlig; sagte: &bdquo;Nicht alles Üble in Österreich ist österreichischer Herkunft &ndash; aber manches, was als &sbquo;übel&lsquo; empfunden wird, könnte durch entsprechende Änderungen zum Guten verändert werden&ldquo;.</p>]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.10</penalty>
+  <hidden>0</hidden>
 </question>
  
 </quiz>

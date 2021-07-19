@@ -28,7 +28,11 @@
   Herkunft – aber manches, was als ‚übel‘ empfunden wird, 
   könnte durch entsprechende Änderungen zum Guten verändert 
   werden“.}
-  \def\myfeedback{}
+  \def\myfeedback{Wie schon Carl-Friedrich Gau\ss\ %
+  sagte: \glqq Nicht alles \"Uble in \"Osterreich ist 
+  \"osterreichischer Herkunft -- aber manches, was als \glq 
+  \"ubel\grq\ empfunden wird, k\"onnte durch entsprechende 
+  \"Anderungen zum Guten ver\"andert werden\grqq.}
 \fi
 \htmlregister{\myquestiontext}
 \htmlregister{\pangramme}
@@ -39,17 +43,28 @@
 \section*{Introduction}
 
 This document is intended to check the support of the \texttt{babel} package 
-with option \texttt{ngerman} that causes problems during \texttt{pdfLaTeX} 
-compilation, due to the special meaning given to \verb|"|.
+with option \texttt{ngerman} that might cause problems during compilation, due 
+to the special meaning given to \verb|"|.
 
 \begin{quiz}[points=1]{German Issues}
-\ifPDFTeX
-  \shorthandoff{"}% this preserves pdftex compilation
-\fi
+\shorthandoff{"}%preserves pdftex compilation and fixes the use of \" for 
+%other engines
 \begin{multi}[feedback={}]{Test German}
 \myquestiontext
 \item[feedback={\myfeedback}]* \pangramme
 \item \pangrammeother
 \end{multi}
+
+\ifTUTeX
+  \shorthandon{"} % This time we use " as an active character for Umlauts
+  \begin{description}{Additionnal test}
+    Wie schon Carl-Friedrich Gau\ss\ %
+    sagte: \glqq Nicht alles "Uble in "Osterreich ist 
+    "osterreichischer Herkunft -- aber manches, was als \glq 
+    "ubel\grq\ empfunden wird, k"onnte durch entsprechende 
+    "Anderungen zum Guten ver"andert werden\grqq.
+  \end{description}
+\fi
+
 \end{quiz}
 \end{document}
