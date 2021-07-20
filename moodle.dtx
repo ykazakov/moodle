@@ -2163,6 +2163,8 @@
 %       \item Support for non-\acro{ASCII} characters abandoned when compiling
 %             with \prog{pdflatex}.
 %     \fixed
+%       \item Warning german-writing and (Xe$\mid$Lua)\TeX\ users about troubles
+%             caused by text-mode umlauts.
 %       \item In \env{cloze} subquestions items and outside math environments,
 %             the equal symbol (|=|) no longer interferes with the Cloze syntax.
 %       \item A pagebreak occuring inside cloze shortanswers would reset page numbers.
@@ -8199,7 +8201,7 @@
           `\shorthandoff{=:!}' after `\begin{quiz}', or\MessageBreak
           3) avoid the babel option.^^J}}%
       \def\do#1{%
-        \ifstrequal{#1}{turkish}{\moodle@babel@turkish@warn}{
+        \ifstrequal{#1}{turkish}{\moodle@babel@turkish@warn}{%
           \ifinlist{#1}{\moodle@babel@french@list}%
             {\ifPDFTeX\moodle@babel@french@warn\fi}{%
               \ifinlist{#1}{\moodle@babel@german@list}{%
@@ -8210,16 +8212,18 @@
             symbol `"' active. We recommend typing umlauts with UTF-8
             characters. By default, `\string\"a' is poorly translated in the XML
             file. This is fixed if you define `\string\shorthandoff{"}' after
-            `\begin{quiz}'. But then `"a` will no longer work as expected.^^J}
-                  }
+            `\begin{quiz}'. But then `"a` will no longer work as expected.^^J}%
+                  }%
                   \gdef\moodle@babel@german@warn@single{%
                     \moodle@babel@german@warn
                     \gdef\moodle@babel@german@warn@single{}%\relax
-                  }
+                  }%
                   \pretocmd{\"}%
                     {\moodle@babel@german@warn@single}%
-                    {\message{Umlaut patch succeeded}}%
-                    {\PackageWarning{moodle}{Umlaut patch failed}}%
+                    {}%
+                    { \PackageWarning{moodle}{Umlaut patch failed.}%
+                      \moodle@babel@german@warn@single
+                    }%
                 \fi
               }{}%
             }
