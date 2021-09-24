@@ -403,12 +403,12 @@
 % The package option \optn{svg} is described in Section~\vref{subsec:svg}.
 %
 % \DescribeOption[moodle]{LMS}\texttt{=}\meta{\texttt{X.Y}}
-% \DescribeDefault{warn only} where lets you specify a version number
+% \DescribeDefault{warn only} lets you specify version numbers
 % for the target \Moodle\ LMS instance (\texttt{X} and \texttt{Y} are
-% major and minor version integers). When a version number is provided,
+% major and minor version integers). When version numbers are provided,
 % the use of recent quiz features is secured by a compatibility
 % check and \pkg{moodle} raises relevant errors. The XML stamp
-% (see \optn{nostamp} above) also mentions \Moodle\'s target version.
+% (see \optn{nostamp} above) also mentions \Moodle's target version.
 % By default, \pkg{moodle} will just issue warnings when recent quiz
 % features are used.
 %
@@ -1995,7 +1995,10 @@
 % \item Gather and send the \filenm{*.tex}, \filenm{*.log} and \filenm{*-moodle.xml} files together
 % with an explanation about
 %   \begin{itemize}
-%     \item your working environment (\TeX\ engine and distribution, platform, \dots),
+%     \item your local working environment (\TeX\ engine and distribution, platform,
+%           external tools used, \dots),
+%     \item the version of the \Moodle\ instance you are using
+%           (for instance see the file |https://|\meta{server-domain}|/lib/upgrade.txt| )
 %     \item the faulty behavior, and
 %     \item what you expected instead.
 %   \end{itemize}
