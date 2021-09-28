@@ -2126,6 +2126,8 @@
 % \begin{changelog}[title={Version History},sectioncmd=\section*,author={Matthieu Guerquin-Kern}]
 %   \begin{version}[version=\fileversion,]^^Adate=]
 %     \added
+%       \item Experimental package option \optn{pluginfile} mimics the way
+%             \Moodle\ embeds pictures in the \XML.
 %       \item Answer box for Essay questions with \optn{handout}.
 %       \item Key-value package option \optn{LMS} to target a specific version
 %             of \Moodle.
@@ -2146,13 +2148,13 @@
 %       \item \SVG\ option support for Windows (courtesy of Wolf M\"uller).
 %     \changed
 %       \item Single straight quotes (apostrophe) in math mode are passed as-is
-%             to the XML (with help from Keno Wehr).
-%       \item Empty groups |{}| in math-mode are passed as-is to the XML
+%             to the \XML\ (with help from Keno Wehr).
+%       \item Empty groups |{}| in math-mode are passed as-is to the \XML\
 %             (with help from Keno Wehr).
 %       \item Inside \env{cloze} subquestions, \optn{points} are forced to the
 %             nearest positive integer. ^^AA warning is issued when the user setting
 %             ^^Ais modified.
-%       \item XML stamp exposes compilation time.
+%       \item \XML\ stamp exposes compilation time.
 %       \item Labels of proposed answers now following \Moodle's convention
 %             (\emph{1., 2., \dots}) in the \PDF\ typesetting of \env{multi} questions. 
 %       \item Automatic sanction mechanism for incorrect choices in \env{multi}
@@ -2338,23 +2340,24 @@
 \newif\ifmoodle@international
 \newif\ifmoodle@feedbackLeft% contribution of Juergen Vollmer, 2021-03-05
 \newif\ifmoodle@samepage% contribution of Romano Giannetti, 2021-03-07
+\newif\ifmoodle@pluginfile%
 
 %% Moodle version
-\RequirePackage{xkeyval} %For key-handling
+\RequirePackage{xkeyval}%For key-handling
 \newcount\moodle@LMSmajor% major version number of the LMS targeted
 \newcount\moodle@LMSminor% minor version number of the LMS targeted
 
 %%DECLARATION OF OPTIONS
-\DeclareOptionX{draft}{\moodle@draftmodetrue}
-\DeclareOptionX{handout}{\moodle@handouttrue}
-\DeclareOptionX{final}{\moodle@draftmodefalse}
-\DeclareOptionX{nostamp}{\moodle@stampmodefalse}
-\DeclareOptionX{tikz}{\moodle@tikztrue}
-\DeclareOptionX{svg}{\moodle@svgtrue}
-\DeclareOptionX{section}{\moodle@sectiontrue\moodle@numberedtrue}
-\DeclareOptionX{section*}{\moodle@sectiontrue\moodle@numberedfalse}
-\DeclareOptionX{subsection}{\moodle@sectionfalse\moodle@numberedtrue}
-\DeclareOptionX{subsection*}{\moodle@sectionfalse\moodle@numberedfalse}
+\DeclareOptionX{draft}{\moodle@draftmodetrue}%
+\DeclareOptionX{handout}{\moodle@handouttrue}%
+\DeclareOptionX{final}{\moodle@draftmodefalse}%
+\DeclareOptionX{nostamp}{\moodle@stampmodefalse}%
+\DeclareOptionX{tikz}{\moodle@tikztrue}%
+\DeclareOptionX{svg}{\moodle@svgtrue}%
+\DeclareOptionX{section}{\moodle@sectiontrue\moodle@numberedtrue}%
+\DeclareOptionX{section*}{\moodle@sectiontrue\moodle@numberedfalse}%
+\DeclareOptionX{subsection}{\moodle@sectionfalse\moodle@numberedtrue}%
+\DeclareOptionX{subsection*}{\moodle@sectionfalse\moodle@numberedfalse}%
 \DeclareOptionX{feedbackleft}{\moodle@feedbackLefttrue}% contribution of Juergen Vollmer, 2021-03-05
 \DeclareOptionX{feedbackright}{\moodle@feedbackLeftfalse}% default
 \DeclareOptionX{samepage}{\moodle@samepagetrue}% contribution of Romano Giannetti, 2021-03-07
@@ -2363,6 +2366,7 @@
   \moodle@LMSmajor=\filename@base
   \moodle@LMSminor=\filename@ext
 }%
+\DeclareOptionX{pluginfile}{\moodle@pluginfiletrue}%
 
 \moodle@draftmodefalse
 \moodle@handoutfalse
@@ -2374,6 +2378,7 @@
 \moodle@numberedfalse
 \moodle@feedbackLeftfalse% contribution of Juergen Vollmer, 2021-03-05
 \moodle@samepagefalse% contribution of Romano Giannetti, 2021-03-07
+\moodle@pluginfilefalse
 
 \ProcessOptionsX*% the star allows to inherit 'draft' and 'final' from the class
 
@@ -2743,6 +2748,9 @@
       \xa\converttohtmlmacro\xa\moodle@htmltowrite\xa{#3}%
       \writetomoodle[2]{  <#2 format="html">}%
       \writetomoodle[4]{    <text><![CDATA[<p>\moodle@htmltowrite</p>]]></text>}%
+      \ifmoodle@pluginfile
+        \writetomoodle[0]{\htmlize@embeddedfiletags}%
+      \fi
       \writetomoodle[2]{  </#2>}%
     \fi
   }%
@@ -2761,6 +2769,9 @@
       \xa\converttohtmlmacro\xa\moodle@htmltowrite\xa{#3}%
       \writetomoodle[2]{  <#2 format="html">}%
       \writetomoodle[4]{    <text><![CDATA[\moodle@htmltowrite]]></text>}%
+      \ifmoodle@pluginfile
+        \writetomoodle[0]{\htmlize@embeddedfiletags}%
+      \fi
       \writetomoodle[2]{  </#2>}%
     \fi
   }%
@@ -3595,10 +3606,13 @@
      \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
      \xa\converttohtmlmacro\xa\moodle@answertext@html\xa{\moodle@answertext}%
      \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext@html</text>}%
+     \ifmoodle@pluginfile
+       \writetomoodle[0]{\htmlize@embeddedfiletags}%
+     \fi
      \ifx\moodle@feedback\@empty\relax\else
        \trim@spaces@in\moodle@feedback
        \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
-       \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text></feedback>}%
+       \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text>\ifmoodle@pluginfile\htmlize@embeddedfiletags\fi</feedback>}%
      \fi
      \addto@xml[2]{\moodle@answers@xml}{</answer>}%
    }%
@@ -3685,13 +3699,17 @@
      \moodle@checkfraction
      \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
      \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext</text>}%
+     
      \ifx\moodle@answertext\@star\else
        \addto@xml[4]{\moodle@answers@xml}{  <tolerance>\moodle@tolerance</tolerance>}%
+     \fi
+     \ifmoodle@pluginfile
+       \writetomoodle[0]{\htmlize@embeddedfiletags}%
      \fi
      \ifx\moodle@feedback\@empty\relax\else
        \trim@spaces@in\moodle@feedback
        \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
-       \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text></feedback>}%
+       \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text>\ifmoodle@pluginfile\htmlize@embeddedfiletags\fi</feedback>}%
      \fi
      \addto@xml[2]{\moodle@answers@xml}{</answer>}%
    }%
@@ -4010,10 +4028,13 @@
     \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="html">}%
     \xa\converttohtmlmacro\xa\moodle@answertext@html\xa{\moodle@answertext}%
     \addto@xml[4]{\moodle@answers@xml}{  <text><![CDATA[<p>\moodle@answertext@html</p>]]></text>}%
+    \ifmoodle@pluginfile
+      \addto@xml[4]{\moodle@answers@xml}{\htmlize@embeddedfiletags}%
+    \fi
     \ifx\moodle@feedback\@empty\relax\else
       \trim@spaces@in\moodle@feedback
       \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
-      \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text></feedback>}%
+      \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text>\ifmoodle@pluginfile\htmlize@embeddedfiletags\fi</feedback>}%
     \fi
     \addto@xml[2]{\moodle@answers@xml}{</answer>}%
   }%
@@ -4212,10 +4233,13 @@
      \ifnum\c@currentitemnumber<3\relax
        \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
        \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext</text>}%
+       \ifmoodle@pluginfile
+         \addto@xml[4]{\moodle@answers@xml}{\htmlize@embeddedfiletags}%
+       \fi
        \ifx\moodle@feedback\@empty\relax\else
          \trim@spaces@in\moodle@feedback
          \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
-         \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text></feedback>}%
+         \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text>\ifmoodle@pluginfile\htmlize@embeddedfiletags\fi</feedback>}%
        \fi
        \addto@xml[2]{\moodle@answers@xml}{</answer>}%
      \fi
@@ -4236,6 +4260,9 @@
      \ifnum\c@currentitemnumber<3\relax
        \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
        \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext</text>}%
+       \ifmoodle@pluginfile
+         \addto@xml[4]{\moodle@answers@xml}{\htmlize@embeddedfiletags}%
+       \fi
        \ifx\moodle@feedback\@empty\relax
          \def\test@ii{#2}
          \ifx\test@ii\@empty\relax\else
@@ -4244,12 +4271,12 @@
            \else%
              \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{#1#2}%
            \fi%
-           \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text></feedback>}%
+           \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text>\ifmoodle@pluginfile\htmlize@embeddedfiletags\fi</feedback>}%
          \fi
        \else
          \trim@spaces@in\moodle@feedback
          \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
-         \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text></feedback>}%
+         \addto@xml[4]{\moodle@answers@xml}{  <feedback format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text>\ifmoodle@pluginfile\htmlize@embeddedfiletags\fi</feedback>}%
        \fi
        \addto@xml[2]{\moodle@answers@xml}{</answer>}%
      \fi
@@ -4391,19 +4418,19 @@
      \def\moodle@subanswertext{#2}%
      \trim@spaces@in\moodle@subquestiontext
      \xa\converttohtmlmacro\xa\moodle@subquestiontext@htmlized\xa{\moodle@subquestiontext}%
-     \trim@spaces@in\moodle@subanswertext
-     %\ifmoodle@draganddrop
-       \xa\converttohtmlmacro\xa\moodle@subanswertext@htmlized\xa{\moodle@subanswertext}%
-     %\fi
      \addto@xml[2]{\moodle@answers@xml}{<subquestion format="html">}%
      \ifx\moodle@subquestiontext\@empty
        \addto@xml[4]{\moodle@answers@xml}{  <text></text>}%
      \else
-       \addto@xml[4]{\moodle@answers@xml}{  <text><![CDATA[<p>\moodle@subquestiontext@htmlized</p>]]></text>}%
+       \addto@xml[4]{\moodle@answers@xml}{  <text><![CDATA[<p>\moodle@subquestiontext@htmlized</p>]]></text>\ifmoodle@pluginfile\htmlize@embeddedfiletags\fi}%
      \fi
+     \trim@spaces@in\moodle@subanswertext
+     %\ifmoodle@draganddrop
+       \xa\converttohtmlmacro\xa\moodle@subanswertext@htmlized\xa{\moodle@subanswertext}%
+     %\fi
      \ifmoodle@draganddrop
 %       \show\moodle@subanswertext@htmlized
-       \addto@xml[4]{\moodle@answers@xml}{  <answer format="html"><text><![CDATA[<p>\moodle@subanswertext@htmlized</p>]]></text></answer>}%
+       \addto@xml[4]{\moodle@answers@xml}{  <answer format="html"><text><![CDATA[<p>\moodle@subanswertext@htmlized</p>]]></text>\ifmoodle@pluginfile\htmlize@embeddedfiletags\fi</answer>}%
      \else
 %       \show\moodle@subanswertext@htmlized
        \addto@xml[4]{\moodle@answers@xml}{  <answer format="html"><text><![CDATA[\moodle@subanswertext@htmlized]]></text></answer>}%
@@ -5230,6 +5257,9 @@
 \long\def\converttohtmlmacro#1#2{%
   \grouplevel=0\relax
   \def\htmlize@output{}%
+  \ifmoodle@pluginfile
+    \gdef\htmlize@embeddedfiletags{}%
+  \fi
   \htmlizer@activetrue%
   \converttohtml@int{#2}%
   \htmlizer@activefalse%
@@ -6794,7 +6824,18 @@
       \ShellEscape{\DeleteFiles\otherspace "\moodle@media@base.enc" "\moodle@media@base\moodle@media@ext@current"}%
     \fi
     \xa\global\xa\let\csname picbaselxiv@graphics@#2\endcsname=\moodle@newpic@baselxiv%
-    \edef\htmlize@imagetag{<IMG \moodle@graphics@htmlgeometry\otherspace SRC="data:\moodle@media@mime@current;base64,\csname picbaselxiv@graphics@#2\endcsname">}%
+    \ifmoodle@pluginfile
+      \edef\htmlize@imagetag{<IMG \moodle@graphics@htmlgeometry\otherspace SRC="@@PLUGINFILE@@/\moodle@media@base\moodle@media@ext@current">}%
+      \xa\filename@parse\xa{\moodle@media@base}%
+      \xdef\moodle@media@path{\filename@area}%
+      \xdef\moodle@media@base{\filename@base}%
+      \xa\g@addto@macro\xa\htmlize@embeddedfiletags\xa{<file name="\moodle@media@base}%
+      \xa\g@addto@macro\xa\htmlize@embeddedfiletags\xa{\moodle@media@ext@current"}
+      \xa\g@addto@macro\xa\htmlize@embeddedfiletags\xa{ path="/\moodle@media@path" encoding="base64">}%
+      \xa\g@addto@macro\xa\htmlize@embeddedfiletags\xa{\csname picbaselxiv@graphics@#2\endcsname</file>}%
+    \else
+      \edef\htmlize@imagetag{<IMG \moodle@graphics@htmlgeometry\otherspace SRC="data:\moodle@media@mime@current;base64,\csname picbaselxiv@graphics@#2\endcsname">}%
+    \fi
     \xa\g@addto@macro\xa\htmlize@output\xa{\htmlize@imagetag}%
     \message{moodle.sty:   <IMG> tag inserted.^^J}%
   \egroup
@@ -6968,14 +7009,32 @@
       \let\tikzpicture\relax\let\endtikzpicture\relax
       \NewEnviron{tikzpicture}[1][]{%
         \global\advance\numpicturesread by 1\relax
-        \edef\htmlize@imagetag{<IMG SRC="data:\TikzExportMIME;base64,\csname picbaselxiv@\the\numpicturesread\endcsname">}%
+        \ifmoodle@pluginfile
+          \edef\htmlize@imagetag{<IMG SRC="@@PLUGINFILE@@/tikz/\tikzexternalrealjob-tikztemp-\the\numpicturesread\TikzExportExtension">}%
+          \xa\g@addto@macro\xa\htmlize@embeddedfiletags\xa{<file name="\tikzexternalrealjob-tikztemp-}%
+          \xa\g@addto@macro\xa\htmlize@embeddedfiletags\xa{\the\numpicturesread}%
+          \xa\g@addto@macro\xa\htmlize@embeddedfiletags\xa{\TikzExportExtension"}
+          \xa\g@addto@macro\xa\htmlize@embeddedfiletags\xa{ path="/tikz/" encoding="base64">}%
+          \xa\g@addto@macro\xa\htmlize@embeddedfiletags\xa{\csname picbaselxiv@\the\numpicturesread\endcsname</file>}%
+        \else
+          \edef\htmlize@imagetag{<IMG SRC="data:\TikzExportMIME;base64,\csname picbaselxiv@\the\numpicturesread\endcsname">}%
+        \fi
         \xa\g@addto@macro\xa\htmlize@output\xa{\htmlize@imagetag}%
       }[\htmlize@patchendenvironment]%
     }%
     \html@action@newcommand{tikz}[2][]{%
 %      \message{>>> Processing \string\tikz[#1]{...} ^^J}
       \global\advance\numpicturesread by 1\relax
-      \edef\htmlize@imagetag{<IMG SRC="data:\TikzExportMIME;base64,\csname picbaselxiv@\the\numpicturesread\endcsname">}%
+      \ifmoodle@pluginfile
+        \edef\htmlize@imagetag{<IMG SRC="@@PLUGINFILE@@/tikz/\tikzexternalrealjob-tikztemp-\the\numpicturesread\TikzExportExtension">}%
+        \xa\g@addto@macro\xa\htmlize@embeddedfiletags\xa{<file name="\tikzexternalrealjob-tikztemp-}%
+        \xa\g@addto@macro\xa\htmlize@embeddedfiletags\xa{\the\numpicturesread}%
+        \xa\g@addto@macro\xa\htmlize@embeddedfiletags\xa{\TikzExportExtension"}
+        \xa\g@addto@macro\xa\htmlize@embeddedfiletags\xa{ path="/tikz/" encoding="base64">}%
+        \xa\g@addto@macro\xa\htmlize@embeddedfiletags\xa{\csname picbaselxiv@\the\numpicturesread\endcsname</file>}%
+      \else
+        \edef\htmlize@imagetag{<IMG SRC="data:\TikzExportMIME;base64,\csname picbaselxiv@\the\numpicturesread\endcsname">}%
+      \fi
       \xa\g@addto@macro\xa\htmlize@output\xa{\htmlize@imagetag}%
     }%
   \else
