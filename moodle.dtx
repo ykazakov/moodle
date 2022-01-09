@@ -55,7 +55,7 @@
 \usepackage[pdfpagelabels]{hyperref}
 \usetikzlibrary{arrows,positioning,decorations.text,calc}
 %\usemintedstyle{Wombat}
-\EnableCrossrefs         
+\EnableCrossrefs
 \CodelineIndex
 \OnlyDescription
 \RecordChanges
@@ -86,9 +86,9 @@
 %
 %
 % \GetFileInfo{\jobname.dtx}
-% 
+%
 % \DoNotIndex{\newcommand,\newenvironment,\def}
-% 
+%
 % \providecommand\TikZ{\mbox{Ti\emph{k}Z}}%
 % \providecommand\Moodle{\mbox{\brand{Moodle}}}%
 % \providecommand\LMS{\mbox{\acro{LMS}}}%
@@ -101,7 +101,7 @@
 % }%
 %
 % \author{%
-%   Anders Hendrickson\footnote{original author of the package (\texttt{v0.5}), inactive.}\\	
+%   Anders Hendrickson\footnote{original author of the package (\texttt{v0.5}), inactive.}\\
 %  \texttt{anders.o.f.hendrickson AT gmail DOT com} \and
 %  Matthieu Guerquin-Kern\footnote{current maintainer, %
 %  author of the updates (\texttt{v0.6} to \texttt{\fileversion}), %
@@ -110,14 +110,14 @@
 % }%
 %
 % \date{\today}
-% 
+%
 % \maketitle
 %
 % \begin{abstract}
-% This document describes the \pkg{moodle} package, made for writing \Moodle\ 
+% This document describes the \pkg{moodle} package, made for writing \Moodle\
 % quizzes in \LaTeX. In addition to typesetting the quizzes for proofreading or
 % giving to students as handout, the package generates an \XML\ file to be uploaded
-% to a \Moodle\ server. 
+% to a \Moodle\ server.
 % \end{abstract}
 %
 % \tableofcontents
@@ -129,90 +129,90 @@
 % It is an open source learning management system (\LMS) employed by many universities,
 % colleges, and high schools to provide digital access to course materials, such as
 % notes, video lectures, forums, and the like; see
-% \url{https://moodle.com/moodle-lms/} for more information. 
+% \url{https://moodle.com/moodle-lms/} for more information.
 % One of the many useful
 % features of \Moodle\ is that mathematical and scientific notation can be entered in
 % \LaTeX\ or \TeX\ code, which will be typeset either through a built-in \TeX\ filter
 % or by invoking MathJax.
-% 
+%
 % For instructors who want to give students frequent feedback,
-% but lack the time to do so, a particularly valuable module in \Moodle\ 
+% but lack the time to do so, a particularly valuable module in \Moodle\
 % is the \emph{quiz}.  A \Moodle\ quiz can consist of several different types of
-% questions---not only multiple choice or true/false questions, but also 
-% questions requiring a short phrase or numerical answer, and even essay 
-% questions.  All but the essay questions are automatically graded by the 
-% system, and the instructor has full control over how often the quiz may be 
+% questions---not only multiple choice or true/false questions, but also
+% questions requiring a short phrase or numerical answer, and even essay
+% questions.  All but the essay questions are automatically graded by the
+% system, and the instructor has full control over how often the quiz may be
 % attempted, its duration, and so forth.  Feedback can be tailored to specific
 % mistakes the student makes.
-% 
-% All these features make \Moodle\ quizzes very useful tools for instructors 
+%
+% All these features make \Moodle\ quizzes very useful tools for instructors
 % who have access to them.
-% Unfortunately, the primary way to create or edit a \Moodle\ quiz 
+% Unfortunately, the primary way to create or edit a \Moodle\ quiz
 % is through a web-based interface that can be slow to operate.
 % To users of \LaTeX, accustomed to the speed of typing source code on
 % a keyboard alone, the agonizing slowness of switching between mouse and keyboard
 % to navigate a web form with its myriad dropdown boxes, radio buttons,
 % compounded with a perceptible time lag as one's \Moodle\ server responds to requests,
-% can produce a very frustrating experience.  Moreover, editing is entirely 
+% can produce a very frustrating experience.  Moreover, editing is entirely
 % impossible without network access.
-% 
-% Once the quiz is written, there is no easy way to view and proofread all the 
+%
+% Once the quiz is written, there is no easy way to view and proofread all the
 % information of which it is made.  Each question is edited on a separate webpage,
-% which is so full of options that it cannot be viewed on a single screen.  
-% An instructor has to spend much time checking over the newly created quiz in 
+% which is so full of options that it cannot be viewed on a single screen.
+% An instructor has to spend much time checking over the newly created quiz in
 % order to be confident there are no errors.
-% 
+%
 % Added to all this is the frustration of managing graphics.
 % If a question requires an image---say, asking a calculus student to interpret
 % the graph of a function---the image must first be produced as a standalone file
 % (e.g., in \JPG\ or \PNG\ format), uploaded to \Moodle, and then chosen in a web-based
-% \HTML\ editor.  Great is the vexation of the instructor who decided to alter a 
-% question, as there are more and more possibilities of error whenever multiple 
+% \HTML\ editor.  Great is the vexation of the instructor who decided to alter a
+% question, as there are more and more possibilities of error whenever multiple
 % files must be kept synchronized.
-% 
-% Users of \LaTeX\ are also accustomed to the speed and flexibility that 
+%
+% Users of \LaTeX\ are also accustomed to the speed and flexibility that
 % comes from defining their own macros, which may be as brief as writing
 % \cmd{\R} instead of |\mathbb{R}|
 % or as complex as macros that generate entire paragraphs of text.
 % The \Moodle\ editor, by contrast, requires you to type |\mathbb{R}|
 % every single time you want $\mathbb{R}$.
-% 
+%
 % Finally, there is the question of archiving and reusing one's work.
 % Much, much work goes into creating \Moodle\ quizzes, which then reside
 % on a \Moodle\ server somewhere in the cloud in a format neither easily browsable
 % nor easily modifiable.
-% 
-% \LaTeX\ itself has the power to solve all these difficulties: 
+%
+% \LaTeX\ itself has the power to solve all these difficulties:
 % it is swift to edit and swifter to compile a \LaTeX\ document,
 % and the \PDF\ may be previewed onscreen or printed out for ease of proofreading.
 % Mathematical graphics can be integrated within the main file through \TikZ,
 % and of course \LaTeX\ macros can be customized.
 % Using the present \pkg{moodle} package,
-% a quiz author can type a quiz using familiar \LaTeX\ syntax and document 
+% a quiz author can type a quiz using familiar \LaTeX\ syntax and document
 % structure.  Upon compilation, \LaTeX\ will generate both a well-organized
 % \PDF\ that is easy to proofread and an \XML\ file that can be uploaded directly
 % to \Moodle.  The entire process is far faster than using \Moodle's own
-% web-based editor, makes it easier to catch one's mistakes, 
-% and the ultimate source code of one's work is a human-readable \filenm{.tex} file 
+% web-based editor, makes it easier to catch one's mistakes,
+% and the ultimate source code of one's work is a human-readable \filenm{.tex} file
 % that can be archived, versioned, browsed, and edited offline.
-% 
+%
 % Strictly speaking, the \pkg{moodle} package does not generate quizzes:
 % it generates question banks that can be imported in the \LMS. The teacher
 % still needs to compose manually a quiz from the question banks. Hopefully,
 % two \Moodle\ features supported by the package make this task easier:
 % categories and tags.
 %
-% In this documentation the \LMS\ is referred to as \Moodle\ 
+% In this documentation the \LMS\ is referred to as \Moodle\
 % (uppercase letters and roman font) while the \LaTeX\ package
 % is referred to as \pkg{moodle} (lower case and sans serif font).
-% 
+%
 % \subsection{Workflow}
 %
 %% \begin{figure}[bp]
 % \centering
-% \begin{tikzpicture}[node distance=1,auto,bend 
-% angle=45,box/.style={rectangle,draw=blue!50,rounded corners=3,top 
-% 	color=white,bottom color=black!20,thick,align=center,text 
+% \begin{tikzpicture}[node distance=1,auto,bend
+% angle=45,box/.style={rectangle,draw=blue!50,rounded corners=3,top
+% 	color=white,bottom color=black!20,thick,align=center,text
 % 	width=2.5cm},elmt/.style={font=\itshape,align=left},
 % cmnt/.style={font=\footnotesize,align=center},
 % bigcmnt/.style={font=\normalsize,align=center},pre/.style={<-,>=stealth',thick},
@@ -222,24 +222,24 @@
 % \node[orange!80!black,above] (dev) at (7.5,-1.6) {\textit{Development}};
 % \fill[green,fill opacity=.2,rounded corners=10]
 % (-1.5,.7)--++(3,0)--++(0.5,-2.4)--++(6.8,0)--++(0,-3)--++(-10.3,0)--cycle;
-% \node[green!80!black,below] (dev) at (7.5,-1.7) {\textit{Publishing}}; 
+% \node[green!80!black,below] (dev) at (7.5,-1.7) {\textit{Publishing}};
 % \node[box,text width=2cm] (tex) {\filenm{.tex} source file};
-% \node[rectangle,fill=white,draw,align=center,text 
+% \node[rectangle,fill=white,draw,align=center,text
 % width=1.5cm,below=of tex] (compfinal) {\LaTeX{}\\ engine};
 % \node[rectangle,fill=white,draw,align=center,text width=1.5cm,right=of tex,xshift=4.5cm]
 % (compdraft) {\LaTeX{}\\ engine};
 % \draw ($(tex)!.5!(compdraft)+(0,-.7)$) node[box] (pdf) {\filenm{.pdf} file for proofreading};
 % \node[box,below=of pdf,yshift=.1cm] (pdfhandout) {\filenm{.pdf} file for students};
-% \node[rectangle,fill=white,draw,align=center,text width=2cm,below=of compfinal] (extern) 
+% \node[rectangle,fill=white,draw,align=center,text width=2cm,below=of compfinal] (extern)
 % {Picture\\processing};
 % \draw (pdf|-extern) node[box,anchor=center] (xml) {\filenm{.xml} file\\\footnotesize(pictures embedded)};
 % \draw (compdraft|-pdfhandout)
-% node[rectangle,fill=white,draw,align=center,text width=1.5cm,anchor=center] (students) 
+% node[rectangle,fill=white,draw,align=center,text width=1.5cm,anchor=center] (students)
 % {Students};
 % \draw (compdraft|-xml)
-% node[rectangle,fill=white,draw,align=center,text width=1.5cm,anchor=center] (moodle) 
+% node[rectangle,fill=white,draw,align=center,text width=1.5cm,anchor=center] (moodle)
 % {\Moodle\ \\Server};
-% \draw (tex) edge [post,bend right=10] node[cmnt,pos=.5,left] {\optn{final}} 
+% \draw (tex) edge [post,bend right=10] node[cmnt,pos=.5,left] {\optn{final}}
 % node[cmnt,pos=.5,right] {\optn{handout}} (compfinal);
 % \draw (tex) edge [post,bend left=10] node[cmnt,pos=.5,below] {\optn{draft}} (compdraft);
 % \draw (compdraft) edge [post,bend left=10] (pdf);
@@ -264,7 +264,7 @@
 % Figure~\vref{fig:workflow}. It follows a few
 % steps:
 % \begin{enumerate}
-%   \item Write a \LaTeX\ document using |\usepackage{moodle}| as described 
+%   \item Write a \LaTeX\ document using |\usepackage{moodle}| as described
 % below.
 %   \item Compile the document to \PDF\ using pdf\LaTeX\ (\acro{ASCII} characters only),
 %         \XeLaTeX, or \LuaLaTeX.
@@ -278,7 +278,7 @@
 % \section{Usage}\label{sect:usage}
 % The following pages presume the reader already has some familiarity with creating
 % and editing \Moodle\ quizzes through the web interface.
-% Users that are not familiar with \Moodle\ quizzes can learn more in the \Moodle\ 
+% Users that are not familiar with \Moodle\ quizzes can learn more in the \Moodle\
 % documentation. For instance, \url{https://docs.moodle.org/en/Question_types}.
 %
 % The \pkg{xkeyval} package is used to provide a key-value interface.
@@ -318,10 +318,10 @@
 % \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
 % Key features to note in this first example are that a \env{quiz} environment
 % contains several question environments.
-% Each question takes a name as a mandatory argument, 
+% Each question takes a name as a mandatory argument,
 % and it may also take optional key-value arguments within brackets.
 % The question environments resemble list environments
-% such as \env{itemize} or \env{enumerate}, in that answers are set off by 
+% such as \env{itemize} or \env{enumerate}, in that answers are set off by
 % \cmd{\item}'s, but the question itself is the text that occurs before
 % the first \cmd{\item}.
 %
@@ -336,9 +336,9 @@
 %^^A Using \cmd{\htmlregister}\marg{macroname}, lets you declare a specific
 %^^A macro for expansion. This mechanism, instead, also applies to the
 %^^A macros defined using \TeX's primitive \cmd{\def}.
-% 
+%
 % \subsection{Package Options}
-% 
+%
 % \DescribeOption[moodle]{draft} If the package option \optn{draft} is invoked,
 % by calling |\usepackage[draft]{moodle}| or |\documentclass[draft]{...}|,
 % then no \XML\ file will be generated. This is especially useful while
@@ -413,7 +413,7 @@
 % features are used.
 %
 % \subsection{Quiz and Question Environments}
-% 
+%
 % A \filenm{.tex} document to generate \Moodle\ quizzes contains one or more
 % \env{quiz} environments.
 %
@@ -425,7 +425,7 @@
 % Using the optional argument, options can be set at the quiz level.
 % Although there are no \env{quiz}-specific options, any \meta{common options} set
 % with the quiz will be inherited by all questions contained within that environment.
-% 
+%
 % \DescribeMacro[moodle]{\moodleset}\marg{options}
 % is to be used to set options outside question environments; the option
 % settings are local to \TeX-groups.
@@ -441,7 +441,7 @@
 % The categories and subcategories are reflected in the \PDF\ file as sections, subsections, or
 % subsubsections, in accordance to the package setting \optn{section}, \optn{section*},
 % \optn{subsection}, or \optn{subsection*}.
-% 
+%
 % The syntax for each question environment is
 % \begin{quote}
 %   |\begin|\marg{question type}\oarg{question options}\marg{question name} \\
@@ -454,25 +454,25 @@
 % The meaning of the \meta{item}s varies depending on the question type,
 % but they usually are answers to the question.
 % Details will be given below.
-% 
+%
 % The following key-value options may be set for all questions:
-% 
+%
 % \DescribeKey[quiz,question]{points}\DescribeDefault{1}
 % \DescribeKey[quiz,question]{default grade}
 % By default, each question is worth 1 point on the quiz.
 % This setting may be changed with the \optn{points} key or its synonym, \optn{default grade}.
 % For example, \optn{points=2} makes that question worth two points.
-% 
+%
 % \DescribeKey[quiz,question]{penalty}\DescribeDefault{0.1}
 % The \optn{penalty} is the fraction of points that is taken off for each wrong attempt;
 % it may be set to any value between 0 and 1.
-% 
+%
 % \DescribeKey[answer]{fraction}^^A\DescribeDefault{0}
 % In most question types, it is possible to designate some answers as being
 % worth partial credit---that is, some fraction of a completely correct answer.
 % The \optn{fraction} key may be set to any of the values given in Table~\vref{tab:fraction},
 % from \texttt{0} (entirely wrong) to \texttt{100} (entirely correct).
-% 
+%
 % \begin{table}[tbp]
 % \centering
 % \caption{\href{https://github.com/moodle/moodle/blob/MOODLE\_310\_STABLE/question/engine/bank.php\#L339}
@@ -508,7 +508,7 @@
 % selection of all choices from leading to a good grade.
 % In this case, the value ranging from -100 to 0 must be the opposite of one of the
 % values listed in Table~\vref{tab:fraction}.
-% 
+%
 % \DescribeKey[answer]{fractiontol}\DescribeDefault{0.01}
 % The package tries to match the \optn{fraction} key to one of the admissible values.
 % To this end, the tolerance is controlled by the \optn{fractiontol} key. The default
@@ -517,15 +517,15 @@
 %
 % \DescribeKey{feedback}
 % The \optn{feedback} key sets text that will appear to the student after completing the quiz.
-% For example, one might set 
+% For example, one might set
 % \begin{center}
 %   |feedback={This question might show up in the final exam.}|
 % \end{center}
 % The desired feedback should be included in braces.
-% 
+%
 % \DescribeKey[question]{feedback}If the \optn{feedback} key is set for a question,
 % then that feedback will appear to each student regardless of the student's answer.
-% 
+%
 % \DescribeKey[answer]{feedback}
 % Answer-specific feedback (perhaps explaining a common mistake)
 % may also be given by setting the \optn{feedback} key \emph{at the individual answer}.
@@ -535,7 +535,7 @@
 % by \Moodle\ for filtering purposes or classification of questions inside the question bank.
 % It is possible for instance to build a quiz with questions cherry-picked among the set of
 % questions holding a particular tag.
-% For example, one might set 
+% For example, one might set
 % \begin{center}
 %   |tags={easy}|
 % \end{center}
@@ -548,21 +548,21 @@
 % \DescribeKey[quiz]{tags}
 % If the \optn{tags} key is set at the quiz level,
 % then that tag list will serve as a default for each question of the quiz.
-% 
+%
 % \DescribeKey[question]{tags}
 % Question-specific tags can be assigned by setting the \optn{tags} key \emph{at the question level}.
 % The question-level \optn{tags} key overrides eventual quiz-level tags.
-% 
+%
 % Users willing to specify a same tag for all questions of the quiz could
 % also consider relying on \Moodle's category mechanism.
-% 
+%
 % \subsection{\href{https://docs.moodle.org/en/Question_types}{Question Types}}
-% 
+%
 % We next discuss the various question types supported by \pkg{moodle}
 % and the options that may be set.
 %
 %\subsubsection{\href{https://docs.moodle.org/en/True/False_question_type}{True/False}}
-% 
+%
 % \DescribeEnv[quiz]{truefalse}\oarg{question options}\marg{question name}
 % is an environment that defines a \emph{True/False} question.
 %
@@ -587,12 +587,12 @@
 % \end{quote}
 % Note that, in this example, no feedback is defined for the incorrect answer
 % ``False": the corresponding item can be omitted.
-% 
+%
 % With the True/False question type, the |penalty| key has no effect.
 %
 % \subsubsection{\href{https://docs.moodle.org/en/Multiple_Choice_question_type}{Multiple Choice}}
 % \label{subsec:multi}
-% 
+%
 % \DescribeEnv[quiz]{multi}\oarg{question options}\marg{question name}
 % is an environment that defines a \emph{Multiple Choice} question.
 %
@@ -609,14 +609,14 @@
 % \end{quote}
 % The correct answer is designated by the asterisk \texttt{*} after the \cmd{\item};
 % it need not appear first in the list.
-% 
-% 
+%
+%
 % \DescribeBoolean[multi]{shuffle}\DescribeDefault{true}
 % The Boolean key \optn{shuffle} determines whether \Moodle\ will
 % rearrange the possible answers in a random order.
 % Setting \optn{shuffle=false} will guarantee that the answers will
 % be presented to the student in the order they were typed.
-% 
+%
 % \DescribeKey[multi]{numbering}\DescribeDefault{abc}
 % \Moodle\ offers different options for numbering the possible answers.
 % You may set the \optn{numbering} key to any of the values listed in
@@ -639,7 +639,7 @@
 % \optn{numbering=none} produces an unnumbered list of answers.
 % Note the \emph{four} capital letters required by \Moodle's syntax
 % to obtain upper-case Roman or alphabetic numerals.
-% 
+%
 % \DescribeKey[item]{fraction}\DescribeDefault{0}
 % \DescribeKey[item*]{fraction}\DescribeDefault{100}
 % The \optn{fraction} key may be automatically set depending on the
@@ -657,7 +657,7 @@
 %   \end{multi}
 % \end{VerbatimOut}
 % \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
-% 
+%
 % \DescribeBoolean[multi]{single}\DescribeDefault{true}
 % By default, the \env{multi} environment produces a multiple choice
 % question where only one answer can be selected. This is called
@@ -707,7 +707,7 @@
 %     \item 2
 %     \item* 5
 %     \item* 7
-%     \item 1 
+%     \item 1
 %     \item 6
 %   \end{multi}
 %   \begin{multi}[multiple]{Advanced Mode}
@@ -722,12 +722,12 @@
 % \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
 % Note that, in this example, negative fractions are set for wrong
 % choices. This prevents students from obtaining a good grade with
-% no merit if they select all answers. 
-% 
+% no merit if they select all answers.
+%
 % Contrarily to the \optn{single} mode where questions with negative fractions may
 % lead to a overall negative grade, when multiple choices can be selected, the
 % lowest grade \Moodle\ will take into account for the question is 0.
-% 
+%
 % \DescribeKey[multi]{allornothing}
 % There also exists a \href{https://moodle.org/plugins/qtype_multichoiceset}
 % {``All-or-Nothing Multiple Choice''} plugin for \Moodle\ that introduces a
@@ -742,7 +742,7 @@
 % The option \optn{allornothing} supersedes the options \optn{multiple} and \optn{single}.
 % To the best of our knowledge, \Moodle\ does not offer the all-or-nothing behavior
 % for multiple choice questions embedded inside a \env{cloze} question.
-% 
+%
 % \subsubsection{\href{https://docs.moodle.org/en/Numerical_question_type}{Numerical}}
 %
 % \DescribeEnv[quiz]{numerical}\oarg{question options}\marg{question name}
@@ -789,14 +789,14 @@
 %
 % When feedback is to be given for any non-specified answer, one can add a \emph{last} answer
 % item containing the wildcard character \texttt{*} only. In this case, the \optn{tolerance} key is irrelevant.
-% 
+%
 % Both answers and tolerance can be specified with the comma (\texttt{,}) as a decimal separator.
 % Exponent notation is accepted. After import, \Moodle\ will recognize indifferently \texttt{0.000165},
 % \texttt{0,000165}, \texttt{1.65E-4}, \texttt{1.65e-4}, \texttt{1,65E-4}, and \texttt{1,65e-4}.
 %
 % If the \pkg{siunitx} package is loaded, \pkg{moodle} will detect it and
 % numbers will be rendered nicely in the \PDF\ output.
-% 
+%
 % Units, unit-handling and multipliers are currently unsupported.\watchout
 %
 % \subsubsection{\href{https://docs.moodle.org/en/Short-Answer_question_type}{Short Answer}}
@@ -813,9 +813,9 @@
 %   \rule{2em}{0pt}|\item|\oarg{answer options} \meta{correct answer} \\
 %   |\end{shortanswer}|
 % \end{quote}
-% You can make the text box appear as part of the question with the 
+% You can make the text box appear as part of the question with the
 % control sequence \cmd{\blank}.  For example,
-% your question might read 
+% your question might read
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   \begin{shortanswer}{Leibniz}
 %     Newton's rival was Gottfried Wilhelm \blank.
@@ -824,13 +824,13 @@
 %   \end{shortanswer}
 % \end{VerbatimOut}
 % \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
-% Note that as the blank occurred at the end of a sentence, 
-% we included two answers, 
+% Note that as the blank occurred at the end of a sentence,
+% we included two answers,
 % lest students get the question wrong merely by
 % including or omitting a period.
-% 
+%
 % \DescribeBoolean[shortanswer]{case sensitive}\DescribeDefault{false}
-% The default setting when creating a Short Answer question in \Moodle\ 
+% The default setting when creating a Short Answer question in \Moodle\
 % is to ignore the distinction between upper- and lower-case letters
 % when grading a short answer question. This default is preserved by
 % \pkg{moodle}.
@@ -862,12 +862,12 @@
 %         the feedback \emph{This one is Leibniz!},
 %   \item answers \answ{Sir Isaac}, and \answ{Sir} yield
 %         the feedback \emph{First name, not title!},
-%   \item any answer that does not match the previous patterns 
+%   \item any answer that does not match the previous patterns
 %         yields the feedback \emph{No\dots}.
 % \end{itemize}
-% 
+%
 % \subsubsection{\href{https://docs.moodle.org/en/Essay_question_type}{Essay}}\label{subsubsect:essay}
-% 
+%
 % \DescribeEnv[quiz]{essay}\oarg{question options}\marg{question name}
 % is an environment that defines an \emph{Essay} question.
 %
@@ -887,32 +887,32 @@
 % question contain notes that will appear to whoever is grading the question manually.
 % Contrarily to other question types, \cmd{\item} in \env{essay} questions
 % do not take options.
-% 
+%
 % \DescribeBoolean[essay]{response required}\DescribeDefault{false}
 % Although \Moodle\ cannot grade the content of an essay question,
 % it can at least determine whether the question has been left blank.
 % If the \optn{response required} key is set, \Moodle\ will insist that the student
 % enter something in the blank before accepting the quiz as completed.
-% 
+%
 % \DescribeKey[essay]{response format}\DescribeDefault{html}
 % \Moodle\ offers five different ways for students to enter and/or upload their
 % answers to an essay question. You may choose one of these five options:
 % \begin{description}
 %   \ItemDescribeOther[response format]{html} An editor with the ability to format \HTML\ responses
 %         including markup for italics, boldface, etc.  This is the default.
-%   \ItemDescribeOther[response format]{file} A file picker allowing the student to upload a 
+%   \ItemDescribeOther[response format]{file} A file picker allowing the student to upload a
 %         file, such as a \PDF\ or DOC file, containing the essay.
-%   \ItemDescribeOther[response format]{html+file} The same \HTML\ editor as above, but with the 
-%         ability to upload files as well.  This permits some students to type 
-%         answers directly into the web form, and others to compose their 
+%   \ItemDescribeOther[response format]{html+file} The same \HTML\ editor as above, but with the
+%         ability to upload files as well.  This permits some students to type
+%         answers directly into the web form, and others to compose their
 %         essays in another program first.
-%   \ItemDescribeOther[response format]{text} This editor allows only for entering plain text 
+%   \ItemDescribeOther[response format]{text} This editor allows only for entering plain text
 %         without any markup.
-%   \ItemDescribeOther[response format]{monospaced} This yields a plain text editor, without any 
-%         markup, and with a fixed-width font.  This could be useful for 
+%   \ItemDescribeOther[response format]{monospaced} This yields a plain text editor, without any
+%         markup, and with a fixed-width font.  This could be useful for
 %         entering code snippets, for example.
 % \end{description}
-% 
+%
 % \DescribeKey[essay]{response field lines}\DescribeDefault{15}
 % The key \optn{response field lines} controls the height of the input box.
 % For \Moodle, the admissible values are: 5, 10, 15, 20, 25, 30, 35, and 40.
@@ -921,23 +921,23 @@
 %   \item with either 5 or 40 if the value set was out of range, or
 %   \item with the next multiple of 5 otherwise.
 % \end{itemize}
-% 
+%
 % \DescribeKey[essay]{attachments allowed}\DescribeDefault{0}
 % The \optn{attachments allowed} key controls \emph{how many} attachments a student is
 % allowed to upload. Admissible values are \texttt{0}, \texttt{1}, \texttt{2},
 % \texttt{3}, or \texttt{unlimited}.
-% 
+%
 % \DescribeKey[essay]{attachments required}\DescribeDefault{0}
 % You may also require the student to upload a certain number of attachments
 % by setting \optn{attachments required} to \texttt{0}, \texttt{1}, \texttt{2}, or \texttt{3}.
-% 
+%
 % \DescribeKey[essay]{template}
 % Finally, you may preload the essay question with a template that the student
 % will edit and/or type over, with the key \optn{template=}\marg{template}.
 % The \meta{template} should be enclosed in braces.
-% 
+%
 % \subsubsection{\href{https://docs.moodle.org/en/Matching_question_type}{Matching}}
-% 
+%
 % \DescribeEnv[quiz]{matching}\oarg{question options}\marg{question name}
 % is an environment that defines a \emph{Matching} question. It typically
 % looks like this:
@@ -961,13 +961,13 @@
 % After import, \Moodle\ will recognize matches that are \emph{exact}
 % duplicates. If you intend multiple questions to have the same match,
 % make sure that they are entered identically.
-% 
+%
 % \DescribeBoolean[matching]{shuffle}\DescribeDefault{true}
 % When students take a matching question, \Moodle\ always displays
-% the proposed matches in random order. 
+% the proposed matches in random order.
 % The \env{matching} question accepts the option |shuffle| to also
 % randomly permute the items.
-% 
+%
 % \DescribeBoolean[matching]{drag and drop}\DescribeDefault{false}
 % The standard matching question offered by \Moodle\ corresponds to
 % a dropdown box for choosing the match for each item.
@@ -979,16 +979,16 @@
 % In this package, to enable drag-and-drop matching, use the key
 % \optn{drag and drop} or \optn{dd}\DescribeKey[matching]{dd}\ for short.
 % Beware that, with the standard format (\optn{drag and drop=false}), due
-% to the limitations of dropdown boxes, \Moodle\ will not render \LaTeX\ 
+% to the limitations of dropdown boxes, \Moodle\ will not render \LaTeX\
 % or \HTML\ code passed in the answers.
-% 
+%
 % \subsubsection{\href{https://docs.moodle.org/en/Embedded_Answers_(Cloze)_question_type}
 % {Cloze Questions and Subquestions}}
-% 
+%
 % \DescribeEnv[quiz]{cloze}\oarg{question options}\marg{question name}
 % is an environment that defines a \emph{Cloze} question.
 %
-% A ``cloze question'' has one or more subquestions embedded within a passage of text.  
+% A ``cloze question'' has one or more subquestions embedded within a passage of text.
 % For example, you might ask students to fill in several missing words within
 % a sentence, or calculate several coefficients of a polynomial.
 % To encode cloze questions in \LaTeX\ using this package is easy:
@@ -1038,7 +1038,7 @@
 % partial credit or sanction for certain answers. The values
 % specified must be integers and are independent of the admissible
 % values listed in Table~\vref{tab:fraction}.
-% 
+%
 % \DescribeBoolean[cloze]{single}\DescribeDefault{true}
 % \DescribeKey[cloze]{multiple}
 % Prior to \Moodle\ version 3.5, within a \env{cloze} question, a multiple choice question
@@ -1058,7 +1058,7 @@
 % as an \optn{inline} dropdown box. This is visually compact, but it also prevents
 % the use of mathematical or \HTML\ formatting.
 % Adding the option \optn{vertical} displays the subquestion as a vertical column
-% of radio buttons instead; likewise the option \optn{horizontal} creates a horizontal 
+% of radio buttons instead; likewise the option \optn{horizontal} creates a horizontal
 % row of radio buttons.
 % The option \optn{inline} is incompatible\watchout\ with \optn{multiple} or \optn{single=false}
 % (dropdown boxes don't let you pick up several answers!).
@@ -1073,16 +1073,16 @@
 % \DescribeBoolean[cloze]{usecase}
 % Within a \env{cloze} question, the \env{shortanswer} question can be made case sensitive.
 % This option, disabled by default, is selected with \optn{case sensitive} or \optn{usecase}.
-% 
+%
 %\subsubsection{\href{https://docs.moodle.org/en/Description_question_type}{Description}}
-% 
+%
 % \DescribeEnv[quiz]{description}\oarg{question options}\marg{question name}
 % is an environment that defines a so-called \emph{Description} question.
 %
 % The \Moodle\ description type is not really a question. It is more like a label.
 % One can set a \optn{feedback} that the student gets when reviewing the submission.
 % Tags can be set as well.
-% 
+%
 % For descriptions, \pkg{moodle} redefines \LaTeX's \env{description} environment.
 % The scope of this redefinition is limited to the \env{quiz} environment.
 %
@@ -1095,16 +1095,16 @@
 %
 % \subsubsection{A Word About \href{https://docs.moodle.org/en/Calculated_question_type}{Calculated Questions}}
 % \Moodle's calculated questions are not supported by this package.
-% 
+%
 % However, as \href{https://github.com/avohns/python-latex-moodle-quiz}{demonstrated by A.
 % Vohns}, an advanced scripting language may be used to generate a series of questions sharing
 % the same prototype.
-% 
+%
 % We suggest to apply a specific tag to these questions. After import in \Moodle, when creating
 % a quiz, this tag can be selected to narrow down a random selection of questions.
 % This would mimic the behavior of calculated questions while bringing the flexibility of your
 % favorite scripting language.
-% 
+%
 % Here are two examples inspired from the work of A. Vohns. The first one relies on the
 % native \prog{Lua} capabilities of \LuaLaTeX.
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
@@ -1115,11 +1115,11 @@
 % \vspace{-.7cm}
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   function clozenum_print(pair,op,result)
-%     tex.print("\\begin{numerical}$"..pair[1].." "..op.." "..pair[2].." 
+%     tex.print("\\begin{numerical}$"..pair[1].." "..op.." "..pair[2].."
 %     =$".."\\item ",result,"\\end{numerical}")
 %   end
 %   function cloze_print(pair,points)
-%     tex.print("\\begin{cloze}[points="..points.."]{Arithmetic Quiz 
+%     tex.print("\\begin{cloze}[points="..points.."]{Arithmetic Quiz
 %     ("..pair[1]..", "..pair[2]..")}Solve the following tasks!\\\\")
 %     clozenum_print(pair,"+",pair[1]+pair[2])
 %     clozenum_print(pair,"-",pair[1]-pair[2])
@@ -1155,10 +1155,10 @@
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   def clozenum_print(pair,op,result):
 %     print(rf"""\begin{{numerical}}
-%   ${pair[0]} {op} {pair[1]} =$\item {result} 
+%   ${pair[0]} {op} {pair[1]} =$\item {result}
 %   \end{{numerical}}""")
 %   def cloze_print(pair,points):
-%     print(rf"""\begin{{cloze}}[points={points}]{{Arithmetic Quiz 
+%     print(rf"""\begin{{cloze}}[points={points}]{{Arithmetic Quiz
 %     {(pair[0],pair[1])}}}Solve the following tasks!\\""")
 %     clozenum_print([x,y],"+",x+y)
 %     clozenum_print([x,y],"-",x-y)
@@ -1172,7 +1172,7 @@
 %         if x/y == x//y:
 %           points=4
 %         else:
-%           points=3  
+%           points=3
 %         cloze_print([x,y],points)
 % \end{VerbatimOut}
 % \inputminted[]{python}{minted.doc.out}
@@ -1185,11 +1185,11 @@
 % These two codes yield the same \XML\ content.
 %
 % \subsection{Summary of the Key Options}
-% 
+%
 % Table~\vref{tab:key-options}, summarizes
 % the key options available at the question and answer levels depending on the
 % question type. For the essay questions, please refer to Section~\vref{subsubsect:essay}.
-% 
+%
 % \begin{table}[tbp]
 % \centering
 % \caption{Options offered at the question and answer levels for each question type.}
@@ -1199,17 +1199,17 @@
 % \toprule
 % & \multicolumn{11}{l}{Question} & \multicolumn{3}{l}{Answer}\\
 % \cmidrule(lr){2-12}\cmidrule(lr){13-15}
-% Question type & \rotatebox{90}{points} & 
-% \rotatebox{90}{penalty} & \rotatebox{90}{feedback} & \rotatebox{90}{tags} & 
+% Question type & \rotatebox{90}{points} &
+% \rotatebox{90}{penalty} & \rotatebox{90}{feedback} & \rotatebox{90}{tags} &
 % \rotatebox{90}{shuffle} & \rotatebox{90}{numbering} & \rotatebox{90}{multiple} &
 % \rotatebox{90}{allornothing} &\rotatebox{90}{usecase} & \rotatebox{90}{tolerance} &
-% \rotatebox{90}{dd} & \rotatebox{90}{fraction} & \rotatebox{90}{feedback} & 
+% \rotatebox{90}{dd} & \rotatebox{90}{fraction} & \rotatebox{90}{feedback} &
 % \rotatebox{90}{tolerance}\\\cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}
 % \cmidrule(lr){4-4}\cmidrule(lr){5-5}\cmidrule(lr){6-6}\cmidrule(lr){7-7}
 % \cmidrule(lr){8-8}\cmidrule(lr){9-9}\cmidrule(lr){10-10}\cmidrule(lr){11-11}
 % \cmidrule(lr){12-12}\cmidrule(lr){13-13}\cmidrule(lr){14-14}\cmidrule(lr){15-15}
-% \href{https://docs.moodle.org/35/en/Multiple_Choice_question_type} 
-% {Multichoice} & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & 
+% \href{https://docs.moodle.org/35/en/Multiple_Choice_question_type}
+% {Multichoice} & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ &
 % $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & & $\bullet$ & $\bullet$ \\
 % \href{https://docs.moodle.org/35/en/Numerical_question_type}{Numerical}
 % & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & &
@@ -1218,12 +1218,12 @@
 % Answer} & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & &
 % & $\bullet$ & & & $\bullet$ & $\bullet$ \\
 % \href{https://docs.moodle.org/35/en/Matching_question_type}{Matching}
-% & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & 
+% & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & &
 % & & & $\bullet$ & & \\
 % \href{https://docs.moodle.org/35/en/True/False_question_type}
 % {True/False} & $\bullet$ & & $\bullet$ & $\bullet$ & & & &
 % & & & & & $\bullet$ \\
-% \href{https://docs.moodle.org/35/en/Description_question_type} 
+% \href{https://docs.moodle.org/35/en/Description_question_type}
 % {Description} & & & $\bullet$ & $\bullet$ & & & &
 % & & & & & \\
 % ^^A\href{https://docs.moodle.org/35/en/Essay_question_type}{Essay} & \\\hline%
@@ -1236,22 +1236,22 @@
 % & $\bullet$ & & & $\bullet$ & $\bullet$ \\
 % \hspace{1em}Multi (inline) & $\bullet$ & & & & $\bullet$ & & &
 % & & & & $\bullet$ & $\bullet$ \\
-% \hspace{1em}Multi (horiz.) & $\bullet$ & & & & $\bullet$ & & $\bullet$ 
+% \hspace{1em}Multi (horiz.) & $\bullet$ & & & & $\bullet$ & & $\bullet$
 % & & & & & $\bullet$ & $\bullet$ \\
-% \hspace{1em}Multi (vert.) & $\bullet$ & & & & $\bullet$ & & $\bullet$ 
+% \hspace{1em}Multi (vert.) & $\bullet$ & & & & $\bullet$ & & $\bullet$
 % & & & & & $\bullet$ & $\bullet$ \\
 % \bottomrule
 % \end{tabular}
 % \end{table}
-% 
+%
 % \section{Conversion to HTML}
-% 
+%
 % \subsection{Level of Support}
 %
 % The package \pkg{moodle.sty} tries to automatically
 % convert the \LaTeX\ code included in the questions
 % into \HTML\ for web display.
-% 
+%
 % With this aim, a number of \TeX\ and \LaTeX\ macros,
 % commands, and environments undergo a tailored treatment
 % when \pkg{moodle} generates the \XML\ file. A few tables
@@ -1267,7 +1267,7 @@
 % \item other \LaTeX\ commands (e.g.~\cmd{\emph}) and environments (e.g.~\cmd{center})
 %       in Table~\vref{tab:commands_and_environments}.
 % \end{enumerate}
-% 
+%
 %^^A Inspired by https://tex.stackexchange.com/a/163717/228515
 % \begin{table}[tbp]
 % \centering
@@ -1275,7 +1275,7 @@
 % \label{tab:diacritics}
 % \begin{threeparttable}
 % \begin{tabular}{clll}
-% \toprule 
+% \toprule
 % Definition & Letter List\tnote{1} & Description & Samples\\
 % \cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}
 % \cmd{\"}\marg{letter} & a, e, i, o, u, y &
@@ -1299,7 +1299,7 @@
 % \cmd{\~}\marg{letter} & a, n, o &
 % \href{https://en.wikipedia.org/wiki/Tilde}{tilde}
 % & \~{a} \~{A} \~{n} \~{N} \~{o} \~{O}\\
-% \cmd{\b}\marg{letter} & b, d, k, l, n, t, z & 
+% \cmd{\b}\marg{letter} & b, d, k, l, n, t, z &
 % \href{https://en.wikipedia.org/wiki/Macron_below}{macron below}
 % & \b{b} \b{B} \b{d} \b{D} \b{k} \b{K} \b{l} \dots\ \b{Z}\\
 % \cmd{\c}\marg{letter} & c, s, t &
@@ -1309,7 +1309,7 @@
 % \href{https://en.wikipedia.org/wiki/Dot_(diacritic)#Underdot}{underdot}
 % & \d{a} \d{A} \d{b} \d{B}\\
 % \cmd{\H}\marg{letter} & o, u &
-% \href{https://en.wikipedia.org/wiki/Double\_acute\_accent}{double acute accent} 
+% \href{https://en.wikipedia.org/wiki/Double\_acute\_accent}{double acute accent}
 % & \H{o} \H{O} \H{u} \H{U}\\
 % \cmd{\k}\marg{letter} & a, e, i, o, u &
 % \href{https://en.wikipedia.org/wiki/Ogonek}{ogonek}
@@ -1317,7 +1317,7 @@
 % \cmd{\r}\marg{letter} & a, u &
 % \href{https://en.wikipedia.org/wiki/Ring_(diacritic)#Overring}{overring}
 % & \r{a} \r{A} \r{u} \r{U} \\
-%^^A \cmd{\t}\marg{letter} & a, b, c & tie-after accent & \t{oo}\\ 
+%^^A \cmd{\t}\marg{letter} & a, b, c & tie-after accent & \t{oo}\\
 % \cmd{\u}\marg{letter} & a, e, g, i\tnote{2}, \i, o, u &
 % \href{https://en.wikipedia.org/wiki/Breve}{breve}
 % & \u{a} \u{A} \u{e} \u{E} \u{i} \u{\i} \u{I} \u{o} \u{O} \u{u} \u{U}\\
@@ -1327,9 +1327,9 @@
 % \bottomrule
 % \end{tabular}
 % \begin{tablenotes}
-%  \item[1]  The lowercase letters listed also stand for their uppercase 
+%  \item[1]  The lowercase letters listed also stand for their uppercase
 %  equivalent.
-%  \item[2] pdf\TeX\ v3.14159265 typesets |\u{i}| with an objectionable tittle. 
+%  \item[2] pdf\TeX\ v3.14159265 typesets |\u{i}| with an objectionable tittle.
 %  Use |\u{\i}|.
 % \end{tablenotes}
 % \end{threeparttable}
@@ -1337,7 +1337,7 @@
 %
 % \begin{table}[tbp]
 % \centering
-% \caption{Text mode ligature and glyph macros undergoing a tailored conversion 
+% \caption{Text mode ligature and glyph macros undergoing a tailored conversion
 % to \HTML.}
 % \label{tab:ligatures_and_glyphs}
 % \begin{threeparttable}
@@ -1363,10 +1363,10 @@
 % \bottomrule
 % \end{tabular}
 % \begin{tablenotes}
-%  \item[1] Contrarily to most fonts, Libertine, used in this documentation and 
-%  available for instance via the package \pkg{libertine}, defines the glyph 
+%  \item[1] Contrarily to most fonts, Libertine, used in this documentation and
+%  available for instance via the package \pkg{libertine}, defines the glyph
 %  \SS.
-%  \item[2] \LaTeX\ defines the \cmd{\SS} macro but pdf\TeX\ renders it as a 
+%  \item[2] \LaTeX\ defines the \cmd{\SS} macro but pdf\TeX\ renders it as a
 %  doubled capital S.
 % \end{tablenotes}
 % \end{threeparttable}
@@ -1374,13 +1374,13 @@
 %
 % \begin{table}[tbp]
 % \centering
-% \caption{Text mode horizontal spacing and line breaking macros undergoing a 
+% \caption{Text mode horizontal spacing and line breaking macros undergoing a
 % tailored conversion to \HTML.}
 % \label{tab:spacing}
 %^^A Inspired by https://tex.stackexchange.com/a/74354/228515
 % \begin{threeparttable}
 % \begin{tabular}{ll}
-% \toprule 
+% \toprule
 % Definition & Description \\
 % \cmidrule(lr){1-1}\cmidrule(lr){2-2}
 % \cmd{\,} or \cmd{\thinspace} & narrow non-breaking space \\
@@ -1397,7 +1397,7 @@
 % \end{tabular}
 % \begin{tablenotes}
 %  \item[1] \cmd{\>} is defined in math-mode only.
-%  \item[2] \cmd{\:}, \cmd{\medspace}, \cmd{\;}, and \cmd{\thickspace} require the package 
+%  \item[2] \cmd{\:}, \cmd{\medspace}, \cmd{\;}, and \cmd{\thickspace} require the package
 %  \pkg{amsmath}.
 % \end{tablenotes}
 % \end{threeparttable}
@@ -1405,8 +1405,8 @@
 %
 % \begin{table}[tbp]
 % \centering
-% \caption{Text mode punctuation marks and symbol macros undergoing a tailored 
-% conversion to \HTML. A baseline is represented in the samples of quotations 
+% \caption{Text mode punctuation marks and symbol macros undergoing a tailored
+% conversion to \HTML. A baseline is represented in the samples of quotations
 % marks, in order to draw attention to their vertical positioning.}
 % \label{tab:symbols_and_punctuation}
 % \newsavebox\textbox
@@ -1414,7 +1414,7 @@
 % \rlap{\rule{\wd\textbox}{.1pt}}\usebox\textbox}
 % \begin{threeparttable}
 % \begin{tabular}{llc}
-% \toprule 
+% \toprule
 % Package & Definition & Sample \\
 % \cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}
 % \LaTeX\ base & \cmd{\%} & \% \\
@@ -1465,12 +1465,12 @@
 % \begin{tablenotes}
 %  \item[1] When placed in math mode, the single straight quote (\texttt{'}) is
 %           passed as-is to the XML, even when doubled (double prime symbol).
-%  \item[2] In roman type, \LuaLaTeX\ and \XeLaTeX\ typeset the double straight 
-%  quote symbol (\texttt{"}) and the command \cmd{\dq} as a double right quote 
+%  \item[2] In roman type, \LuaLaTeX\ and \XeLaTeX\ typeset the double straight
+%  quote symbol (\texttt{"}) and the command \cmd{\dq} as a double right quote
 %  (\textquotedblright). Instead,  \pkg{moodle} follows pdf\LaTeX: whatever
 %  the \TeX\ engine used, the double straight quote (\texttt{"}) is passed to the \XML.
-%   \item[3] The way \cmd{\og} and \cmd{\fg} are typeset in the \PDF\ depends on the 
-%   current babel language. Regardless, \pkg{moodle} passes the symbols 
+%   \item[3] The way \cmd{\og} and \cmd{\fg} are typeset in the \PDF\ depends on the
+%   current babel language. Regardless, \pkg{moodle} passes the symbols
 %   \texttt{\guillemotleft} and \texttt{\guillemotright} to the \XML.
 % \end{tablenotes}
 % \end{threeparttable}
@@ -1504,14 +1504,14 @@
 % \pkg{babel}, opt. \optn{french} & \cmd{\fup}\marg{\dots} &\\
 % & \cmd{\up}\marg{\dots} &\\
 % \cmidrule(lr){1-1}
-% \pkg{graphics} or \pkg{graphicx} & 
+% \pkg{graphics} or \pkg{graphicx} &
 % \cmd{\includegraphics}\oarg{\dots}\marg{\dots} \\
 % \cmidrule(lr){1-1}
 % \pkg{tikz} & \cmd{\tikz}\oarg{\dots}\marg{\dots} & \env{tikzpicture}\oarg{\dots} \\
 % \cmidrule(lr){1-1}
 % \pkg{verbatim} & \cmd{\verbatiminput}\marg{\dots} &\\
 % \cmidrule(lr){1-1}
-% \pkg{fancyverb} or 
+% \pkg{fancyverb} or
 % \pkg{fvextra}& \cmd{\VerbatimInput}\oarg{\dots}\marg{\dots} &\\
 % & \cmd{\LVerbatimInput}\oarg{\dots}\marg{\dots} &\\
 % & \cmd{\BVerbatimInput}\oarg{\dots}\marg{\dots}& \\
@@ -1520,7 +1520,7 @@
 % \bottomrule
 % \end{tabular}
 % \end{table}
-% 
+%
 % In addition, |<| and |>| will be converted to |&lt;| and |&gt;| \emph{within math mode only}.
 % If they should be typed outside of math mode, they will be passed as typed to
 % the \HTML, and probably be filtered by \Moodle\ or interpreted by the web browser
@@ -1528,15 +1528,15 @@
 %
 % A doubled dash will be converted to en-dash |&ndash;| \emph{outside math mode}.
 % Empty groups |{}| will be passed to the XML only \emph{in math mode}.
-% 
+%
 % Be aware that, apart what is described previously, \pkg{moodle} \emph{does
 % not know how to convert any other \TeX\ or \LaTeX\ commands to \HTML.}
 % If other sequences are used, they may be passed verbatim to the \XML\ file
 % or may cause unpredicted results.
 %
 % If you think of another \LaTeX\ command that should be changed to an HTML
-% equivalent, please have a look at Section~\vref{sec:dev}. 
-% 
+% equivalent, please have a look at Section~\vref{sec:dev}.
+%
 % \DescribeMacro[question,answer,feedback]{\htmlonly}\oarg{Content for traditional output}
 % \marg{HTML content} is a command to be used inside question environments (text,
 % answers, or feedback). It lets you pass directly code to the \XML\ file while being
@@ -1556,7 +1556,7 @@
 % \DescribeMacro[moodle]{\htmlregister}\marg{command} is a command that lets you
 % specify a macro that must be expanded in the \XML\ file. It works only when
 % the macro is defined without optional argument.\watchout
-% 
+%
 % \DescribeMacro[moodle]{\moodleregisternewcommands}
 % When the list of user-defined macros is long, it becomes cumbersome to
 % record them individually for expansion. Calling \cmd{\moodleregisternewcommands}
@@ -1565,16 +1565,16 @@
 % commands are automatically expanded by \pkg{moodle}.
 % Again, this works only if the macros are defined \emph{without} optional
 % argument.\watchout
-% 
+%
 % \subsection{Graphics}
 % The \pkg{moodle} package can handle two kinds of graphics seamlessly.
 % External graphics files may be included with the \cmd{\includegraphics} command
-% from the \pkg{graphicx} package, and graphics may be generated internally using \TikZ. 
+% from the \pkg{graphicx} package, and graphics may be generated internally using \TikZ.
 % In either case, the graphics will be embedded in base-64 encoding directly within
 % the \Moodle\ \XML\ produced.  This prevents the hassle of managing separate
-% graphics files on the \Moodle\ server, as \Moodle\ will store the picture 
+% graphics files on the \Moodle\ server, as \Moodle\ will store the picture
 % within the question in the question bank.
-% 
+%
 % \subsubsection{Default \texttt{includegraphics}}
 %
 % \DescribeMacro[graphics,graphicx]{\includegraphics}\oarg{options}\marg{file} can be used to
@@ -1585,15 +1585,15 @@
 % but not the \XML\ output.
 % The dimensions set by \optn{height} and \optn{width} are \TeX\ dimensions such as
 % \texttt{4\,in} or \texttt{2.3\,cm}.
-% In order to prepare the image for web viewing, this package converts those 
-% dimensions to pixels using a default of 
+% In order to prepare the image for web viewing, this package converts those
+% dimensions to pixels using a default of
 % 103 pixels per inch.\footnote{This
-%   number was selected because an image with 
-%   |<IMG HEIGHT=103 WIDTH=103 SRC="...">| showed up as almost exactly 1 inch 
-%   tall and 1 inch wide on several of this author's devices and browsers 
+%   number was selected because an image with
+%   |<IMG HEIGHT=103 WIDTH=103 SRC="...">| showed up as almost exactly 1 inch
+%   tall and 1 inch wide on several of this author's devices and browsers
 %   as of January 2016.}
 % \DescribeKey[includegraphics]{ppi}
-% That value may be changed by setting the \optn{ppi} key (e.g., \texttt{ppi=72}); 
+% That value may be changed by setting the \optn{ppi} key (e.g., \texttt{ppi=72});
 % this is probably best done for the entire document with a \cmd{\moodleset} command,
 % rather than image-by-image.
 %
@@ -1603,7 +1603,7 @@
 % A special rule was added for the inclusion of \GIF\ pictures (\filenm{.gif} extension).
 % These files are passed as-is to the \XML, preserving potential animations.
 % However, as pdf\TeX\ engines do not support the \GIF\ format, the picture is
-% passed to the \PDF\ output after a conversion to the \PNG\ format. When the \GIF\ 
+% passed to the \PDF\ output after a conversion to the \PNG\ format. When the \GIF\
 % file is animated, only its first frame is passed to the \PDF.
 %
 %^^A \DescribeMacro[moodle]{\DeclareGraphicsAlien} Users may declare other graphic
@@ -1613,7 +1613,7 @@
 % \subsubsection{\TikZ\ Pictures}
 % \TikZ\ is a user-friendly syntax layer for \acro{PGF}, the macro \LaTeX\ package for creating
 % graphics. More information on \TikZ\ can be found at \url{https://ctan.org/pkg/pgf}.
-% 
+%
 % When \TikZ\ is loaded and used to define pictures, \pkg{moodle} invokes
 % the \pkg{external} \TikZ\ library, so that each \env{tikzpicture} environment is compiled
 % to a freestanding \PDF\ file.
@@ -1646,7 +1646,7 @@
 % \begin{enumerate}
 %   \item \prog{GhostScript} (\url{www.ghostscript.com}) is used to convert the \PDF\ output
 %         from \TikZ\ into a \PNG\ raster graphics file.
-%         The default command line is presumed to be \prog{gswin64c.exe} 
+%         The default command line is presumed to be \prog{gswin64c.exe}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %         (if |\ifwindows| from the \pkg{ifplatform} package returns true)
 %         or \prog{gs} (if |\ifwindows| returns false).
@@ -1668,11 +1668,11 @@
 %         \DescribeMacro[moodle]{\optipngcommand}\cmd{\optipngcommand}\marg{executable filename}.
 % \end{enumerate}
 
-% 
+%
 % Please note the following vital points to make the graphics handling work:
 % \begin{itemize}
 %   \item As of now, graphics are only supported when compiling directly to a \PDF\
-%         with (\prog{pdf}\mid\prog{xe}\mid\prog{lua})\prog{latex}. Including \acro{PS} graphics or using \TikZ\ with the \DVI$\to$\acro{PS} workflow is not
+%         with (\prog{pdf}$\mid$\prog{xe}$\mid$\prog{lua})\prog{latex}. Including \acro{PS} graphics or using \TikZ\ with the \DVI$\to$\acro{PS} workflow is not
 %         yet supported.
 %^^A   \item Filenames should not contains spaces or, under windows, special characters like |_| or |\|.
 %   \item You must have \prog{Ghostscript} and \prog{ImageMagick} installed on your system
@@ -1681,7 +1681,7 @@
 %         impact on the compilation process: \PNG\ files are passed unoptimized to the \XML\ output.
 %   \item \LaTeX\ must be able to call system commands; that is, \cmd{\write18} must be enabled.
 %         For Mik\TeX, this means adding \progcode{--enable-write18} to the command line of
-%         (\prog{pdf}\mid\prog{xe}\mid\prog{lua})\prog{latex}; for \TeX\ Live, this means adding \progcode{--shell-escape=true}.
+%         (\prog{pdf}$\mid$\prog{xe}$\mid$\prog{lua})\prog{latex}; for \TeX\ Live, this means adding \progcode{--shell-escape=true}.
 %   \item Due to security issues with old versions of \prog{Ghostcript}, some systems default to a
 %         policy that prevents the conversion of \PDF\ and \acro{PS} to \PNG. Assuming that, as a user of
 %         \pkg{moodle} which requires shell escape capabilities, you either use a sandboxed
@@ -1699,7 +1699,7 @@
 % \paragraph{Important Notice}\watchout[experimental] \emph{The \optn{svg} option is
 % an experimental feature introduced in \pkg{moodle} v0.8. It has been tested only
 % under Linux and Windows, with TeX Live 2020, Inkscape v1.0.1 and Scour 0.38.2.}
-% 
+%
 % \DescribeOption[moodle]{svg} The \pkg{moodle} package admits an experimental
 % \optn{svg} option which has the following effects:
 % \begin{itemize}
@@ -1720,7 +1720,7 @@
 %   \end{itemize}
 % \end{itemize}
 %
-% 
+%
 % The call of external \SVG\ manipulation utilities can be modified using the macros:
 % \begin{description}
 %   \item \ItemDescribeMacro[svg]{\PDFtoSVGcommand}\ for conversion
@@ -1733,13 +1733,13 @@
 %
 % \subsection{Verbatim Code}
 %
-% Because, for \HTML\ translation, \pkg{moodle} parses the body of questions, the use of 
+% Because, for \HTML\ translation, \pkg{moodle} parses the body of questions, the use of
 % verbatim code results in compilation errors. This is why the use of |\verb|,
 % \env{verbatim} and other standard utilities is not supported.
 %
 % However, using the following three utilities, verbatim code can be imported from an external file:
 % \begin{enumerate}
-%   \item \cmd{\verbatiminput}\marg{filename}\DescribeMacro[verbatim]{\verbatiminput}\ 
+%   \item \cmd{\verbatiminput}\marg{filename}\DescribeMacro[verbatim]{\verbatiminput}\
 %         from the \pkg{verbatim} package inserts verbatim code in both the \PDF\ and the
 %         \acro{XML} for \Moodle, without fancy additions.
 %   \item The macro \cmd{\VerbatimInput}\marg{options}\marg{filename}
@@ -1750,7 +1750,7 @@
 %         \DescribeMacro[fancyvrb,fvextra]{\LVerbatimInput}\cmd{\LVerbatimInput} are also supported,
 %         with no difference on the \XML\ output.
 %         The variants with a star are unsupported and result in errors when used.
-%   \item On top of that \cmd{\inputminted}\oarg{options}\marg{lang}\marg{filename}\ 
+%   \item On top of that \cmd{\inputminted}\oarg{options}\marg{lang}\marg{filename}\
 %         \DescribeMacro[minted]{\inputminted} from the \pkg{minted} package offers syntax
 %         highlighting tailored to the specified language.
 % \end{enumerate}
@@ -1798,7 +1798,7 @@
 % to use, outside the scope of the \pkg{moodle} questions, the environments \env{filecontents*}
 % (from the \pkg{filecontents} package or \LaTeX\ kernel itself since 2019) or \env{VerbatimOut}
 % (from the \pkg{fancyvrb} and \pkg{fvextra} packages).
-% 
+%
 % Here is an example:
 % \begin{VerbatimOut}[gobble=2]{minted.doc.out}
 %   \documentclass[12pt,a4paper]{article}
@@ -1842,7 +1842,7 @@
 %   \end{document}
 % \end{VerbatimOut}
 % \inputminted[gobble=2,frame=lines]{latex}{minted.doc.out}
-% 
+%
 % When code decorated with left-side line numbers is placed in question items, the output \PDF\ could
 % show a collision between numbers of the item and the first line. To avoid this, \cmd{\LVerbatimInput} or
 % \cmd{\BVerbatimInput} can be used. Instead, when \pkg{minted} is used, the ``left-right'' mode can be
@@ -1858,20 +1858,20 @@
 %   |       framesep=3mm,numbersep=9pt}|
 % \end{quote}
 % These settings can be overridden using \cmd{\fvset} after the preamble.
-% 
+%
 % \section{Internationalization}
-% 
+%
 % This section is intended for authors of \Moodle\ quizzes writing in one or several
 % languages other than English. It seems reasonable to assume that those users have heard
 % of the packages \pkg{babel} or \pkg{polyglossia} (\XeTeX\ or \LuaTeX\ only), that
 % both aim at enforcing language-related rules to \LaTeX\ documents.
-% 
+%
 % The contents of the \XML\ file that is generated by \pkg{moodle} depends entirely
 % on the user input and \Moodle's \XML\ syntax: there is little room for \pkg{moodle} to
 % internationalize something here. Instead, the focus of this section  is the \PDF\
 % typesetting that is determined by \pkg{moodle}, where some internalization
 % efforts can be of help.
-% 
+%
 % Both \pkg{babel} and \pkg{polyglossia} provide ways of specifiying a language for
 % the document or a part of it. If one of these packages is loaded in the preamble,
 % \pkg{moodle} will automatically load the package \pkg{translator} and rely on it
@@ -1914,7 +1914,7 @@
 % \hline\multicolumn{2}{r}{\textit{Continued on next page}} \\
 % \endfoot
 % \bottomrule
-% \endlastfoot	
+% \endlastfoot
 % \optn{True} & indicates option ``True'' in a True/False question.\\
 % \optn{False} & indicates option ``False'' in a True/False question.\\
 % \optn{cloze} & tag indicating a ``cloze'' question.\\
@@ -1965,7 +1965,7 @@
 % \end{center}
 %
 % \section{Package Development}\label{sec:dev}
-% 
+%
 % \subsection{Feature Requests, Bug Reports, and Contributions}
 %
 % This package is developed as a collaborative project, currently hosted
@@ -2005,7 +2005,7 @@
 % \end{enumerate}
 %
 % \subsection{Known Limitations}
-% 
+%
 % When using with pdf\TeX\ for compilation, \pkg{moodle} supports
 % question contents with \acro{ASCII} characters only. The use of
 % non-\acro{ASCII} characters may work in some cases but will most
@@ -2013,7 +2013,7 @@
 %
 % Instead, \pkg{moodle} will work flawlessly when \XeTeX\ and
 % \LuaTeX\ are used to compile \UTF-8 encoded documents.
-% 
+%
 % Table~\vref{tab:support-limitations} lists
 % some features supported, limitations, and bugs.
 %\begin{table}[tbp]
@@ -2052,23 +2052,23 @@
 %\hspace{1em}Multi (vertical) & yes & yes & yes \\\bottomrule
 %\end{tabular}
 %\begin{tablenotes}
-%\item[1] \Moodle\ prompts the student for an answer and then compares it to the 
+%\item[1] \Moodle\ prompts the student for an answer and then compares it to the
 %solutions provided. This is text-only.
-%\item[2] \Moodle\ uses a dropdown list to let one choose among the possible 
+%\item[2] \Moodle\ uses a dropdown list to let one choose among the possible
 %answers. This forbids either picture inclusion and \LaTeX\ rendering.
-%\item[3] Not supported by \Moodle\ (in this context, answer-specific feedback 
+%\item[3] Not supported by \Moodle\ (in this context, answer-specific feedback
 %represents lots of possible combinations).
-%\item[4] The drag-and-drop-matching plugin seems broken before version 1.6 
-%20190409. \Moodle's \XML\ import fails with a \texttt{dmlwriteexception} when 
-%the field content exceeds few hundreds characters. This prevents the inclusion 
+%\item[4] The drag-and-drop-matching plugin seems broken before version 1.6
+%20190409. \Moodle's \XML\ import fails with a \texttt{dmlwriteexception} when
+%the field content exceeds few hundreds characters. This prevents the inclusion
 %of most base64 images and maybe some complicated equations.
-%\item[5] For this question type and in the context of \XML\ generation, the 
-%Answer column represents the ``template" while the Feedback column represents 
-%the ``notes for the grader". Obviously, the grading process is not automatic 
+%\item[5] For this question type and in the context of \XML\ generation, the
+%Answer column represents the ``template" while the Feedback column represents
+%the ``notes for the grader". Obviously, the grading process is not automatic
 %and there is no answer-specific feedback.
-%\item[6] Picture and \LaTeX\ rendering could be done, but only after 
+%\item[6] Picture and \LaTeX\ rendering could be done, but only after
 %submission and only if the keyval ``response format" is set to ``html".
-%\item[7] \Moodle\ only reveals the feedback when hovering the checkmark or X 
+%\item[7] \Moodle\ only reveals the feedback when hovering the checkmark or X
 %mark with the mouse.
 %\end{tablenotes}
 %\end{threeparttable}
@@ -2077,46 +2077,46 @@
 % Some features of \Moodle\ quizzes have not yet been implemented in \pkg{moodle}.
 % Here is a non-exhaustive list.
 % \begin{itemize}
-%   \item \Moodle's feature of designating feedback for correct, 
+%   \item \Moodle's feature of designating feedback for correct,
 %         partially correct, and incorrect answers.
-%^^A   \item Calculated questions; that is, automatically generated \env{numerical} questions 
+%^^A   \item Calculated questions; that is, automatically generated \env{numerical} questions
 %^^A         using randomly chosen numbers.
 %   \item Hints
 %   \item Units handling in \env{numerical} questions
 % \end{itemize}
 %
 % \subsection{Compatibility}
-% This package has been originally written for and tested with the implementation of 
+% This package has been originally written for and tested with the implementation of
 % \Moodle\ 2.9 run by Moodlerooms for St.~Norbert College in January 2016.
 % Since then, it has been successfully combined with \Moodle\ 3.5.
-% 
+%
 % The package option \optn{LMS} lets you specify the targeted \Moodle\ version
 % and helps ensuring compatibility.
-% 
+%
 % As the ultimate purpose of this package is the generation of \XML\ files,
-% future versions of \pkg{moodle} will attempt to maintain backwards 
+% future versions of \pkg{moodle} will attempt to maintain backwards
 % compatibility with earlier versions regarding the \XML\ output, apart from
 % bug fixes.
 % Backwards compatibility of the \PDF\ output is not yet guaranteed, however,
-% in case the author or users discover better ways for the \PDF\ to display 
+% in case the author or users discover better ways for the \PDF\ to display
 % the underlying \XML\ data to be proofread.
-% 
-% In other words, compiling your current \filenm{.tex} file with a future version 
-% of \pkg{moodle} should produce the same \XML\ file it does now 
+%
+% In other words, compiling your current \filenm{.tex} file with a future version
+% of \pkg{moodle} should produce the same \XML\ file it does now
 % (apart from bug fixes),
 % but it might produce a more informative, and hence different,
 % \PDF\ output.
-% 
+%
 % \subsection{Unrelated Tip: Quality of \Moodle\ \TeX\ Images}
 % This has nothing to do with \pkg{moodle}, but is a Frequently Asked Question
 % in is own right.
-% On some servers, at least, \Moodle's default ``\TeX\ Filter'' for 
+% On some servers, at least, \Moodle's default ``\TeX\ Filter'' for
 % displaying mathematical notation is of abysmally poor quality, rending mathematics
-% as low-resolution \PNG's.  One solution that has worked for me is to go 
+% as low-resolution \PNG's.  One solution that has worked for me is to go
 % to ``Course Administration $\to$ Filters,'' turn ``\TeX\ Notation'' \emph{off},
 % but turn ``MathJax'' \emph{on}.  This forces \TeX\ code to be rendered by MathJax
 % instead of \Moodle, producing much higher-quality results.
-% 
+%
 % ^^A\clearpage
 % \changes{v0.5}{2016/01/05}{Initial version}
 % \changes{v0.6}{2019/02/18}{Bug-fixing release}
@@ -2156,13 +2156,13 @@
 %             ^^Ais modified.
 %       \item \XML\ stamp exposes compilation time.
 %       \item Labels of proposed answers now following \Moodle's convention
-%             (\emph{1., 2., \dots}) in the \PDF\ typesetting of \env{multi} questions. 
+%             (\emph{1., 2., \dots}) in the \PDF\ typesetting of \env{multi} questions.
 %       \item Automatic sanction mechanism for incorrect choices in \env{multi}
 %             questions with multiple answers allowed. Now applies also inside
 %             \env{cloze} questions.
 %       \item In \env{cloze} subquestions, non-integer fractions are rounded.
 %       \item Rewording of some indications in the \PDF, related to internationalization.
-%       \item The answers of \env{matching} questions are now converted to \HTML\ 
+%       \item The answers of \env{matching} questions are now converted to \HTML\
 %              (accents and \cmd{\htmlonly} in mind).
 %     \removed
 %       \item Support for non-\acro{ASCII} characters abandoned when compiling
@@ -2396,7 +2396,7 @@
 %\RequirePackage{trimspaces} %To remove extra spaces from strings (loaded by environ)
 \@ifpackageloaded{iftex}{}{\RequirePackage{iftex}}
 % iftex already required by recent versions of ifplatform. Needed to know:
-%     1) whether we can convert output from PDF to \PNG\ (ifpdf), 
+%     1) whether we can convert output from PDF to \PNG\ (ifpdf),
 %     2) when output pdf is latin1-encoded (ifpdf)
 %     3) when output xml is utf8-encoded (if?tex)
 \@ifundefined{ifeTeX}{% version of 'iftex' prior to November 2019.
@@ -2536,10 +2536,10 @@
   \immediate\closeout\moodle@outfile
 }%
 %    \end{macrocode}
-% 
+%
 % To both make this \filenm{.sty} file and the \XML\ output more readable,
 % we create a mechanism for writing to the output file with indents.
-% The macro |\calculateindent|\marg{$n$} globally defines 
+% The macro |\calculateindent|\marg{$n$} globally defines
 % |\moodle@indent| to be a string of \meta{$n$} |\otherspace|'s.
 %    \begin{macrocode}
 \newcount\moodle@indentnum
@@ -2559,7 +2559,7 @@
   \fi
 }%
 %    \end{macrocode}
-% Now the command |\writetomoodle|\oarg{n}\marg{stuff} adds the line 
+% Now the command |\writetomoodle|\oarg{n}\marg{stuff} adds the line
 % ``\meta{stuff}'' to the \XML\ file
 % preceded by an indent of \meta{n} spaces.
 % Note that this command |\edef|'s its second argument.
@@ -2646,7 +2646,7 @@
   \let\setsubcategory\relax
 }%
 
-%    \end{macrocode}                       
+%    \end{macrocode}
 % The next utility takes a single macro control sequence |#1|,
 % and allows that macro's current value to persist
 % after the next |\egroup|, |}|, or |\endgroup|.
@@ -2655,10 +2655,10 @@
   \xa\xa\xa\gdef\xa\xa\csname moodle@remember@\string#1\endcsname\xa{\xa\def\xa#1\xa{#1}}%
   \xa\aftergroup\csname moodle@remember@\string#1\endcsname
 }
-%    \end{macrocode}                       
+%    \end{macrocode}
 %
 % \subsubsection{Main Switch: to create \XML\ or not}
-% 
+%
 %    \begin{macrocode}
 \long\def\@moodle@ifgeneratexml#1#2{%
   % If we are generating \XML, do #1; otherwise do #2.
@@ -2692,7 +2692,7 @@
 %    \end{macrocode}
 %
 % \subsection{Key-Value Pairs for Quiz Questions}
-% 
+%
 % The various options are set using key-value syntax of |xkeyval|.
 %    \begin{macrocode}
 \def\moodleset#1{\setkeys{moodle}{#1}}%
@@ -2702,12 +2702,12 @@
 % creates a macro |\moodle@write|\meta{name}, taking no parameters,
 % which writes the code |<|\meta{HTML tag}|>...</|\meta{HTML tag}|>|
 % to the output \XML\ file.
-% 
+%
 % The ordinary version |\generate@moodle@write@code| passes its output text |#3|
 % through the HTMLizer, producing \HTML\ code, while the starred variant
 % |\generate@moodle@write@code*| passes |#3| verbatim as text.
-% 
-% For example, 
+%
+% For example,
 % |\generate@moodle@write@code{excuse}<EXC>{\theexcuse}|
 % would expand to
 % \begin{Verbatim}[gobble=4,frame=single]
@@ -2723,7 +2723,7 @@
 %     \fi
 %   }%
 % \end{Verbatim}
-% but 
+% but
 % |\generate@moodle@write@code*{excuse}<EXC>{\theexcuse}|
 % would expand only to
 % \begin{Verbatim}[gobble=4,frame=single]
@@ -2950,18 +2950,18 @@
                           \def\moodle@numbering{IIII}\fi
                         }%
       %'answer numbering' will be a synonym to 'numbering'
-      \define@key{moodle}{answer numbering}[abc]{\setkeys{moodle}{numbering={#1}}}% 
+      \define@key{moodle}{answer numbering}[abc]{\setkeys{moodle}{numbering={#1}}}%
       \generate@moodle@write@code*{answernumbering}<answernumbering>{\moodle@numbering}%
       %N.B. if we did not set the default here, then \moodle@numbering would be undefined, causing problems.
-      \moodleset{answer numbering=abc}% 
-      
+      \moodleset{answer numbering=abc}%
+
       \def\@moodle@alpha{alpha}%
       \def\@moodle@Alpha{Alpha}%
       \def\@moodle@alph{alph}%
       \def\@moodle@Alph{Alph}%
       \def\@moodle@arabic{arabic}%
       \def\@moodle@roman{roman}%
-      \def\@moodle@Roman{Roman}%      
+      \def\@moodle@Roman{Roman}%
       \def\@moodle@abc{abc}%
       \def\@moodle@ABCD{ABCD}%
       \def\@moodle@arabicnumbers{123}%
@@ -2989,11 +2989,11 @@
           \renewcommand\labelenumii{$\bullet$~}%
         \fi
       }
-      %TODO: * In the PDF, how should 'none' in a multi look different from 
+      %TODO: * In the PDF, how should 'none' in a multi look different from
       %         short answer or numerical options?
       %       * Instead of \theenumi and \labelenumi,
       %         use \@enumdepth to automatically set the correct depth.
-      
+
 %% DISPLAY MODE -- affects Cloze multiple choice questions only.
       % 0 = inline, 1 = vertical, 2 = horizontal
       \def\moodle@multi@mode{0}%
@@ -3143,7 +3143,7 @@
 %    \end{macrocode}
 %
 % \subsection{Answer handling}
-% 
+%
 %    \begin{macrocode}
 %The Answers \XML\ depends heavily on the question type.
 %Each type of question defines how it obtains answers from the LaTeX input,
@@ -3173,7 +3173,7 @@
 %    \end{macrocode}
 %
 % \subsubsection{Not yet implemented}
-% 
+%
 %    \begin{macrocode}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -3196,14 +3196,14 @@
 %
 % \subsection{Front Ends}
 % This section creates the user interface for the various question types.
-% First, we define a generic command to create 
+% First, we define a generic command to create
 % a front-end environment for a Moodle question type.
 % In order to function, the following macros must be hard-coded:
 % \begin{itemize}
-%   \item |\moodle@|\meta{type}|@latexprocessing|: 
+%   \item |\moodle@|\meta{type}|@latexprocessing|:
 %     Loops through the saved |\item|'s to typeset them in LaTeX,
 %     usually inside an itemize or enumerate environment.
-%   \item |\save|\meta{type}|answer#1|: 
+%   \item |\save|\meta{type}|answer#1|:
 %     Processes the text of a single |\item| to save the information to memory,
 %     usually inside |\moodle@answers@xml|.
 %   \item |\write|\meta{type}|question|:
@@ -3211,14 +3211,14 @@
 %     into the \XML\ file.
 % \end{itemize}
 % For example, to create the `shortanswer' question type,
-% we shall call 
+% we shall call
 % \begin{Verbatim}[gobble=5,frame=single]
 %    \moodle@makefrontend{shortanswer}
 %    \def\moodle@shortanswer@latexprocessing{...}
 %    \def\saveshortansweranswer#1{...}
 %    \def\writeshortanswerquestion{...}
 % \end{Verbatim}
-% 
+%
 %    \begin{macrocode}
 
 \def\moodle@makelatextagbox#1{%
@@ -3342,7 +3342,7 @@
 % \subsubsection{Essay Question Front-End}
 % The front end is not yet created by |\moodle@makefrontend| because of
 % what must must be done with the |\item|'s.
-% 
+%
 %    \begin{macrocode}
 \def\moodle@essay@latexprocessing{%
   % Moodle cannot automatically grade an essay,
@@ -3511,7 +3511,7 @@
 %    \end{macrocode}
 %
 % \subsubsection{Short Answer Question Front-End}
-% 
+%
 %    \begin{macrocode}
 %\NewEnviron{shortanswer}[2][]{%
 %   \bgroup
@@ -3534,7 +3534,7 @@
 %       \bgroup
 %         \gdef\moodle@answers@xml{}%
 %         \setkeys{moodle}{feedback={}}%
-%         \xa\loopthroughitemswithcommand\xa{\csname 
+%         \xa\loopthroughitemswithcommand\xa{\csname
 %         saveshortansweranswer\endcsname}%
 %         \passvalueaftergroup{\moodle@answers@xml}%
 %       \egroup
@@ -3626,7 +3626,7 @@
 %    \end{macrocode}
 %
 % \subsubsection{Numerical Question Front-End}
-% 
+%
 %    \begin{macrocode}
 \moodle@makefrontend{numerical}{\moodle@makelatextag@numerical}%
 
@@ -3699,7 +3699,7 @@
      \moodle@checkfraction
      \addto@xml[2]{\moodle@answers@xml}{<answer fraction="\moodle@fraction" format="plain_text">}%
      \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext</text>}%
-     
+
      \ifx\moodle@answertext\@star\else
        \addto@xml[4]{\moodle@answers@xml}{  <tolerance>\moodle@tolerance</tolerance>}%
      \fi
@@ -3723,7 +3723,7 @@
 %    \end{macrocode}
 %
 % \subsubsection{Multiple Choice Question Front-End}
-% 
+%
 %    \begin{macrocode}
 %Multiple choice has the structure
 % \begin{multi}[options]{name}%
@@ -3904,7 +3904,7 @@
   \else% automatic score (not in advanced score mode)
     \global\divide\moodle@autoscore@tmp by \c@moodle@NumStarredAnswers\relax%
   \fi
-  \xdef\moodle@AutoScore{\strip@pt\moodle@autoscore@tmp}%  
+  \xdef\moodle@AutoScore{\strip@pt\moodle@autoscore@tmp}%
 }
 \long\def\moodle@InspectMultipleAnswers@a#1{%
   %The grouping is to keep key answer-specific key changes local.
@@ -4052,7 +4052,7 @@
 %    \end{macrocode}
 %
 % \subsubsection{True/False Question Front-End}
-% 
+%
 %    \begin{macrocode}
 % True/False has structure
 % \begin{truefalse}[options]{name}%
@@ -4290,7 +4290,7 @@
 %    \end{macrocode}
 %
 % \subsubsection{Matching Question Front-End}
-% 
+%
 %    \begin{macrocode}
 %\let\answer=\hfill
 
@@ -4438,7 +4438,7 @@
 %     \ifx\moodle@feedback\@empty\relax\else
 %       \trim@spaces@in\moodle@feedback
 %       \xa\converttohtmlmacro\xa\moodle@feedback@html\xa{\moodle@feedback}%
-%       \addto@xml[4]{\moodle@answers@xml}{  <feedback 
+%       \addto@xml[4]{\moodle@answers@xml}{  <feedback
 %format="html"><text><![CDATA[<p>\moodle@feedback@html</p>]]></text></feedback>}%
 %     \fi
      \addto@xml[2]{\moodle@answers@xml}{</subquestion>}%
@@ -4461,11 +4461,11 @@
 % \subsection{Cloze Questions}
 % Because cloze questions are so complicated, they get their own section of code.
 % The cloze strategy is as follows.
-% 
+%
 % All subquestions show up as part of the question body text.
 % For each type of subquestion, we have a cloze-version environment
 % that actually has 2 versions, depending on whether we are doing LaTeX or \XML\ processing.
-% So the main environment is quite typical: 
+% So the main environment is quite typical:
 % \begin{enumerate}
 %   \item Process the body as LaTeX.
 %         During this run, a |\begin{multi}| etc.~will be processed for display onscreen.
@@ -4578,7 +4578,7 @@
 %    \end{macrocode}
 %
 % \subsubsection{Cloze Multiple Choice Questions}
-% 
+%
 %    \begin{macrocode}
 \NewEnviron{clozemulti}[1][]{%
   \bgroup
@@ -4825,7 +4825,7 @@
 %    \end{macrocode}
 %
 % \subsubsection{Cloze Numerical Questions}
-% 
+%
 %    \begin{macrocode}
 \NewEnviron{clozenumerical}[1][]{%
   \bgroup
@@ -4944,7 +4944,7 @@
 %    \end{macrocode}
 %
 % \subsubsection{Cloze Short Answer Questions}
-% 
+%
 %    \begin{macrocode}
 \NewEnviron{clozeshortanswer}[1][]{%
   \bgroup
@@ -5051,9 +5051,9 @@
 %    \end{macrocode}
 %
 % \section{Converting \LaTeX\ to HTML}
-% A lot of work must now be done to convert the \LaTeX\ code 
+% A lot of work must now be done to convert the \LaTeX\ code
 % of a question or answer into \HTML\ code with embedded \TeX\ for math.
-% 
+%
 % \subsection{Catcode Setup}
 % First, we create versions of the special characters with catcode 12, ``other.''
 %    \begin{macrocode}
@@ -5085,7 +5085,7 @@
 %
 % Next, we define commands to change catcodes to a suitable verbatim mode
 % for transcription.
-% 
+%
 %    \begin{macrocode}
 { \catcode`\[=1\relax
   \catcode`\]=2\relax
@@ -5133,17 +5133,17 @@
 %    \end{macrocode}
 %
 % \subsection{Detokenization and Retokenization}
-% 
+%
 % We will be processing a \TeX\ token list.
-% Based on its content, sometimes we will want it to be detokenized to 
+% Based on its content, sometimes we will want it to be detokenized to
 % individual characters, but other times we want it retokenized so that
 % \TeX's own parsing mechanism can gather up the parameters of macros.
 % We use the e\TeX\ primitive command |\scantokens| to do this.
-% 
+%
 % The following code (catcodes, groupings and all) defines a |\scantokens@to@macro| macro.
 % That will assemble and disassemble strings of tokens
 % using any changing schemes of catcodes we desire.
-% 
+%
 % We define |^^A| to be |\gdef\stm@saved|, while |^^B| and |^^C| are substitutes for |{| and |}|, respectively.
 % This permits us to define |\scantokens@to@macro| in a peculiar catcode regime.
 %    \begin{macrocode}
@@ -5211,9 +5211,9 @@
 %    \end{macrocode}
 %
 % \subsection{Separation}
-% 
+%
 % This code separates a string of tokens into two parts.
-% Its parameters, |#1#2|, consist of tokenized text, 
+% Its parameters, |#1#2|, consist of tokenized text,
 % plus one terminal |\@htmlize@stop|.
 % We are trying to break up the text into its first group and the remainder.
 % This |\@htmlize@stop| is needed in case |#2| has the form ``|{...}|'',
@@ -5234,16 +5234,16 @@
 %    \end{macrocode}
 %
 % The next line creates the macro |\htmlize@remove@stopcode|,
-% which removes the characters ``|\@htmlize@stop |'' from the end of a 
+% which removes the characters ``|\@htmlize@stop |'' from the end of a
 % detokenized sequence.
 % Its syntax when called is simply |\htmlize@remove@stopcode |\meta{material},
 % with no delimiters, since the ``|\@htmlize@stop |'' is itself the delimiter.
 %    \begin{macrocode}
 \xa\def\xa\htmlize@remove@stopcode\xa#\xa1\@htmlize@stop@detokenized{#1}%
 %    \end{macrocode}
-% 
+%
 % \subsection{Main Code: the HTMLizer}
-% 
+%
 %    \begin{macrocode}
 \newif\ifhtmlizer@active
 \htmlizer@activefalse
@@ -5560,9 +5560,9 @@
 \def\@rsinglequote{'}%
 \def\@doublequote{"}%
 %    \end{macrocode}
-% 
+%
 % \subsection{Math Mode handling}
-% 
+%
 % In the following, note that the |\|\meta{*}|mathrightdelim|'s gobble an argument.
 % This is so ``|$a$ is...|" can turn into
 %       ``\ldots |a\|\meta{*}|mathrightdelim{} is...|"
@@ -5620,16 +5620,16 @@
 }
 
 %    \end{macrocode}
-% 
+%
 % \subsection{Engines for Control Sequences}
-% 
+%
 % There are three kinds of control sequences that need special handling:
 % \begin{enumerate}
 %   \item Action environments
 %   \item Action command sequences
 %   \item Expansion macros
 % \end{enumerate}
-% 
+%
 % \subsubsection{Engine for running action environments}
 %    \begin{macrocode}
 \long\def\htmlize@do@actionenv#1#2\@htmlize@stop\htmlize@actionsequence@rdelim{%
@@ -5660,9 +5660,9 @@
 
 \def\htmlize@activate@environments{}%
 %    \end{macrocode}
-% 
+%
 % \subsubsection{Engine for running action command sequences}
-% 
+%
 % The following automatically adds the ``engine'' to do the command
 % and then resume processing the \LaTeX\ into \HTML.
 % It uses the |xpatch| package, which says it works with anything
@@ -5738,9 +5738,9 @@
   }%
 }
 %    \end{macrocode}
-% 
+%
 % \subsubsection{Engine for expansion control sequences}
-% 
+%
 % Calling |\htmlize@redefine@expansionmacros| will redefine
 % the macros for us.  It starts out empty.
 %    \begin{macrocode}
@@ -5776,7 +5776,7 @@
   \let\@@ifdefinable\@ifdefinable
 }%
 %    \end{macrocode}
-% On the other hand, if an alternate version of the macro is 
+% On the other hand, if an alternate version of the macro is
 % needed for \HTML\ purposes, you can define its \HTML\ version with
 % |\html@def\mymacro...|
 % Parameters are okay.
@@ -5790,15 +5790,15 @@
   \xa\def\csname html@\string#1\endcsname%
 }
 %    \end{macrocode}
-% Note that when |\html@def| expands out, it ends with |\def\html@\oldcsname| 
+% Note that when |\html@def| expands out, it ends with |\def\html@\oldcsname|
 % which abuts directly on the remainder of the definition.
-% 
+%
 % \subsection{Specific Control Sequences for Action and Expansion}
-% 
+%
 % Now that we have that machinery in place,
-% we define specific environments, action control sequences, and macros to 
+% we define specific environments, action control sequences, and macros to
 % expand to accomplish our purposes.
-% 
+%
 % \subsubsection{Action Environments}
 %    \begin{macrocode}
 \htmlize@record@environment{clozemulti}
@@ -5856,9 +5856,9 @@
 }%
 
 %    \end{macrocode}
-% 
+%
 % \subsubsection{Action Control Sequences}
-% 
+%
 %    \begin{macrocode}
 \def\advancemathmodecounter#1{%
   \global\advance\moodle@mathmodedepth by #1\relax
@@ -6329,7 +6329,7 @@
       {\xa\g@addto@macro\htmlize@output\xa{\string\r#1}}%
 }%
 %    \end{macrocode}
-% 
+%
 % \subsubsection{Command sequences for Expansion}
 %
 % First, commands defined by this package.
@@ -6449,7 +6449,7 @@
 %    \end{macrocode}
 %
 % \subsection{Graphics via {\ttfamily\string\includegraphics}}
-% 
+%
 % \subsubsection{Finding Media Files}
 % The following code is adapted from the command |\Ginclude@graphics| as
 % found in \filenm{graphics.sty}.
@@ -6628,7 +6628,7 @@
 % remove the "--pdf-poppler" import option if you want to preserve text (avoid conversion to path)
 \SVGtoPDFcommand{inkscape --export-type=pdf --export-area-page}%
 %    \end{macrocode}
-% 
+%
 % \subsubsection{Conversion and inclusion of non-native formats}
 %    \begin{macrocode}
 \AtEndPreamble{%
@@ -6689,7 +6689,7 @@
 }
 \setkeys{moodle@includegraphics}{height=0pt,width=0pt}
 %    \end{macrocode}
-% 
+%
 % \subsubsection{Graphics conversion to HTML}
 % If the |tikz| option is loaded, we define the |embedaspict| command.
 % Furthermore, |includegraphics| is packed into a TikZ node.
@@ -6887,12 +6887,12 @@
   \baselxiv@next
 }
 %    \end{macrocode}
-% 
+%
 % \subsection{\TikZ\ Picture Handling}
-% If the user is not using the \TikZ\ package, there is no need to waste time 
+% If the user is not using the \TikZ\ package, there is no need to waste time
 % loading it.  Without \TikZ\ loaded, however, many of the following commands
 % are undefined.
-% Our solution is to wait until |\AtBeginDocument| and then test whether 
+% Our solution is to wait until |\AtBeginDocument| and then test whether
 % \TikZ\ is loaded.  If so, we make the appropriate definitions.
 % \begin{macro}{TikZ}
 % \changes{v0.7}{2020/07/14}{Support \emph{tikz}\ command}
@@ -7070,7 +7070,7 @@
   \RequirePackage{varwidth}% for the command |embedaspict|
 \fi
 %    \end{macrocode}
-% Finally, we clean up our mess by deleting the temporary PDF, \PNG, and ENC 
+% Finally, we clean up our mess by deleting the temporary PDF, \PNG, and ENC
 % files we created.
 % With XeTeX, we cannot clean pictures pdf's because they are actually included in the final pdf afterwards, by xdvipdfmx.
 % With LuaTeX, it looks like |\AtEndDocument| is too early to for this cleaning step.
@@ -7225,7 +7225,7 @@
 }%
 %
 % \subsection{Verbatim Code}
-% 
+%
 % We start by defining a macro to parameter a style for code box display in Moodle
 %    \begin{macrocode}
 \def\xmlDisplayVerbatimBox{border-top: thin solid; border-bottom: thin solid}%
@@ -7402,12 +7402,12 @@
     % For debugging, uncomment: %%%%
     \immediate\typeout{\minted@cmd}%
     % %%%%
-    \def\minted@cmdHTML{\minted@cmdtemplate{html -P noclasses -P 
+    \def\minted@cmdHTML{\minted@cmdtemplate{html -P noclasses -P
       nowrap -P hl_lines="\FV@HighlightLinesList" -P
       style="\minted@get@opt{style}{default}"}{\csname minted@infileHTML\the\c@minted@pygmentizecounter\endcsname}}%
-    \def\minted@cmdPNG{\minted@cmdtemplate{png -P    
+    \def\minted@cmdPNG{\minted@cmdtemplate{png -P
       line_numbers=True}{\minted@infilePNG}}%
-    \def\minted@cmdSVG{\minted@cmdtemplate{svg -P 
+    \def\minted@cmdSVG{\minted@cmdtemplate{svg -P
       linenos=True}{\minted@infileSVG}}%
     \ifthenelse{\boolean{minted@cache}}%
       {%
@@ -7441,22 +7441,22 @@
               \def\minted@hashcmd{%
                 \detokenize{python -c "import hashlib; import os;
                   hasher = hashlib.sha1();
-                  f = 
+                  f =
                   open(os.path.expanduser(os.path.expandvars(\"}\minted@tmpfname@esc.mintedcmd\detokenize{\")),
                    \"rb\");
                   hasher.update(f.read());
                   f.close();
-                  f = 
+                  f =
                   open(os.path.expanduser(os.path.expandvars(\"}\minted@argone@esc\detokenize{\")),
                    \"rb\");
                   hasher.update(f.read());
                   f.close();
-                  f = 
+                  f =
                   open(os.path.expanduser(os.path.expandvars(\"}\minted@tmpfname@esc.mintedmd5\detokenize{\")),
                    \"w\");
-                  macro = \"\\edef\\minted@hash\" + chr(123) + hasher.hexdigest() 
+                  macro = \"\\edef\\minted@hash\" + chr(123) + hasher.hexdigest()
                   + chr(125) + \"\";
-                  f.write(\"\\makeatletter\" + macro + 
+                  f.write(\"\\makeatletter\" + macro +
                   \"\\makeatother\\endinput\n\");
                   f.close();"}}%
               \ShellEscape{\minted@hashcmd}%
@@ -7492,10 +7492,10 @@
             \ifwindows
               \StrSubstitute{\minted@infile}{/}{\@backslashchar}[\minted@infile@windows]
               \StrSubstitute{\minted@actualinfile}{/}{\@backslashchar}[\minted@actualinfile@windows]
-              \ShellEscape{move /y 
+              \ShellEscape{move /y
               \minted@outputdir\minted@infile@windows\space\minted@outputdir\minted@actualinfile@windows}%
             \else
-              \ShellEscape{mv -f 
+              \ShellEscape{mv -f
               \minted@outputdir\minted@infile\space\minted@outputdir\minted@actualinfile}%
             \fi
             \let\minted@infile\minted@actualinfile
@@ -7534,7 +7534,7 @@
 %    \end{macrocode}
 %
 % \subsection{Internationalization}
-% Here is an attempt to internationalize the PDF typesetting, relying on 
+% Here is an attempt to internationalize the PDF typesetting, relying on
 % the package 'translations'.
 %    \begin{macrocode}
 \AtEndPreamble{%
@@ -8230,7 +8230,7 @@
   \DeclareTranslationFallback{Total of marks}{Total of marks}%
 }%
 %    \end{macrocode}
-% 
+%
 % Users of the |babel| package loaded with specific options may experience problems
 % related to active characters and shorthands. We tell the problems and solutions we know.
 %    \begin{macrocode}
@@ -8289,7 +8289,7 @@
                 \fi
               }{}%
             }
-          
+
         }
       }
       \expandafter\docsvlist\expandafter{\bbl@loaded}%
@@ -8297,7 +8297,7 @@
   }{}%
 }%
 %    \end{macrocode}
-% 
+%
 % \subsection{Warning and Error Management}
 %
 %    \begin{macrocode}
