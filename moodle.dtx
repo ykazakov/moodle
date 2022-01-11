@@ -1520,11 +1520,9 @@
 % \bottomrule
 % \end{tabular}
 % \end{table}
-%
-% In addition, |<| and |>| will be converted to |&lt;| and |&gt;| \emph{within math mode only}.
-% If they should be typed outside of math mode, they will be passed as typed to
-% the \HTML, and probably be filtered by \Moodle\ or interpreted by the web browser
-% as \HTML\ tags.
+% 
+% In addition, |<| and |>| will be converted to |&lt;| and |&gt;|. This prevents 
+% portions of the code to be interpreted as \HTML\ tags.
 %
 % A doubled dash will be converted to en-dash |&ndash;| \emph{outside math mode}.
 % Empty groups |{}| will be passed to the XML only \emph{in math mode}.
@@ -2168,6 +2166,8 @@
 %       \item Support for non-\acro{ASCII} characters abandoned when compiling
 %             with \prog{pdflatex}.
 %     \fixed
+%       \item Symbols |<| and |>| are translated to \HTML\ equivalents, also in
+%             text-mode.
 %       \item Warning german-writing and (Xe$\mid$Lua)\TeX\ users about troubles
 %             caused by text-mode umlauts.
 %       \item In \env{cloze} subquestions items and outside math environments,
@@ -5278,6 +5278,7 @@
 \def\@lt{<}%
 \def\@gt{>}%
 \def\@dash{-}%
+\def\@dq{"}%
 
 \long\def\htmlize@recursive@i#1#2#3\htmlize@rdelim@i{%
   % #1#2#3 is a sequence of tokens.  All should be categories 11 (letter) or 12 (other).
@@ -5510,13 +5511,11 @@
                   \def\htmlize@next@i{\htmlize@recursive@i#2#3\htmlize@rdelim@i}%
                 \else
                   \ifx\test@i\@lt
-                    \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherampersand lt;}}%
-                                      {\g@addto@macro\htmlize@output{<}}%
+                    \g@addto@macro\htmlize@output{\otherampersand lt;}
                     \def\htmlize@next@i{\htmlize@recursive@i#2#3\htmlize@rdelim@i}%
                   \else
                     \ifx\test@i\@gt
-                      \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherampersand gt;}}%
-                                        {\g@addto@macro\htmlize@output{>}}%
+                      \g@addto@macro\htmlize@output{\otherampersand gt;}%
                       \def\htmlize@next@i{\htmlize@recursive@i#2#3\htmlize@rdelim@i}%
                     \else
                       \ifx\test@i\@dash
@@ -5808,7 +5807,7 @@
 \htmlize@record@environment{clozeshortanswer}
 \htmlize@record@environment{shortanswer}
 
-\html@newenvironment{center}{\xdef\htmlize@afteraction@hook{<CENTER>\expandonce\BODY</CENTER>}}%
+\html@newenvironment{center}{\xdef\htmlize@afteraction@hook{\noexpand\HTMLtag{CENTER}\expandonce\BODY\noexpand\HTMLtag{/CENTER}}}%
 
 \def\moodle@save@getitems@state{%
   \global\xa\xdef\csname moodle@currentitemnumber@level@\the\moodle@listdepth\xa\endcsname\xa{\thecurrentitemnumber}%
@@ -5838,9 +5837,9 @@
     \advance\moodle@listdepth by 1\relax
     \moodle@save@getitems@state%
       \xa\gatheritems\xa{\BODY}%
-      \gdef\htmlize@afteraction@hook{<#2>}%
+      \gdef\htmlize@afteraction@hook{\HTMLtag{#2}}%
       \loopthroughitemswithcommand{\moodle@itemtoLI}%
-      \g@addto@macro\htmlize@afteraction@hook{</#2>}%
+      \g@addto@macro\htmlize@afteraction@hook{\HTMLtag{/#2}}%
     \moodle@restore@getitems@state%
     \advance\moodle@listdepth by -1\relax
   }%
@@ -5850,9 +5849,9 @@
 \moodle@makelistenv{itemize}{UL}%
 
 \def\moodle@itemtoLI#1{%
-  \g@addto@macro\htmlize@afteraction@hook{<LI>#1}%
+  \g@addto@macro\htmlize@afteraction@hook{\HTMLtag{LI}#1}%
   \trim@spaces@in\htmlize@afteraction@hook%
-  \g@addto@macro\htmlize@afteraction@hook{</LI>}%
+  \g@addto@macro\htmlize@afteraction@hook{\HTMLtag{/LI}}%
 }%
 
 %    \end{macrocode}
@@ -5874,6 +5873,9 @@
 \htmlize@record@action{\endclozemode}%
 \htmlize@record@action{\relax}%
 
+\html@action@def\HTMLtag#1{%
+    \xa\g@addto@macro\xa\htmlize@output\xa{<#1>}%
+  }%
 \html@action@def\%{%
     \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherbackslash\otherpercent}}%
                       {\g@addto@macro\htmlize@output{\otherpercent}}%
@@ -6343,21 +6345,21 @@
 %    \end{macrocode}
 % Second, native \LaTeX\ commands.
 %    \begin{macrocode}
-\html@def\emph#1{<EM>#1</EM>}%
-\html@def\textbf#1{<B>#1</B>}%
-\html@def\textit#1{<I>#1</I>}%
-\html@def\textsc#1{<SPAN STYLE=\@dquote font-variant: small-caps;\@dquote>#1</SPAN>}%
-\html@def\textsuperscript#1{<SUP>#1</SUP>}%
-\html@def\textsubscript#1{<SUB>#1</SUB>}%
-\html@def\texttt#1{<CODE>#1</CODE>}%
-\html@def\underline#1{<SPAN STYLE=\@dquote text-decoration: underline;\@dquote>#1</SPAN>}%
+\html@def\emph#1{\HTMLtag{EM}#1\HTMLtag{/EM}}%
+\html@def\textbf#1{\HTMLtag{B}#1\HTMLtag{/B}}%
+\html@def\textit#1{\HTMLtag{I}#1\HTMLtag{/I}}%
+\html@def\textsc#1{\HTMLtag{SPAN STYLE="font-variant: small-caps;"}#1\HTMLtag{/SPAN}}%
+\html@def\textsuperscript#1{\HTMLtag{SUP}#1\HTMLtag{/SUP}}%
+\html@def\textsubscript#1{\HTMLtag{SUB}#1\HTMLtag{/SUB}}%
+\html@def\texttt#1{\HTMLtag{CODE}#1\HTMLtag{/CODE}}%
+\html@def\underline#1{\HTMLtag{SPAN STYLE="text-decoration: underline;"}#1\HTMLtag{/SPAN}}%
 %    \end{macrocode}
 % Third, popular \LaTeX\ commands from packages.
 %    \begin{macrocode}
-\html@def\url#1{<A href=\@dquote #1\@dquote>#1</A>}% url or hyperref
-\html@def\href#1#2{<A href=\@dquote #1\@dquote>#2</A>}% hyperref
-\html@def\up#1{<SUP>#1</SUP>}% \pkg{babel}, option \optn{french}
-\html@def\fup#1{<SUP>#1</SUP>}% \pkg{babel}, option \optn{french}
+\html@def\url#1{\HTMLtag{A href=\@dq #1\@dq}#1\HTMLtag{/A}}% url or hyperref
+\html@def\href#1#2{\HTMLtag{A href=\@dq #1\@dq}#2\HTMLtag{/A}}% hyperref
+\html@def\up#1{\HTMLtag{SUP}#1\HTMLtag{/SUP}}% \pkg{babel}, option \optn{french}
+\html@def\fup#1{\HTMLtag{SUP}#1\HTMLtag{/SUP}}% \pkg{babel}, option \optn{french}
 %    \end{macrocode}
 % Fourth, \LaTeX\ commands for ligature and other glyphs.
 %    \begin{macrocode}
@@ -6396,8 +6398,8 @@
 %    \begin{macrocode}
 \html@def\space{ }%
 \html@def\textvisiblespace{\&blank;}%
-\html@def\newline{<BR/>}%
-\html@def\par{<BR/>}%
+\html@def\newline{\HTMLtag{BR/}}%
+\html@def\par{\HTMLtag{BR/}}%
 %    \end{macrocode}
 % Sixth, \LaTeX\ commands for various symbols.
 %    \begin{macrocode}

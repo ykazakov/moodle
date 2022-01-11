@@ -56,7 +56,7 @@
     <text><![CDATA[<p>&rsquo;toast&rsquo;</p>]]></text>
   </answer>
   <answer fraction="0" format="html">
-    <text><![CDATA[<p><\(&lt;a&gt;\)></p>]]></text>
+    <text><![CDATA[<p>&lt;\(&lt;a&gt;\)&gt;</p>]]></text>
   </answer>
 </question>
  

@@ -155,7 +155,7 @@
     <text><![CDATA[The question]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>Find the symbol &ldquo;equal&rdquo;. {1:MULTICHOICE:<~>~=&#61;}{1:MULTICHOICE_V:\(&lt;\)~\(&gt;\)~=\(=\)}</p>]]></text>
+    <text><![CDATA[<p>Find the symbol &ldquo;equal&rdquo;. {1:MULTICHOICE:&lt;~&gt;~=&#61;}{1:MULTICHOICE_V:\(&lt;\)~\(&gt;\)~=\(=\)}</p>]]></text>
   </questiontext>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
