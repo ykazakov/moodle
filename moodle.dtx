@@ -1264,9 +1264,10 @@
 %       Table~\vref{tab:spacing},
 % \item text mode symbols (e.g.~\cmd{\$}) and punctuation (e.g.~\cmd{\textexclamdown}) macros in
 %       Table~\vref{tab:symbols_and_punctuation}, and finally
-% \item other \LaTeX\ commands (e.g.~\cmd{\emph}) and environments (e.g.~\cmd{center})
+% \item other \LaTeX\ commands (e.g.~\cmd{\emph}) and environments (e.g.~\env{center})
 %       in Table~\vref{tab:commands_and_environments}.
 % \end{enumerate}
+% \pagebreak
 %
 %^^A Inspired by https://tex.stackexchange.com/a/163717/228515
 % \begin{table}[tbp]
@@ -1521,9 +1522,10 @@
 % \end{tabular}
 % \end{table}
 % 
-% In addition, |<| and |>| will be converted to |&lt;| and |&gt;|. This prevents 
-% portions of the code to be interpreted as \HTML\ tags.
-%
+% In addition, |<| and |>| will be converted to their HTML equivalents |&lt;|
+% and |&gt;| in the \XML\ file. This prevents  portions of the code to be
+% interpreted by \Moodle\ as \HTML\ tags.
+% 
 % A doubled dash will be converted to en-dash |&ndash;| \emph{outside math mode}.
 % Empty groups |{}| will be passed to the XML only \emph{in math mode}.
 %
