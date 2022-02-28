@@ -1267,7 +1267,7 @@
 % \item other \LaTeX\ commands (e.g.~\cmd{\emph}) and environments (e.g.~\env{center})
 %       in Table~\vref{tab:commands_and_environments}.
 % \end{enumerate}
-% \pagebreak
+%^^A \pagebreak
 %
 %^^A Inspired by https://tex.stackexchange.com/a/163717/228515
 % \begin{table}[tbp]
@@ -1493,8 +1493,8 @@
 % & \cmd{\emph}\marg{\dots} & \env{center} \\
 % & \cmd{\textbf}\marg{\dots} & \env{enumerate} \\
 % & \cmd{\textit}\marg{\dots} & \env{itemize} \\
-% & \cmd{\textsc}\marg{\dots} &\\
-% & \cmd{\textsuperscript}\marg{\dots} &\\
+% & \cmd{\textsc}\marg{\dots} & \env{quote} \\
+% & \cmd{\textsuperscript}\marg{\dots} & \env{quotation}\\
 % & \cmd{\textsubscript}\marg{\dots} &\\
 % & \cmd{\texttt}\marg{\dots} &\\
 % & \cmd{\underline}\marg{\dots} &\\
@@ -2126,6 +2126,8 @@
 % \begin{changelog}[title={Version History},sectioncmd=\section*,author={Matthieu Guerquin-Kern}]
 %   \begin{version}[version=\fileversion,]^^Adate=]
 %     \added
+%       \item Support for the \env{quote} and \env{quotation} environments in the HTML  
+%             conversion process (courtesy of Gerald Teschl).
 %       \item Experimental package option \optn{pluginfile} mimics the way
 %             \Moodle\ embeds pictures in the \XML.
 %       \item Answer box for Essay questions with \optn{handout}.
@@ -5810,6 +5812,10 @@
 \htmlize@record@environment{shortanswer}
 
 \html@newenvironment{center}{\xdef\htmlize@afteraction@hook{\noexpand\HTMLtag{CENTER}\expandonce\BODY\noexpand\HTMLtag{/CENTER}}}%
+
+\html@newenvironment{quote}{\xdef\htmlize@afteraction@hook{\noexpand\HTMLtag{BLOCKQUOTE}\expandonce\BODY\noexpand\HTMLtag{/BLOCKQUOTE}}}%
+
+\html@newenvironment{quotation}{\xdef\htmlize@afteraction@hook{\noexpand\HTMLtag{BLOCKQUOTE}\expandonce\BODY\noexpand\HTMLtag{/BLOCKQUOTE}}}%
 
 \def\moodle@save@getitems@state{%
   \global\xa\xdef\csname moodle@currentitemnumber@level@\the\moodle@listdepth\xa\endcsname\xa{\thecurrentitemnumber}%

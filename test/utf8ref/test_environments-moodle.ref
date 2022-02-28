@@ -13,7 +13,7 @@
     <text><![CDATA[LaTeX Environments]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p><CENTER><SPAN STYLE="font-variant: small-caps;">This is a question</SPAN></CENTER> Select the numbered list </p>]]></text>
+    <text><![CDATA[<p><CENTER><SPAN STYLE="font-variant: small-caps;">This is a question</SPAN></CENTER> <BLOCKQUOTE>and this is a quote</BLOCKQUOTE> <BR/>Select the numbered list </p>]]></text>
   </questiontext>
   <defaultgrade>1</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
@@ -29,6 +29,9 @@
   <answer fraction="0" format="html">
     <text><![CDATA[<p><UL><LI>E <OL><LI>X</LI><LI>Y</LI><LI>Z</LI></OL></LI><LI>F</LI></UL></p>]]></text>
     <feedback format="html"><text><![CDATA[<p>Example of numbered list:<BR/><OL><LI>first item</LI><LI>second item</LI></OL></p>]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p><BLOCKQUOTE>this is a quotation.</BLOCKQUOTE></p>]]></text>
   </answer>
 </question>
  
