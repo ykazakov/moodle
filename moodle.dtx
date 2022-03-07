@@ -3666,13 +3666,14 @@
      \moodle@print@numerical@answer@int@int%
    }%
    \def\moodle@print@numerical@answer@int@int#1\@rdelim{%
-     \xdef\test@i{\trim@spaces{#1}}%
+     \def\test@i{#1}%
+     \trim@spaces@in\test@i
      \ifx\test@i\@star
        \item \test@i
      \else
        \item \moodle@printnum{#1}%
        \ifx\moodle@tolerance\moodle@zero\else
-         $\,\pm\,$\moodle@printnum{\moodle@tolerance}%
+         $\,\pm\,$\moodle@printnum{\expandonce\moodle@tolerance}%
        \fi
      \fi
      \ifx\moodle@fraction\@hundred
@@ -3705,7 +3706,7 @@
      \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext</text>}%
 
      \ifx\moodle@answertext\@star\else
-       \addto@xml[4]{\moodle@answers@xml}{  <tolerance>\moodle@tolerance</tolerance>}%
+       \addto@xml[4]{\moodle@answers@xml}{  <tolerance>\expandonce\moodle@tolerance</tolerance>}%
      \fi
      \ifmoodle@pluginfile
        \writetomoodle[0]{\htmlize@embeddedfiletags}%
@@ -4901,13 +4902,14 @@
   \ifx\moodle@zero\moodle@tolerance%
     \def\moodle@clozenumericalprint@tolerance{}%
   \else
-    \edef\moodle@clozenumericalprint@tolerance{$\,\pm\,$\moodle@printnum{\moodle@tolerance}}%
+    \edef\moodle@clozenumericalprint@tolerance{$\,\pm\,$\moodle@printnum{\expandonce\moodle@tolerance}}%
   \fi
-  \xdef\test@i{\trim@spaces{#1}}%
+  \def\test@i{#1}%
+  \trim@spaces@in\test@i
   \ifx\test@i\@star
-    \xdef\moodle@clozenumericalprint@line{#1~\moodle@clozenumericalprint@fraction & \expandonce\emph{\expandonce\moodle@feedback}}%
+    \xdef\moodle@clozenumericalprint@line{\expandonce\test@i~\moodle@clozenumericalprint@fraction & \expandonce\emph{\expandonce\moodle@feedback}}%
   \else
-    \xdef\moodle@clozenumericalprint@line{\moodle@printnum{#1}\moodle@clozenumericalprint@tolerance~\moodle@clozenumericalprint@fraction & \expandonce\emph{\expandonce\moodle@feedback}}%
+    \xdef\moodle@clozenumericalprint@line{\moodle@printnum{\expandonce\test@i}\expandonce\moodle@clozenumericalprint@tolerance~\moodle@clozenumericalprint@fraction & \expandonce\emph{\expandonce\moodle@feedback}}%
   \fi
   \xa\g@addto@macro\xa\cloze@numerical@table@text\xa{\moodle@clozenumericalprint@line \\\hline}%
 }%
