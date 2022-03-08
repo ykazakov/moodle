@@ -1184,6 +1184,114 @@
 % \inputminted[gobble=2,frame=bottomline]{latex}{minted.doc.out}
 % These two codes yield the same \XML\ content.
 %
+% \subsection{Templating}
+%
+% In many cases, it is useful to have a large database of quiz questions.
+% Similar to the idea of mail merge, rather than manually preparing each instance 
+% of a question, the use of question templates and a database of variables to be
+% inserted into the template can be advantageous.
+%
+% The \pkg{moodle.sty} facilites the development of question templates.
+% \TeX code can be used in place of answers or other parameters to the questions.
+% After drafting and question development, these codes can then be subsituted
+% with instances of the variables pulled from a database (e.g. \verb|*.csv| file)
+% using a scripting language. Complex quizzes with varying TikZ pictures can be
+% produced in this way.
+%
+% By way of example, a python solution using the Jinja templating engine is explained
+% based on the \href{https://github.com/ccaprani/genquiz}{genquiz} package by C. Capranij
+% This is based on the idea \href{https://web.archive.org/web/
+20121024021221/http://e6h.de/post/11/}{here}.
+%
+% The template defines a \verb|\VAR| command that contains the name of the
+% variable to be subsituted from the database. It's useful to highlight the fields
+% for template development, and so it's done here using a bold red font, but this is
+% overwritten when the actual question is generated. Variables can be used to define
+% numerical answers, tolerances, and even draw TikZ pictures. The \pkg{moodle.sty} 
+% allows the template to be rendered for checking while in |draft| mode.
+% 
+% \inputminted[gobble=2,frame=topline]{latex}{minted.doc.out}
+% \vspace{-.7cm}
+% \begin{VerbatimOut}[gobble=1]{minted.doc.out}
+% \documentclass[12pt]{article}
+% \usepackage[utf8]{inputenc}
+% \usepackage[draft]{moodle}
+% \usepackage{graphicx}
+% \usepackage{xcolor}
+% \usepackage{tikz}
+%
+% \newcommand*{\VAR}[1]{\textcolor{red}{\textbf{#1}}}
+% 
+% \begin{document}
+% 	\begin{quiz}{Circle or Square}		
+% 		\begin{cloze}[feedback=Please hover to see specific feedback]{Circle Square QID00\VAR{qidx}} 
+% 			\begin{tikzpicture}					
+% 				\node[circle,draw] (c) at (0,0){$R = \VAR{radius}$};				
+% 			\end{tikzpicture}
+% 			A circle has radius \VAR{radius}, what is its area?
+% 			\begin{numerical}[points=1,penalty=0]
+% 				\item[feedback = {Well done!},tolerance = \VAR{areatol}] \VAR{area}
+% 				\item[fraction = 0,feedback = {Note the units.}] * % All other incorrect answers
+% 			\end{numerical}		
+% 			Provide your answers to 3 significant digits.
+% 		\end{cloze}
+% 	\end{quiz}
+% \end{document}
+% \end{VerbatimOut}
+% \inputminted[gobble=2,frame=bottomline]{latex}{minted.doc.out}
+%
+% A minimal python code that reads the template and renders the actual \verb|*.tex| file
+% is shown below. In this example, the template file is called \verb|quiz_template.tex| and  
+% the variables are hard-coded as a list of python dictionaries. However, the variables can
+% be generated on-the-fly, or pre-prepared and read in from a databse.
+% It is worth noting that \verb|jinja2| will not respect \LaTeX comments and will attempt
+% to render \verb|\VAR{}| variables found anywhere in the file.
+%
+% \inputminted[gobble=2,frame=topline]{latex}{minted.doc.out}
+% \vspace{-.7cm}
+% \begin{VerbatimOut}[gobble=1]{minted.doc.out}
+% import os
+% import jinja2
+%
+% # Tell jinja what to look for in the template
+% latex_jinja_env = jinja2.Environment(
+%     variable_start_string=r"\VAR{",
+%     variable_end_string=r"}",
+%     comment_start_string=r"\#{",
+%     comment_end_string="}",
+%     loader=jinja2.FileSystemLoader(os.path.abspath(".")),
+% )
+%
+% # Load the template
+% template = latex_jinja_env.get_template("quiz_template.tex")
+%
+% # Prepre the variables or read from a database
+% database = [
+%     {"qidx": 1, "radius": 2, "areatol": 0.1, "area": 25.1},
+%     {"qidx": 2, "radius": 3, "areatol": 0.2, "area": 56.5},
+%     {"qidx": 3, "radius": 4, "areatol": 0.4, "area": 100.5},
+% ]
+%
+% for row in database:
+%     # combine template and variables
+%     document = template.render(**row)
+%
+%     # Here we must swap the draft mode of the Moodle.sty compilation
+%     document = document.replace(r"\usepackage[draft]{moodle}", r"\usepackage{moodle}")
+%
+%     # write document
+%     with open(f"quiz_{row['qidx']}.tex", "w", encoding="utf-8") as outfile:
+%         outfile.write(document)
+% \end{VerbatimOut}
+% \inputminted[gobble=2,frame=bottomline]{latex}{minted.doc.out}
+%
+% Executing this python code will result in three new files in the current directory
+% which can then be compiled with \LaTeX to produce the individual XML files using \pkg{moodle.sty}.
+% Of course, for a large number of quizzes it is preferable to automate this compilation,
+% and to combine the large number of resulting XML files into a single XML file for upload
+% to Moodle. This is done in the \href{https://github.com/ccaprani/genquiz}{genquiz} python package.
+% However, the concept of templating can be used in any language.
+%
 % \subsection{Summary of the Key Options}
 %
 % Table~\vref{tab:key-options}, summarizes
@@ -2126,6 +2234,8 @@
 % \begin{changelog}[title={Version History},sectioncmd=\section*,author={Matthieu Guerquin-Kern}]
 %   \begin{version}[version=\fileversion,]^^Adate=]
 %     \added
+\item A section describing the use of templates for generating large number of quizzes has been added (courtesy of Colin Caprani).
+        \item For templating purposes, in \optn{draft} mode, general TeX code can now be used in items and |tolerance| key of numerical questions (courtesy of Colin Caprani).
 %       \item Support for the \env{quote} and \env{quotation} environments in the HTML  
 %             conversion process (courtesy of Gerald Teschl).
 %       \item Experimental package option \optn{pluginfile} mimics the way
@@ -3666,7 +3776,7 @@
      \moodle@print@numerical@answer@int@int%
    }%
    \def\moodle@print@numerical@answer@int@int#1\@rdelim{%
-     \def\test@i{#1}%
+     \gdef\test@i{#1}%
      \trim@spaces@in\test@i
      \ifx\test@i\@star
        \item \test@i
@@ -3706,7 +3816,7 @@
      \addto@xml[4]{\moodle@answers@xml}{  <text>\moodle@answertext</text>}%
 
      \ifx\moodle@answertext\@star\else
-       \addto@xml[4]{\moodle@answers@xml}{  <tolerance>\expandonce\moodle@tolerance</tolerance>}%
+       \addto@xml[4]{\moodle@answers@xml}{  <tolerance>\moodle@tolerance</tolerance>}%
      \fi
      \ifmoodle@pluginfile
        \writetomoodle[0]{\htmlize@embeddedfiletags}%
@@ -4904,7 +5014,7 @@
   \else
     \edef\moodle@clozenumericalprint@tolerance{$\,\pm\,$\moodle@printnum{\expandonce\moodle@tolerance}}%
   \fi
-  \def\test@i{#1}%
+  \gdef\test@i{#1}%
   \trim@spaces@in\test@i
   \ifx\test@i\@star
     \xdef\moodle@clozenumericalprint@line{\expandonce\test@i~\moodle@clozenumericalprint@fraction & \expandonce\emph{\expandonce\moodle@feedback}}%
