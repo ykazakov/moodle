@@ -1093,19 +1093,91 @@
 %   |\end{description}|
 % \end{quote}
 %
-% \subsubsection{A Word About \href{https://docs.moodle.org/en/Calculated_question_type}{Calculated Questions}}
-% \Moodle's calculated questions are not supported by this package.
+% \subsection{Summary of the Key Options}
 %
-% However, as \href{https://github.com/avohns/python-latex-moodle-quiz}{demonstrated by A.
-% Vohns}, an advanced scripting language may be used to generate a series of questions sharing
-% the same prototype.
+% Table~\vref{tab:key-options}, summarizes
+% the key options available at the question and answer levels depending on the
+% question type. For the essay questions, please refer to Section~\vref{subsubsect:essay}.
 %
-% We suggest to apply a specific tag to these questions. After import in \Moodle, when creating
-% a quiz, this tag can be selected to narrow down a random selection of questions.
-% This would mimic the behavior of calculated questions while bringing the flexibility of your
-% favorite scripting language.
+% \begin{table}[tbp]
+% \centering
+% \caption{Options offered at the question and answer levels for each question type.}
+% \label{tab:key-options}
+% \small
+% \begin{tabular}{*{15}{l}}
+% \toprule
+% & \multicolumn{11}{l}{Question} & \multicolumn{3}{l}{Answer}\\
+% \cmidrule(lr){2-12}\cmidrule(lr){13-15}
+% Question type & \rotatebox{90}{points} &
+% \rotatebox{90}{penalty} & \rotatebox{90}{feedback} & \rotatebox{90}{tags} &
+% \rotatebox{90}{shuffle} & \rotatebox{90}{numbering} & \rotatebox{90}{multiple} &
+% \rotatebox{90}{allornothing} &\rotatebox{90}{usecase} & \rotatebox{90}{tolerance} &
+% \rotatebox{90}{dd} & \rotatebox{90}{fraction} & \rotatebox{90}{feedback} &
+% \rotatebox{90}{tolerance}\\\cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}
+% \cmidrule(lr){4-4}\cmidrule(lr){5-5}\cmidrule(lr){6-6}\cmidrule(lr){7-7}
+% \cmidrule(lr){8-8}\cmidrule(lr){9-9}\cmidrule(lr){10-10}\cmidrule(lr){11-11}
+% \cmidrule(lr){12-12}\cmidrule(lr){13-13}\cmidrule(lr){14-14}\cmidrule(lr){15-15}
+% \href{https://docs.moodle.org/35/en/Multiple_Choice_question_type}
+% {Multichoice} & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ &
+% $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & & $\bullet$ & $\bullet$ \\
+% \href{https://docs.moodle.org/35/en/Numerical_question_type}{Numerical}
+% & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & &
+% & & $\bullet$ & & $\bullet$ & $\bullet$ & $\bullet$ \\
+% \href{https://docs.moodle.org/35/en/Short-Answer_question_type}{Short
+% Answer} & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & &
+% & $\bullet$ & & & $\bullet$ & $\bullet$ \\
+% \href{https://docs.moodle.org/35/en/Matching_question_type}{Matching}
+% & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & &
+% & & & $\bullet$ & & \\
+% \href{https://docs.moodle.org/35/en/True/False_question_type}
+% {True/False} & $\bullet$ & & $\bullet$ & $\bullet$ & & & &
+% & & & & & $\bullet$ \\
+% \href{https://docs.moodle.org/35/en/Description_question_type}
+% {Description} & & & $\bullet$ & $\bullet$ & & & &
+% & & & & & \\
+% ^^A\href{https://docs.moodle.org/35/en/Essay_question_type}{Essay} & \\\hline%
+% \href{https://docs.moodle.org/35/en/Embedded_Answers_(Cloze)_question_type}{Cloze}
+% & & $\bullet$ & $\bullet$ & $\bullet$ & & & &
+% & & & & & \\\cmidrule(lr){1-1}
+% \hspace{1em}Numerical & $\bullet$ & & & & & & &
+% & &$\bullet$ & & $\bullet$ & $\bullet$ & $\bullet$ \\
+% \hspace{1em}Short Answer & $\bullet$ & & & & & & &
+% & $\bullet$ & & & $\bullet$ & $\bullet$ \\
+% \hspace{1em}Multi (inline) & $\bullet$ & & & & $\bullet$ & & &
+% & & & & $\bullet$ & $\bullet$ \\
+% \hspace{1em}Multi (horiz.) & $\bullet$ & & & & $\bullet$ & & $\bullet$
+% & & & & & $\bullet$ & $\bullet$ \\
+% \hspace{1em}Multi (vert.) & $\bullet$ & & & & $\bullet$ & & $\bullet$
+% & & & & & $\bullet$ & $\bullet$ \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
 %
-% Here are two examples inspired from the work of A. Vohns. The first one relies on the
+% \subsection{Automated Generation of Questions}
+% 
+% \Moodle's \href{https://docs.moodle.org/en/Calculated_question_type}
+% {Calculated Questions} types are not supported by this package.
+%
+% However, much more flexibly, a scripting language can be used in
+% combination with \pkg{moodle} to generate a large set of questions,
+% based on a prototype.
+% 
+% In this case, the teacher building a quiz often wants one of the questions
+% to be randmly picked up and presented to the student. To achieve this,
+% we suggest to apply a specific tag to the questions sharing the same prototype.
+% After import in \Moodle, when creating a quiz, this tag can be selected to
+% narrow down a random selection of questions.
+%
+% This way, the feature of calculated questions can be reproduced, while 
+% benefiting from the flexibility given by your favorite scripting language.
+%
+% In this Section, two possible approaches are presented.
+% 
+% \subsubsection{Script Generating \TeX\ Code}
+%
+% Here are two examples inspired from the work of
+% \href{https://github.com/avohns/python-latex-moodle-quiz}{A. Vohns}.
+% The first one relies on the
 % native \prog{Lua} capabilities of \LuaLaTeX.
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 %   \begin{quiz}[tags={calculated}]{Example Quiz}
@@ -1184,76 +1256,72 @@
 % \inputminted[gobble=2,frame=bottomline]{latex}{minted.doc.out}
 % These two codes yield the same \XML\ content.
 %
-% \subsection{Templating}
+% \subsubsection{\TeX\ Code As a Template}
 %
-% In many cases, it is useful to have a large database of quiz questions.
-% Similar to the idea of mail merge, rather than manually preparing each instance 
-% of a question, the use of question templates and a database of variables to be
-% inserted into the template can be advantageous.
+% Instead of mixing \TeX\ and scripting code into the same file, it is probably
+% a better practice to write a |.tex| template file with predefined variables and
+% manipulate the latter using an external script.
 %
-% The \pkg{moodle.sty} facilites the development of question templates.
-% \TeX code can be used in place of answers or other parameters to the questions.
-% After drafting and question development, these codes can then be subsituted
-% with instances of the variables pulled from a database (e.g. \verb|*.csv| file)
-% using a scripting language. Complex quizzes with varying TikZ pictures can be
-% produced in this way.
+% The \pkg{moodle} package facilitates the development of question templates.
+% Specific control sequences (e.g.~\TeX\ commands) can be used in place of answers
+% or other parameters to the questions. In \optn{draft} mode, this should be
+% possible even where \pkg{moodle} expects numerical values (e.g.~answers of
+% numerical questions).
+% After drafting and question development, the control sequences can then be
+% substituted, by means of a scripting language, with instances of the variables
+% pulled from a database (e.g. |*.csv| file).
+% This way, complex quizzes, with parameterized TikZ pictures for instance, can be produced.
 %
-% By way of example, a python solution using the Jinja templating engine is explained
-% based on the \href{https://github.com/ccaprani/genquiz}{genquiz} package by C. Capranij
-% This is based on the idea \href{https://web.archive.org/web/
-20121024021221/http://e6h.de/post/11/}{here}.
+% This approach, briefly presented in the rest of this section, is demonstrated by
+% C. Caprani in \href{https://github.com/ccaprani/genquiz}{genquiz},
+% with Python for scripting and Jinja as a templating engine.
 %
-% The template defines a \verb|\VAR| command that contains the name of the
-% variable to be subsituted from the database. It's useful to highlight the fields
-% for template development, and so it's done here using a bold red font, but this is
-% overwritten when the actual question is generated. Variables can be used to define
-% numerical answers, tolerances, and even draw TikZ pictures. The \pkg{moodle.sty} 
-% allows the template to be rendered for checking while in |draft| mode.
+% The specific control sequence of the template is the \TeX\ command |\VAR|, taking 
+% the variable name to be substituted from the database as an argument. In order to
+% highlight the fields for template development, in \optn{draft} mode, this command is
+% defined to typeset the variable name in bold red font. When generating the \XML\
+% question bank, in \optn{final} mode, the variable values are substituted for the
+% specific control sequence. Variables can be used to define numerical answers,
+% tolerances, and even parameterize TikZ pictures.
 % 
-% \inputminted[gobble=2,frame=topline]{latex}{minted.doc.out}
-% \vspace{-.7cm}
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
-% \documentclass[12pt]{article}
-% \usepackage[utf8]{inputenc}
+% \documentclass{article}
 % \usepackage[draft]{moodle}
-% \usepackage{graphicx}
-% \usepackage{xcolor}
 % \usepackage{tikz}
-%
 % \newcommand*{\VAR}[1]{\textcolor{red}{\textbf{#1}}}
-% 
 % \begin{document}
-% 	\begin{quiz}{Circle or Square}		
-% 		\begin{cloze}[feedback=Please hover to see specific feedback]{Circle Square QID00\VAR{qidx}} 
-% 			\begin{tikzpicture}					
-% 				\node[circle,draw] (c) at (0,0){$R = \VAR{radius}$};				
-% 			\end{tikzpicture}
-% 			A circle has radius \VAR{radius}, what is its area?
-% 			\begin{numerical}[points=1,penalty=0]
-% 				\item[feedback = {Well done!},tolerance = \VAR{areatol}] \VAR{area}
-% 				\item[fraction = 0,feedback = {Note the units.}] * % All other incorrect answers
-% 			\end{numerical}		
-% 			Provide your answers to 3 significant digits.
-% 		\end{cloze}
-% 	\end{quiz}
+%   \begin{quiz}{Disk or Square}		
+%     \begin{cloze}[tags={disk area}]
+%                  {Area of the Disk QID00\VAR{qidx}} 
+%       \begin{tikzpicture}					
+%         \draw[fill=black!20] circle[radius=1];
+%         \draw[<->] (0,0)--(1,0)node[above,midway]{\VAR{radius}};				
+%       \end{tikzpicture}
+%       A disk has radius \VAR{radius}, what is its area?
+%       \begin{numerical}[points=1,penalty=0]
+%         \item[tolerance = \VAR{areatol}] \VAR{area}
+%         \item[fraction=0,feedback={Note the units.}] * % incorrect
+%       \end{numerical}		
+%       Provide your answers to 3 significant digits.
+%     \end{cloze}
+%   \end{quiz}
 % \end{document}
 % \end{VerbatimOut}
-% \inputminted[gobble=2,frame=bottomline]{latex}{minted.doc.out}
+% \inputminted[gobble=1,frame=lines]{latex}{minted.doc.out}
 %
-% A minimal python code that reads the template and renders the actual \verb|*.tex| file
-% is shown below. In this example, the template file is called \verb|quiz_template.tex| and  
-% the variables are hard-coded as a list of python dictionaries. However, the variables can
-% be generated on-the-fly, or pre-prepared and read in from a databse.
-% It is worth noting that \verb|jinja2| will not respect \LaTeX comments and will attempt
-% to render \verb|\VAR{}| variables found anywhere in the file.
+% A small python code that reads the template and renders the actual |*.tex| file
+% is shown below. In this example, the template file is called |quiz_template.tex| and  
+% the variables are hard-coded as a list of Python dictionaries. But nothing prevents
+% you from generating them on-the-fly or picking them from a database.
+% It is worth noting that \prog{jinja2} will process all |\VAR{|\meta{name}|}| occurrences,
+% regardless of \TeX\ comments.
 %
-% \inputminted[gobble=2,frame=topline]{latex}{minted.doc.out}
-% \vspace{-.7cm}
 % \begin{VerbatimOut}[gobble=1]{minted.doc.out}
 % import os
 % import jinja2
 %
 % # Tell jinja what to look for in the template
+% # (from web.archive.org/web/20121024021221/http://e6h.de/post/11/)
 % latex_jinja_env = jinja2.Environment(
 %     variable_start_string=r"\VAR{",
 %     variable_end_string=r"}",
@@ -1265,92 +1333,35 @@
 % # Load the template
 % template = latex_jinja_env.get_template("quiz_template.tex")
 %
-% # Prepre the variables or read from a database
+% # Prepare the variables or read from a database
 % database = [
-%     {"qidx": 1, "radius": 2, "areatol": 0.1, "area": 25.1},
-%     {"qidx": 2, "radius": 3, "areatol": 0.2, "area": 56.5},
-%     {"qidx": 3, "radius": 4, "areatol": 0.4, "area": 100.5},
+%     {"qidx": 1, "radius": 2, "areatol": 0.1, "area": 12.57},
+%     {"qidx": 2, "radius": 3, "areatol": 0.2, "area": 28.27},
+%     {"qidx": 3, "radius": 4, "areatol": 0.4, "area": 50.26},
 % ]
 %
 % for row in database:
 %     # combine template and variables
 %     document = template.render(**row)
 %
-%     # Here we must swap the draft mode of the Moodle.sty compilation
-%     document = document.replace(r"\usepackage[draft]{moodle}", r"\usepackage{moodle}")
+%     # XML files are generated by moodle.sty in "final" mode
+%     document = document.replace(r"\usepackage[draft]{moodle}",
+%                                 r"\usepackage{moodle}")
 %
 %     # write document
-%     with open(f"quiz_{row['qidx']}.tex", "w", encoding="utf-8") as outfile:
+%     with open(f"{row['qidx']}.tex","w",encoding="utf-8") as outfile:
 %         outfile.write(document)
 % \end{VerbatimOut}
-% \inputminted[gobble=2,frame=bottomline]{latex}{minted.doc.out}
+% \inputminted[gobble=1,frame=lines]{python}{minted.doc.out}
 %
-% Executing this python code will result in three new files in the current directory
-% which can then be compiled with \LaTeX to produce the individual XML files using \pkg{moodle.sty}.
+% Executing this Python code will result in three new |.tex| files in the current directory.
+% These can then be compiled with a \TeX\ engine to produce the individual \XML\ files.
 % Of course, for a large number of quizzes it is preferable to automate this compilation,
-% and to combine the large number of resulting XML files into a single XML file for upload
-% to Moodle. This is done in the \href{https://github.com/ccaprani/genquiz}{genquiz} python package.
-% However, the concept of templating can be used in any language.
+% and to combine the large number of resulting \XML\ files into a single \XML\ file for upload
+% to Moodle. See \href{https://github.com/ccaprani/genquiz}{genquiz} for more details.
 %
-% \subsection{Summary of the Key Options}
-%
-% Table~\vref{tab:key-options}, summarizes
-% the key options available at the question and answer levels depending on the
-% question type. For the essay questions, please refer to Section~\vref{subsubsect:essay}.
-%
-% \begin{table}[tbp]
-% \centering
-% \caption{Options offered at the question and answer levels for each question type.}
-% \label{tab:key-options}
-% \small
-% \begin{tabular}{*{15}{l}}
-% \toprule
-% & \multicolumn{11}{l}{Question} & \multicolumn{3}{l}{Answer}\\
-% \cmidrule(lr){2-12}\cmidrule(lr){13-15}
-% Question type & \rotatebox{90}{points} &
-% \rotatebox{90}{penalty} & \rotatebox{90}{feedback} & \rotatebox{90}{tags} &
-% \rotatebox{90}{shuffle} & \rotatebox{90}{numbering} & \rotatebox{90}{multiple} &
-% \rotatebox{90}{allornothing} &\rotatebox{90}{usecase} & \rotatebox{90}{tolerance} &
-% \rotatebox{90}{dd} & \rotatebox{90}{fraction} & \rotatebox{90}{feedback} &
-% \rotatebox{90}{tolerance}\\\cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}
-% \cmidrule(lr){4-4}\cmidrule(lr){5-5}\cmidrule(lr){6-6}\cmidrule(lr){7-7}
-% \cmidrule(lr){8-8}\cmidrule(lr){9-9}\cmidrule(lr){10-10}\cmidrule(lr){11-11}
-% \cmidrule(lr){12-12}\cmidrule(lr){13-13}\cmidrule(lr){14-14}\cmidrule(lr){15-15}
-% \href{https://docs.moodle.org/35/en/Multiple_Choice_question_type}
-% {Multichoice} & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ &
-% $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & & $\bullet$ & $\bullet$ \\
-% \href{https://docs.moodle.org/35/en/Numerical_question_type}{Numerical}
-% & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & &
-% & & $\bullet$ & & $\bullet$ & $\bullet$ & $\bullet$ \\
-% \href{https://docs.moodle.org/35/en/Short-Answer_question_type}{Short
-% Answer} & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & & &
-% & $\bullet$ & & & $\bullet$ & $\bullet$ \\
-% \href{https://docs.moodle.org/35/en/Matching_question_type}{Matching}
-% & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & & &
-% & & & $\bullet$ & & \\
-% \href{https://docs.moodle.org/35/en/True/False_question_type}
-% {True/False} & $\bullet$ & & $\bullet$ & $\bullet$ & & & &
-% & & & & & $\bullet$ \\
-% \href{https://docs.moodle.org/35/en/Description_question_type}
-% {Description} & & & $\bullet$ & $\bullet$ & & & &
-% & & & & & \\
-% ^^A\href{https://docs.moodle.org/35/en/Essay_question_type}{Essay} & \\\hline%
-% \href{https://docs.moodle.org/35/en/Embedded_Answers_(Cloze)_question_type}{Cloze}
-% & & $\bullet$ & $\bullet$ & $\bullet$ & & & &
-% & & & & & \\\cmidrule(lr){1-1}
-% \hspace{1em}Numerical & $\bullet$ & & & & & & &
-% & &$\bullet$ & & $\bullet$ & $\bullet$ & $\bullet$ \\
-% \hspace{1em}Short Answer & $\bullet$ & & & & & & &
-% & $\bullet$ & & & $\bullet$ & $\bullet$ \\
-% \hspace{1em}Multi (inline) & $\bullet$ & & & & $\bullet$ & & &
-% & & & & $\bullet$ & $\bullet$ \\
-% \hspace{1em}Multi (horiz.) & $\bullet$ & & & & $\bullet$ & & $\bullet$
-% & & & & & $\bullet$ & $\bullet$ \\
-% \hspace{1em}Multi (vert.) & $\bullet$ & & & & $\bullet$ & & $\bullet$
-% & & & & & $\bullet$ & $\bullet$ \\
-% \bottomrule
-% \end{tabular}
-% \end{table}
+% Naturally, the concept of templating, demonstrated here with Python, may be orchestrated
+% using other scripting languages.
 %
 % \section{Conversion to HTML}
 %
@@ -1573,7 +1584,7 @@
 % \end{tabular}
 % \begin{tablenotes}
 %  \item[1] When placed in math mode, the single straight quote (\texttt{'}) is
-%           passed as-is to the XML, even when doubled (double prime symbol).
+%           passed as-is to the \XML, even when doubled (double prime symbol).
 %  \item[2] In roman type, \LuaLaTeX\ and \XeLaTeX\ typeset the double straight
 %  quote symbol (\texttt{"}) and the command \cmd{\dq} as a double right quote
 %  (\textquotedblright). Instead,  \pkg{moodle} follows pdf\LaTeX: whatever
@@ -2234,8 +2245,11 @@
 % \begin{changelog}[title={Version History},sectioncmd=\section*,author={Matthieu Guerquin-Kern}]
 %   \begin{version}[version=\fileversion,]^^Adate=]
 %     \added
-\item A section describing the use of templates for generating large number of quizzes has been added (courtesy of Colin Caprani).
-        \item For templating purposes, in \optn{draft} mode, general TeX code can now be used in items and |tolerance| key of numerical questions (courtesy of Colin Caprani).
+% ^^A      \item A section describing the use of templates for generating large number
+% ^^A            of quizzes has been added (courtesy of Colin Caprani).
+%       \item For templating purposes, in \optn{draft} mode, general TeX code can
+%             now be used in items and |tolerance| key of numerical questions
+%             (courtesy of Colin Caprani).
 %       \item Support for the \env{quote} and \env{quotation} environments in the HTML  
 %             conversion process (courtesy of Gerald Teschl).
 %       \item Experimental package option \optn{pluginfile} mimics the way
