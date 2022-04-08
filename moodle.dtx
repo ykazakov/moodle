@@ -2294,6 +2294,10 @@
 %       \item Support for non-\acro{ASCII} characters abandoned when compiling
 %             with \prog{pdflatex}.
 %     \fixed
+%       \item Compatibility with \pkg{siunitx} version 3.
+%       \item Compatibility with \pkg{minted} starting from 2021/12/24 v2.6.
+%       \item Different issues with graphics handling on Windows (\prog{magick},
+%             \prog{del}, \prog{move},\dots).
 %       \item Symbols |<| and |>| are translated to \HTML\ equivalents, also in
 %             text-mode.
 %       \item Warning german-writing and (Xe$\mid$Lua)\TeX\ users about troubles
@@ -3763,7 +3767,8 @@
 \def\moodle@makelatextag@numerical{}
 
 \AtEndPreamble{
-  \@ifpackageloaded{siunitx}{\def\moodle@printnum{\num[omit-uncertainty,copy-decimal-marker]}}{\let\moodle@printnum\trim@spaces}%
+  \@ifpackageloaded{siunitx}{\def\moodle@printnum{\num[omit-uncertainty]}}%,copy-decimal-marker
+  {\let\moodle@printnum\trim@spaces}%
 }
 
 \ifmoodle@handout
@@ -6661,7 +6666,7 @@
       % begin modified part
        \xdef\moodle@media@base{\detokenize\xa{\Gin@base}}%
        \xdef\moodle@media@ext{\detokenize\xa{\Gin@ext}}%
-      % end modfied part
+      % end modified part
     \fi
   \endgroup
 }
@@ -6748,6 +6753,7 @@
   \DeleteFilecommand{del}%
   \MoveFilecommand{move}%
   \DevNullcommand{NUL}%
+  \imagemagickcommand{magick -colorspace RGB}%
 \else%
   \ghostscriptcommand{gs -dBATCH -dNOPAUSE -sDEVICE=pngalpha}%
   \baselxivcommand{base64}%
@@ -6756,9 +6762,8 @@
   \DeleteFilecommand{rm -f}%
   \MoveFilecommand{mv}%
   \DevNullcommand{/dev/null}%
+  \imagemagickcommand{convert -colorspace RGB}%
 \fi%
-
-\imagemagickcommand{convert -colorspace RGB}%
 \optipngcommand{optipng -clobber -strip all -quiet}%
 \PDFtoSVGcommand{inkscape --export-type=svg --export-area-page --vacuum-defs}%--pdf-poppler
 % remove the "--pdf-poppler" import option if you want to preserve text (avoid conversion to path)
@@ -6792,7 +6797,7 @@
 % In case the \GIF\ is animated, we pick up the first frame in this conversion.
 % While the picture will be animated after Moodle import, it will not be in the PDF
 % output, whatever the viewer is.
-    \DeclareGraphicsAlien{.gif}{.png}{\htmlize@imagemagick@convert\otherspace '\SourceFile[0]' \OutputFile}%
+    \DeclareGraphicsAlien{.gif}{.png}{\htmlize@imagemagick@convert\otherspace \SourceFile[0]\otherspace \OutputFile}%
   }{
     \newcommand\includegraphics[2][]{\PackageError{moodle}{"\string\includegraphics" is not defined}%
                                           {Add "\string\usepackage{graphicx}" to you preamble.}}{}%}%
@@ -6843,9 +6848,9 @@
 %      \DeclareGraphicsRule{.SVG}{pdf}{.pdf}{%
 %        `\SVGtoPDF\otherspace '#1' \noexpand\Gin@base-SVG-converted-to.pdf}%
     \DeclareGraphicsAlien{.svg}{.pdf}{%
-      \SVGtoPDF\otherspace '\SourceFile' -o '\OutputFile' 2>\DevNull}%
+      \SVGtoPDF\otherspace \SourceFile\otherspace -o \otherspace\OutputFile\otherspace 2>\DevNull}%
     \DeclareGraphicsAlien{.SVG}{.pdf}{%
-      \SVGtoPDF\otherspace '\SourceFile' -o '\OutputFile' 2>\DevNull}%
+      \SVGtoPDF\otherspace \SourceFile\otherspace -o \otherspace\OutputFile\otherspace 2>\DevNull}%
   }%
 \fi
 \def\moodle@checkconversionsuccess#1#2{%
@@ -6950,14 +6955,28 @@
     %Now, save that base64 encoding in a TeX macro
     \def\moodle@newpic@baselxiv{}%
     \message{moodle.sty:   Reading base64 file '\moodle@media@base.enc'...^^J}%
-    \openin\baseLXIVdatafile="\moodle@media@base.enc"
+    \openin\baseLXIVdatafile="\moodle@media@base.enc"\relax
+    \ifeof\baseLXIVdatafile
+      \PackageError{moodle}{reading '\moodle@media@base.enc' failed}%
+        {If the XML file is not of importance to you: use package option "draft"}%
+    \else
       \savebaselxivdata@recursive
+    \fi
     \closein\baseLXIVdatafile
     %Clean up files
     \ifx\moodle@media@ext@current\moodle@media@ext
-      \ShellEscape{\DeleteFiles\otherspace "\moodle@media@base.enc"}%
+      \ifwindows
+        \ShellEscape{powershell.exe "del ""\moodle@media@base.enc"""}%
+      \else
+        \ShellEscape{\DeleteFiles\otherspace "\moodle@media@base.enc"}%
+      \fi
     \else
-      \ShellEscape{\DeleteFiles\otherspace "\moodle@media@base.enc" "\moodle@media@base\moodle@media@ext@current"}%
+      \ifwindows
+        \ShellEscape{powershell.exe "del ""\moodle@media@base.enc"""}%
+        \ShellEscape{powershell.exe "del ""\moodle@media@base\moodle@media@ext@current"""}%
+      \else
+        \ShellEscape{\DeleteFiles\otherspace "\moodle@media@base.enc" "\moodle@media@base\moodle@media@ext@current"}%
+      \fi
     \fi
     \xa\global\xa\let\csname picbaselxiv@graphics@#2\endcsname=\moodle@newpic@baselxiv%
     \ifmoodle@pluginfile
@@ -7065,14 +7084,25 @@
                          \moodle@checkconversionsuccess{\moodle@basename\TikzExportExtension}{PStoSVG conversion}%
                        }%
       \fi
-      \def\OptimizeExport{ \message{moodle.sty:   Optimizing '\moodle@basename.svg'...^^J}%
+      \ifwindows
+        \def\OptimizeExport{ \message{moodle.sty:   Optimizing '\moodle@basename.svg'...^^J}%
                            \edef\cmdline{\optiSVG\otherspace < "\moodle@basename\TikzExportExtension" >
-                                         "\moodle@basename.tmp.svg" && \MoveFiles\otherspace "\moodle@basename.tmp.svg"
-                                         "\moodle@basename\TikzExportExtension" }%
-\message{\cmdline}
+                                         "\moodle@basename.tmp.svg" && powershell.exe "move ""\moodle@basename.tmp.svg""" %
+                                         """\moodle@basename\TikzExportExtension"""}%
+                           \message{\cmdline}
                            \xa\ShellEscape\xa{\cmdline}%
                            \moodle@checkconversionsuccess{\moodle@basename\TikzExportExtension}{SVG optimization}%
                          }%
+      \else
+        \def\OptimizeExport{ \message{moodle.sty:   Optimizing '\moodle@basename.svg'...^^J}%
+                           \edef\cmdline{\optiSVG\otherspace < "\moodle@basename\TikzExportExtension" >
+                                         "\moodle@basename.tmp.svg" && \MoveFiles\otherspace "\moodle@basename.tmp.svg"
+                                         "\moodle@basename\TikzExportExtension" }%
+                           \message{\cmdline}
+                           \xa\ShellEscape\xa{\cmdline}%
+                           \moodle@checkconversionsuccess{\moodle@basename\TikzExportExtension}{SVG optimization}%
+                         }%
+      \fi
     \else
       \def\TikzExportExtension{.png}%
       \def\TikzExportMIME{image/png}%
@@ -7193,7 +7223,12 @@
 \def\savebaselxivdata{%
   \def\moodle@newpic@baselxiv{}%
   \openin\baseLXIVdatafile=\tikzexternalrealjob-tikztemp-\the\numconvertedpictures.enc\relax
+  \ifeof\baseLXIVdatafile
+      \PackageError{moodle}{reading '\moodle@media@base.enc' failed}%
+        {If the XML file is not of importance to you: use package option "draft"}%
+  \else   
     \savebaselxivdata@recursive
+  \fi
   \closein\baseLXIVdatafile
   \xa\global\xa\let\csname picbaselxiv@\the\numconvertedpictures\endcsname=\moodle@newpic@baselxiv%
 }
@@ -7217,7 +7252,7 @@
       \ifXeTeX
         % we must keep picture pdf's for subsequent linking (xdvipdfmx)
         \ifwindows
-          \ShellEscape{powershell.exe -noexit "del * -include \tikzexternalrealjob-tikztemp-*.* -exclude *.pdf}%
+          \ShellEscape{powershell.exe "del * -include \tikzexternalrealjob-tikztemp-*.* -exclude *.pdf"}%
         \else
           \ShellEscape{find . -type f -name "\tikzexternalrealjob-tikztemp-*.*" -not -name "*.pdf" -delete}%
         \fi
@@ -7502,8 +7537,11 @@
 \AtEndPreamble{% this definition should prevail because `minted' gets loaded after `moodle'
 \@ifpackageloaded{minted}{%
   \newcounter{moodle@pygmentizecounter}%
+  \@ifundefined{minted@defstyle}{% compatibility with minted prior to 2021/12/24 v2.6
+    \let\minted@defstyle=\minted@checkstyle%
+  }{}%
   \renewcommand{\minted@pygmentize}[2][\minted@outputdir\minted@jobname.pyg]{%
-    \minted@checkstyle{\minted@get@opt{style}{default}}%
+    \minted@defstyle{\minted@get@opt{style}{default}}%
     \stepcounter{minted@pygmentizecounter}%
     \ifthenelse{\equal{\minted@get@opt{autogobble}{false}}{true}}%
       {\def\minted@codefile{\minted@outputdir\minted@jobname.pyg}}%
@@ -7536,7 +7574,7 @@
       \fi}%
     \def\minted@cmd{\minted@cmdtemplate{latex -P commandprefix=PYG}{\minted@infile}}
     % For debugging, uncomment: %%%%
-    \immediate\typeout{\minted@cmd}%
+    %\immediate\typeout{\minted@cmd}%
     % %%%%
     \def\minted@cmdHTML{\minted@cmdtemplate{html -P noclasses -P
       nowrap -P hl_lines="\FV@HighlightLinesList" -P
