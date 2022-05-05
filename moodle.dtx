@@ -7007,7 +7007,7 @@
 }%
 \ifwindows
   \def\ConvertToBaseLXIV@int#1#2{%
-    \def\cmdline{\baselxiv\otherspace -encode "#1#2"\otherspace tmp.b64 && findstr /vbc:"---" tmp.b64 > "#1.enc" && del tmp.b64}%
+    \def\cmdline{\baselxiv\otherspace -encode "#1#2"\otherspace tmp.b64 && findstr /vbc:"---" tmp.b64 > "#1.enc" && powershell.exe "del tmp.b64"}%
   }% Starting from Windows 7, CertUtil is included by default. There should be no windows XP still running
 \else
   \ifmacosx
@@ -7257,7 +7257,11 @@
           \ShellEscape{find . -type f -name "\tikzexternalrealjob-tikztemp-*.*" -not -name "*.pdf" -delete}%
         \fi
       \else
-        \ShellEscape{\DeleteFiles\otherspace \tikzexternalrealjob-tikztemp-*.*}%
+        \ifwindows
+          \ShellEscape{powershell.exe "del \tikzexternalrealjob-tikztemp-*.*"}%
+        \else
+          \ShellEscape{\DeleteFiles\otherspace \tikzexternalrealjob-tikztemp-*.*}%
+        \fi
       \fi
     }{}%
   \fi
