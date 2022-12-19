@@ -4559,6 +4559,7 @@
        \addto@xml[4]{\moodle@answers@xml}{  <text><![CDATA[<p>\moodle@subquestiontext@htmlized</p>]]></text>\ifmoodle@pluginfile\htmlize@embeddedfiletags\fi}%
      \fi
      \trim@spaces@in\moodle@subanswertext
+     \trim@spaces@in\moodle@subanswertext% don't know why but a second call seems required...
      %\ifmoodle@draganddrop
        \xa\converttohtmlmacro\xa\moodle@subanswertext@htmlized\xa{\moodle@subanswertext}%
      %\fi
