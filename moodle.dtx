@@ -3880,10 +3880,10 @@
       \moodle@makelatextag@other{All-or-nothing}%
     \fi
   \else
-    \ifmoodle@multiple
-      \moodle@makelatextag@other{Multiple}%
-    \else
+    \ifmoodle@single
       \moodle@makelatextag@other{Single}%
+    \else
+      \moodle@makelatextag@other{Multiple}%
     \fi
   \fi
   \ifmoodle@handout\else
@@ -3895,7 +3895,7 @@
 
 \def\moodle@multi@latexprocessing{%
   \ifmoodle@allornothing\moodle@singletrue\fi
-  \ifmoodle@multiple\moodle@InspectMultipleAnswers\fi
+  \ifmoodle@single\else\moodle@InspectMultipleAnswers\fi
   \ifmoodle@handout\NewList{answerlist}\fi
   \begin{enumerate}\moodle@obeynumberingstyle%
     %\renewcommand{\theenumi}{\alph{enumi}}%
@@ -4728,11 +4728,11 @@
       \xa\g@addto@macro\xa\moodle@clozemulti@output\xa{\moodle@questionheader}%
       \def\clozemulti@coding{}%
       \edef\clozemulti@coding{\csname moodle@default grade\endcsname:}%
-      \ifmoodle@multiple
+      \ifmoodle@single
+        \g@addto@macro{\clozemulti@coding}{MULTICHOICE}%
+      \else
         \moodle@WarningOrError{3}{5}{Cloze Multiresponse}%
         \g@addto@macro{\clozemulti@coding}{MULTIRESPONSE}%
-      \else
-        \g@addto@macro{\clozemulti@coding}{MULTICHOICE}%
       \fi
       \ifcase\moodle@multi@mode\relax
          % Case 0: dropdown box style
@@ -4741,10 +4741,10 @@
          \fi
       \or
         % Case 1: vertical style
-        \ifmoodle@multiple
+        \ifmoodle@single
           \PackageError{moodle}{Vertical mode (dropdown box) incompatible with multiresponse.}
         \else
-          \g@addto@macro{\clozemulti@coding}{_V}%
+          \PackageError{moodle}{Vertical mode (dropdown box) incompatible with multiresponse.}
         \fi
       \else
         % Case 2: horizontal radio buttons
@@ -4777,7 +4777,7 @@
         \moodle@makelatextag@multi
       \fi
       \def\cloze@multichoice@table@text{}%
-      \ifmoodle@multiple\moodle@InspectMultipleAnswers\fi
+      \ifmoodle@single\relax\else\moodle@InspectMultipleAnswers\fi
       \ifmoodle@handout\NewList{answerlist}\fi
       %\let\moodle@feedback=\@empty
       \loopthroughitemswithcommand{\moodle@print@clozemultichoice@answer}%
