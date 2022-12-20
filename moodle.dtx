@@ -104,8 +104,8 @@
 %   Anders Hendrickson\footnote{original author of the package (\texttt{v0.5}), inactive.}\\
 %  \texttt{anders.o.f.hendrickson AT gmail DOT com} \and
 %  Matthieu Guerquin-Kern\footnote{current maintainer, %
-%  author of the updates (\texttt{v0.6} to \texttt{\fileversion}), %
-%  partially funded in 2019 by \href{https://www.ensea.fr/en/}{ENSEA Graduate School}, France.}\\
+%  author of the updates (\texttt{v0.6} to \texttt{\fileversion}).} %
+%  ^^Apartially funded in 2019 by \href{https://www.ensea.fr/en/}{ENSEA Graduate School}, France.}\\
 %  \href{mailto:guerquin-kernATcransDOTorg}{\texttt{guerquin-kern AT crans DOT org}}%
 % }%
 %
@@ -1052,16 +1052,23 @@
 % fractions for a total of 100\% and leave intact the negative fractions.
 % ^^A\footnote{\url{https://tracker.moodle.org/browse/MDL-3782?focusedCommentId=421564\#comment-421564}}.
 %
-% \DescribeKey[cloze]{vertical}\DescribeKey[cloze]{horizontal}\DescribeKey[cloze]{inline}
-% \DescribeDefault{inline}
-% Within a \env{cloze} question, by default, a multiple choice question is implemented
-% as an \optn{inline} dropdown box. This is visually compact, but it also prevents
-% the use of mathematical or \HTML\ formatting.
-% Adding the option \optn{vertical} displays the subquestion as a vertical column
-% of radio buttons instead; likewise the option \optn{horizontal} creates a horizontal
-% row of radio buttons.
-% The option \optn{inline} is incompatible\watchout\ with \optn{multiple} or \optn{single=false}
+% ^^A\DescribeKey[cloze]{vertical}\DescribeKey[cloze]{horizontal}\DescribeKey[cloze]{inline}
+% ^^A\DescribeDefault{inline}
+% Within a \env{cloze} question, a multiple choice question may be displayed in three
+% different modes:
+% \begin{description}
+% \ItemDescribeKey[cloze]{inline} The inline dropdown box is the default choice
+% when only one answer is to be selected (option \optn{single}). The dropdown box
+% is visually compact, but also prevents the use of mathematical or \HTML\ formatting.
+% This option is incompatible\watchout\ with \optn{multiple} or \optn{single=false}
 % (dropdown boxes don't let you pick up several answers!).
+% \ItemDescribeKey[cloze]{vertical} displays the subquestion as a vertical column
+% of radio buttons instead. This is the default when several items can
+% be selected (options \optn{multiple} or \optn{single=false}).
+% \ItemDescribeKey[cloze]{horizontal} creates a horizontal row of radio buttons.
+% This option works well when the possible answers are short. The result is more
+% compact than what \optn{vertical} gives.
+% \end{description}
 %
 % \DescribeBoolean[cloze]{shuffle}
 % Starting from \Moodle\ version 3.0, within a \env{cloze} question, the items of a
@@ -1163,7 +1170,7 @@
 % based on a prototype.
 % 
 % In this case, the teacher building a quiz often wants one of the questions
-% to be randmly picked up and presented to the student. To achieve this,
+% to be randomly picked up and presented to the student. To achieve this,
 % we suggest to apply a specific tag to the questions sharing the same prototype.
 % After import in \Moodle, when creating a quiz, this tag can be selected to
 % narrow down a random selection of questions.
@@ -1204,7 +1211,7 @@
 %   for x = 2,4 do
 %     for y = 2,4 do
 %       if x>y then
-%         if x/y==math.floor(x/y) then points=4 else points=3 end
+%         if x/y==math.floor(x/y) then points=1 else points=2 end
 %         cloze_print({x,y},points)
 %       end
 %     end
@@ -1242,9 +1249,9 @@
 %     for y in range(2,5):
 %       if x > y:
 %         if x/y == x//y:
-%           points=4
+%           points=1
 %         else:
-%           points=3
+%           points=2
 %         cloze_print([x,y],points)
 % \end{VerbatimOut}
 % \inputminted[]{python}{minted.doc.out}
@@ -1254,7 +1261,7 @@
 %   \end{quiz}
 % \end{VerbatimOut}
 % \inputminted[gobble=2,frame=bottomline]{latex}{minted.doc.out}
-% These two codes yield the same \XML\ content.
+% These two example codes yield the same \XML\ content.
 %
 % \subsubsection{\TeX\ Code As a Template}
 %
@@ -2273,6 +2280,9 @@
 %       \item Support for \cmd{\i} in conversion to \HTML.
 %       \item \SVG\ option support for Windows (courtesy of Wolf M\"uller).
 %     \changed
+%       \item In Cloze \env{multi} subquestions, the default mode is
+%             \optn{inline} when only one answer is to be selected and
+%             \optn{vertical} when several answers can be selected.
 %       \item Single straight quotes (apostrophe) in math mode are passed as-is
 %             to the \XML\ (with help from Keno Wehr).
 %       \item Empty groups |{}| in math-mode are passed as-is to the \XML\
@@ -2294,6 +2304,11 @@
 %       \item Support for non-\acro{ASCII} characters abandoned when compiling
 %             with \prog{pdflatex}.
 %     \fixed
+%       \item The cloze subquestions now inherit \optn{points} set at
+%             the higher levels.
+%       \item Option \optn{single=false} now works in Cloze \env{multi} questions.
+%       \item Undesired trailing spaces are removed from offered answers in
+%             \env{matching} question.
 %       \item Compatibility with \pkg{siunitx} version 3.
 %       \item Compatibility with \pkg{minted} starting from 2021/12/24 v2.6.
 %       \item Different issues with graphics handling on Windows (\prog{magick},
@@ -3128,7 +3143,7 @@
 
 %% DISPLAY MODE -- affects Cloze multiple choice questions only.
       % 0 = inline, 1 = vertical, 2 = horizontal
-      \def\moodle@multi@mode{0}%
+      \def\moodle@multi@mode{\ifmoodle@single 0\else 1\fi}%
       \define@key{moodle}{inline}[]{\def\moodle@multi@mode{0}}%
       \define@key{moodle}{vertical}[]{\def\moodle@multi@mode{1}}%
       \define@key{moodle}{horizontal}[]{\def\moodle@multi@mode{2}}%
@@ -3880,10 +3895,10 @@
       \moodle@makelatextag@other{All-or-nothing}%
     \fi
   \else
-    \ifmoodle@multiple
-      \moodle@makelatextag@other{Multiple}%
-    \else
+    \ifmoodle@single
       \moodle@makelatextag@other{Single}%
+    \else
+      \moodle@makelatextag@other{Multiple}%
     \fi
   \fi
   \ifmoodle@handout\else
@@ -3895,7 +3910,7 @@
 
 \def\moodle@multi@latexprocessing{%
   \ifmoodle@allornothing\moodle@singletrue\fi
-  \ifmoodle@multiple\moodle@InspectMultipleAnswers\fi
+  \ifmoodle@single\relax\else\moodle@InspectMultipleAnswers\fi
   \ifmoodle@handout\NewList{answerlist}\fi
   \begin{enumerate}\moodle@obeynumberingstyle%
     %\renewcommand{\theenumi}{\alph{enumi}}%
@@ -4695,7 +4710,7 @@
   \moodle@tmpdim=\csname moodle@default grade\endcsname pt\relax
   \ifdim\moodle@tmpdim<1 pt\relax
     \PackageWarning{moodle}{for cloze questions, the default grade must be a positive integer. Changing the default grade from \csname moodle@default grade\endcsname\space to 1}%
-    \csgdef{moodle@default grade}{1}%
+    \csdef{moodle@default grade}{1}%
   \else % Rounding is performed in three steps:
     % 1) round(x)=floor(x+1/2)
     \advance\moodle@tmpdim by .5pt\relax
@@ -4707,7 +4722,7 @@
     \ifdim\moodle@tmpdim=\csname moodle@default grade\endcsname pt\else
       \PackageWarning{moodle}{for cloze questions, the default grade must be a positive integer. Rounding \csname moodle@default grade\endcsname\space to \moodle@tmpval}%
     \fi
-    \csxdef{moodle@default grade}{\moodle@tmpval}% in any case, take eventual decimals out (e.g. change 10.0 for 10)
+    \csedef{moodle@default grade}{\moodle@tmpval}% in any case, take eventual decimals out (e.g. change 10.0 for 10)
   \fi
 }%
 %    \end{macrocode}
@@ -4717,7 +4732,6 @@
 %    \begin{macrocode}
 \NewEnviron{clozemulti}[1][]{%
   \bgroup
-    \setkeys{moodle}{default grade=1}%
     \setkeys{moodle}{#1}%
     \moodle@checkclozegrade
     \expandafter\gatheritems\xa{\BODY}%
@@ -4728,23 +4742,28 @@
       \xa\g@addto@macro\xa\moodle@clozemulti@output\xa{\moodle@questionheader}%
       \def\clozemulti@coding{}%
       \edef\clozemulti@coding{\csname moodle@default grade\endcsname:}%
-      \ifmoodle@multiple
+      \ifmoodle@single
+        \g@addto@macro{\clozemulti@coding}{MULTICHOICE}%
+      \else
         \moodle@WarningOrError{3}{5}{Cloze Multiresponse}%
         \g@addto@macro{\clozemulti@coding}{MULTIRESPONSE}%
-      \else
-        \g@addto@macro{\clozemulti@coding}{MULTICHOICE}%
       \fi
       \ifcase\moodle@multi@mode\relax
          % Case 0: dropdown box style
-         \ifmoodle@shuffle
-           \g@addto@macro{\clozemulti@coding}{_}%
-         \fi
+        \ifmoodle@single\else
+           \PackageError{moodle}{Inline mode (dropdown box) incompatible with multiresponse.}
+        \fi
+        \ifmoodle@shuffle
+          \g@addto@macro{\clozemulti@coding}{_}%
+        \fi
       \or
         % Case 1: vertical style
-        \ifmoodle@multiple
-          \PackageError{moodle}{Vertical mode (dropdown box) incompatible with multiresponse.}
-        \else
+        \ifmoodle@single
           \g@addto@macro{\clozemulti@coding}{_V}%
+        \else
+           \ifmoodle@shuffle
+             \g@addto@macro{\clozemulti@coding}{_}%
+           \fi
         \fi
       \else
         % Case 2: horizontal radio buttons
@@ -4777,7 +4796,7 @@
         \moodle@makelatextag@multi
       \fi
       \def\cloze@multichoice@table@text{}%
-      \ifmoodle@multiple\moodle@InspectMultipleAnswers\fi
+      \ifmoodle@single\relax\else\moodle@InspectMultipleAnswers\fi
       \ifmoodle@handout\NewList{answerlist}\fi
       %\let\moodle@feedback=\@empty
       \loopthroughitemswithcommand{\moodle@print@clozemultichoice@answer}%
@@ -4966,7 +4985,6 @@
   \bgroup
     \expandafter\gatheritems\expandafter{\BODY}%
     \let\moodle@questionheader=\gatheredheader
-    \setkeys{moodle}{default grade=1}%
     \setkeys{moodle}{#1}%
     \moodle@checkclozegrade
     \ifhtmlizer@active
@@ -5086,7 +5104,6 @@
   \bgroup
     \expandafter\gatheritems\expandafter{\BODY}%
     \let\moodle@questionheader=\gatheredheader
-    \setkeys{moodle}{default grade=1}%
     \setkeys{moodle}{#1}%
     \moodle@checkclozegrade
     \ifhtmlizer@active

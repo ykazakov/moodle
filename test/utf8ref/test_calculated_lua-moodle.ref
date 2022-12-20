@@ -13,7 +13,7 @@
     <text><![CDATA[Arithmetic Quiz (3, 2)]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>Solve the following tasks!<BR/> \(3 + 2 = \){1:NUMERICAL:=5:0}\(3 - 2 = \){1:NUMERICAL:=1:0}\(3 * 2 = \){1:NUMERICAL:=6:0}</p>]]></text>
+    <text><![CDATA[<p>Solve the following tasks!<BR/> \(3 + 2 = \){2:NUMERICAL:=5:0}\(3 - 2 = \){2:NUMERICAL:=1:0}\(3 * 2 = \){2:NUMERICAL:=6:0}</p>]]></text>
   </questiontext>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
@@ -41,7 +41,7 @@
     <text><![CDATA[Arithmetic Quiz (4, 3)]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>Solve the following tasks!<BR/> \(4 + 3 = \){1:NUMERICAL:=7:0}\(4 - 3 = \){1:NUMERICAL:=1:0}\(4 * 3 = \){1:NUMERICAL:=12:0}</p>]]></text>
+    <text><![CDATA[<p>Solve the following tasks!<BR/> \(4 + 3 = \){2:NUMERICAL:=7:0}\(4 - 3 = \){2:NUMERICAL:=1:0}\(4 * 3 = \){2:NUMERICAL:=12:0}</p>]]></text>
   </questiontext>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
