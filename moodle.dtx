@@ -2304,6 +2304,8 @@
 %       \item Support for non-\acro{ASCII} characters abandoned when compiling
 %             with \prog{pdflatex}.
 %     \fixed
+%       \item In answers of \env{matching} questions, some \TeX\ macros will not
+%             break compilation. A problem with curly braces persists.
 %       \item The cloze subquestions now inherit \optn{points} set at
 %             the higher levels.
 %       \item Option \optn{single=false} now works in Cloze \env{multi} questions.
@@ -4527,9 +4529,12 @@
       \stepcounter{moodle@NumStarredAnswers}%
       \InsertLastItem{questionlist}{#1}%
     \fi
+    \def\test@ii{#2}%
+    \trim@spaces@in\test@ii
+    \trim@spaces@in\test@ii% don't know why the 2nd call is required
     % add proposed match only if not already in the list
-    \xifinlist{\trim@spaces{#2}}{\matcheslist}{}{%
-      \listeadd\matcheslist{\trim@spaces{#2}}%
+    \xifinlist{\expandonce\test@ii}{\matcheslist}{}{%
+      \listeadd\matcheslist{\expandonce\test@ii}%
       % matches are always proposed shuffled
       \InsertRandomItem{answerlist}{#2}%
     }%
