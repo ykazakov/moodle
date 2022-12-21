@@ -2304,6 +2304,8 @@
 %       \item Support for non-\acro{ASCII} characters abandoned when compiling
 %             with \prog{pdflatex}.
 %     \fixed
+%       \item Preexisting pictures no longer get deleted when including graphics
+%             without specifying the extension (courtesy of Colin Caprani).
 %       \item In answers of \env{matching} questions, some \TeX\ macros will not
 %             break compilation. A problem with curly braces persists.
 %       \item The cloze subquestions now inherit \optn{points} set at
@@ -6944,7 +6946,7 @@
       \edef\moodle@media@pdf{\detokenize{.pdf}}%
       \edef\moodle@media@ext{\detokenize\xa{\moodle@media@ext}}%
       \ifnum0\ifx\moodle@media@ext\moodle@media@pdf1\fi\ifmoodle@svg1\fi=11\relax% PDF file and \SVG\ option active
-        \def\moodle@media@ext@current{.svg}%
+        \def\moodle@media@ext@current{-moodle.svg}%
         \edef\moodle@media@mime@current{\moodle@media@SVGmime}%
         \edef\cmdline{\PDFtoSVG\otherspace "\moodle@media@base\moodle@media@ext" -o "\moodle@media@base\moodle@media@ext@current" 2>\DevNull}%
         \message{moodle.sty:   Converting '#2' to SVG...^^J}%
@@ -6960,7 +6962,7 @@
           \moodle@checkconversionsuccess{\moodle@media@base\moodle@media@ext@current}{SVG optimization}%
         \fi
       \else% call ImageMagick
-        \def\moodle@media@ext@current{.png}%
+        \def\moodle@media@ext@current{-moodle.png}%
         \def\moodle@media@mime@current{image/png}%
         \edef\cmdline{\htmlize@imagemagick@convert\otherspace "\moodle@media@base\moodle@media@ext" -resize \moodle@graphics@geometry\otherspace "\moodle@media@base\moodle@media@ext@current"}%
         \message{moodle.sty:   Converting '#2' to PNG...^^J}%
