@@ -4531,7 +4531,7 @@
       \stepcounter{moodle@NumStarredAnswers}%
       \InsertLastItem{questionlist}{#1}%
     \fi
-    \def\test@ii{#2}%
+    \edef\test@ii{\detokenize{#2}}%
     \trim@spaces@in\test@ii
     \trim@spaces@in\test@ii% don't know why the 2nd call is required
     % add proposed match only if not already in the list
