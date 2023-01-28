@@ -28,7 +28,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\ProvidesPackage{moodle}
 %<*package>
-    [2021/03/10 v1.0dev Moodle quiz XML generation]
+    [2023/01/28 v1.0 Moodle quiz XML generation]
 %</package>
 %
 %<*driver>
@@ -52,7 +52,7 @@
 \usepackage[main=english,french,german]{babel}
 \usepackage{amssymb,threeparttable,booktabs}
 \usepackage{eurosym,longtable,tikz,minted,changelog}
-\usepackage[pdfpagelabels]{hyperref}
+%\usepackage[pdfpagelabels]{hyperref}% now loaded by ltxdoc
 \usetikzlibrary{arrows,positioning,decorations.text,calc}
 %\usemintedstyle{Wombat}
 \EnableCrossrefs
@@ -66,7 +66,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{7729} ^^A Comment \OnlyDescription above to adjust
+% \CheckSum{10269} ^^A Comment \OnlyDescription above to adjust
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -104,8 +104,7 @@
 %   Anders Hendrickson\footnote{original author of the package (\texttt{v0.5}), inactive.}\\
 %  \texttt{anders.o.f.hendrickson AT gmail DOT com} \and
 %  Matthieu Guerquin-Kern\footnote{current maintainer, %
-%  author of the updates (\texttt{v0.6} to \texttt{\fileversion}).} %
-%  ^^Apartially funded in 2019 by \href{https://www.ensea.fr/en/}{ENSEA Graduate School}, France.}\\
+%  author of the updates (\texttt{v0.6} to \texttt{\fileversion}).}\\
 %  \href{mailto:guerquin-kernATcransDOTorg}{\texttt{guerquin-kern AT crans DOT org}}%
 % }%
 %
@@ -2249,8 +2248,11 @@
 % \changes{v0.7}{2020/07/09}{Feature extensions}
 % \changes{v0.8}{2021/01/04}{Bug fixes and feature extensions}
 % \changes{v0.9}{2021/02/07}{Bug fixes and feature extensions}
+% \changes{v1.0}{2023/01/28}{Bug fixes and feature extensions}
 % \begin{changelog}[title={Version History},sectioncmd=\section*,author={Matthieu Guerquin-Kern}]
-%   \begin{version}[version=\fileversion,]^^Adate=]
+% ^^A \begin{version}[version=\fileversion,]^^Adate=]
+% ^^A \end{version}
+% \begin{version}[version=1.0,date=2023-01-28]
 %     \added
 % ^^A      \item A section describing the use of templates for generating large number
 % ^^A            of quizzes has been added (courtesy of Colin Caprani).
@@ -2304,6 +2306,7 @@
 %       \item Support for non-\acro{ASCII} characters abandoned when compiling
 %             with \prog{pdflatex}.
 %     \fixed
+%       \item In math-mode, \cmd{\underline} is no longer translated to \HTML.
 %       \item Preexisting pictures no longer get deleted when including graphics
 %             without specifying the extension (courtesy of Colin Caprani).
 %       \item In answers of \env{matching} questions, some \TeX\ macros will not
@@ -2469,11 +2472,10 @@
 %   \shortversion{version=0.5,date=2016-01-05,simple,changes=Initial version,author={Anders O.F. Hendrickson}}
 % \end{changelog}
 % \addcontentsline{toc}{section}{Version History}%
-%
+% \PrintIndex
+% \addcontentsline{toc}{section}{Index}%
 % \StopEventually{%
 %^^A \PrintChanges
-%    \PrintIndex
-%    \addcontentsline{toc}{section}{Index}%
 % }
 %
 % \section{Implementation}
@@ -6516,7 +6518,10 @@
 \html@def\textsuperscript#1{\HTMLtag{SUP}#1\HTMLtag{/SUP}}%
 \html@def\textsubscript#1{\HTMLtag{SUB}#1\HTMLtag{/SUB}}%
 \html@def\texttt#1{\HTMLtag{CODE}#1\HTMLtag{/CODE}}%
-\html@def\underline#1{\HTMLtag{SPAN STYLE="text-decoration: underline;"}#1\HTMLtag{/SPAN}}%
+\html@action@def\underline#1{%
+  \moodle@ifmathmode{\g@addto@macro\htmlize@output{\string\underline{#1}}}%
+                    {\g@addto@macro\htmlize@output{<SPAN STYLE="text-decoration: underline;">#1</SPAN>}}%
+}%
 %    \end{macrocode}
 % Third, popular \LaTeX\ commands from packages.
 %    \begin{macrocode}
@@ -7299,6 +7304,7 @@
 % \subsection{Other Media}
 % Support for other media comes through the |\url|\marg{link} and |\href|\marg{link}\marg{text}
 % commands.
+%    \begin{macrocode}
 \AtEndPreamble{%
   \@ifpackageloaded{hyperref}{%
     \let\oldhref\href
@@ -7423,6 +7429,7 @@
 %    }%
   }{}%
 }%
+%    \end{macrocode}
 %
 % \subsection{Verbatim Code}
 %

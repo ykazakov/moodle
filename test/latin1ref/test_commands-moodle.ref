@@ -41,7 +41,10 @@
     <text><![CDATA[<p><SPAN STYLE="font-variant: small-caps;">Small Capitals</SPAN></p>]]></text>
   </answer>
   <answer fraction="0" format="html">
-    <text><![CDATA[<p><SPAN STYLE="text-decoration: underline;">underlined</SPAN></p>]]></text>
+    <text><![CDATA[<p><SPAN STYLE="text-decoration: underline;">underlined</SPAN> in text</p>]]></text>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[<p>\(\underline{underlined}\) in math</p>]]></text>
   </answer>
   <answer fraction="0" format="html">
     <text><![CDATA[<p>M<SUP>me</SUP></p>]]></text>

@@ -6,7 +6,7 @@ See the [LICENSE](LICENSE) file.
 
 Original contents (2016): Anders O.F. Hendrickson (anders.o.f.hendrickson AT gmail.com)
 
-2019-2021: Matthieu Guerquin-Kern (guerquin-kern AT crans.org)
+2019-2023: Matthieu Guerquin-Kern (guerquin-kern AT crans.org)
 
 # Contents
 
