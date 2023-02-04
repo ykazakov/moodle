@@ -2250,8 +2250,13 @@
 % \changes{v0.9}{2021/02/07}{Bug fixes and feature extensions}
 % \changes{v1.0}{2023/01/28}{Bug fixes and feature extensions}
 % \begin{changelog}[title={Version History},sectioncmd=\section*,author={Matthieu Guerquin-Kern}]
-% ^^A \begin{version}[version=\fileversion,]^^Adate=]
-% ^^A \end{version}
+%  \begin{version}[version=\fileversion,]^^Adate=]
+%    \added
+%    \changed
+%    \removed
+%    \fixed
+%        \item \opt{spanish} option of \pkg{babel} interfered with the \XML\ writing.
+%  \end{version}
 % \begin{version}[version=1.0,date=2023-01-28]
 %     \added
 % ^^A      \item A section describing the use of templates for generating large number
@@ -5226,7 +5231,9 @@
  \catcode`\$=12\gdef\otherdollar{$}%
  \catcode`\%=12\gdef\otherpercent{%}
  \catcode`\[=12\gdef\otherlbracket{[}
- \catcode`\]=12\gdef\otherrbracket{]}}%
+ \catcode`\]=12\gdef\otherrbracket{]}
+ \catcode`\<=12\gdef\otherlessthan{<}
+ \catcode`\>=12\gdef\othergreaterthan{>}}%
 {\catcode`\=\string=12\gdef\otherequal{=}}%
 {\catcode`\ =12\gdef\otherspace{ }}%
 {\ttfamily\catcode`\|=0\catcode`\\=12\relax|gdef|otherbackslash{\}}%
@@ -6040,7 +6047,7 @@
 \htmlize@record@action{\relax}%
 
 \html@action@def\HTMLtag#1{%
-    \xa\g@addto@macro\xa\htmlize@output\xa{<#1>}%
+    \xa\g@addto@macro\xa\htmlize@output\xa{\otherlessthan#1\othergreaterthan}%
   }%
 \html@action@def\%{%
     \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherbackslash\otherpercent}}%
@@ -6050,7 +6057,7 @@
 \html@action@def\&{\g@addto@macro\htmlize@output{\otherampersand}}%
 \html@action@def\\{%
     \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherbackslash\otherbackslash}}%
-                      {\g@addto@macro\htmlize@output{<BR/>}}
+                      {\g@addto@macro\htmlize@output{\otherlessthan BR/\othergreaterthan}}
   }%
 \html@action@def\{{%
     \moodle@ifmathmode{\g@addto@macro\htmlize@output{\otherbackslash\otherlbrace}}%
@@ -6063,10 +6070,10 @@
   }%
 \html@action@def\[{%
     \advancemathmodecounter{1}
-    \g@addto@macro\htmlize@output{<CENTER>\otherbackslash\otherlbracket}%
+    \g@addto@macro\htmlize@output{\otherlessthan CENTER\othergreaterthan\otherbackslash\otherlbracket}%
   }%
 \html@action@def\]{%
-    \g@addto@macro\htmlize@output{\otherbackslash\otherrbracket</CENTER>}%
+    \g@addto@macro\htmlize@output{\otherbackslash\otherrbracket\otherlessthan/CENTER\othergreaterthan}%
     \advancemathmodecounter{-1}
   }%
 \html@action@def\({%
