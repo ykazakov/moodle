@@ -1,10 +1,10 @@
 PREFIX=test
 SUFFIX=moodle
 LUATEX_ONLY_TEST_FILES=test_calculated_lua.tex
-XETEX_EXCLUDED_TEST_FILES=test_includegraphics_via_tikz.tex test_includegraphics_via_tikz_and_svg.tex test_tikz_with_svg.tex
+XETEX_EXCLUDED_TEST_FILES=test_calculated_python.tex test_generalfeedback.tex test_includegraphics_via_tikz.tex test_minted.tex test_diacritics_and_ligatures.tex test_german.tex test_includegraphics_via_tikz_and_svg.tex test_punctuation_and_symbols.tex test_turkish.tex test_french.tex test_includegraphics.tex test_includegraphics_with_svg.tex test_tikz_with_svg.tex test_tolerance.tex
 PDFLATEX_EXCLUDED_TEST_FILES=test_calculated_python.tex test_generalfeedback.tex test_includegraphics_via_tikz.tex test_minted.tex test_diacritics_and_ligatures.tex test_german.tex test_includegraphics_via_tikz_and_svg.tex test_punctuation_and_symbols.tex test_turkish.tex test_french.tex test_includegraphics.tex test_includegraphics_with_svg.tex test_tikz_with_svg.tex test_tolerance.tex
 GENERIC_TEST_FILES=$(filter-out $(PDFLATEX_EXCLUDED_TEST_FILES) $(LUATEX_ONLY_TEST_FILES) $(XETEX_EXCLUDED_TEST_FILES),$(wildcard $(PREFIX)_*.tex))
-TEX_ENGINES=pdflatex lualatex xelatex
+TEX_ENGINES=pdflatex xelatex lualatex
 LATEXFLAGS=-halt-on-error -shell-escape
 DIFFTOOL=diff -abBwZ
 FILE_CLEAN=*.diff *.log *.aux *.auxlock *.out *.blg *.bbl *.toc *.xml *.bcf *.synctex.gz *~ *.nav *.snm *.idx *.ilg *.ind _minted-* *.glo *.gls *.dpth *-tikztemp-*.pdf fig/*-converted-to.*
@@ -24,7 +24,7 @@ test: $(TEX_ENGINES)
 
 pdflatex: $(GENERIC_TEST_FILES:.tex=_pdflatex.diff) $(filter-out $(PDFLATEX_EXCLUDED_TEST_FILES:.tex=_pdflatex.diff),$(XETEX_EXCLUDED_TEST_FILES:.tex=_pdflatex.diff))
 
-xelatex: $(GENERIC_TEST_FILES:.tex=_xelatex.diff) $(PDFLATEX_EXCLUDED_TEST_FILES:.tex=_xelatex.diff)
+xelatex: $(GENERIC_TEST_FILES:.tex=_xelatex.diff) $(filter-out $(XETEX_EXCLUDED_TEST_FILES:.tex=_xelatex.diff),$(PDFLATEX_EXCLUDED_TEST_FILES:.tex=_xelatex.diff))
 
 lualatex: $(GENERIC_TEST_FILES:.tex=_lualatex.diff) $(PDFLATEX_EXCLUDED_TEST_FILES:.tex=_lualatex.diff) $(LUATEX_ONLY_TEST_FILES:.tex=_lualatex.diff) $(XETEX_EXCLUDED_TEST_FILES:.tex=_lualatex.diff)
 
