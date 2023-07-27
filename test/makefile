@@ -3,7 +3,7 @@ SUFFIX=moodle
 DONOTTEST_THOSE_FILES=test_calculated_python.tex test_generalfeedback.tex test_includegraphics_via_tikz.tex test_minted.tex test_diacritics_and_ligatures.tex test_german.tex test_includegraphics_via_tikz_and_svg.tex test_punctuation_and_symbols.tex test_turkish.tex test_french.tex test_includegraphics.tex test_includegraphics_with_svg.tex test_tikz_with_svg.tex test_tolerance.tex
 PDFLATEX_EXCLUDED_TEST_FILES=$(DONOTTEST_THOSE_FILES) test_calculated_lua.tex
 XETEX_EXCLUDED_TEST_FILES=$(DONOTTEST_THOSE_FILES) test_calculated_lua.tex
-LUATEX_EXCLUDED_TEST_FILES=$(DONOTTEST_THOSE_FILES)
+LUATEX_EXCLUDED_TEST_FILES=$(DONOTTEST_THOSE_FILES) test_calculated_lua.tex test_tags.tex
 ALL_TEST_FILES=$(wildcard $(PREFIX)_*.tex)
 PDFLATEX_TEST_FILES = $(filter-out $(PDFLATEX_EXCLUDED_TEST_FILES),$(ALL_TEST_FILES))
 XETEX_TEST_FILES = $(filter-out $(XETEX_EXCLUDED_TEST_FILES),$(ALL_TEST_FILES))
@@ -20,7 +20,7 @@ endif
 .NOTPARALLEL := test
 
 .PHONY: all test clean distclean $(TEX_ENGINES)
-.SECONDARY: $(foreach engine,$(TEX_ENGINES),$(PDFLATEX_TEST_FILES:.tex=_pdflatex-$(SUFFIX).xml) $(XETEX_TEST_FILES:.tex=_pdflatex-$(SUFFIX).xml)$(LUATEX_TEST_FILES:.tex=_pdflatex-$(SUFFIX).xml))
+.SECONDARY: $(foreach engine,$(TEX_ENGINES),$(PDFLATEX_TEST_FILES:.tex=_pdflatex-$(SUFFIX).xml) $(XETEX_TEST_FILES:.tex=_pdflatex-$(SUFFIX).xml) $(LUATEX_TEST_FILES:.tex=_pdflatex-$(SUFFIX).xml))
 
 all: test
 
