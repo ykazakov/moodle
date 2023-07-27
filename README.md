@@ -109,3 +109,21 @@ ensuring no regression occurs. This system relies on the makefile mechanism.
 To run the unit tests:
 
     $ make test
+
+To ensure the execution of all the tests inside "test" folder:
+
+    $ make clean && make test
+
+## Packages required to perform tests
+If while executing the tests a message similar to the following appears
+
+~~~bash
+sh: 1: optipng: not found
+system returned with code 32512
+~~~
+
+Install the package that it is not found. In this case "optipng", and in Ubuntu:
+
+~~~bash
+sudo apt install optipng
+~~~
