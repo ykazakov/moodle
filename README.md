@@ -74,6 +74,7 @@ In order to manipulate images, the package relies on:
 - inkscape (for svg files).
 
 The python package, that is used in some tests, requires a "python" command to be installed in your system. Typically, in new linux distributions, only python3 is installed by default and python must be linked to python3 to the test to run properly.
+- "minted" test requires "pygmentize" to be installed in the system (in ubuntu 22.04 -> "apt install python3-pygments")
 
 Instead, to compile the documentation, the following LaTeX packages are
 necessary: `amssymb`, `babel`, `booktabs`, `changelog`, `dtxdescribe`, `eurosym`,
