@@ -1,10 +1,10 @@
 PREFIX=test
 SUFFIX=moodle
 BRANCH_SPECIFIC_EXCLUDED_FILES=
-DONOTTEST_THOSE_FILES=$(BRANCH_SPECIFIC_EXCLUDED_FILES) test_diacritics_and_ligatures.tex test_tolerance.tex
+DONOTTEST_THOSE_FILES=$(BRANCH_SPECIFIC_EXCLUDED_FILES)
 PDFLATEX_EXCLUDED_TEST_FILES=$(DONOTTEST_THOSE_FILES) test_calculated_lua.tex
 XETEX_EXCLUDED_TEST_FILES=$(DONOTTEST_THOSE_FILES) test_calculated_lua.tex
-LUATEX_EXCLUDED_TEST_FILES=$(DONOTTEST_THOSE_FILES) test_calculated_lua.tex test_tags.tex
+LUATEX_EXCLUDED_TEST_FILES=$(DONOTTEST_THOSE_FILES)
 ALL_TEST_FILES=$(wildcard $(PREFIX)_*.tex)
 PDFLATEX_TEST_FILES = $(filter-out $(PDFLATEX_EXCLUDED_TEST_FILES),$(ALL_TEST_FILES))
 XETEX_TEST_FILES = $(filter-out $(XETEX_EXCLUDED_TEST_FILES),$(ALL_TEST_FILES))
@@ -12,7 +12,7 @@ LUATEX_TEST_FILES = $(filter-out $(LUATEX_EXCLUDED_TEST_FILES),$(ALL_TEST_FILES)
 TEX_ENGINES=pdflatex xelatex lualatex
 LATEXFLAGS=-halt-on-error -shell-escape
 DIFFTOOL=diff -abBwZ
-FILE_CLEAN= *.executionerror *.diff *.log *.aux *.auxlock *.out *.blg *.bbl *.toc *.xml *.bcf *.synctex.gz *~ *.nav *.snm *.idx *.ilg *.ind _minted-* *.glo *.gls *.dpth *-tikztemp-*.pdf fig/*-converted-to.*
+FILE_CLEAN= *.executionerror *.diff *.log *.aux *.auxlock *.out *.blg *.bbl *.toc *.xml *.bcf *.synctex.gz *~ *.nav *.snm *.idx *.ilg *.ind _minted-* *.glo *.gls *.dpth *-tikztemp-*.pdf fig/*-converted-to.* fig/*.tmp.svg
 ifndef DEBUG
 	DEBUG=> /dev/null
 endif
