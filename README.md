@@ -71,7 +71,7 @@ In order to manipulate images, the package relies on:
 - GhostScript (www.ghostscript.com),
 - ImageMagick (www.imagemagick.org)(the imagemagick policy for pdf files must be modified to enable read and write)
 - optipng ([optipng.sourceforge.net](http://optipng.sourceforge.net/)), and
-- inkscape (for svg files).
+- inkscape (https://inkscape.org)(for svg files).
 
 The python package, that is used in some tests, requires a "python" command to be installed in your system. Typically, in new linux distributions, only python3 is installed by default and python must be linked to python3 to the test to run properly.
 - "minted" test requires "pygmentize" to be installed in the system (in ubuntu 22.04 -> "apt install python3-pygments")
