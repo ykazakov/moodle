@@ -182,7 +182,7 @@
     <text><![CDATA[Embedded questions]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p>Select the fruits {1:MULTIRESPONSE_S:=Apple~Burger~Hot dog~Pizza~=Orange~=Banana}Select the vegetables {1:MULTIRESPONSE_S:%10%Radish#Good~%-20%Chocolate~%-20%Biscuit~%-10%Cheese~=Carrot}</p>]]></text>
+    <text><![CDATA[<p>Select the fruits {1:MULTIRESPONSE_S:=Apple~Burger~Hot dog~Pizza~=Orange~=Banana}<BR/>Select the vegetables {1:MULTIRESPONSE_S:%10%Radish#Good~%-20%Chocolate~%-20%Biscuit~%-10%Cheese~=Carrot}</p>]]></text>
   </questiontext>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
