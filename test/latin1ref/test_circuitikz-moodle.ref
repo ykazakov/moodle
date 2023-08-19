@@ -13,7 +13,7 @@
     <text><![CDATA[Multi]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU4AAACyCAMAAAAaqtaNAAAAUVBMVEX///8AAAAAAAAAAAAAAAAA 
+    <text><![CDATA[<p><CENTER><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU4AAACyCAMAAAAaqtaNAAAAUVBMVEX///8AAAAAAAAAAAAAAAAA 
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 
 AAAAAAAAAAAsiKZwAAAAGnRSTlMAESIzRFVma3V3iJeZp6q0u7/Mzd3f7u/w9HQfvdYAAAXfSURB 
 VHja7dzbmqUmEAXgQtFEYhxiDEnW+z9oLvTr3grsQ8eCPfbybvow1fsHqkBBkS9c+E6XFe0LUuOq 
@@ -43,7 +43,7 @@ qePC+wYr//KKax0XTl0FX61ysePCdTnbcK1DhJU5L3fEtS7n9Q5gV86dZ588ezJqX3K8l33L1+Wr
 UemXpl3o0PA7cG5PwCpEDbjoq6QbVyOqcXzR+blRyUlOcpKTnOQkJznJSU5ykpOc5CQnOclJTnKS 
 k5zkJCc5yUlOcpKTnOQkJznJSU5ykpOc5CQnOclJTnKSk5zkJCc5yUlOcpKTnOQkJznJSU5ykpOc 
 5CQnOclJTnJ+F86Ab3S9xPkfOy3HGJQYxywAAAAASUVORK5CYII= 
-"> </p>]]></text>
+"></CENTER> </p>]]></text>
   </questiontext>
   <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
