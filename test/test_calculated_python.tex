@@ -26,19 +26,25 @@ Inspired by
 % on Ubuntu 20.10, I had to force python to default to python 3
 % https://stackoverflow.com/a/50331137
 \begin{python}
-def clozenum_print(pair,op,result):
-  print(rf"""\begin{{numerical}}
-${pair[0]} {op} {pair[1]} =$\item {result} 
-\end{{numerical}}""")
+def clozenum_print(pair,op,result,initialText='',finalText='\n'):
+  clozeNumStr = rf"""\begin{{numerical}}
+{initialText}${pair[0]} {op} {pair[1]} =$
+\item {result} 
+\end{{numerical}}{finalText}"""
+  print(clozeNumStr)
 def cloze_print(pair,points):
   print(rf"""\begin{{cloze}}[points={points}]{{Arithmetic Quiz 
-  {(pair[0],pair[1])}}}Solve the following tasks!\\""")
-  clozenum_print([x,y],"+",x+y)
+  {(pair[0],pair[1])}}}""")
+  initialText = 'Solve the following tasks!\\newline\n'
+  clozenum_print([x,y],"+",x+y,initialText=initialText)
   clozenum_print([x,y],"-",x-y)
-  clozenum_print([x,y],"*",x*y)
+  if pair[0]/pair[1] != pair[0]//pair[1]:
+    clozenum_print([x,y],"*",x*y,finalText='')
+  else:
+    clozenum_print([x,y],"*",x*y)
   if pair[0]/pair[1] == pair[0]//pair[1]:
-    clozenum_print([x,y],":",x//y)
-  print("\end{cloze}")
+    clozenum_print([x,y],":",x//y,finalText='')
+  print('\end{cloze}\n')
 for x in range(2,5):
   for y in range(2,5):
     if x > y:
