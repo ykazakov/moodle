@@ -15,7 +15,7 @@
   <questiontext format="html">
     <text><![CDATA[<p> <SPAN STYLE="text-decoration: underline;">Pangramme</SPAN> con&ccedil;u par Gilles <SPAN STYLE="font-variant: small-caps;">Esposito-Far&egrave;se</SPAN>&#8239;:</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html">
     <text><![CDATA[<p>1<SUP>er</SUP>, M<SUP>me</SUP>, N<SUP>o</SUP><BR/> 1<SUP>er</SUP>, M<SUP>me</SUP>, N<SUP>o</SUP><BR/> H<SUB>2</SUB>O</p>]]></text>
   </generalfeedback>
