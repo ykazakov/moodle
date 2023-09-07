@@ -15,7 +15,7 @@
   <questiontext format="html">
     <text><![CDATA[<p><CENTER><SPAN STYLE="font-variant: small-caps;">This is a question</SPAN></CENTER> <BLOCKQUOTE>and this is a quote</BLOCKQUOTE> <BR/>Select the numbered list </p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
