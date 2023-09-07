@@ -15,7 +15,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>&Aring;</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
@@ -42,7 +42,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>&Aring;</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
@@ -71,7 +71,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>&Aring;</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
@@ -97,7 +97,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>&Aring;</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
@@ -125,7 +125,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>&Aring;</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
@@ -152,7 +152,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>Text</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
@@ -167,7 +167,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>&Aring;</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>1</penalty>
   <hidden>0</hidden>

@@ -15,7 +15,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>Description text</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html">
     <text><![CDATA[<p>General feedback</p>]]></text>
   </generalfeedback>
@@ -32,7 +32,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>Question text </p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html">
     <text><![CDATA[<p>General feedback</p>]]></text>
   </generalfeedback>
@@ -62,7 +62,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>Question text </p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html">
     <text><![CDATA[<p>General feedback</p>]]></text>
   </generalfeedback>
@@ -94,7 +94,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>Question text </p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html">
     <text><![CDATA[<p>General feedback</p>]]></text>
   </generalfeedback>
@@ -130,7 +130,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>Question text </p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html">
     <text><![CDATA[<p>General feedback</p>]]></text>
   </generalfeedback>
@@ -155,7 +155,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>Question text </p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html">
     <text><![CDATA[<p>General feedback</p>]]></text>
   </generalfeedback>
@@ -178,7 +178,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>Question text </p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html">
     <text><![CDATA[<p>General feedback</p>]]></text>
   </generalfeedback>
@@ -201,7 +201,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>Question text </p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html">
     <text><![CDATA[<p>General feedback</p>]]></text>
   </generalfeedback>
@@ -228,7 +228,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>Question text </p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html">
     <text><![CDATA[<p>General feedback</p>]]></text>
   </generalfeedback>
@@ -254,7 +254,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>Question text </p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html">
     <text><![CDATA[<p>General feedback</p>]]></text>
   </generalfeedback>
@@ -288,7 +288,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>Question text </p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html">
     <text><![CDATA[<p>General feedback</p>]]></text>
   </generalfeedback>
