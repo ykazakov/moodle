@@ -9,20 +9,20 @@
 \else % assuming XELATEX or LUALATEX
 	\usepackage{fontspec}
 \fi
-\def\FullSupportList{british,french,ngerman,german,italian,spanish}
-\def\PartialSupportList{catalan,croatian,czech,danish,dutch,
+\def\FullSupportList{british,catalan,french,ngerman,german,italian,spanish}
+\def\PartialSupportList{croatian,czech,danish,dutch,
 estonian,finnish,hungarian,icelandic,lithuanian,norsk,polish,portuguese,
 romanian,swedish,turkish}
 \def\ExtraList{}% the shortands of Turkish are particularly 
 %dangerous
 \usepackage[\PartialSupportList,\FullSupportList]{babel}
-\babelprovide{foobar}
+%\babelprovide{foobar}
 %\usepackage{translations} % overides "translator"
 %\DeclareLanguage{foobar}
-\AfterEndPreamble{
-  \DeclareTranslation{foobar}{True}{Foo}%
-  \DeclareTranslation{foobar}{False}{Bar}%
-}
+%\AfterEndPreamble{
+%  \DeclareTranslation{foobar}{True}{Foo}%
+%  \DeclareTranslation{foobar}{False}{Bar}%
+%}
 \begin{document}
 % Fix dangerous shorthands due to 'turkish' option of babel
 \shorthandoff{=:!}
@@ -73,6 +73,6 @@ C\answer3\end{matching}
 \end{quiz}
 \end{otherlanguage}
 }
-\expandafter\docsvlist\expandafter{\PartialSupportList,foobar}
+\expandafter\docsvlist\expandafter{\PartialSupportList}%,foobar
 
 \end{document}

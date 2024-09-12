@@ -2005,8 +2005,8 @@
 % \pkg{translations} does a very similar job and can be loaded in the preamble
 % to serve, if desired, as a replacement for \pkg{translator}.
 %
-% Currently, full-support is provided for English, French, German, Italian, and
-% Spanish. Very limited support is provided for Catalan, Croatian, Czech, Danish, Dutch,
+% Currently, full-support is provided for Catalan, English, French, German, Italian,
+% and Spanish. Very limited support is provided for Croatian, Czech, Danish, Dutch,
 % Estonian, Finnish, Hungarian, Icelandic, Lithuanian, Norsk, Polish, Portuguese,
 % Romanian, Swedish, and Turkish.
 %
@@ -2251,7 +2251,8 @@
 % \changes{v1.0}{2023/01/28}{Bug fixes and feature extensions}
 % \begin{changelog}[title={Version History},sectioncmd=\section*,author={Matthieu Guerquin-Kern}]
 %  \begin{version}[version=\fileversion,]^^Adate=]
-%^^A    \added
+%     \added
+%       \item Package internationalization for Catalan (courtesy of Paco Rivière).
 %^^A    \changed
 %^^A    \removed
 %    \fixed
@@ -7828,31 +7829,31 @@
     }%
     \DeclareTranslation{Catalan}{True}{Vertader}%
     \DeclareTranslation{Catalan}{False}{Fals}%
-    %\DeclareTranslation{Catalan}{cloze}{}%
-    %\DeclareTranslation{Catalan}{description}{}%
-    %\DeclareTranslation{Catalan}{essay}{}%
-    %\DeclareTranslation{Catalan}{matching}{}%
-    %\DeclareTranslation{Catalan}{multi}{}%
-    %\DeclareTranslation{Catalan}{numerical}{}%
-    %\DeclareTranslation{Catalan}{shortanswer}{}%
-    %\DeclareTranslation{Catalan}{truefalse}{}%
-    %\DeclareTranslation{Catalan}{Shuffle}{}%
-    %\DeclareTranslation{Catalan}{Single}{}%
-    %\DeclareTranslation{Catalan}{marked out of}{}%
-    %\DeclareTranslation{Catalan}{penalty}{}%
-    %\DeclareTranslation{Catalan}{tags}{}%
-    %\DeclareTranslation{Catalan}{All-or-nothing}{}%
-    %\DeclareTranslation{Catalan}{Case-Sensitive}{}%
-    %\DeclareTranslation{Catalan}{Case-Insensitive}{}%
-    %\DeclareTranslation{Catalan}{Drag and drop}{}%
-    %\DeclareTranslation{Catalan}{Information for graders}{}%
-    %\DeclareTranslation{Catalan}{Response template}{}%
-    %\DeclareTranslation{Catalan}{editor}{}%
-    %\DeclareTranslation{Catalan}{editorfilepicker}{}%
-    %\DeclareTranslation{Catalan}{plain}{}%
-    %\DeclareTranslation{Catalan}{monospaced}{}%
-    %\DeclareTranslation{Catalan}{noinline}{}%
-    %\DeclareTranslation{Catalan}{Total of marks}{}%
+    \DeclareTranslation{Catalan}{cloze}{omplenar}%
+    \DeclareTranslation{Catalan}{description}{informativa}%
+    \DeclareTranslation{Catalan}{essay}{assaig}%
+    \DeclareTranslation{Catalan}{matching}{emparellar}%
+    \DeclareTranslation{Catalan}{multi}{multiple}%
+    \DeclareTranslation{Catalan}{numerical}{numerica}%
+    \DeclareTranslation{Catalan}{shortanswer}{respostabreu}%
+    \DeclareTranslation{Catalan}{truefalse}{certifals}%
+    \DeclareTranslation{Catalan}{Shuffle}{Reordena}%
+    \DeclareTranslation{Catalan}{Single}{Unica}%
+    \DeclareTranslation{Catalan}{marked out of}{punts sobre un total de}% or just {punts sobre}%
+    \DeclareTranslation{Catalan}{penalty}{penalitzacio}%
+    \DeclareTranslation{Catalan}{tags}{etiquetes}%
+    \DeclareTranslation{Catalan}{All-or-nothing}{Tot-o-res}%
+    \DeclareTranslation{Catalan}{Case-Sensitive}{Diferencia-MajusculesIMinuscules}% or {Diferencia-MajusIMinuscu}%
+    \DeclareTranslation{Catalan}{Case-Insensitive}{Ignora-MajusculesIMinuscules}% or {Ignora-MajusIMinuscu}%
+    \DeclareTranslation{Catalan}{Drag and drop}{Arrossega i deixa anar}%
+    \DeclareTranslation{Catalan}{Information for graders}{Informacio per al corrector}%
+    \DeclareTranslation{Catalan}{Response template}{Model de resposta}%
+    \DeclareTranslation{Catalan}{editor}{editor}%
+    \DeclareTranslation{Catalan}{editorfilepicker}{selectordefitxersdeleditor}%
+    \DeclareTranslation{Catalan}{plain}{senzill}%
+    \DeclareTranslation{Catalan}{monospaced}{monoespaiat}%
+    \DeclareTranslation{Catalan}{noinline}{foradelinia}%
+    \DeclareTranslation{Catalan}{Total of marks}{Total de punts}%
     \DeclareTranslation{Croatian}{True}{To\v{c}no}%
     \DeclareTranslation{Croatian}{False}{Neto\v{c}no}%
     %\DeclareTranslation{Croatian}{cloze}{}%
@@ -8072,7 +8073,7 @@
     \DeclareTranslation{French}{Information for graders}{Information pour les évaluateurs}%
     \DeclareTranslation{French}{Response template}{Mod\`ele de r\'eponse}%
     \DeclareTranslation{French}{editor}{\'Editeur HTML}%
-    \DeclareTranslation{French}{editorfilepicker}{\'Editeur \HTML\ + s\'electeur de fichier}%
+    \DeclareTranslation{French}{editorfilepicker}{\'Editeur HTML + s\'electeur de fichier}%
     \DeclareTranslation{French}{plain}{\'Editeur texte}%
     \DeclareTranslation{French}{monospaced}{\'Editeur texte, police \`a chasse fixe}%
     \DeclareTranslation{French}{noinline}{S\'electeur de fichier}%
@@ -8184,7 +8185,7 @@
     \DeclareTranslation{Italian}{Information for graders}{Informazioni per i valutatori}%
     \DeclareTranslation{Italian}{Response template}{Modello di risposta}%
     \DeclareTranslation{Italian}{editor}{Editor HTML}%
-    \DeclareTranslation{Italian}{editorfilepicker}{Editor \HTML\ con file picker}%
+    \DeclareTranslation{Italian}{editorfilepicker}{Editor HTML con file picker}%
     \DeclareTranslation{Italian}{plain}{Testo semplice}%
     \DeclareTranslation{Italian}{monospaced}{Testo semplice, caratteri a spaziatura fissa}%
     \DeclareTranslation{Italian}{noinline}{Solo file picker}%
@@ -8352,7 +8353,7 @@
     \DeclareTranslation{Spanish}{Information for graders}{Informaci\'on para evaluadores}%
     \DeclareTranslation{Spanish}{Response template}{Plantilla de respuesta}%
     \DeclareTranslation{Spanish}{editor}{Editor HTML}%
-    \DeclareTranslation{Spanish}{editorfilepicker}{Editor \HTML\ con selector de archivos}%
+    \DeclareTranslation{Spanish}{editorfilepicker}{Editor HTML con selector de archivos}%
     \DeclareTranslation{Spanish}{plain}{Texto sin formato}%
     \DeclareTranslation{Spanish}{monospaced}{Texto sin formato, tipografía monoespaciada}%
     \DeclareTranslation{Spanish}{noinline}{Sin texto}%
