@@ -15,7 +15,7 @@
   <questiontext format="html">
     <text><![CDATA[<p> <SPAN STYLE="text-decoration: underline;">Pangramm</SPAN> :</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
@@ -37,7 +37,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>Wie schon Carl-Friedrich Gau&szlig; sagte: &bdquo;Nicht alles Üble in Österreich ist österreichischer Herkunft &ndash; aber manches, was als &sbquo;übel&lsquo; empfunden wird, könnte durch entsprechende Änderungen zum Guten verändert werden&ldquo;.</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>

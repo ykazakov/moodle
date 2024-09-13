@@ -15,7 +15,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>Find the symbol standing for &ldquo;paragraph&rdquo;. </p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
@@ -81,7 +81,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>Find the French quotes </p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>

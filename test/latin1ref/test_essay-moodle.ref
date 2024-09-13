@@ -15,7 +15,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>A </p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html">
     <text><![CDATA[<p>feedback for essay</p>]]></text>
   </generalfeedback>

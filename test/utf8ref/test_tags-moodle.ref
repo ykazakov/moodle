@@ -15,7 +15,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>&Aring;</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
@@ -31,7 +31,7 @@
     <feedback format="html"><text><![CDATA[<p>tac</p>]]></text></feedback>
   </answer>
   <tags>
-    <tag><text><![CDATA[multiéàî]]></text></tag>
+    <tag><text><![CDATA[multi&eacute;&agrave;&icirc;]]></text></tag>
     <tag><text><![CDATA[&Aring;&aelig;&oelig;]]></text></tag>
   </tags>
 </question>
@@ -42,7 +42,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>&Aring;</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
@@ -71,7 +71,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>&Aring;</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
@@ -97,18 +97,18 @@
   <questiontext format="html">
     <text><![CDATA[<p>&Aring;</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
   <shuffleanswers>1</shuffleanswers>
   <subquestion format="html">
     <text><![CDATA[<p>&aelig;</p>]]></text>
-    <answer format="html"><text><![CDATA[oui ]]></text></answer>
+    <answer format="html"><text><![CDATA[oui]]></text></answer>
   </subquestion>
   <subquestion format="html">
     <text><![CDATA[<p>&oelig;</p>]]></text>
-    <answer format="html"><text><![CDATA[non ]]></text></answer>
+    <answer format="html"><text><![CDATA[non]]></text></answer>
   </subquestion>
   <subquestion format="html">
     <text></text>
@@ -125,7 +125,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>&Aring;</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
@@ -152,7 +152,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>Text</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>0.10</penalty>
   <hidden>0</hidden>
@@ -167,7 +167,7 @@
   <questiontext format="html">
     <text><![CDATA[<p>&Aring;</p>]]></text>
   </questiontext>
-  <defaultgrade>1</defaultgrade>
+  <defaultgrade>1.0</defaultgrade>
   <generalfeedback format="html"><text/></generalfeedback>
   <penalty>1</penalty>
   <hidden>0</hidden>

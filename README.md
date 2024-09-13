@@ -69,8 +69,12 @@ The package option `handout` requires:
 In order to manipulate images, the package relies on:
 - `graphics` (texlive-latex-base)
 - GhostScript (www.ghostscript.com),
-- ImageMagick (www.imagemagick.org), and
-- optipng ([optipng.sourceforge.net](http://optipng.sourceforge.net/)).
+- ImageMagick (www.imagemagick.org)(the imagemagick policy for pdf files must be modified to enable read and write)
+- optipng ([optipng.sourceforge.net](http://optipng.sourceforge.net/)), and
+- inkscape (https://inkscape.org)(for svg files).
+
+The python package, that is used in some tests, requires a "python" command to be installed in your system. Typically, in new linux distributions, only python3 is installed by default and python must be linked to python3 to the test to run properly.
+- "minted" test requires "pygmentize" to be installed in the system (in ubuntu 22.04 -> "apt install python3-pygments")
 
 Instead, to compile the documentation, the following LaTeX packages are
 necessary: `amssymb`, `babel`, `booktabs`, `changelog`, `dtxdescribe`, `eurosym`,
@@ -109,3 +113,21 @@ ensuring no regression occurs. This system relies on the makefile mechanism.
 To run the unit tests:
 
     $ make test
+
+To ensure the execution of all the tests inside "test" folder:
+
+    $ make clean && make test
+
+## Packages required to perform tests
+If while executing the tests a message similar to the following appears
+
+~~~bash
+sh: 1: optipng: not found
+system returned with code 32512
+~~~
+
+Install the package that it is not found. In this case "optipng", and in Ubuntu:
+
+~~~bash
+sudo apt install optipng
+~~~

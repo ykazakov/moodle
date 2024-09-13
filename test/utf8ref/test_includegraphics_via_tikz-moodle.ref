@@ -13,11 +13,11 @@
     <text><![CDATA[Picture]]></text>
   </name>
   <questiontext format="html">
-    <text><![CDATA[<p><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEIAAAAqCAMAAAAwLX3tAAAAM1BMVEUAAAAAAAAAAAAAAAAAAAAA 
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACjBUbJAAAAEHRSTlMAE0RKU3WEiaWr 
-tczb5vX9QmfMGwAAAFlJREFUSMft08kRgDAMBEGBOSwuK/9o2U2AKss/oQmgfyPi70RmJkkkkcQ3 
-UfxdKBRhw8Ujnv4aCkXciMTEfJuFIQ5EYmZJjBIbIrGynxMLIlFZH7EjVQ1DvOOONZP3s13WAAAA 
-AElFTkSuQmCC 
+    <text><![CDATA[<p><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEIAAAAqCAMAAAAwLX3tAAAANlBMVEUAAAD///8AAAAAAAAAAAAA 
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADl82K3AAAAEXRSTlMAABNESlN1 
+hImlq7XM2+b1/Z9TPi4AAABXSURBVEjH7dPJAYAwDAPBcIM5gvtvFqmExD/hKWB/W4awEnCBu2ci 
+E9qJud8NUgkP00vUdi9IJR5gYqS+zWQSJzAxUSaiiQ2YWOnniQWYOKgtsYOZySQ+ag86ObK16lIA 
+AAAASUVORK5CYII= 
 "> </p>]]></text>
   </questiontext>
   <defaultgrade>1.0</defaultgrade>
@@ -68,7 +68,7 @@ Lcr/0wJ1Vn0LRFWf9g3VEwpWNowe2wAAAABJRU5ErkJggg==
     <answer format="html"><text><![CDATA[<p><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAjAQMAAABFDwNYAAAABlBMVEX///8AAABVwtN+AAAAAXRS 
 TlMAQObYZgAAADdJREFUCNdj+P+/gYGB/QEEM/6A4n9Q/AOBoWr4gcJgDNTHj00vQwUqRjHjHxj/ 
 //8AgoFcJAwAXTsqcaGGnVkAAAAASUVORK5CYII= 
-"> </p>]]></text></answer>
+"></p>]]></text></answer>
   </subquestion>
   <subquestion format="html">
     <text><![CDATA[<p><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAMAAAANmfvwAAAA0lBMVEX///8AAAABAQECAgIDAwME 
@@ -91,7 +91,7 @@ U6lVB3HNHWm2MOku+a326gMvFHpFnNqSWnXLOhUrMdOzidSqgxwshI3JKAOpVRfGwdoPpXOZwZKT
 E3GuFKUcHHw8O5um1Iq53SeuuOj7B0fKkUdSK04N2wYpV956GL6IXlnpnBulw2deSq06Kh2WNsLk 
 7to7qVVnlh06Uxhs8kudzMKoWFfFz3BdatVQRkVP+OM1j6VWfe7eDRdU4zevvNmzK/1XsLOzvy+C 
 +8fHwxCffP1s7r29m267tW2SWn8B1wBQQBxcN+IAAAAASUVORK5CYII= 
-"> </p>]]></text></answer>
+"></p>]]></text></answer>
   </subquestion>
   <subquestion format="html">
     <text><![CDATA[<p><IMG SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAABHAQMAAABCjOfmAAAABlBMVEX///8AAABVwtN+AAAAAXRS 
