@@ -7080,6 +7080,24 @@
   \baselxiv@next
 }
 %    \end{macrocode}
+% The following macro can be used to read the values of environment variables.
+% See: https://tex.stackexchange.com/a/62032.
+%    \begin{macrocode}
+\ExplSyntaxOn
+\NewDocumentCommand{\getenv}{om}
+ {
+  \sys_get_shell:nnN { kpsewhich ~ --var-value ~ #2 } { } \l_tmpa_tl
+  \tl_trim_spaces:N \l_tmpa_tl
+  \IfNoValueTF { #1 }
+   {
+    \tl_use:N \l_tmpa_tl
+   }
+   {
+    \tl_set_eq:NN #1 \l_tmpa_tl
+   }
+ }
+\ExplSyntaxOff
+%    \end{macrocode}
 %
 % \subsection{\TikZ\ Picture Handling}
 % If the user is not using the \TikZ\ package, there is no need to waste time
@@ -7103,7 +7121,15 @@
     \usetikzlibrary{external}%
     \tikzexternalize%
     \tikzset{external/force remake}%
-    \def\moodle@basename{\tikzexternalrealjob-tikztemp-\the\numconvertedpictures}%
+    % Tiz produces image files in the output directory
+    % which can be read from the evironment variable as of texlive 2024
+    % see: https://tex.stackexchange.com/a/342421    
+    \getenv[\moodle@outdir]{TEXMF_OUTPUT_DIRECTORY}%
+    % When the variable is not defined, the macro is set to \par
+    % see: https://tex.stackexchange.com/a/64092
+    \def\moodle@par{\par}%    
+    \ifx\moodle@outdir\moodle@par\def\moodle@outdir{.}\fi%
+    \def\moodle@basename{\moodle@outdir/\tikzexternalrealjob-tikztemp-\the\numconvertedpictures}%
     \ifmoodle@svg
       \def\TikzExportExtension{.svg}%
       \def\TikzExportMIME{image/svg+xml}%
@@ -7290,15 +7316,15 @@
       \ifXeTeX
         % we must keep picture pdf's for subsequent linking (xdvipdfmx)
         \ifwindows
-          \ShellEscape{powershell.exe "del * -include \tikzexternalrealjob-tikztemp-*.* -exclude *.pdf"}%
+          \ShellEscape{powershell.exe "del * -include \moodle@outdir/\tikzexternalrealjob-tikztemp-*.* -exclude *.pdf"}%
         \else
-          \ShellEscape{find . -type f -name "\tikzexternalrealjob-tikztemp-*.*" -not -name "*.pdf" -delete}%
+          \ShellEscape{find \moodle@outdir -type f -name "\tikzexternalrealjob-tikztemp-*.*" -not -name "*.pdf" -delete}%
         \fi
       \else
         \ifwindows
-          \ShellEscape{powershell.exe "del \tikzexternalrealjob-tikztemp-*.*"}%
+          \ShellEscape{powershell.exe "del \moodle@outdir/\tikzexternalrealjob-tikztemp-*.*"}%
         \else
-          \ShellEscape{\DeleteFiles\otherspace \tikzexternalrealjob-tikztemp-*.*}%
+          \ShellEscape{\DeleteFiles\otherspace \moodle@outdir/\tikzexternalrealjob-tikztemp-*.*}%
         \fi
       \fi
     }{}%
